@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <title>Map of Pawtheon — Order of 86</title>
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --color-bg:#000000; --color-surface:rgba(28,28,30,0.85);
+            --color-text:#F5F5F7; --color-text-secondary:#98989D;
+            --color-flame:#FF6B00; --color-wild:#2ECC71; --color-arcane:#9B6EFF;
+            --color-deep:#3498DB; --color-radiant:#F1C40F; --color-heart:#FF69B4;
+            --color-wanderer:#9966ff;
+        }
+        html, body { width:100%; height:100%; overflow:hidden; background:#000; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif; color:var(--color-text); }
+        canvas { display:block; }
+        #container { width:100%; height:100%; position:relative; }
+
+        /* Nav */
+        .nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:env(safe-area-inset-top,0) 0 0 0; }
+        .nav-inner { display:flex; align-items:center; justify-content:space-between; padding:12px 24px; background:rgba(28,28,30,0.72); backdrop-filter:blur(40px) saturate(180%); -webkit-backdrop-filter:blur(40px) saturate(180%); border-bottom:1px solid rgba(255,255,255,0.08); }
+        .nav-brand { font-size:18px; font-weight:700; color:#ffd700; text-decoration:none; letter-spacing:0.5px; }
+        .nav-links { display:flex; gap:24px; }
+        .nav-links a { color:var(--color-text-secondary); text-decoration:none; font-size:14px; font-weight:500; transition:color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color:#ffd700; }
+        .hamburger { display:none; background:none; border:none; color:var(--color-text); font-size:24px; cursor:pointer; }
+        .mobile-menu { display:none; position:fixed; top:56px; left:0; right:0; background:rgba(28,28,30,0.95); backdrop-filter:blur(40px); padding:16px 24px; z-index:99; flex-direction:column; gap:16px; border-bottom:1px solid rgba(255,255,255,0.08); }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { color:var(--color-text-secondary); text-decoration:none; font-size:16px; padding:8px 0; }
+        .mobile-menu a.active { color:#ffd700; }
+        @media(max-width:768px) {
+            .nav-links { display:none; }
+            .hamburger { display:block; }
+        }
+
+        /* Title */
+        .map-title { position:fixed; top:72px; left:50%; transform:translateX(-50%); z-index:50; font-size:28px; font-weight:800; letter-spacing:6px; color:#ffd700; text-shadow:0 0 30px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.15); pointer-events:none; text-transform:uppercase; }
+        @media(max-width:768px) { .map-title { font-size:18px; letter-spacing:3px; top:64px; } }
+
+        /* Hint */
+        .hint { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:50; color:rgba(255,255,255,0.5); font-size:13px; pointer-events:none; transition:opacity 1s; white-space:nowrap; }
+        .hint.hidden { opacity:0; }
+
+        /* Legend */
+        .legend { position:fixed; bottom:24px; left:24px; z-index:50; display:flex; flex-direction:column; gap:6px; }
+        .legend-item { display:flex; align-items:center; gap:8px; cursor:pointer; padding:4px 12px 4px 8px; border-radius:12px; background:rgba(28,28,30,0.6); backdrop-filter:blur(20px); transition:background 0.2s, transform 0.15s; font-size:12px; font-weight:500; }
+        .legend-item:hover { background:rgba(255,255,255,0.1); transform:scale(1.05); }
+        .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+        @media(max-width:768px) { .legend { bottom:100px; left:12px; } .legend-item { font-size:11px; padding:3px 8px 3px 6px; } }
+
+        /* Zoom buttons */
+        .zoom-btns { position:fixed; bottom:24px; right:24px; z-index:50; display:flex; flex-direction:column; gap:8px; }
+        .zoom-btn { width:44px; height:44px; border-radius:14px; background:rgba(28,28,30,0.7); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); color:#fff; font-size:22px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background 0.2s; }
+        .zoom-btn:hover { background:rgba(255,255,255,0.15); }
+
+        /* Info Panel */
+        .info-panel { position:fixed; top:0; right:-420px; width:400px; height:100%; z-index:90; background:rgba(20,20,22,0.88); backdrop-filter:blur(50px) saturate(180%); -webkit-backdrop-filter:blur(50px) saturate(180%); border-left:1px solid rgba(255,255,255,0.08); transition:right 0.4s cubic-bezier(0.25,0.46,0.45,0.94); overflow-y:auto; padding:80px 24px 40px; }
+        .info-panel.open { right:0; }
+        .info-close { position:absolute; top:80px; right:20px; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.1); border:none; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+        .info-close:hover { background:rgba(255,255,255,0.2); }
+        .info-realm-name { font-size:26px; font-weight:800; margin-bottom:4px; }
+        .info-motto { font-size:13px; font-style:italic; color:var(--color-text-secondary); margin-bottom:16px; }
+        .info-section { margin-bottom:16px; }
+        .info-section h3 { font-size:13px; font-weight:600; color:var(--color-text-secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+        .info-section p { font-size:14px; line-height:1.5; color:var(--color-text); }
+        .info-tags { display:flex; flex-wrap:wrap; gap:6px; }
+        .info-tag { padding:4px 10px; border-radius:8px; background:rgba(255,255,255,0.08); font-size:12px; color:var(--color-text-secondary); }
+        .dog-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+        .dog-card { background:rgba(255,255,255,0.05); border-radius:12px; padding:8px; text-align:center; }
+        .dog-card img { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; margin-bottom:4px; background:rgba(255,255,255,0.03); }
+        .dog-card .dog-name { font-size:11px; font-weight:600; line-height:1.2; }
+        .dog-card .dog-order { font-size:10px; color:var(--color-text-secondary); }
+
+        @media(max-width:768px) {
+            .info-panel { top:auto; bottom:-100%; right:0; left:0; width:100%; height:70%; border-radius:20px 20px 0 0; border-left:none; border-top:1px solid rgba(255,255,255,0.1); transition:bottom 0.4s cubic-bezier(0.25,0.46,0.45,0.94); padding:20px 20px 40px; }
+            .info-panel.open { bottom:0; }
+            .info-panel::before { content:''; display:block; width:36px; height:4px; border-radius:2px; background:rgba(255,255,255,0.3); margin:0 auto 16px; }
+            .info-close { top:16px; right:16px; }
+        }
+
+        /* Loading */
+        .loading { position:fixed; inset:0; z-index:200; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity 0.8s; }
+        .loading.done { opacity:0; pointer-events:none; }
+        .loading-text { font-size:20px; font-weight:700; color:#ffd700; letter-spacing:4px; margin-bottom:16px; }
+        .loading-bar { width:200px; height:3px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; }
+        .loading-bar-inner { width:0%; height:100%; background:linear-gradient(90deg,#ffd700,#FF6B00); transition:width 0.3s; border-radius:2px; }
+    </style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+    <div class="loading-text">PAWTHEON</div>
+    <div class="loading-bar"><div class="loading-bar-inner" id="loadBar"></div></div>
+</div>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-brand">Order of 86</a>
+        <div class="nav-links">
+            <a href="index.html">The Order</a>
+            <a href="map.html" class="active">Map of Pawtheon</a>
+            <a href="moons.html">Moons</a>
+            <a href="lore.html">Lore</a>
+        </div>
+        <button class="hamburger" onclick="document.getElementById('mobileMenu').classList.toggle('open')">☰</button>
+    </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">The Order</a>
+    <a href="map.html" class="active">Map of Pawtheon</a>
+    <a href="moons.html">Moons</a>
+    <a href="lore.html">Lore</a>
+</div>
+
+<div class="map-title">PAWTHEON</div>
+<div class="hint" id="hint">Drag to rotate • Scroll to zoom • Click a realm to explore</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="zoom-btns">
+    <button class="zoom-btn" id="zoomIn">+</button>
+    <button class="zoom-btn" id="zoomOut">−</button>
+</div>
+
+<div class="info-panel" id="infoPanel">
+    <button class="info-close" onclick="closePanel()">✕</button>
+    <div id="infoPanelContent"></div>
+</div>
+
+<div id="container"></div>
+
+<script type="importmap">
+{
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+    }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ── Dog Data ──
+const wizardDogs = {
+    "8728":{id:"8728",rank:554,fur:"Gray",pattern:"Husky",eyes:"Square Glasses",clothes:"Scarf",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Frostforge the Scarf-Bearer",image:"images/8728.png"},
+    "5035":{id:"5035",rank:1443,fur:"Black",pattern:"Husky",eyes:"Sleepy Eyes",clothes:"Scarf",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Blizzardflame the Ice-Hearted",image:"images/5035.png"},
+    "9758":{id:"9758",rank:2989,fur:"Tan",pattern:"Classic",eyes:"Black Eyes",clothes:"Classic Hoodie",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Commonflame the Everyman",image:"images/9758.png"},
+    "3030":{id:"3030",rank:3305,fur:"White",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Pureflame the Unadorned",image:"images/3030.png"},
+    "986":{id:"986",rank:3638,fur:"Gray",pattern:"Split",eyes:"Square Glasses",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Splitforge the Dual-Natured",image:"images/986.png"},
+    "165":{id:"165",rank:3732,fur:"Gray",pattern:"Husky",eyes:"Visor",clothes:"None",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Vanguard the Glacier-Walker",image:"images/165.png"},
+    "5275":{id:"5275",rank:3857,fur:"Brown",pattern:"Split",eyes:"Yellow Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Tideforge the Current-Rider",image:"images/5275.png"},
+    "8667":{id:"8667",rank:3969,fur:"Orange",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldforge the Sun-Touched",image:"images/8667.png"},
+    "7770":{id:"7770",rank:3986,fur:"Gray",pattern:"Tiger",eyes:"Red Eyes",clothes:"None",realm:"Ember Wastes",order:"Flame",hatColor:"Orange",suggestedName:"Stripesight the Pattern-Burner",image:"images/7770.png"},
+    "7710":{id:"7710",rank:4081,fur:"Yellow",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldstrike the Lightning-Fast",image:"images/7710.png"},
+    "1848":{id:"1848",rank:4120,fur:"Yellow",pattern:"Tiger",eyes:"Round Glasses",clothes:"None",realm:"Ember Wastes",order:"Flame",hatColor:"Orange",suggestedName:"Lensfire the Tiger Scholar",image:"images/1848.png"},
+    "4540":{id:"4540",rank:4490,fur:"White",pattern:"Blotted",eyes:"Visor",clothes:"None",realm:"Shadowmire",order:"Flame",hatColor:"Orange",suggestedName:"Blotforge the Chaos-Shaper",image:"images/4540.png"},
+    "8095":{id:"8095",rank:4524,fur:"Gray",pattern:"Split",eyes:"Pink Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Rosestrike the Pink-Eyed",image:"images/8095.png"},
+    "5518":{id:"5518",rank:5144,fur:"Black",pattern:"Split",eyes:"Green Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Voidstrike the Green-Eyed",image:"images/5518.png"},
+    "1714":{id:"1714",rank:5584,fur:"Brown",pattern:"Classic",eyes:"Pink Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Roseheart the Gentle Flame",image:"images/1714.png"},
+    "246":{id:"246",rank:5884,fur:"Orange",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldburn the Solar Flame",image:"images/246.png"},
+    "4042":{id:"4042",rank:6804,fur:"Gray",pattern:"Classic",eyes:"Pink Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Roseflame the Pink-Eyed",image:"images/4042.png"},
+    "1053":{id:"1053",rank:7607,fur:"Black",pattern:"Zombie",eyes:"Black Eyes",clothes:"None",realm:"Shadowmire",order:"Flame",hatColor:"Orange",suggestedName:"Deathforge the Undying",image:"images/1053.png"},
+    "3449":{id:"3449",rank:627,fur:"Brown",pattern:"Tiger",eyes:"Pink Eyes",clothes:"Poncho",realm:"Ember Wastes",order:"Wild",hatColor:"Green",suggestedName:"Stripeheart the Bridge-Walker",image:"images/3449.png"},
+    "8272":{id:"8272",rank:1073,fur:"White",pattern:"Spotted",eyes:"Round Glasses",clothes:"Lumberjack",realm:"Deepwood",order:"Wild",hatColor:"Green",suggestedName:"Spotforge the Pattern-Reader",image:"images/8272.png"},
+    "8822":{id:"8822",rank:1415,fur:"White",pattern:"Blotted",eyes:"Square Glasses",clothes:"Sport Hoodie",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Chaosbloom the Change-Bringer",image:"images/8822.png"},
+    "6398":{id:"6398",rank:1466,fur:"Brown",pattern:"Split",eyes:"Black Eyes",clothes:"Shirt",realm:"Abyssal Reaches",order:"Wild",hatColor:"Green",suggestedName:"Tideseed the Shore-Walker",image:"images/6398.png"},
+    "2426":{id:"2426",rank:2082,fur:"White",pattern:"Blotted",eyes:"Black Eyes",clothes:"Turtleneck",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Blotbark the Corruption-Fighter",image:"images/2426.png"},
+    "1977":{id:"1977",rank:2547,fur:"Black",pattern:"Classic",eyes:"Green Eyes",clothes:"Collar",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Greensight the Network-Walker",image:"images/1977.png"},
+    "1976":{id:"1976",rank:2938,fur:"Gray",pattern:"Husky",eyes:"Black Eyes",clothes:"Collar",realm:"Frosthollow",order:"Wild",hatColor:"Green",suggestedName:"Frostbark the Ice-Grower",image:"images/1976.png"},
+    "3758":{id:"3758",rank:3040,fur:"Purple",pattern:"Zombie",eyes:"Red Eyes",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Deathbloom the Renewal-Bringer",image:"images/3758.png"},
+    "8965":{id:"8965",rank:3183,fur:"Brown",pattern:"Classic",eyes:"Black Eyes",clothes:"Scarf",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Brownthorn the Shield-Grower",image:"images/8965.png"},
+    "6873":{id:"6873",rank:3935,fur:"Yellow",pattern:"Solid",eyes:"Mixed",clothes:"None",realm:"Sunward Heights",order:"Wild",hatColor:"Green",suggestedName:"Goldleaf the Multi-Eyed",image:"images/6873.png"},
+    "2807":{id:"2807",rank:4035,fur:"Green",pattern:"Zombie",eyes:"Visor",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Voidbloom the Visor-Wearer",image:"images/2807.png"},
+    "9952":{id:"9952",rank:4082,fur:"Black",pattern:"Zombie",eyes:"Green Eyes",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Grimbloom the Green-Eyed",image:"images/9952.png"},
+    "8284":{id:"8284",rank:4766,fur:"Black",pattern:"Tiger",eyes:"Round Glasses",clothes:"None",realm:"Ember Wastes",order:"Wild",hatColor:"Green",suggestedName:"Stripesight the Pattern-Hunter",image:"images/8284.png"},
+    "5374":{id:"5374",rank:5224,fur:"Black",pattern:"Spotted",eyes:"Red Eyes",clothes:"None",realm:"Deepwood",order:"Wild",hatColor:"Green",suggestedName:"Redsight the Spotted Tracker",image:"images/5374.png"},
+    "3826":{id:"3826",rank:5283,fur:"Orange",pattern:"Classic",eyes:"Green Eyes",clothes:"None",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Orangeheart the Classic Bridge",image:"images/3826.png"},
+    "5177":{id:"5177",rank:5878,fur:"Gray",pattern:"Husky",eyes:"Black Eyes",clothes:"None",realm:"Frosthollow",order:"Wild",hatColor:"Green",suggestedName:"Frostgrow the Gray Endurer",image:"images/5177.png"},
+    "5538":{id:"5538",rank:7282,fur:"Gray",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Wild",hatColor:"Green",suggestedName:"Graystorm the Weather-Walker",image:"images/5538.png"},
+    "9713":{id:"9713",rank:8952,fur:"Black",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Darkleaf the Shadow-Grower",image:"images/9713.png"},
+    "8518":{id:"8518",rank:407,fur:"Black",pattern:"Tiger",eyes:"Yellow Eyes",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Goldstripe the Time-Stalker",image:"images/8518.png"},
+    "3406":{id:"3406",rank:912,fur:"Yellow",pattern:"Solid",eyes:"Blue Eyes",clothes:"Shirt",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Blueshirt the Dimensional Scholar",image:"images/3406.png"},
+    "9234":{id:"9234",rank:2843,fur:"Black",pattern:"Spotted",eyes:"Black Eyes",clothes:"Scarf",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Shadowspot the Pattern-Keeper",image:"images/9234.png"},
+    "8311":{id:"8311",rank:3893,fur:"Yellow",pattern:"Tiger",eyes:"Visor",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Goldvisor the Tiger Theorist",image:"images/8311.png"},
+    "9301":{id:"9301",rank:3938,fur:"Yellow",pattern:"Solid",eyes:"Pink Eyes",clothes:"None",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Rosegold the Pink-Eyed Theorist",image:"images/9301.png"},
+    "5056":{id:"5056",rank:4059,fur:"Brown",pattern:"Tiger",eyes:"Visor",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Brownvisor the Research Director",image:"images/5056.png"},
+    "5240":{id:"5240",rank:4173,fur:"Gray",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Graysleep the Dream-Walker",image:"images/5240.png"},
+    "4994":{id:"4994",rank:4600,fur:"White",pattern:"Collie",eyes:"Red Eyes",clothes:"None",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Whitecoat the Collie Coordinator",image:"images/4994.png"},
+    "8342":{id:"8342",rank:4624,fur:"White",pattern:"Split",eyes:"Red Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Arcane",hatColor:"Purple",suggestedName:"Whiteheart the Split Researcher",image:"images/8342.png"},
+    "9826":{id:"9826",rank:4845,fur:"Green",pattern:"Zombie",eyes:"Black Eyes",clothes:"None",realm:"Shadowmire",order:"Arcane",hatColor:"Purple",suggestedName:"Greenbone the Chaos Scholar",image:"images/9826.png"},
+    "6095":{id:"6095",rank:5093,fur:"White",pattern:"Dalmatian",eyes:"Square Glasses",clothes:"None",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Dalmatianscript the Unique Scholar",image:"images/6095.png"},
+    "9898":{id:"9898",rank:5299,fur:"Orange",pattern:"Classic",eyes:"Green Eyes",clothes:"None",realm:"Violet Highlands",order:"Arcane",hatColor:"Purple",suggestedName:"Orangeheart the Classic Bridge",image:"images/9898.png"},
+    "8154":{id:"8154",rank:5549,fur:"Gray",pattern:"Classic",eyes:"Square Glasses",clothes:"None",realm:"Violet Highlands",order:"Arcane",hatColor:"Purple",suggestedName:"Grayglasses the Foundation Scholar",image:"images/8154.png"},
+    "4165":{id:"4165",rank:854,fur:"White",pattern:"Collie",eyes:"Pink Eyes",clothes:"Poncho",realm:"Deepwood",order:"Deep",hatColor:"Blue",suggestedName:"Pinkgaze the Emotional Seer",image:"images/4165.png"},
+    "9530":{id:"9530",rank:2023,fur:"White",pattern:"Bernard",eyes:"Black Eyes",clothes:"Shirt",realm:"Frosthollow",order:"Deep",hatColor:"Blue",suggestedName:"Bernardguard the Truth-Keeper",image:"images/9530.png"},
+    "3557":{id:"3557",rank:3868,fur:"Yellow",pattern:"Tiger",eyes:"Yellow Eyes",clothes:"None",realm:"Ember Wastes",order:"Deep",hatColor:"Blue",suggestedName:"Goldstare the Solar Prophet",image:"images/3557.png"},
+    "2634":{id:"2634",rank:4331,fur:"Black",pattern:"Split",eyes:"Mixed",clothes:"None",realm:"Abyssal Reaches",order:"Deep",hatColor:"Blue",suggestedName:"Mixedsight the Paradox Prophet",image:"images/2634.png"},
+    "4742":{id:"4742",rank:5050,fur:"White",pattern:"Blotted",eyes:"Sleepy Eyes",clothes:"None",realm:"Shadowmire",order:"Deep",hatColor:"Blue",suggestedName:"Blottedmist the Chaos Seer",image:"images/4742.png"},
+    "6135":{id:"6135",rank:5309,fur:"Blue",pattern:"Classic",eyes:"Visor",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Bluevisor the Technology Prophet",image:"images/6135.png"},
+    "5516":{id:"5516",rank:5977,fur:"White",pattern:"Classic",eyes:"Black Eyes",clothes:"Collar",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Whiteguard the Shield Prophet",image:"images/5516.png"},
+    "6232":{id:"6232",rank:6043,fur:"Yellow",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Deep",hatColor:"Blue",suggestedName:"Goldsolid the Pure Prophet",image:"images/6232.png"},
+    "6597":{id:"6597",rank:6539,fur:"Black",pattern:"Classic",eyes:"Square Glasses",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Blackglasses the Archive Prophet",image:"images/6597.png"},
+    "7257":{id:"7257",rank:7436,fur:"Gray",pattern:"Classic",eyes:"Sleepy Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Graydreamer the Sleep Prophet",image:"images/7257.png"},
+    "1841":{id:"1841",rank:8023,fur:"Orange",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Orangeclassic the Bridge Prophet",image:"images/1841.png"},
+    "3417":{id:"3417",rank:9083,fur:"Orange",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Orangeshield the Flame Prophet",image:"images/3417.png"},
+    "7226":{id:"7226",rank:9172,fur:"Tan",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Tanwatcher the Patient Prophet",image:"images/7226.png"},
+    "9684":{id:"9684",rank:66,fur:"White",pattern:"Blotted",eyes:"Yellow Eyes",clothes:"Shirt",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Goldblot the Luminous Shadow",image:"images/9684.png"},
+    "9604":{id:"9604",rank:277,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"Lumberjack",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Beigelumber the Worker's Light",image:"images/9604.png"},
+    "9469":{id:"9469",rank:464,fur:"White",pattern:"Blotted",eyes:"Sleepy Eyes",clothes:"None",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Whitemist the Sleepy Purifier",image:"images/9469.png"},
+    "7833":{id:"7833",rank:1025,fur:"Bronze",pattern:"Shiny",eyes:"Black Eyes",clothes:"Sport Hoodie",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Bronzebeacon the Shiny Light",image:"images/7833.png"},
+    "9396":{id:"9396",rank:2131,fur:"Tan",pattern:"Husky",eyes:"Black Eyes",clothes:"Collar",realm:"Frosthollow",order:"Radiant",hatColor:"Yellow",suggestedName:"Tancollar the Diplomatic Light",image:"images/9396.png"},
+    "5381":{id:"5381",rank:2521,fur:"Pink",pattern:"Classic",eyes:"Black Eyes",clothes:"Tracksuit",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Roseclassic the Pink Diplomat",image:"images/5381.png"},
+    "7731":{id:"7731",rank:2866,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"Shirt",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Beigelight the Steady Illuminator",image:"images/7731.png"},
+    "9025":{id:"9025",rank:3879,fur:"Gray",pattern:"Split",eyes:"Red Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Grayheart the Split Revealer",image:"images/9025.png"},
+    "6203":{id:"6203",rank:4781,fur:"Tan",pattern:"Husky",eyes:"Sleepy Eyes",clothes:"None",realm:"Frosthollow",order:"Radiant",hatColor:"Yellow",suggestedName:"Sleepytan the Dream Revealer",image:"images/6203.png"},
+    "9183":{id:"9183",rank:5726,fur:"White",pattern:"Split",eyes:"Pink Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Whiteheart the Pink-Eyed Illuminator",image:"images/9183.png"},
+    "4458":{id:"4458",rank:5746,fur:"White",pattern:"Split",eyes:"Square Glasses",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Whiteglasses the Precision Revealer",image:"images/4458.png"},
+    "3186":{id:"3186",rank:9281,fur:"Brown",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Brownheart the Common Light",image:"images/3186.png"},
+    "9089":{id:"9089",rank:46,fur:"Black",pattern:"Split",eyes:"Red Eyes",clothes:"Tracksuit",realm:"Abyssal Reaches",order:"Heart",hatColor:"Pink",suggestedName:"Raredheart the Ultimate Amplifier",image:"images/9089.png"},
+    "2855":{id:"2855",rank:5958,fur:"Brown",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Glassesheart the Scholarly Amplifier",image:"images/2855.png"},
+    "3735":{id:"3735",rank:7823,fur:"Pink",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Tancollar the Steady Bond",image:"images/3735.png"},
+    "6502":{id:"6502",rank:7031,fur:"White",pattern:"Collie",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Sleepyheart the Dream Bonder",image:"images/6502.png"},
+    "4650":{id:"4650",rank:7071,fur:"Tan",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Brownheart the Stable Amplifier",image:"images/4650.png"},
+    "7439":{id:"7439",rank:5732,fur:"Yellow",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Sleepyhusky the Gentle Endurer",image:"images/7439.png"},
+    "6198":{id:"6198",rank:6042,fur:"Gray",pattern:"Tiger",eyes:"Black Eyes",clothes:"None",realm:"Ember Wastes",order:"Heart",hatColor:"Pink",suggestedName:"Blackhusky the Shadow Amplifier",image:"images/6198.png"},
+    "9624":{id:"9624",rank:7914,fur:"Black",pattern:"Spotted",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Brownsteady the Reliable Heart",image:"images/9624.png"},
+    "3479":{id:"3479",rank:7641,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Grayheart the Neutral Amplifier",image:"images/3479.png"},
+    "1271":{id:"1271",rank:6653,fur:"White",pattern:"Collie",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Tansteady the Patient Amplifier",image:"images/1271.png"},
+    "9017":{id:"9017",rank:6598,fur:"Tan",pattern:"Classic",eyes:"Yellow Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Sleepysteady the Gentle Dreamer",image:"images/9017.png"},
+    "6164":{id:"6164",rank:7277,fur:"Gray",pattern:"Classic",eyes:"Round Glasses",clothes:"None",realm:"Violet Highlands",order:"Wanderer",hatColor:"Purple",suggestedName:"The Wanderer, First Dog",image:"images/6164.png"}
+};
+
+const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep:'#3498DB', Radiant:'#F1C40F', Heart:'#FF69B4', Wanderer:'#9966ff' };
+
+// ── Realm Data ──
+const realms = {
+    'Frosthollow': { x:-350, z:-300, color:new THREE.Color(0.85,0.92,1.0), color2:new THREE.Color(0.6,0.75,0.95), hex:'#d9ebff', motto:'"In stillness, strength."', desc:'The frozen northwest, where jagged peaks pierce eternal winter skies. Glaciers carve through ice-blue valleys and a vast frozen lake mirrors the aurora. Only the hardiest dogs survive here — and only the wisest thrive.', landmarks:['Frozen Lake of Mirrors','The Glacial Stairway','Aurora Peak'], breeds:['Husky','Collie','Split'], knownFor:'Ice magic, endurance, patience', elevation:80 },
+    'Abyssal Reaches': { x:0, z:-350, color:new THREE.Color(0.25,0.3,0.4), color2:new THREE.Color(0.15,0.2,0.35), hex:'#3d4d66', motto:'"The deep remembers what the surface forgets."', desc:'Coastal cliffs plunge into dark waters where ancient things stir. The boundary between land and ocean, where prophecy magic runs strongest. Tidewatch tower stands sentinel where waves crash against basalt.', landmarks:['Tidewatch Tower','The Drowned Steps','Basalt Cliffs'], breeds:['Tiger','Spotted','Classic'], knownFor:'Prophecy, ocean magic, deep memory', elevation:20 },
+    'Sunward Heights': { x:350, z:-300, color:new THREE.Color(1.0,0.92,0.7), color2:new THREE.Color(0.95,0.85,0.6), hex:'#ffe6a3', motto:'"Truth shines brightest at the peak."', desc:'High plateaus bathed in perpetual golden light. Crystal formations catch and refract sunbeams into prismatic cascades. The air is thin and clear — perfect for seeing far, both physically and metaphysically.', landmarks:['Crystal Spires','The Solar Plateau','Prismatic Falls'], breeds:['Solid','Blotted','Classic'], knownFor:'Light magic, revelation, truth-seeing', elevation:65 },
+    'Ember Wastes': { x:400, z:100, color:new THREE.Color(0.25,0.18,0.12), color2:new THREE.Color(0.5,0.2,0.05), hex:'#804020', motto:'"From destruction, creation."', desc:'Volcanic badlands where the ground itself burns. Lava rivers cut through obsidian plains, calderas glow with hellfire, and ash perpetually drifts skyward. The Forge Spire harnesses this raw elemental fury.', landmarks:['The Great Caldera','Lava Rivers','Obsidian Fields'], breeds:['Tiger','Split','Solid'], knownFor:'Fire magic, forge craft, destruction and renewal', elevation:45 },
+    'Deepwood': { x:250, z:350, color:new THREE.Color(0.15,0.35,0.12), color2:new THREE.Color(0.2,0.45,0.15), hex:'#2d6b1f', motto:'"All roots connect."', desc:'An ancient forest of impossible density. The Heartwood — a tree so massive it can be seen from any realm — stands at its center. Fireflies dance between moss-covered trunks and the air hums with growth magic.', landmarks:['The Heartwood','Firefly Glades','Root Cathedral'], breeds:['Classic','Zombie','Spotted'], knownFor:'Nature magic, growth, the living network', elevation:15 },
+    'Violet Highlands': { x:-300, z:300, color:new THREE.Color(0.4,0.28,0.5), color2:new THREE.Color(0.35,0.22,0.45), hex:'#6b3d80', motto:'"Knowledge is the highest ground."', desc:'Terraced mountain ridges in shades of purple and gray. Step-like terrain carved by ancient magic. Home to the most Wizards of any realm — 25 — making it the political heart of Pawtheon.', landmarks:['The Violet Citadel','Terraced Archives','The Debate Amphitheater'], breeds:['All patterns represented'], knownFor:'Arcane theory, politics, magical scholarship', elevation:55 },
+    'Shadowmire': { x:0, z:400, color:new THREE.Color(0.12,0.15,0.08), color2:new THREE.Color(0.18,0.2,0.1), hex:'#2d3318', motto:'"In darkness, we see what light conceals."', desc:'Low, flat swamplands shrouded in perpetual mist. Dark pools reflect nothing. The air is thick, the ground treacherous. But Shadowmire hides beauty in its danger — bioluminescent fungi, rare herbs, ancient secrets.', landmarks:['Mistpools','The Fungal Groves','The Sinking Stones'], breeds:['Zombie','Blotted','Split'], knownFor:'Shadow magic, alchemy, hidden knowledge', elevation:-5 },
+    'Starter Lands': { x:0, z:0, color:new THREE.Color(0.45,0.55,0.35), color2:new THREE.Color(0.5,0.6,0.4), hex:'#7a9959', motto:'"Every journey begins with a single howl."', desc:'Gentle rolling plains at Pawtheon\'s heart. Where all loyalty lines converge, where new Wizards first feel the pull of magic. Open sky, soft grass, and the distant glow of six towers on the horizon.', landmarks:['The Convergence Stone','First Howl Meadow','Loyalty Crossroads'], breeds:['All breeds welcome'], knownFor:'Beginning magic, loyalty bonds, unity', elevation:10 },
+    'Heartwood': { x:250, z:350, color:new THREE.Color(0.15,0.35,0.12), color2:new THREE.Color(0.2,0.45,0.15), hex:'#2d6b1f', motto:'', desc:'The living heart of Deepwood, centered on the great tree.', landmarks:['The Heartwood Tree'], breeds:['Various'], knownFor:'Nature magic', elevation:15 },
+    'Solara Fields': { x:350, z:-300, color:new THREE.Color(1.0,0.92,0.7), color2:new THREE.Color(0.95,0.85,0.6), hex:'#ffe6a3', motto:'', desc:'Sun-drenched meadows near Sunward Heights.', landmarks:['Golden Meadows'], breeds:['Various'], knownFor:'Light and radiant magic', elevation:60 }
+};
+
+// Map Heartwood/Solara to their parent realms for display
+const realmAliases = { 'Heartwood':'Deepwood', 'Solara Fields':'Sunward Heights' };
+const displayRealms = ['Frosthollow','Abyssal Reaches','Sunward Heights','Ember Wastes','Deepwood','Violet Highlands','Shadowmire','Starter Lands'];
+
+// ── Simplex Noise ──
+class SimplexNoise {
+    constructor(seed=0) {
+        this.grad3 = [[1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],[0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]];
+        this.p = [];
+        for(let i=0;i<256;i++) this.p[i]=i;
+        let n,s=seed;
+        for(let i=255;i>0;i--) { s=(s*16807+0)%2147483647; n=s%(i+1); [this.p[i],this.p[n]]=[this.p[n],this.p[i]]; }
+        this.perm=new Uint8Array(512); this.permMod12=new Uint8Array(512);
+        for(let i=0;i<512;i++) { this.perm[i]=this.p[i&255]; this.permMod12[i]=this.perm[i]%12; }
+    }
+    noise2D(x,y) {
+        const F2=0.5*(Math.sqrt(3)-1), G2=(3-Math.sqrt(3))/6;
+        const s=(x+y)*F2; const i=Math.floor(x+s), j=Math.floor(y+s);
+        const t=(i+j)*G2; const x0=x-(i-t), y0=y-(j-t);
+        const i1=x0>y0?1:0, j1=x0>y0?0:1;
+        const x1=x0-i1+G2, y1=y0-j1+G2, x2=x0-1+2*G2, y2=y0-1+2*G2;
+        const ii=i&255, jj=j&255;
+        const gi0=this.permMod12[ii+this.perm[jj]], gi1=this.permMod12[ii+i1+this.perm[jj+j1]], gi2=this.permMod12[ii+1+this.perm[jj+1]];
+        let n0=0,n1=0,n2=0;
+        let t0=0.5-x0*x0-y0*y0; if(t0>0){t0*=t0;const g=this.grad3[gi0];n0=t0*t0*(g[0]*x0+g[1]*y0);}
+        let t1=0.5-x1*x1-y1*y1; if(t1>0){t1*=t1;const g=this.grad3[gi1];n1=t1*t1*(g[0]*x1+g[1]*y1);}
+        let t2=0.5-x2*x2-y2*y2; if(t2>0){t2*=t2;const g=this.grad3[gi2];n2=t2*t2*(g[0]*x2+g[1]*y2);}
+        return 70*(n0+n1+n2);
+    }
+}
+
+// ── Setup ──
+const isMobile = window.innerWidth < 768;
+const subdivisions = isMobile ? 180 : 256;
+const noise = new SimplexNoise(42);
+const noise2 = new SimplexNoise(137);
+const clock = new THREE.Clock();
+
+const renderer = new THREE.WebGLRenderer({ antialias:!isMobile, alpha:false, powerPreference:'high-performance' });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = isMobile ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+document.getElementById('container').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x050510);
+scene.fog = new THREE.FogExp2(0x0a0a1a, 0.0008);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 1, 3000);
+camera.position.set(0, 500, 600);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.12;
+controls.minDistance = 100;
+controls.maxDistance = 1200;
+controls.maxPolarAngle = Math.PI/2.15;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.3;
+controls.target.set(0, 0, 0);
+controls.rotateSpeed = 0.5;
+controls.zoomSpeed = 0.8;
+controls.panSpeed = 0.5;
+controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+controls.enablePan = true;
+
+let userInteracted = false;
+controls.addEventListener('start', () => { userInteracted = true; controls.autoRotate = false; });
+
+// Progress
+let progress = 0;
+function setProgress(p) { progress = p; document.getElementById('loadBar').style.width = p+'%'; }
+
+// ── Lighting ──
+const ambientLight = new THREE.AmbientLight(0xfff0dd, 0.35);
+scene.add(ambientLight);
+
+const sunLight = new THREE.DirectionalLight(0xfff4e0, 1.2);
+sunLight.position.set(200, 400, -100);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(isMobile?1024:2048, isMobile?1024:2048);
+sunLight.shadow.camera.left = -600; sunLight.shadow.camera.right = 600;
+sunLight.shadow.camera.top = 600; sunLight.shadow.camera.bottom = -600;
+sunLight.shadow.camera.near = 1; sunLight.shadow.camera.far = 1200;
+sunLight.shadow.bias = -0.001;
+scene.add(sunLight);
+
+const hemiLight = new THREE.HemisphereLight(0x8899bb, 0x334422, 0.3);
+scene.add(hemiLight);
+
+setProgress(10);
+
+// ── Terrain ──
+function getRealmInfluence(x, z) {
+    const influences = {};
+    let totalWeight = 0;
+    for (const [name, r] of Object.entries(realms)) {
+        if (name === 'Heartwood' || name === 'Solara Fields') continue;
+        const dx = x - r.x, dz = z - r.z;
+        const dist = Math.sqrt(dx*dx + dz*dz);
+        const w = Math.pow(Math.max(0, 1 - dist/400), 2.5);
+        if (w > 0) { influences[name] = w; totalWeight += w; }
+    }
+    if (totalWeight === 0) return { 'Starter Lands': 1 };
+    for (const k in influences) influences[k] /= totalWeight;
+    return influences;
+}
+
+function getHeight(x, z) {
+    const inf = getRealmInfluence(x, z);
+    let baseElev = 0;
+    for (const [name, w] of Object.entries(inf)) baseElev += (realms[name]?.elevation || 10) * w;
+
+    let n = noise.noise2D(x*0.004, z*0.004) * 30;
+    n += noise.noise2D(x*0.01, z*0.01) * 12;
+    n += noise2.noise2D(x*0.025, z*0.025) * 5;
+
+    // Frosthollow peaks
+    const fh = inf['Frosthollow'] || 0;
+    if (fh > 0.1) {
+        const peak = Math.abs(noise.noise2D(x*0.015, z*0.015));
+        n += peak * 80 * fh;
+        n += Math.abs(noise2.noise2D(x*0.03, z*0.03)) * 30 * fh;
+    }
+
+    // Ember Wastes calderas
+    const ew = inf['Ember Wastes'] || 0;
+    if (ew > 0.1) {
+        const caldera = noise.noise2D(x*0.008+5, z*0.008+5);
+        if (caldera > 0.3) n -= 25 * ew * (caldera-0.3)*3;
+        else n += 20 * ew;
+        n += Math.abs(noise2.noise2D(x*0.02, z*0.02)) * 15 * ew;
+    }
+
+    // Sunward plateaus
+    const sh = inf['Sunward Heights'] || 0;
+    if (sh > 0.2) {
+        const plateau = noise.noise2D(x*0.005+10, z*0.005+10);
+        if (plateau > 0) n += 40 * sh; else n += 15 * sh;
+    }
+
+    // Violet terraces
+    const vh = inf['Violet Highlands'] || 0;
+    if (vh > 0.1) {
+        const terrace = noise.noise2D(x*0.006, z*0.006) * 40 * vh;
+        n += Math.round(terrace / 10) * 10; // Step-like
+    }
+
+    // Abyssal cliff drop
+    const ab = inf['Abyssal Reaches'] || 0;
+    if (ab > 0.3) {
+        const cliff = noise.noise2D(x*0.003+20, z*0.003+20);
+        if (cliff < -0.1) n -= 40 * ab;
+    }
+
+    // Shadowmire depressions
+    const sm = inf['Shadowmire'] || 0;
+    if (sm > 0.1) {
+        const pool = noise.noise2D(x*0.012+15, z*0.012+15);
+        if (pool > 0.3) n -= 8 * sm;
+        n -= 10 * sm;
+    }
+
+    // Deepwood gentle
+    const dw = inf['Deepwood'] || 0;
+    if (dw > 0.1) n *= 0.6;
+
+    return baseElev + n;
+}
+
+function getTerrainColor(x, z, height) {
+    const inf = getRealmInfluence(x, z);
+    const c = new THREE.Color(0, 0, 0);
+
+    for (const [name, w] of Object.entries(inf)) {
+        const r = realms[name];
+        if (!r) continue;
+        const t = Math.min(1, Math.max(0, (height - (r.elevation-20)) / 60));
+        const col = r.color.clone().lerp(r.color2, 1-t);
+
+        // Ember cracks
+        if (name === 'Ember Wastes') {
+            const crack = noise.noise2D(x*0.05, z*0.05);
+            if (Math.abs(crack) < 0.08) col.lerp(new THREE.Color(1, 0.3, 0.0), 0.8);
+        }
+        // Frosthollow snow caps
+        if (name === 'Frosthollow' && height > 100) {
+            col.lerp(new THREE.Color(1, 1, 1), Math.min(1, (height-100)/40));
+        }
+
+        c.r += col.r * w;
+        c.g += col.g * w;
+        c.b += col.b * w;
+    }
+    return c;
+}
+
+const terrainGeo = new THREE.PlaneGeometry(1100, 1100, subdivisions, subdivisions);
+terrainGeo.rotateX(-Math.PI/2);
+const positions = terrainGeo.attributes.position;
+const colors = new Float32Array(positions.count * 3);
+
+for (let i = 0; i < positions.count; i++) {
+    const x = positions.getX(i), z = positions.getZ(i);
+    const h = getHeight(x, z);
+    positions.setY(i, h);
+    const col = getTerrainColor(x, z, h);
+    colors[i*3] = col.r; colors[i*3+1] = col.g; colors[i*3+2] = col.b;
+}
+terrainGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+terrainGeo.computeVertexNormals();
+
+const terrainMat = new THREE.MeshStandardMaterial({ vertexColors:true, roughness:0.85, metalness:0.05, flatShading:false });
+const terrain = new THREE.Mesh(terrainGeo, terrainMat);
+terrain.receiveShadow = true;
+terrain.castShadow = true;
+terrain.name = 'terrain';
+scene.add(terrain);
+setProgress(30);
+
+// ── Realm click zones (invisible planes) ──
+const realmMeshes = [];
+for (const [name, r] of Object.entries(realms)) {
+    if (name === 'Heartwood' || name === 'Solara Fields') continue;
+    const plane = new THREE.Mesh(
+        new THREE.CircleGeometry(100, 32),
+        new THREE.MeshBasicMaterial({ visible:false })
+    );
+    plane.rotation.x = -Math.PI/2;
+    plane.position.set(r.x, getHeight(r.x, r.z)+2, r.z);
+    plane.userData = { type:'realm', name };
+    scene.add(plane);
+    realmMeshes.push(plane);
+}
+
+// ── Water ──
+const waterGeo = new THREE.PlaneGeometry(1400, 1400, 64, 64);
+waterGeo.rotateX(-Math.PI/2);
+const waterMat = new THREE.MeshPhysicalMaterial({
+    color:0x1a5c7a, transparent:true, opacity:0.65, roughness:0.1, metalness:0.3,
+    transmission:0.2, thickness:2, envMapIntensity:0.5, side:THREE.DoubleSide
+});
+const water = new THREE.Mesh(waterGeo, waterMat);
+water.position.y = -8;
+water.receiveShadow = true;
+scene.add(water);
+
+// Frozen lake
+const lakeMat = new THREE.MeshPhysicalMaterial({ color:0xc8e8ff, transparent:true, opacity:0.7, roughness:0.05, metalness:0.4, transmission:0.3, thickness:1 });
+const lake = new THREE.Mesh(new THREE.CircleGeometry(50, 48), lakeMat);
+lake.rotation.x = -Math.PI/2;
+const lakeY = getHeight(-350, -300);
+lake.position.set(-350, lakeY + 5, -300);
+scene.add(lake);
+
+setProgress(40);
+
+// ── Trees ──
+const trunkGeo = new THREE.CylinderGeometry(1.2, 1.8, 12, 6);
+const canopyGeo = new THREE.ConeGeometry(6, 16, 6);
+const trunkMat = new THREE.MeshStandardMaterial({ color:0x5c3d2e, roughness:0.9 });
+
+function createTreeInstance(count, positions_arr) {
+    const group = new THREE.Group();
+    const dummy = new THREE.Object3D();
+
+    const trunkIM = new THREE.InstancedMesh(trunkGeo, trunkMat, count);
+    const canopyColors = [0x1a5c1a, 0x2d7a2d, 0x1a6b1a, 0x3d8b3d, 0x0d4d0d, 0x2a6e2a];
+    const canopyIM = new THREE.InstancedMesh(canopyGeo, new THREE.MeshStandardMaterial({ color:0x2d7a2d, roughness:0.8 }), count);
+
+    for (let i = 0; i < count; i++) {
+        const p = positions_arr[i];
+        const scale = p.s || 1;
+        // Trunk
+        dummy.position.set(p.x, p.y + 6*scale, p.z);
+        dummy.scale.set(scale, scale, scale);
+        dummy.rotation.y = Math.random() * Math.PI * 2;
+        dummy.updateMatrix();
+        trunkIM.setMatrixAt(i, dummy.matrix);
+        // Canopy
+        dummy.position.set(p.x, p.y + 16*scale, p.z);
+        dummy.updateMatrix();
+        canopyIM.setMatrixAt(i, dummy.matrix);
+        const cc = new THREE.Color(canopyColors[i % canopyColors.length]);
+        canopyIM.setColorAt(i, cc);
+    }
+    trunkIM.castShadow = true;
+    canopyIM.castShadow = true;
+    canopyIM.receiveShadow = true;
+    group.add(trunkIM, canopyIM);
+    return group;
+}
+
+const treePositions = [];
+// Deepwood dense trees
+for (let i = 0; i < 250; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.random() * 130;
+    const tx = 250 + Math.cos(angle) * dist;
+    const tz = 350 + Math.sin(angle) * dist;
+    // Skip near Heartwood center
+    if (Math.sqrt((tx-250)**2 + (tz-350)**2) < 15) continue;
+    const ty = getHeight(tx, tz);
+    if (ty < -5) continue;
+    treePositions.push({ x:tx, y:ty, z:tz, s:0.6 + Math.random()*0.8 });
+}
+// Scattered elsewhere
+for (let i = 0; i < 80; i++) {
+    const tx = (Math.random()-0.5)*800;
+    const tz = (Math.random()-0.5)*800;
+    const inf = getRealmInfluence(tx, tz);
+    if ((inf['Ember Wastes']||0) > 0.4) continue;
+    if ((inf['Frosthollow']||0) > 0.5) continue;
+    const ty = getHeight(tx, tz);
+    if (ty < -3) continue;
+    treePositions.push({ x:tx, y:ty, z:tz, s:0.5 + Math.random()*0.6 });
+}
+
+const trees = createTreeInstance(treePositions.length, treePositions);
+scene.add(trees);
+
+// THE HEARTWOOD — massive tree
+const heartwoodGroup = new THREE.Group();
+const hwTrunk = new THREE.Mesh(
+    new THREE.CylinderGeometry(8, 12, 80, 12),
+    new THREE.MeshStandardMaterial({ color:0x4a2f1a, roughness:0.9 })
+);
+hwTrunk.position.set(250, getHeight(250,350)+40, 350);
+hwTrunk.castShadow = true;
+heartwoodGroup.add(hwTrunk);
+
+for (let i = 0; i < 4; i++) {
+    const canopy = new THREE.Mesh(
+        new THREE.SphereGeometry(35 - i*5, 12, 10),
+        new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(0.28, 0.6, 0.2 + i*0.05), roughness:0.8 })
+    );
+    canopy.position.set(250 + (Math.random()-0.5)*15, getHeight(250,350)+70+i*12, 350 + (Math.random()-0.5)*15);
+    canopy.castShadow = true;
+    heartwoodGroup.add(canopy);
+}
+scene.add(heartwoodGroup);
+
+setProgress(55);
+
+// ── Mountains ──
+function createMountains(positions_arr, color, count) {
+    const geo = new THREE.ConeGeometry(1, 1, 6);
+    const mat = new THREE.MeshStandardMaterial({ color, roughness:0.75, flatShading:true });
+    const im = new THREE.InstancedMesh(geo, mat, count);
+    const dummy = new THREE.Object3D();
+    for (let i = 0; i < count; i++) {
+        const p = positions_arr[i];
+        dummy.position.set(p.x, p.y + p.h/2, p.z);
+        dummy.scale.set(p.r, p.h, p.r);
+        dummy.rotation.y = Math.random()*Math.PI;
+        dummy.updateMatrix();
+        im.setMatrixAt(i, dummy.matrix);
+    }
+    im.castShadow = true;
+    return im;
+}
+
+// Frosthollow peaks
+const fhPeaks = [];
+for (let i=0;i<18;i++) {
+    const ax = -350 + (Math.random()-0.5)*200, az = -300 + (Math.random()-0.5)*180;
+    const ay = getHeight(ax, az);
+    fhPeaks.push({x:ax,y:ay,z:az,h:30+Math.random()*50,r:12+Math.random()*10});
+}
+scene.add(createMountains(fhPeaks, 0xe8f0ff, fhPeaks.length));
+
+// Violet peaks
+const vhPeaks = [];
+for (let i=0;i<12;i++) {
+    const ax = -300 + (Math.random()-0.5)*180, az = 300 + (Math.random()-0.5)*160;
+    const ay = getHeight(ax, az);
+    vhPeaks.push({x:ax,y:ay,z:az,h:20+Math.random()*35,r:10+Math.random()*8});
+}
+scene.add(createMountains(vhPeaks, 0x7a5a8a, vhPeaks.length));
+
+// Sunward formations
+const shPeaks = [];
+for (let i=0;i<7;i++) {
+    const ax = 350 + (Math.random()-0.5)*140, az = -300 + (Math.random()-0.5)*120;
+    const ay = getHeight(ax, az);
+    shPeaks.push({x:ax,y:ay,z:az,h:25+Math.random()*30,r:8+Math.random()*8});
+}
+scene.add(createMountains(shPeaks, 0xffe8a0, shPeaks.length));
+
+// Crystal formations in Sunward Heights
+for (let i=0;i<10;i++) {
+    const cx = 350 + (Math.random()-0.5)*120, cz = -300 + (Math.random()-0.5)*100;
+    const cy = getHeight(cx, cz);
+    const crystal = new THREE.Mesh(
+        new THREE.ConeGeometry(2+Math.random()*3, 15+Math.random()*20, 5),
+        new THREE.MeshPhysicalMaterial({ color:0xfff8e0, transparent:true, opacity:0.6, roughness:0.1, metalness:0.5, transmission:0.4 })
+    );
+    crystal.position.set(cx, cy+10, cz);
+    crystal.rotation.z = (Math.random()-0.5)*0.3;
+    scene.add(crystal);
+}
+
+setProgress(65);
+
+// ── Towers ──
+const towers = [];
+const towerData = [
+    { name:'Forge Spire', order:'Flame', color:0xFF6B00, x:200, z:280, desc:'Tall dark spire harnessing volcanic fury for creation magic.' },
+    { name:'Solar Spire', order:'Radiant', color:0xF1C40F, x:0, z:-320, desc:'White and gold floating tower channeling pure sunlight.' },
+    { name:'Tidewatch', order:'Deep', color:0x3498DB, x:-50, z:-380, desc:'Blue sentinel partially submerged where waves meet stone.' },
+    { name:'Heartwood Spire', order:'Wild', color:0x2ECC71, x:250, z:350, desc:'Living tower grown from the roots of the great Heartwood.' },
+    { name:'Violet Citadel', order:'Arcane', color:0x9B6EFF, x:-50, z:340, desc:'Ancient purple fortress housing arcane archives.' },
+    { name:'Heartstring Tower', order:'Heart', color:0xFF69B4, x:0, z:200, desc:'Pink crystalline tower resonating with emotional bonds.' }
+];
+
+for (const td of towerData) {
+    const ty = getHeight(td.x, td.z);
+    const group = new THREE.Group();
+
+    // Base
+    const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(4, 6, 30, 8),
+        new THREE.MeshStandardMaterial({ color:0x2a2a2a, roughness:0.6, metalness:0.3 })
+    );
+    base.position.y = 15;
+    base.castShadow = true;
+    group.add(base);
+
+    // Top
+    const top = new THREE.Mesh(
+        new THREE.ConeGeometry(5, 15, 8),
+        new THREE.MeshStandardMaterial({ color:td.color, emissive:td.color, emissiveIntensity:0.6, roughness:0.3, metalness:0.5 })
+    );
+    top.position.y = 37;
+    top.castShadow = true;
+    group.add(top);
+
+    // Orb
+    const orb = new THREE.Mesh(
+        new THREE.SphereGeometry(2, 16, 12),
+        new THREE.MeshStandardMaterial({ color:td.color, emissive:td.color, emissiveIntensity:1.5 })
+    );
+    orb.position.y = 46;
+    group.add(orb);
+
+    // Point light
+    const light = new THREE.PointLight(td.color, 2, 150);
+    light.position.y = 40;
+    group.add(light);
+
+    group.position.set(td.x, ty, td.z);
+    group.userData = { type:'tower', name:td.name, order:td.order, desc:td.desc, color:td.color };
+    scene.add(group);
+    towers.push(group);
+}
+
+// Solar Spire floats
+towers[1].position.y += 10;
+
+setProgress(72);
+
+// ── Loyalty Network (tower-to-moon lines) ──
+const loyaltyGroup = new THREE.Group();
+
+const towerPositions = towers.map(t => t.position.clone().add(new THREE.Vector3(0,35,0)));
+
+// Each tower connects to its corresponding moon (same index: 0=Flame/Emberhowl, 1=Radiant/Solaris, etc.)
+// Palehowl (index 6) has no tower — it's the starter moon
+const loyaltyPaths = [];
+const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4];
+for (let i = 0; i < 6; i++) {
+    const towerPos = towerPositions[i];
+    // Moon positions are set later, so we store the index and update in animation
+    // Pre-calculate moon position (same formula used later in moon creation)
+    const moonAngle = (i / 7) * Math.PI - Math.PI/2;
+    const moonPos = new THREE.Vector3(Math.cos(moonAngle)*400, 350 + Math.sin(moonAngle)*50, Math.sin(moonAngle)*200 - 200);
+    const mid = new THREE.Vector3(
+        (towerPos.x + moonPos.x) * 0.5,
+        (towerPos.y + moonPos.y) * 0.5 + 30,
+        (towerPos.z + moonPos.z) * 0.5
+    );
+    const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
+    const pts = curve.getPoints(24);
+    const lineMat = new THREE.LineBasicMaterial({ color: towerMoonColors[i], transparent: true, opacity: 0.6 });
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    loyaltyGroup.add(new THREE.Line(geo, lineMat));
+    loyaltyPaths.push({ from: towerPos, to: moonPos, mid: mid, moonIdx: i });
+}
+scene.add(loyaltyGroup);
+
+// Traveling dots on loyalty network
+const dotCount = 30;
+const dotGeo = new THREE.BufferGeometry();
+const dotPositions = new Float32Array(dotCount*3);
+const dotProgress = new Float32Array(dotCount);
+const dotPathIdx = new Uint8Array(dotCount);
+for (let i=0;i<dotCount;i++) {
+    dotProgress[i] = Math.random();
+    dotPathIdx[i] = Math.floor(Math.random()*loyaltyPaths.length);
+}
+dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPositions, 3));
+const dotMat = new THREE.PointsMaterial({ color:0xffd700, size:4, sizeAttenuation:true, transparent:true, opacity:0.9 });
+const dots = new THREE.Points(dotGeo, dotMat);
+scene.add(dots);
+
+setProgress(78);
+
+// ── Seven Moons ──
+const moonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4, 0xdddddd];
+const moonNames = ['Emberhowl','Solara','Tidemoon','Verdant','Veilmoon','Heartmoon','Palehowl'];
+const moonGroup = new THREE.Group();
+const moons = [];
+for (let i = 0; i < 7; i++) {
+    const angle = (i / 7) * Math.PI - Math.PI/2;
+    const r = i === 6 ? 3 : 5;
+    const moon = new THREE.Mesh(
+        new THREE.SphereGeometry(r, 20, 16),
+        new THREE.MeshStandardMaterial({ color:moonColors[i], emissive:moonColors[i], emissiveIntensity:1.2 })
+    );
+    moon.position.set(Math.cos(angle)*400, 350 + Math.sin(angle)*50, Math.sin(angle)*200 - 200);
+    moon.userData = { type:'moon', name:moonNames[i], index:i };
+
+    const moonLight = new THREE.PointLight(moonColors[i], 0.3, 800);
+    moonLight.position.copy(moon.position);
+    moonGroup.add(moonLight);
+    moonGroup.add(moon);
+    moons.push(moon);
+}
+scene.add(moonGroup);
+
+setProgress(82);
+
+// ── Particles ──
+function createParticles(count, regionX, regionZ, spread, color, sizeRange, yRange) {
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(count*3);
+    const vel = new Float32Array(count*3);
+    for (let i=0;i<count;i++) {
+        pos[i*3] = regionX + (Math.random()-0.5)*spread;
+        pos[i*3+1] = (yRange ? yRange[0] + Math.random()*(yRange[1]-yRange[0]) : getHeight(pos[i*3], regionX) + 5 + Math.random()*40);
+        pos[i*3+2] = regionZ + (Math.random()-0.5)*spread;
+        vel[i*3] = (Math.random()-0.5)*0.2;
+        vel[i*3+1] = (Math.random()-0.5)*0.3;
+        vel[i*3+2] = (Math.random()-0.5)*0.2;
+    }
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({ color, size:sizeRange||2, sizeAttenuation:true, transparent:true, opacity:0.7 });
+    const pts = new THREE.Points(geo, mat);
+    pts.userData = { vel, regionX, regionZ, spread, yRange };
+    return pts;
+}
+
+// Snow - Frosthollow
+const snow = createParticles(400, -350, -300, 250, 0xffffff, 2, [getHeight(-350,-300), getHeight(-350,-300)+100]);
+scene.add(snow);
+
+// Ash - Ember Wastes
+const ash = createParticles(250, 400, 100, 200, 0xff8844, 1.5, [getHeight(400,100), getHeight(400,100)+80]);
+scene.add(ash);
+
+// Fireflies - Deepwood
+const fireflies = createParticles(180, 250, 350, 160, 0xaaff44, 2.5, [getHeight(250,350), getHeight(250,350)+30]);
+scene.add(fireflies);
+
+// Fog - Shadowmire
+const fog = createParticles(250, 0, 400, 200, 0x888877, 4, [getHeight(0,400)-5, getHeight(0,400)+10]);
+scene.add(fog);
+
+// Lava particles
+const lava = createParticles(150, 400, 100, 180, 0xff4400, 2, [getHeight(400,100)-5, getHeight(400,100)+15]);
+scene.add(lava);
+
+const particleSystems = [
+    { pts:snow, dir:new THREE.Vector3(0,-0.3,0), respawnY:true },
+    { pts:ash, dir:new THREE.Vector3(0,0.4,0), respawnY:true },
+    { pts:fireflies, dir:new THREE.Vector3(0,0,0), wander:true },
+    { pts:fog, dir:new THREE.Vector3(0.1,0,0.05), respawnY:false },
+    { pts:lava, dir:new THREE.Vector3(0,0.2,0), respawnY:true }
+];
+
+setProgress(90);
+
+// ── Lava Rivers (emissive planes in Ember Wastes) ──
+for (let i=0;i<5;i++) {
+    const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(380 + (Math.random()-0.5)*60, getHeight(380,50+i*30)-2, 50+i*30),
+        new THREE.Vector3(400 + (Math.random()-0.5)*40, getHeight(400,80+i*30)-2, 80+i*30),
+        new THREE.Vector3(420 + (Math.random()-0.5)*60, getHeight(420,120+i*30)-2, 120+i*30),
+    ]);
+    const tube = new THREE.TubeGeometry(curve, 12, 1.5, 6, false);
+    const lavaMesh = new THREE.Mesh(tube, new THREE.MeshStandardMaterial({ color:0xff4400, emissive:0xff2200, emissiveIntensity:1.5, roughness:0.4 }));
+    scene.add(lavaMesh);
+}
+
+// ── NEW LORE LANDMARKS ──
+
+// --- FROSTHOLLOW ---
+// Frozen Lake of Echoes — larger reflective disc with ripple rings
+{
+    const lakeCenter = new THREE.Vector3(-350, getHeight(-350,-300)+5, -300);
+    for (let r = 0; r < 5; r++) {
+        const ring = new THREE.Mesh(
+            new THREE.RingGeometry(10+r*10, 12+r*10, 48),
+            new THREE.MeshPhysicalMaterial({ color:0xc8e8ff, transparent:true, opacity:0.5-r*0.08, roughness:0.05, metalness:0.5, side:THREE.DoubleSide })
+        );
+        ring.rotation.x = -Math.PI/2;
+        ring.position.copy(lakeCenter);
+        ring.position.y += 0.2*r;
+        scene.add(ring);
+    }
+}
+
+// Bernard's Watch — tall peak with tiny structure
+{
+    const bwX=-390, bwZ=-340;
+    const bwY = getHeight(bwX,bwZ);
+    const peak = new THREE.Mesh(new THREE.ConeGeometry(8,70,6), new THREE.MeshStandardMaterial({color:0xe0eeff,roughness:0.7,flatShading:true}));
+    peak.position.set(bwX,bwY+35,bwZ); peak.castShadow=true; scene.add(peak);
+    const hut = new THREE.Mesh(new THREE.BoxGeometry(4,3,4), new THREE.MeshStandardMaterial({color:0x8b7355,roughness:0.9}));
+    hut.position.set(bwX,bwY+71,bwZ); scene.add(hut);
+    const hutRoof = new THREE.Mesh(new THREE.ConeGeometry(3.5,2,4), new THREE.MeshStandardMaterial({color:0x5c3d2e}));
+    hutRoof.position.set(bwX,bwY+73.5,bwZ); scene.add(hutRoof);
+}
+
+// Ice Hall entrance — glowing blue archway
+{
+    const ihX=-320, ihZ=-270;
+    const ihY = getHeight(ihX,ihZ);
+    const arch = new THREE.Mesh(new THREE.TorusGeometry(8,1.5,8,16,Math.PI), new THREE.MeshStandardMaterial({color:0x4488ff,emissive:0x2266cc,emissiveIntensity:0.8,roughness:0.2}));
+    arch.position.set(ihX,ihY+8,ihZ); scene.add(arch);
+    const archLight = new THREE.PointLight(0x4488ff,1,60); archLight.position.set(ihX,ihY+8,ihZ); scene.add(archLight);
+}
+
+// --- EMBER WASTES ---
+// The Crucible — ring-shaped arena with orange glow
+{
+    const crX=420, crZ=80;
+    const crY = getHeight(crX,crZ);
+    const crucible = new THREE.Mesh(new THREE.TorusGeometry(18,3,8,24), new THREE.MeshStandardMaterial({color:0x8b4513,emissive:0xff6600,emissiveIntensity:0.7,roughness:0.6}));
+    crucible.rotation.x = -Math.PI/2;
+    crucible.position.set(crX,crY+3,crZ); scene.add(crucible);
+    const crucibleLight = new THREE.PointLight(0xff6600,2,100); crucibleLight.position.set(crX,crY+8,crZ); scene.add(crucibleLight);
+}
+
+// Ash Gardens — charred stumps with embers
+for(let i=0;i<12;i++){
+    const ax=380+(Math.random()-0.5)*50, az=140+(Math.random()-0.5)*40;
+    const ay=getHeight(ax,az);
+    const stump=new THREE.Mesh(new THREE.CylinderGeometry(1,1.5,3+Math.random()*2,6), new THREE.MeshStandardMaterial({color:0x2a1a0a,roughness:0.95}));
+    stump.position.set(ax,ay+1.5,az); scene.add(stump);
+    if(Math.random()>0.5){
+        const ember=new THREE.Mesh(new THREE.SphereGeometry(0.4,6,4), new THREE.MeshStandardMaterial({color:0xff4400,emissive:0xff2200,emissiveIntensity:1.5}));
+        ember.position.set(ax,ay+3.5,az); scene.add(ember);
+    }
+}
+
+// Stripe Caverns entrance — dark opening
+{
+    const scX=440, scZ=120;
+    const scY = getHeight(scX,scZ);
+    const cave = new THREE.Mesh(new THREE.CircleGeometry(6,8), new THREE.MeshStandardMaterial({color:0x0a0505,roughness:1}));
+    cave.position.set(scX,scY+4,scZ);
+    cave.lookAt(scX-10,scY+4,scZ);
+    scene.add(cave);
+}
+
+// --- SUNWARD HEIGHTS ---
+// The Purified Plateau — highest flat area glowing gold
+{
+    const ppX=370, ppZ=-320;
+    const ppY = getHeight(ppX,ppZ);
+    const plateau = new THREE.Mesh(new THREE.CylinderGeometry(25,28,3,12), new THREE.MeshStandardMaterial({color:0xffe8a0,emissive:0xffd700,emissiveIntensity:0.3,roughness:0.4,metalness:0.2}));
+    plateau.position.set(ppX,ppY+1.5,ppZ); scene.add(plateau);
+}
+
+// Monochrome Monastery — small white cube buildings
+for(let i=0;i<5;i++){
+    const mx=340+i*8+(Math.random()-0.5)*4, mz=-280+(Math.random()-0.5)*12;
+    const my=getHeight(mx,mz);
+    const bld=new THREE.Mesh(new THREE.BoxGeometry(4+Math.random()*2,5+Math.random()*3,4+Math.random()*2), new THREE.MeshStandardMaterial({color:0xf5f5f0,roughness:0.6}));
+    bld.position.set(mx,my+3,mz); bld.castShadow=true; scene.add(bld);
+}
+
+// The Noon Spire — tall thin white pillar (no shadow)
+{
+    const nsX=360, nsZ=-310;
+    const nsY = getHeight(nsX,nsZ);
+    const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.8,1.2,50,8), new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xfff8e0,emissiveIntensity:0.4,roughness:0.1,metalness:0.3}));
+    spire.position.set(nsX,nsY+25,nsZ); spire.castShadow=false; scene.add(spire);
+    const spireOrb = new THREE.Mesh(new THREE.SphereGeometry(1.5,12,8), new THREE.MeshStandardMaterial({color:0xffd700,emissive:0xffd700,emissiveIntensity:1.5}));
+    spireOrb.position.set(nsX,nsY+51,nsZ); scene.add(spireOrb);
+}
+
+// --- ABYSSAL REACHES ---
+// The Divide — visible crack in coastline cliff
+{
+    const divPts = [new THREE.Vector3(-20,getHeight(-20,-370)-10,-370), new THREE.Vector3(0,getHeight(0,-380)-15,-380), new THREE.Vector3(20,getHeight(20,-360)-10,-360)];
+    const divCurve = new THREE.CatmullRomCurve3(divPts);
+    const divTube = new THREE.TubeGeometry(divCurve,12,2,6,false);
+    const divMesh = new THREE.Mesh(divTube, new THREE.MeshStandardMaterial({color:0x0a0a15,roughness:1}));
+    scene.add(divMesh);
+}
+
+// Mirror Caves — bioluminescent blue dots
+for(let i=0;i<25;i++){
+    const cx=(Math.random()-0.5)*80, cz=-350-(Math.random()*30);
+    const cy=getHeight(cx,cz)-5-Math.random()*10;
+    const dot=new THREE.Mesh(new THREE.SphereGeometry(0.5,6,4), new THREE.MeshStandardMaterial({color:0x00aaff,emissive:0x0088ff,emissiveIntensity:2}));
+    dot.position.set(cx,cy,cz); scene.add(dot);
+}
+
+// Tidal Courts — half-submerged structures
+for(let i=0;i<4;i++){
+    const tx=-30+i*20, tz=-365+Math.random()*10;
+    const ty=-8;
+    const court=new THREE.Mesh(new THREE.BoxGeometry(5,8,5), new THREE.MeshStandardMaterial({color:0x3d5566,roughness:0.7,metalness:0.2}));
+    court.position.set(tx,ty,tz); scene.add(court);
+    const courtRoof=new THREE.Mesh(new THREE.ConeGeometry(4,3,4), new THREE.MeshStandardMaterial({color:0x2a4050}));
+    courtRoof.position.set(tx,ty+5.5,tz); scene.add(courtRoof);
+}
+
+// --- DEEPWOOD ---
+// The Meadow of Marks — clearing with colorful flower dots
+{
+    const meadowColors = [0xff4444,0xffaa22,0xff66aa,0xaabb22,0x44aaff,0xffff44];
+    for(let i=0;i<40;i++){
+        const fx=230+(Math.random()-0.5)*50, fz=320+(Math.random()-0.5)*40;
+        const fy=getHeight(fx,fz);
+        const flower=new THREE.Mesh(new THREE.SphereGeometry(0.4,4,3), new THREE.MeshStandardMaterial({color:meadowColors[i%meadowColors.length],emissive:meadowColors[i%meadowColors.length],emissiveIntensity:0.3}));
+        flower.position.set(fx,fy+0.5,fz); scene.add(flower);
+    }
+}
+
+// Dalmatian's Post — thin watchtower with orange flame
+{
+    const dpX=290, dpZ=310;
+    const dpY=getHeight(dpX,dpZ);
+    const tower=new THREE.Mesh(new THREE.CylinderGeometry(1,1.5,25,6), new THREE.MeshStandardMaterial({color:0x5c4a3a,roughness:0.9}));
+    tower.position.set(dpX,dpY+12.5,dpZ); tower.castShadow=true; scene.add(tower);
+    const platform=new THREE.Mesh(new THREE.CylinderGeometry(3,3,1,8), new THREE.MeshStandardMaterial({color:0x4a3a2a}));
+    platform.position.set(dpX,dpY+25.5,dpZ); scene.add(platform);
+    const flame=new THREE.PointLight(0xff6600,1.5,50); flame.position.set(dpX,dpY+27,dpZ); scene.add(flame);
+    const flameOrb=new THREE.Mesh(new THREE.SphereGeometry(0.8,6,4), new THREE.MeshStandardMaterial({color:0xff6600,emissive:0xff4400,emissiveIntensity:2}));
+    flameOrb.position.set(dpX,dpY+27,dpZ); scene.add(flameOrb);
+}
+
+// Herding Grounds — rolling hills (no trees, just elevated bumps)
+for(let i=0;i<6;i++){
+    const hx=210+(Math.random()-0.5)*60, hz=380+(Math.random()-0.5)*40;
+    const hy=getHeight(hx,hz);
+    const hill=new THREE.Mesh(new THREE.SphereGeometry(8+Math.random()*6,8,6,0,Math.PI*2,0,Math.PI/2), new THREE.MeshStandardMaterial({color:0x4a7a30,roughness:0.9}));
+    hill.position.set(hx,hy,hz); scene.add(hill);
+}
+
+// --- VIOLET HIGHLANDS ---
+// Grand Assembly Hall — dome shape
+{
+    const gaX=-300, gaZ=300;
+    const gaY=getHeight(gaX,gaZ);
+    const base=new THREE.Mesh(new THREE.CylinderGeometry(15,15,8,12), new THREE.MeshStandardMaterial({color:0x5a4070,roughness:0.6,metalness:0.2}));
+    base.position.set(gaX,gaY+4,gaZ); base.castShadow=true; scene.add(base);
+    const dome=new THREE.Mesh(new THREE.SphereGeometry(15,16,12,0,Math.PI*2,0,Math.PI/2), new THREE.MeshStandardMaterial({color:0x7a5a8a,emissive:0x4a2a5a,emissiveIntensity:0.2,roughness:0.3,metalness:0.4}));
+    dome.position.set(gaX,gaY+8,gaZ); dome.castShadow=true; scene.add(dome);
+}
+
+// Inscription Walls — long flat walls with lines
+for(let i=0;i<3;i++){
+    const wx=-280+i*25, wz=280+i*10;
+    const wy=getHeight(wx,wz);
+    const wall=new THREE.Mesh(new THREE.BoxGeometry(20,8,1), new THREE.MeshStandardMaterial({color:0x6a4a7a,roughness:0.7}));
+    wall.position.set(wx,wy+4,wz); wall.rotation.y=0.3*i; wall.castShadow=true; scene.add(wall);
+    // Subtle line texture via thin lighter strips
+    for(let l=0;l<4;l++){
+        const line=new THREE.Mesh(new THREE.BoxGeometry(18,0.3,0.2), new THREE.MeshStandardMaterial({color:0x9a7aaa,emissive:0x6a4a7a,emissiveIntensity:0.3}));
+        line.position.set(wx,wy+2+l*1.5,wz+0.6); line.rotation.y=0.3*i; scene.add(line);
+    }
+}
+
+// Classic Terraces — more pronounced step terrain
+for(let i=0;i<5;i++){
+    const tx=-320+i*15, tz=330-i*8;
+    const ty=getHeight(tx,tz);
+    const step=new THREE.Mesh(new THREE.BoxGeometry(30,2,15), new THREE.MeshStandardMaterial({color:new THREE.Color().setHSL(0.78,0.3,0.25+i*0.04),roughness:0.8}));
+    step.position.set(tx,ty+i*2+1,tz); scene.add(step);
+}
+
+// --- SHADOWMIRE ---
+// The Shiny's Beacon — bright white-gold point light
+{
+    const sbX=20, sbZ=420;
+    const sbY=getHeight(sbX,sbZ);
+    const beacon=new THREE.PointLight(0xfff8e0,3,200); beacon.position.set(sbX,sbY+15,sbZ); scene.add(beacon);
+    const beaconOrb=new THREE.Mesh(new THREE.SphereGeometry(2,12,8), new THREE.MeshStandardMaterial({color:0xfff8e0,emissive:0xffd700,emissiveIntensity:2.5}));
+    beaconOrb.position.set(sbX,sbY+15,sbZ); scene.add(beaconOrb);
+    const beaconPole=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.8,14,6), new THREE.MeshStandardMaterial({color:0x3a3a2a,roughness:0.9}));
+    beaconPole.position.set(sbX,sbY+7,sbZ); scene.add(beaconPole);
+}
+
+// Blot Pools — dark circular depressions
+for(let i=0;i<6;i++){
+    const bx=-15+Math.random()*50, bz=390+Math.random()*30;
+    const by=getHeight(bx,bz);
+    const pool=new THREE.Mesh(new THREE.CircleGeometry(4+Math.random()*3,12), new THREE.MeshStandardMaterial({color:0x1a0a20,roughness:1,metalness:0}));
+    pool.rotation.x=-Math.PI/2; pool.position.set(bx,by+0.2,bz); scene.add(pool);
+}
+
+// Zombie Crypts — small dark rectangular structures half-sunken
+for(let i=0;i<5;i++){
+    const cx=-10+i*12, cz=410+Math.random()*15;
+    const cy=getHeight(cx,cz);
+    const crypt=new THREE.Mesh(new THREE.BoxGeometry(4,3,6), new THREE.MeshStandardMaterial({color:0x1a1a15,roughness:0.95}));
+    crypt.position.set(cx,cy-0.5,cz); scene.add(crypt);
+    const lid=new THREE.Mesh(new THREE.BoxGeometry(4.5,0.5,6.5), new THREE.MeshStandardMaterial({color:0x2a2a20}));
+    lid.position.set(cx,cy+1,cz); scene.add(lid);
+}
+
+// --- STARTER LANDS (center) ---
+// Scattered small settlements
+for(let i=0;i<8;i++){
+    const sx=(Math.random()-0.5)*60, sz=(Math.random()-0.5)*60;
+    const sy=getHeight(sx,sz);
+    const bld=new THREE.Mesh(new THREE.BoxGeometry(2+Math.random()*2,3+Math.random()*2,2+Math.random()*2), new THREE.MeshStandardMaterial({color:0x8a7a60,roughness:0.8}));
+    bld.position.set(sx,sy+1.5,sz); bld.castShadow=true; scene.add(bld);
+}
+
+// Palehowl glow from above
+{
+    const paleLight = new THREE.SpotLight(0xeeeeff, 0.8, 300, Math.PI/6, 0.5, 1);
+    paleLight.position.set(0, 200, 0);
+    paleLight.target.position.set(0, 0, 0);
+    scene.add(paleLight);
+    scene.add(paleLight.target);
+}
+
+// ── Enhanced Text Label System ──
+function createLoreLabel(text, position, color, size) {
+    const canvas = document.createElement('canvas');
+    const fontSize = size === 'large' ? 40 : size === 'medium' ? 28 : 20;
+    canvas.width = 512; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.font = (size === 'large' ? 'bold ' : '') + fontSize + 'px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillStyle = color || '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 10;
+    ctx.fillText(text, 256, 42);
+    const tex = new THREE.CanvasTexture(canvas);
+    const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:0.9, depthTest:true, sizeAttenuation:true });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(size==='large'?90:size==='medium'?60:45, size==='large'?11:size==='medium'?8:6, 1);
+    sprite.position.copy(position);
+    sprite.userData = { isLabel:true, baseOpacity:0.9 };
+    return sprite;
+}
+
+// Tower name labels
+const towerLabels = [];
+for (const td of towerData) {
+    const ty = getHeight(td.x,td.z);
+    const label = createLoreLabel(td.name, new THREE.Vector3(td.x, ty+55, td.z), '#'+new THREE.Color(td.color).getHexString(), 'medium');
+    scene.add(label);
+    towerLabels.push(label);
+}
+
+// Major landmark labels (smaller)
+const landmarkLabels = [
+    {text:'Frozen Lake of Echoes', pos:new THREE.Vector3(-350,getHeight(-350,-300)+20,-300), color:'#d9ebff'},
+    {text:"Bernard's Watch", pos:new THREE.Vector3(-390,getHeight(-390,-340)+80,-340), color:'#d9ebff'},
+    {text:'The Crucible', pos:new THREE.Vector3(420,getHeight(420,80)+15,80), color:'#ff8844'},
+    {text:'Ash Gardens', pos:new THREE.Vector3(380,getHeight(380,140)+12,140), color:'#cc6633'},
+    {text:'Purified Plateau', pos:new THREE.Vector3(370,getHeight(370,-320)+12,-320), color:'#ffe6a3'},
+    {text:'Noon Spire', pos:new THREE.Vector3(360,getHeight(360,-310)+58,-310), color:'#ffe6a3'},
+    {text:'The Divide', pos:new THREE.Vector3(0,getHeight(0,-380)+5,-380), color:'#5577aa'},
+    {text:'Meadow of Marks', pos:new THREE.Vector3(230,getHeight(230,320)+10,320), color:'#88cc44'},
+    {text:"Dalmatian's Post", pos:new THREE.Vector3(290,getHeight(290,310)+32,310), color:'#88cc44'},
+    {text:'Grand Assembly Hall', pos:new THREE.Vector3(-300,getHeight(-300,300)+28,300), color:'#9a6aaa'},
+    {text:"Shiny's Beacon", pos:new THREE.Vector3(20,getHeight(20,420)+22,420), color:'#ffd700'},
+];
+for (const lm of landmarkLabels) {
+    const label = createLoreLabel(lm.text, lm.pos, lm.color, 'small');
+    scene.add(label);
+    towerLabels.push(label);
+}
+
+// Distance-based label fading
+function updateLabelFade() {
+    for (const label of towerLabels) {
+        if (!label.userData.isLabel) continue;
+        const dist = camera.position.distanceTo(label.position);
+        const fade = Math.max(0, Math.min(1, 1 - (dist - 200) / 600));
+        label.material.opacity = fade * label.userData.baseOpacity;
+    }
+}
+
+// ── Realm Labels (sprites) ──
+function createTextSprite(text, color) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillStyle = color || '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 8;
+    ctx.fillText(text, 256, 42);
+    const tex = new THREE.CanvasTexture(canvas);
+    const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:0.85 });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(80, 10, 1);
+    return sprite;
+}
+
+for (const [name, r] of Object.entries(realms)) {
+    if (name === 'Heartwood' || name === 'Solara Fields') continue;
+    const label = createTextSprite(name, r.hex);
+    label.position.set(r.x, getHeight(r.x, r.z)+60, r.z);
+    scene.add(label);
+}
+
+setProgress(95);
+
+// ── Legend ──
+const legendEl = document.getElementById('legend');
+for (const name of displayRealms) {
+    const r = realms[name];
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${r.hex}"></div>${name}`;
+    item.addEventListener('click', () => flyTo(r.x, getHeight(r.x,r.z)+80, r.z, name));
+    legendEl.appendChild(item);
+}
+
+// ── Roads & Trail Network ──
+const roadGroup = new THREE.Group();
+scene.add(roadGroup);
+
+function sampleTerrainY(x, z, offset) {
+    return getHeight(x, z) + (offset || 3);
+}
+
+function createRoad(waypoints, radius, color, emissiveColor, emissiveIntensity) {
+    const pts = waypoints.map(p => new THREE.Vector3(p[0], sampleTerrainY(p[0], p[1], 4), p[1]));
+    const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.5);
+    const tubeGeo = new THREE.TubeGeometry(curve, Math.max(20, pts.length * 8), radius || 1.5, 6, false);
+    const mat = new THREE.MeshStandardMaterial({ color: color || 0x8B7355, emissive: emissiveColor || 0x8B7355, emissiveIntensity: emissiveIntensity || 0.15, roughness: 0.85 });
+    const mesh = new THREE.Mesh(tubeGeo, mat);
+    roadGroup.add(mesh);
+    return mesh;
+}
+
+function createTrail(waypoints) {
+    const pts = waypoints.map(p => new THREE.Vector3(p[0], sampleTerrainY(p[0], p[1], 3), p[1]));
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineDashedMaterial({ color: 0x9B8A6E, dashSize: 4, gapSize: 3, transparent: true, opacity: 0.6 });
+    const line = new THREE.Line(geo, mat);
+    line.computeLineDistances();
+    roadGroup.add(line);
+    return line;
+}
+
+function createBridge(x1, z1, x2, z2, y) {
+    const mx = (x1+x2)/2, mz = (z1+z2)/2;
+    const len = Math.sqrt((x2-x1)**2+(z2-z1)**2);
+    const angle = Math.atan2(z2-z1, x2-x1);
+    const bridge = new THREE.Mesh(
+        new THREE.BoxGeometry(len, 1.5, 5),
+        new THREE.MeshStandardMaterial({ color: 0x6B5B45, roughness: 0.8 })
+    );
+    bridge.position.set(mx, y + 2, mz);
+    bridge.rotation.y = -angle;
+    // Slight arch
+    const rail1 = new THREE.Mesh(new THREE.BoxGeometry(len, 3, 0.5), new THREE.MeshStandardMaterial({ color: 0x5A4A35 }));
+    rail1.position.set(mx, y + 3.5, mz + 2.2 * Math.cos(angle));
+    rail1.rotation.y = -angle;
+    const rail2 = rail1.clone();
+    rail2.position.set(mx, y + 3.5, mz - 2.2 * Math.cos(angle));
+    roadGroup.add(bridge, rail1, rail2);
+}
+
+// Major Roads
+// The Great Circuit - connecting 6 towers in hexagon
+createRoad([
+    [200, 280], [150, 300], [80, 320], [0, 340], [-50, 340],  // Forge→Violet Citadel
+    [-50, 340], [-30, 300], [-10, 260], [0, 200],              // Violet Citadel→Heartstring
+    [0, 200], [30, 150], [60, 50], [0, -100],                  // Heartstring→center→north
+    [0, -100], [-20, -200], [-50, -320], [0, -320],            // →Tidewatch area
+    [0, -320], [30, -310], [80, -290], [150, -280],            // Tidewatch→east
+    [150, -280], [200, -200], [220, -50], [230, 100], [200, 280] // →back to Forge
+], 1.5, 0x8B7355, 0x8B7355, 0.15);
+
+// Frosthollow Road
+createRoad([
+    [-30, -100], [-80, -120], [-150, -150], [-200, -180], [-250, -220], [-300, -260], [-340, -290], [-350, -300]
+], 1.5, 0x8B7355, 0x8B7355, 0.15);
+
+// Ember Trail - gets darker near volcanoes
+createRoad([
+    [60, 50], [120, 60], [180, 70], [250, 80], [320, 90], [380, 95], [400, 100]
+], 1.5, 0x5A3A20, 0x5A3A20, 0.1);
+
+// Sunward Path with switchbacks
+createRoad([
+    [60, -100], [120, -140], [160, -180], [200, -200], [240, -230], [280, -260], [320, -280], [350, -300]
+], 1.5, 0x8B7355, 0xAA9060, 0.2);
+
+// Coastal Road along Abyssal Reaches
+createRoad([
+    [-50, -380], [-30, -375], [0, -370], [30, -365], [60, -360], [80, -355]
+], 1.5, 0x5A6A7A, 0x5A6A7A, 0.1);
+
+// Forest Path through Deepwood
+createRoad([
+    [150, 300], [180, 310], [200, 320], [220, 330], [240, 340], [250, 350]
+], 1.2, 0x4A6A35, 0x4A6A35, 0.1);
+
+// Highland Way through Violet Highlands
+createRoad([
+    [-100, 250], [-150, 260], [-200, 270], [-240, 280], [-270, 290], [-300, 300]
+], 1.5, 0x6A4A7A, 0x6A4A7A, 0.1);
+
+// Shadowmire Causeway - elevated
+createRoad([
+    [0, 300], [0, 330], [0, 360], [0, 390], [0, 420]
+], 1.8, 0x4A4A35, 0x4A4A35, 0.1);
+
+// Minor Trails
+// Trail circling Frozen Lake
+{
+    const lakePts = [];
+    for (let a = 0; a <= Math.PI * 2; a += Math.PI / 8) {
+        lakePts.push([-350 + Math.cos(a) * 60, -300 + Math.sin(a) * 60]);
+    }
+    lakePts.push(lakePts[0].slice());
+    createTrail(lakePts);
+}
+
+// Dalmatian's Post to Heartwood
+createTrail([[290, 310], [275, 320], [265, 335], [255, 345], [250, 350]]);
+
+// Trails between Starter Lands settlements
+createTrail([[-20, -20], [0, 0], [20, 20], [30, 10]]);
+createTrail([[0, 0], [-15, 30], [0, 50]]);
+createTrail([[0, 0], [30, -20], [50, -10]]);
+
+// Trail skirting the Crucible
+createTrail([[400, 60], [410, 70], [420, 65], [430, 75], [435, 90], [425, 100]]);
+
+// Trails from realms to nearest towers
+createTrail([[-350, -300], [-300, -260], [-200, -180], [-100, -100], [-50, -50], [0, 0]]); // Frosthollow→center
+createTrail([[400, 100], [350, 150], [280, 200], [200, 280]]); // Ember→Forge
+createTrail([[350, -300], [300, -250], [200, -150], [100, -50]]); // Sunward→center
+createTrail([[0, -350], [0, -250], [0, -150], [0, -50]]); // Abyssal→center
+createTrail([[-300, 300], [-200, 300], [-100, 320], [-50, 340]]); // Violet→Citadel
+createTrail([[0, 400], [0, 350], [0, 300], [0, 200]]); // Shadowmire→Heartstring
+
+// Bridges
+createBridge(-150, -150, -130, -140, sampleTerrainY(-140, -145, 0)); // Frosthollow road bridge
+createBridge(250, 80, 270, 85, sampleTerrainY(260, 82, 0)); // Ember trail bridge
+createBridge(0, 360, 10, 370, getHeight(5, 365) - 3); // Shadowmire causeway bridge
+createBridge(-30, -375, -10, -370, -6); // Coastal road bridge over water
+
+// ── 3D Wizard Dog Models ──
+const dogGroups = [];      // THREE.Group per dog (for raycasting & animation)
+const dogMeshParts = [];   // flat array of all dog child meshes (for raycasting)
+const dogLabels = [];
+const dogTooltip = document.createElement('div');
+dogTooltip.style.cssText = 'position:fixed;z-index:60;padding:8px 14px;border-radius:10px;background:rgba(20,20,22,0.92);backdrop-filter:blur(12px);color:#fff;font-size:13px;font-weight:600;pointer-events:none;display:none;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,sans-serif;border:1px solid rgba(255,255,255,0.12);line-height:1.5;';
+document.body.appendChild(dogTooltip);
+
+const realmPlacement = {
+    'Frosthollow': { cx:-350, cz:-300, spread:160 },
+    'Ember Wastes': { cx:400, cz:100, spread:160 },
+    'Sunward Heights': { cx:350, cz:-300, spread:160 },
+    'Abyssal Reaches': { cx:0, cz:-350, spread:160 },
+    'Deepwood': { cx:250, cz:350, spread:160 },
+    'Violet Highlands': { cx:-300, cz:300, spread:200 },
+    'Shadowmire': { cx:0, cz:400, spread:160 },
+    'Starter Lands': { cx:0, cz:0, spread:160 },
+};
+
+function seededRandom(seed) {
+    let s = seed;
+    return function() { s = (s * 16807 + 0) % 2147483647; return s / 2147483647; };
+}
+
+function createDogLabel(text) {
+    const lines = text.split('\n');
+    const canvas = document.createElement('canvas');
+    canvas.width = 256; canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    ctx.shadowColor = 'rgba(0,0,0,0.9)'; ctx.shadowBlur = 4;
+    ctx.textAlign = 'center';
+    // Name line
+    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(lines[0], 128, 22);
+    // Traits line
+    if (lines[1]) {
+        ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillStyle = '#c9a86c';
+        ctx.fillText(lines[1], 128, 44);
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    const mat = new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:0.85, depthTest:true, sizeAttenuation:true });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(42, 12, 1);
+    return sprite;
+}
+
+// Wanderer path through all realms
+const wandererPath = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(-350, 0, -300),
+    new THREE.Vector3(0, 0, -350),
+    new THREE.Vector3(350, 0, -300),
+    new THREE.Vector3(400, 0, 100),
+    new THREE.Vector3(250, 0, 350),
+    new THREE.Vector3(-300, 0, 300),
+    new THREE.Vector3(0, 0, 400),
+    new THREE.Vector3(0, 0, 0),
+], true);
+
+let wandererGroup = null;
+let wandererLight = null;
+let wandererLabel = null;
+
+// ── Texture loader for PFP sprites ──
+const texLoader = new THREE.TextureLoader();
+
+function createDogModel(dog) {
+    const group = new THREE.Group();
+    const id = dog.id || '0';
+    const orderColor = orderColorsHex[dog.order] || '#ffffff';
+    const orderHex = parseInt(orderColor.replace('#',''), 16);
+
+    // Load PFP image as billboard sprite
+    const imgPath = `wizard-images/${id}.png`;
+    const spriteMat = new THREE.SpriteMaterial({ color: 0xffffff, transparent: true, alphaTest: 0.1, depthTest: true, sizeAttenuation: true, fog: false });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(22, 22, 1);
+    sprite.position.set(0, 14, 0);
+    group.add(sprite);
+
+    // Load texture async
+    texLoader.load(imgPath, (tex) => {
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        spriteMat.map = tex;
+        spriteMat.needsUpdate = true;
+    }, undefined, () => {
+        // Fallback: colored circle if image fails
+        const canvas = document.createElement('canvas');
+        canvas.width = 128; canvas.height = 128;
+        const ctx = canvas.getContext('2d');
+        ctx.beginPath(); ctx.arc(64, 64, 60, 0, Math.PI * 2);
+        ctx.fillStyle = orderColor; ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.stroke();
+        ctx.font = 'bold 28px sans-serif'; ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+        ctx.fillText('#' + id, 64, 72);
+        const fallbackTex = new THREE.CanvasTexture(canvas);
+        spriteMat.map = fallbackTex;
+        spriteMat.needsUpdate = true;
+    });
+
+    // Order-colored glow ring beneath the sprite
+    const ringGeo = new THREE.RingGeometry(10, 12, 24);
+    const ringMat = new THREE.MeshBasicMaterial({ color: orderHex, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = -Math.PI / 2;
+    ring.position.y = 0.5;
+    group.add(ring);
+
+    return group;
+}
+
+
+// ── Material & Geometry Caches ──
+const matCache = {};
+function getCachedMat(hex, opts) {
+    const key = hex + '_' + JSON.stringify(opts || {});
+    if (!matCache[key]) {
+        matCache[key] = new THREE.MeshStandardMaterial({ color:hex, roughness:0.75, metalness:0.05, ...opts });
+    }
+    return matCache[key];
+}
+const geoCache = {};
+function getCachedGeo(key, factory) {
+    if (!geoCache[key]) geoCache[key] = factory();
+    return geoCache[key];
+}
+
+// ── Castle House Creation ──
+const castleFlags = []; // track flags for wave animation
+
+const realmCastleStyle = {
+    'Frosthollow': { stoneTint: 0xb0c8dd, windowColor: 0xffdd66, snowRoof: true },
+    'Ember Wastes': { stoneTint: 0x2a1a1a, windowColor: 0xff6600, snowRoof: false },
+    'Sunward Heights': { stoneTint: 0xf0e8d0, windowColor: 0xffffaa, snowRoof: false },
+    'Deepwood': { stoneTint: 0x778877, windowColor: 0xffdd66, moss: true },
+    'Violet Highlands': { stoneTint: 0x7a6a8a, windowColor: 0xffdd66, snowRoof: false },
+    'Shadowmire': { stoneTint: 0x2a2a22, windowColor: 0x44ff66, snowRoof: false },
+    'Abyssal Reaches': { stoneTint: 0x6a7a8a, windowColor: 0xffdd66, snowRoof: false },
+    'Starter Lands': { stoneTint: 0x8a8a7a, windowColor: 0xffdd66, snowRoof: false },
+};
+
+// Shared castle geometries
+const castleWallGeo = new THREE.BoxGeometry(8, 10, 8);
+const castleBaseGeo = new THREE.BoxGeometry(10, 1.5, 10);
+const castleCrenGeo = new THREE.BoxGeometry(1.2, 1.5, 1.2);
+const castleTowerGeo = new THREE.CylinderGeometry(3, 3, 14, isMobile ? 6 : 8);
+const castleRoofGeo = new THREE.ConeGeometry(3.5, 4, isMobile ? 6 : 8);
+const castleDoorGeo = new THREE.BoxGeometry(2, 3.5, 0.5);
+const castleDoorTopGeo = new THREE.SphereGeometry(1, 6, 4, 0, Math.PI * 2, 0, Math.PI / 2);
+const castleWindowGeo = new THREE.BoxGeometry(1, 1, 0.5);
+const castleFlagGeo = new THREE.PlaneGeometry(2.5, 1.5, 4, 3);
+const castlePathGeo = new THREE.BoxGeometry(2, 0.3, 15);
+
+function createCastleHouse(dog, dogX, dogZ, dogRotY) {
+    const group = new THREE.Group();
+    const realm = realmAliases[dog.realm] || dog.realm;
+    const style = realmCastleStyle[realm] || realmCastleStyle['Starter Lands'];
+    const orderColor = parseInt((orderColorsHex[dog.order] || '#ffffff').replace('#',''), 16);
+
+    const stoneMat = getCachedMat(style.stoneTint, { roughness: 0.9, metalness: 0 });
+    const darkMat = getCachedMat(0x0a0a0a, { roughness: 1 });
+    const windowMat = getCachedMat(style.windowColor, { emissive: style.windowColor, emissiveIntensity: 0.8, roughness: 0.3 });
+
+    // Main structure
+    const wall = new THREE.Mesh(castleWallGeo, stoneMat);
+    wall.position.y = 5;
+    wall.castShadow = true;
+    group.add(wall);
+
+    // Base/foundation
+    const base = new THREE.Mesh(castleBaseGeo, getCachedMat(new THREE.Color(style.stoneTint).multiplyScalar(0.7).getHex(), { roughness: 0.95 }));
+    base.position.y = -0.25;
+    group.add(base);
+
+    // Crenellations along top
+    const crenPositions = [
+        [-3, 10.75, -3], [-1, 10.75, -3], [1, 10.75, -3], [3, 10.75, -3],
+        [-3, 10.75, 3], [3, 10.75, 3],
+        [-3, 10.75, -1], [-3, 10.75, 1], [3, 10.75, -1], [3, 10.75, 1]
+    ];
+    for (const [cx, cy, cz] of crenPositions) {
+        const cren = new THREE.Mesh(castleCrenGeo, stoneMat);
+        cren.position.set(cx, cy, cz);
+        group.add(cren);
+    }
+
+    // Tower on corner
+    const tower = new THREE.Mesh(castleTowerGeo, stoneMat);
+    tower.position.set(4, 7, -4);
+    tower.castShadow = true;
+    group.add(tower);
+
+    // Tower roof
+    const roof = new THREE.Mesh(castleRoofGeo, getCachedMat(orderColor, { roughness: 0.5 }));
+    roof.position.set(4, 16, -4);
+    group.add(roof);
+
+    // Snow on roof for Frosthollow
+    if (style.snowRoof) {
+        const snowMat = getCachedMat(0xffffff, { roughness: 0.8 });
+        const snow1 = new THREE.Mesh(new THREE.BoxGeometry(8.5, 0.5, 8.5), snowMat);
+        snow1.position.y = 10.5;
+        group.add(snow1);
+        const snow2 = new THREE.Mesh(new THREE.ConeGeometry(3.8, 1, isMobile ? 6 : 8), snowMat);
+        snow2.position.set(4, 18.5, -4);
+        group.add(snow2);
+    }
+
+    // Moss for Deepwood
+    if (style.moss && !isMobile) {
+        const mossMat = getCachedMat(0x44aa44, { roughness: 0.9 });
+        const mossRng = seededRandom(parseInt(dog.id) * 31);
+        for (let i = 0; i < 8; i++) {
+            const m = new THREE.Mesh(getCachedGeo('moss', () => new THREE.SphereGeometry(0.4, 4, 3)), mossMat);
+            m.position.set((mossRng()-0.5)*8, mossRng()*8, (mossRng()-0.5)*8);
+            group.add(m);
+        }
+    }
+
+    // Door (dark opening on front face)
+    const door = new THREE.Mesh(castleDoorGeo, darkMat);
+    door.position.set(0, 1.75, 4.25);
+    group.add(door);
+    // Arch top
+    const doorTop = new THREE.Mesh(castleDoorTopGeo, darkMat);
+    doorTop.position.set(0, 3.5, 4.25);
+    doorTop.rotation.x = Math.PI;
+    doorTop.scale.set(1, 0.5, 0.5);
+    group.add(doorTop);
+
+    // Windows
+    const win1 = new THREE.Mesh(castleWindowGeo, windowMat);
+    win1.position.set(-2, 6, 4.25);
+    group.add(win1);
+    const win2 = new THREE.Mesh(castleWindowGeo, windowMat);
+    win2.position.set(2, 6, 4.25);
+    group.add(win2);
+
+    // Flag on turret
+    const flagMat = new THREE.MeshStandardMaterial({ color: orderColor, roughness: 0.6, side: THREE.DoubleSide });
+    const flag = new THREE.Mesh(castleFlagGeo.clone(), flagMat);
+    flag.position.set(4, 19, -4);
+    group.add(flag);
+    castleFlags.push(flag);
+
+    // Path connecting to dog position (laid flat)
+    const pathMat = getCachedMat(0x8B7355, { roughness: 0.9 });
+    const path = new THREE.Mesh(castlePathGeo, pathMat);
+    path.position.set(0, 0.15, 11.5);
+    group.add(path);
+
+    // Offset castle ~15 units to the side of the dog
+    const offsetAngle = dogRotY + Math.PI / 2;
+    const castleX = dogX + Math.cos(offsetAngle) * 15;
+    const castleZ = dogZ + Math.sin(offsetAngle) * 15;
+    const castleY = getHeight(castleX, castleZ);
+    group.position.set(castleX, castleY, castleZ);
+    group.rotation.y = dogRotY;
+
+    return group;
+}
+
+// ── Batch dog creation ──
+let dogIndex = 0;
+const dogEntries = Object.entries(wizardDogs);
+const DOGS_PER_FRAME = 10;
+const placedPositions = []; // track placed dog positions for min distance
+
+function loadDogBatch() {
+    const end = Math.min(dogIndex + DOGS_PER_FRAME, dogEntries.length);
+    for (let i = dogIndex; i < end; i++) {
+        const [id, dog] = dogEntries[i];
+        const isWanderer = id === '6164';
+        const realm = realmAliases[dog.realm] || dog.realm;
+        const placement = realmPlacement[realm] || realmPlacement['Starter Lands'];
+        const rng = seededRandom(parseInt(id));
+
+        let dx, dz;
+        if (isWanderer) { dx = 0; dz = 0; }
+        else {
+            // Place with minimum distance check (30 units)
+            let attempts = 0;
+            do {
+                const angle = rng() * Math.PI * 2;
+                const dist = (0.3 + rng() * 0.7) * placement.spread;
+                dx = placement.cx + Math.cos(angle) * dist;
+                dz = placement.cz + Math.sin(angle) * dist;
+                attempts++;
+                let tooClose = false;
+                for (const pp of placedPositions) {
+                    const ddx = dx - pp.x, ddz = dz - pp.z;
+                    if (ddx*ddx + ddz*ddz < 900) { tooClose = true; break; } // 30^2 = 900
+                }
+                if (!tooClose || attempts > 20) break;
+            } while (true);
+            placedPositions.push({ x: dx, z: dz });
+        }
+
+        const dy = getHeight(dx, dz);
+        const facingAngle = rng() * Math.PI * 2;
+        const group = createDogModel(dog);
+        group.position.set(dx, dy, dz);
+        group.rotation.y = facingAngle;
+        group.userData.type = 'dog';
+        group.userData.id = id;
+        group.userData.dog = dog;
+        group.userData.baseY = dy;
+        group.userData.phase = rng() * Math.PI * 2;
+        group.userData.isWanderer = isWanderer;
+        group.userData.hoverJump = 0;
+
+        scene.add(group);
+        dogGroups.push(group);
+        group.traverse(c => { if (c.isMesh) { c.userData._dogGroup = group; dogMeshParts.push(c); } });
+
+        // Castle house (not for The Wanderer)
+        if (!isWanderer) {
+            const castle = createCastleHouse(dog, dx, dz, facingAngle);
+            scene.add(castle);
+        }
+
+        // Name label with traits
+        const firstName = (dog.suggestedName || '#' + id).split(' ')[0];
+        const traitLine = `${dog.pattern} · ${dog.fur} · ${dog.eyes}${dog.clothes !== 'None' ? ' · ' + dog.clothes : ''}`;
+        const label = createDogLabel(firstName + '\n' + traitLine);
+        label.position.set(dx, dy + 55, dz);
+        label.userData = { parentGroup: group };
+        scene.add(label);
+        dogLabels.push(label);
+
+        if (isWanderer) {
+            wandererGroup = group;
+            wandererLight = new THREE.PointLight(0x9966ff, 1.5, 60);
+            wandererLight.position.set(dx, dy + 5, dz);
+            scene.add(wandererLight);
+            wandererLabel = label;
+        }
+    }
+    dogIndex = end;
+    const pct = Math.floor((dogIndex / dogEntries.length) * 5);
+    setProgress(Math.min(95 + pct, 99));
+    if (dogIndex < dogEntries.length) {
+        requestAnimationFrame(loadDogBatch);
+    }
+}
+loadDogBatch();
+
+function showDogPanel(dog) {
+    const panel = document.getElementById('infoPanel');
+    const content = document.getElementById('infoPanelContent');
+    const orderColor = orderColorsHex[dog.order] || '#fff';
+    content.innerHTML = `
+        <div style="text-align:center;margin-bottom:16px;">
+            <img src="${dog.image}" style="width:120px;height:120px;border-radius:16px;object-fit:cover;border:2px solid ${orderColor};" onerror="this.style.display='none'">
+        </div>
+        <div class="info-realm-name" style="color:${orderColor}">${dog.suggestedName || '#' + dog.id}</div>
+        <div class="info-motto">#${dog.id} • ${dog.order} Order</div>
+        <div class="info-section"><h3>Details</h3>
+            <div class="info-tags">
+                <span class="info-tag">Rank: ${dog.rank}</span>
+                <span class="info-tag">Realm: ${dog.realm}</span>
+                <span class="info-tag">Fur: ${dog.fur}</span>
+                <span class="info-tag">Pattern: ${dog.pattern}</span>
+                <span class="info-tag">Eyes: ${dog.eyes}</span>
+                ${dog.clothes !== 'None' ? `<span class="info-tag">Clothes: ${dog.clothes}</span>` : ''}
+            </div>
+        </div>
+    `;
+    panel.classList.add('open');
+}
+
+// Dog animation
+function updateDogs(time) {
+    const camPos = camera.position;
+    for (const g of dogGroups) {
+        const ud = g.userData;
+
+        // Wanderer movement
+        if (ud.isWanderer) {
+            const t = (time % 120) / 120;
+            const pos = wandererPath.getPoint(t);
+            pos.y = getHeight(pos.x, pos.z);
+            g.position.set(pos.x, pos.y, pos.z);
+            ud.baseY = pos.y;
+            // Face direction of travel
+            const ahead = wandererPath.getPoint((t + 0.005) % 1);
+            g.rotation.y = Math.atan2(ahead.x - pos.x, ahead.z - pos.z);
+            if (wandererLight) wandererLight.position.set(pos.x, pos.y + 8, pos.z);
+        }
+
+        // Idle bob
+        const bob = Math.sin(time * 1.2 + ud.phase) * 0.5;
+        g.position.y = ud.baseY + bob + ud.hoverJump;
+
+        // Decay hover jump
+        if (ud.hoverJump > 0) ud.hoverJump *= 0.92;
+
+        // Tail wag (slightly larger amplitude for Pixar appeal)
+        const tail = ud._tailGroup;
+        if (tail) tail.rotation.y = Math.sin(time * 4 + ud.phase) * 0.4;
+
+        // LOD
+        const dist = camPos.distanceTo(g.position);
+        const lod = g.userData._lodMesh;
+        if (lod) {
+            const far = dist > 900;
+            lod.visible = far;
+            const detail = g.userData._detailChildren;
+            if (detail) for (const c of detail) c.visible = !far;
+        }
+    }
+
+    // Labels
+    for (const label of dogLabels) {
+        const parent = label.userData.parentGroup;
+        if (parent) {
+            label.position.set(parent.position.x, parent.position.y + 55, parent.position.z);
+            const dist = camPos.distanceTo(parent.position);
+            label.material.opacity = dist < 600 ? 0.85 * Math.max(0, 1 - (dist - 200) / 400) : 0;
+            label.visible = dist < 600;
+        }
+    }
+}
+
+// Dog hover/click
+let hoveredDogGroup = null;
+
+function onMouseMove(e) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(dogMeshParts);
+
+    if (hits.length > 0) {
+        const hitGroup = hits[0].object.userData._dogGroup;
+        if (hitGroup && hitGroup !== hoveredDogGroup) {
+            hoveredDogGroup = hitGroup;
+            hitGroup.userData.hoverJump = 2.5; // little jump
+        }
+        if (hitGroup) {
+            const dog = hitGroup.userData.dog;
+            dogTooltip.style.display = 'block';
+            dogTooltip.style.left = (e.clientX + 12) + 'px';
+            dogTooltip.style.top = (e.clientY - 10) + 'px';
+            dogTooltip.innerHTML = `<span style="color:${orderColorsHex[dog.order]}">#${dog.id}</span> ${dog.suggestedName || ''}<br><span style="color:#c9a86c;font-size:11px;font-weight:400">${dog.pattern} · ${dog.fur} · ${dog.eyes}${dog.clothes !== 'None' ? ' · ' + dog.clothes : ''}</span>`;
+            renderer.domElement.style.cursor = 'pointer';
+        }
+    } else {
+        hoveredDogGroup = null;
+        dogTooltip.style.display = 'none';
+        renderer.domElement.style.cursor = '';
+    }
+}
+renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+// ── Raycasting & Interaction ──
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let animatingCamera = false;
+
+function flyTo(x, y, z, selectRealm) {
+    if (animatingCamera) return;
+    animatingCamera = true;
+    controls.autoRotate = false;
+    const startPos = camera.position.clone();
+    const startTarget = controls.target.clone();
+    const endTarget = new THREE.Vector3(x, Math.max(y-60, 0), z);
+    const endPos = new THREE.Vector3(x + 80, y + 100, z + 120);
+    const duration = 1.5;
+    const startTime = clock.getElapsedTime();
+
+    function animStep() {
+        const elapsed = clock.getElapsedTime() - startTime;
+        let t = Math.min(1, elapsed / duration);
+        t = t < 0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; // ease in-out cubic
+        camera.position.lerpVectors(startPos, endPos, t);
+        controls.target.lerpVectors(startTarget, endTarget, t);
+        if (t < 1) requestAnimationFrame(animStep);
+        else {
+            animatingCamera = false;
+            if (selectRealm) showRealmPanel(selectRealm);
+        }
+    }
+    animStep();
+}
+
+function showRealmPanel(name) {
+    const r = realms[name];
+    if (!r) return;
+    const dogs = Object.values(wizardDogs).filter(d => {
+        const dr = d.realm;
+        if (dr === name) return true;
+        if (realmAliases[dr] === name) return true;
+        return false;
+    });
+
+    const panel = document.getElementById('infoPanel');
+    const content = document.getElementById('infoPanelContent');
+    content.innerHTML = `
+        <div class="info-realm-name" style="color:${r.hex}">${name}</div>
+        ${r.motto ? `<div class="info-motto">${r.motto}</div>` : ''}
+        <div class="info-section"><h3>Description</h3><p>${r.desc}</p></div>
+        <div class="info-section"><h3>Landmarks</h3><div class="info-tags">${r.landmarks.map(l=>`<span class="info-tag">${l}</span>`).join('')}</div></div>
+        <div class="info-section"><h3>Breeds</h3><div class="info-tags">${(Array.isArray(r.breeds)?r.breeds:[r.breeds]).map(b=>`<span class="info-tag">${b}</span>`).join('')}</div></div>
+        <div class="info-section"><h3>Known For</h3><p>${r.knownFor}</p></div>
+        <div class="info-section"><h3>Wizards (${dogs.length})</h3>
+            <div class="dog-cards">${dogs.map(d => `
+                <div class="dog-card">
+                    <img src="${d.image}" alt="${d.suggestedName}" loading="lazy" onerror="this.style.display='none'">
+                    <div class="dog-name" style="color:${orderColorsHex[d.order]}">${d.suggestedName?.split(' ')[0] || '#'+d.id}</div>
+                    <div class="dog-order">${d.order} Order</div>
+                </div>
+            `).join('')}</div>
+        </div>
+    `;
+    panel.classList.add('open');
+}
+
+function showTowerPanel(data) {
+    const panel = document.getElementById('infoPanel');
+    const content = document.getElementById('infoPanelContent');
+    const hex = '#' + new THREE.Color(data.color).getHexString();
+    content.innerHTML = `
+        <div class="info-realm-name" style="color:${hex}">${data.name}</div>
+        <div class="info-motto">${data.order} Order</div>
+        <div class="info-section"><h3>Description</h3><p>${data.desc}</p></div>
+    `;
+    panel.classList.add('open');
+}
+
+function showMoonPanel(data) {
+    const panel = document.getElementById('infoPanel');
+    const content = document.getElementById('infoPanelContent');
+    const hex = '#' + new THREE.Color(moonColors[data.index]).getHexString();
+    content.innerHTML = `
+        <div class="info-realm-name" style="color:${hex}">${data.name}</div>
+        <div class="info-motto">Moon of Pawtheon</div>
+        <div class="info-section"><p>${data.name === 'Palehowl' ? 'The smallest and most mysterious moon, pale and quiet, watching over all.' : 'One of the Seven Moons that illuminate Pawtheon\'s sky, tied to the magical Orders.'}</p></div>
+    `;
+    panel.classList.add('open');
+}
+
+window.closePanel = function() {
+    document.getElementById('infoPanel').classList.remove('open');
+};
+
+function onClick(e) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - rect.left)/rect.width)*2 - 1;
+    mouse.y = -((e.clientY - rect.top)/rect.height)*2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+
+    // Check dogs (3D models)
+    const dogHits = raycaster.intersectObjects(dogMeshParts);
+    if (dogHits.length > 0) {
+        const dg = dogHits[0].object.userData._dogGroup;
+        if (dg) { showDogPanel(dg.userData.dog); return; }
+    }
+
+    // Check towers
+    for (const t of towers) {
+        const hits = raycaster.intersectObjects(t.children, true);
+        if (hits.length > 0) { showTowerPanel(t.userData); return; }
+    }
+
+    // Check moons
+    const moonHits = raycaster.intersectObjects(moons);
+    if (moonHits.length > 0) { showMoonPanel(moonHits[0].object.userData); return; }
+
+    // Check realm zones
+    const realmHits = raycaster.intersectObjects(realmMeshes);
+    if (realmHits.length > 0) {
+        const name = realmHits[0].object.userData.name;
+        const r = realms[name];
+        flyTo(r.x, getHeight(r.x, r.z)+80, r.z, name);
+        return;
+    }
+
+    // Check terrain click → find nearest realm
+    const terrainHit = raycaster.intersectObject(terrain);
+    if (terrainHit.length > 0) {
+        const pt = terrainHit[0].point;
+        let closest = null, closestDist = Infinity;
+        for (const name of displayRealms) {
+            const r = realms[name];
+            const d = Math.sqrt((pt.x-r.x)**2 + (pt.z-r.z)**2);
+            if (d < closestDist && d < 200) { closestDist = d; closest = name; }
+        }
+        if (closest) {
+            const r = realms[closest];
+            flyTo(r.x, getHeight(r.x,r.z)+80, r.z, closest);
+        }
+    }
+}
+
+renderer.domElement.addEventListener('click', onClick);
+
+let touchStartPos = null;
+let touchStartTime = 0;
+renderer.domElement.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+        touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        touchStartTime = Date.now();
+    } else {
+        touchStartPos = null;
+    }
+}, { passive: true });
+
+renderer.domElement.addEventListener('touchend', (e) => {
+    if (touchStartPos && e.changedTouches.length === 1) {
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - touchStartPos.x;
+        const dy = touch.clientY - touchStartPos.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const elapsed = Date.now() - touchStartTime;
+        // Only fire click if finger barely moved and tap was quick
+        if (dist < 25 && elapsed < 400) {
+            onClick({ clientX: touch.clientX, clientY: touch.clientY });
+        }
+    }
+    touchStartPos = null;
+}, { passive: true });
+
+// Zoom buttons
+document.getElementById('zoomIn').addEventListener('click', (e) => { e.stopPropagation(); controls.dollyIn(1.3); controls.update(); });
+document.getElementById('zoomOut').addEventListener('click', (e) => { e.stopPropagation(); controls.dollyOut(1.3); controls.update(); });
+
+// ── Animation Loop ──
+function updateParticles(delta) {
+    for (const sys of particleSystems) {
+        const pos = sys.pts.geometry.attributes.position;
+        const ud = sys.pts.userData;
+        const arr = pos.array;
+        for (let i=0; i<pos.count; i++) {
+            const i3 = i*3;
+            if (sys.wander) {
+                arr[i3] += (Math.random()-0.5)*0.4;
+                arr[i3+1] += (Math.random()-0.5)*0.3;
+                arr[i3+2] += (Math.random()-0.5)*0.4;
+                // Blink effect via opacity handled by material
+            } else {
+                arr[i3] += sys.dir.x + ud.vel[i3]*0.1;
+                arr[i3+1] += sys.dir.y * delta * 30;
+                arr[i3+2] += sys.dir.z + ud.vel[i3+2]*0.1;
+            }
+            // Bounds check
+            const dx = arr[i3] - ud.regionX, dz = arr[i3+2] - ud.regionZ;
+            if (Math.abs(dx) > ud.spread/2 || Math.abs(dz) > ud.spread/2 ||
+                (ud.yRange && (arr[i3+1] < ud.yRange[0]-5 || arr[i3+1] > ud.yRange[1]+10))) {
+                arr[i3] = ud.regionX + (Math.random()-0.5)*ud.spread;
+                arr[i3+2] = ud.regionZ + (Math.random()-0.5)*ud.spread;
+                if (ud.yRange) arr[i3+1] = ud.yRange[0] + Math.random()*(ud.yRange[1]-ud.yRange[0]);
+            }
+        }
+        pos.needsUpdate = true;
+    }
+}
+
+function updateLoyaltyDots(time) {
+    const posArr = dots.geometry.attributes.position.array;
+    for (let i=0;i<dotCount;i++) {
+        dotProgress[i] += 0.003;
+        if (dotProgress[i] > 1) dotProgress[i] = 0;
+        const path = loyaltyPaths[dotPathIdx[i] % loyaltyPaths.length];
+        const t = dotProgress[i];
+        // Quadratic bezier through center
+        const mt = 1-t;
+        const x = mt*mt*path.from.x + 2*mt*t*path.mid.x + t*t*path.to.x;
+        const y = mt*mt*path.from.y + 2*mt*t*path.mid.y + t*t*path.to.y;
+        const z = mt*mt*path.from.z + 2*mt*t*path.mid.z + t*t*path.to.z;
+        posArr[i*3] = x; posArr[i*3+1] = y; posArr[i*3+2] = z;
+    }
+    dots.geometry.attributes.position.needsUpdate = true;
+}
+
+function updateWater(time) {
+    const pos = water.geometry.attributes.position;
+    for (let i=0;i<pos.count;i++) {
+        const x = pos.getX(i), z = pos.getZ(i);
+        pos.setY(i, -8 + Math.sin(x*0.01 + time*0.8)*1.5 + Math.cos(z*0.012 + time*0.6)*1.2);
+    }
+    pos.needsUpdate = true;
+}
+
+// Moon orbit
+function updateMoons(time) {
+    moonGroup.rotation.y = time * 0.02;
+}
+
+// Firefly blink
+let fireflyTime = 0;
+function updateFireflyBlink(time) {
+    fireflies.material.opacity = 0.4 + Math.sin(time*3)*0.3 + Math.sin(time*7.3)*0.15;
+}
+
+setProgress(100);
+setTimeout(() => document.getElementById('loading').classList.add('done'), 500);
+setTimeout(() => { const hint = document.getElementById('hint'); if(hint) setTimeout(()=>hint.classList.add('hidden'), 5000); }, 2000);
+
+function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    const time = clock.getElapsedTime();
+
+    controls.update();
+    updateParticles(delta);
+    updateLoyaltyDots(time);
+    updateMoons(time);
+    updateFireflyBlink(time);
+
+    // Only update water every few frames for performance
+    if (Math.floor(time*30) % 2 === 0) updateWater(time);
+
+    // Update dogs
+    updateDogs(time);
+
+    // Castle flag wave animation
+    for (const flag of castleFlags) {
+        const pos = flag.geometry.attributes.position;
+        const origPos = flag.geometry.userData.origPos || pos.array.slice();
+        if (!flag.geometry.userData.origPos) flag.geometry.userData.origPos = origPos;
+        for (let v = 0; v < pos.count; v++) {
+            const x = origPos[v * 3];
+            pos.array[v * 3 + 1] = origPos[v * 3 + 1] + Math.sin(time * 3 + x * 2) * 0.2;
+        }
+        pos.needsUpdate = true;
+    }
+
+    // Distance-based label fading
+    if (Math.floor(time*10) % 3 === 0) updateLabelFade();
+
+    // Tower orb pulse
+    for (const t of towers) {
+        const orb = t.children[2];
+        if (orb) orb.material.emissiveIntensity = 1.2 + Math.sin(time*2 + t.position.x)*0.5;
+    }
+
+    renderer.render(scene, camera);
+}
+animate();
+
+// Resize
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+</script>
+</body>
+</html>

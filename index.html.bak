@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order of 86 - Wizard Dogs</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e8e8e8;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FF6B00, #F1C40F, #2ECC71, #3498DB, #7B54C9, #C55BB7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #b8b8b8;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .search-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: #e8e8e8;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .search-box::placeholder {
+            color: #aaa;
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        .dog-card {
+            display: none;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            border: 3px solid;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .dog-card.flame { border-color: #FF6B00; }
+        .dog-card.wild { border-color: #2ECC71; }
+        .dog-card.arcane { border-color: #7B54C9; }
+        .dog-card.deep { border-color: #3498DB; }
+        .dog-card.radiant { border-color: #F1C40F; }
+        .dog-card.heart { border-color: #C55BB7; }
+        .dog-card.wanderer { border-color: #9966ff; }
+
+        .dog-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .dog-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .dog-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .dog-name {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .dog-title {
+            font-size: 1.3em;
+            color: #b8b8b8;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .order-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+
+        .order-badge.flame { background: #FF6B00; color: white; }
+        .order-badge.wild { background: #2ECC71; color: white; }
+        .order-badge.arcane { background: #7B54C9; color: white; }
+        .order-badge.deep { background: #3498DB; color: white; }
+        .order-badge.radiant { background: #F1C40F; color: black; }
+        .order-badge.heart { background: #C55BB7; color: white; }
+        .order-badge.wanderer { background: #9966ff; color: white; }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .metadata-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metadata-label {
+            font-weight: bold;
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .metadata-value {
+            color: #e8e8e8;
+            font-size: 1.1em;
+        }
+
+        .editable-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #f0f0f0;
+        }
+
+        .editable-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: #e8e8e8;
+            font-size: 1.1em;
+        }
+
+        .editable-input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .story-textarea {
+            height: 200px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .submit-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #FF6B00, #F1C40F);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,107,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,107,0,0.4);
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(231,76,60,0.2);
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .dog-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .dog-image {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .metadata-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .intro-text {
+            text-align: center;
+            font-size: 1.1em;
+            color: #ccc;
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7B54C9;
+        }
+
+        .order-colors {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .color-legend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚡ Order of 86 ⚡</h1>
+        <div class="subtitle">The Caninosphere's Most Powerful Wizard Dogs</div>
+        
+        <div class="intro-text">
+            <p>Enter a Dog ID number below to discover one of the 86 legendary Wizard Dogs. Each one wields unique magic, carries ancient powers, and has their own origin story within the Caninosphere.</p>
+        </div>
+
+        <div class="order-colors">
+            <div class="color-legend">
+                <div class="color-dot" style="background: #FF6B00;"></div>
+                <span>Flame</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #2ECC71;"></div>
+                <span>Wild</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #7B54C9;"></div>
+                <span>Arcane</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #3498DB;"></div>
+                <span>Deep</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #F1C40F;"></div>
+                <span>Radiant</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #C55BB7;"></div>
+                <span>Heart</span>
+            </div>
+            <div class="color-legend">
+                <div class="color-dot" style="background: #9966ff;"></div>
+                <span>Wanderer</span>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <input type="text" class="search-box" placeholder="Enter Dog ID (e.g., 8728, 6164, 9089...)" id="searchInput">
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            This dog is not a member of the Order of 86. Only the 86 most powerful Wizard Dogs are included in this sacred Order.
+        </div>
+
+        <div class="dog-card" id="dogCard">
+            <form action="https://formsubmit.co/NoGraveStudios@gmail.com" method="POST" id="dogForm">
+                <input type="hidden" name="_subject" value="Order of 86 - Dog Submission">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                
+                <div class="dog-header">
+                    <img class="dog-image" id="dogImage" src="" alt="Wizard Dog">
+                    <div class="dog-info">
+                        <div class="dog-name" id="dogName">Dog Name</div>
+                        <div class="dog-title" id="dogTitle">Title</div>
+                        <div>
+                            <span class="order-badge" id="orderBadge">Order</span>
+                            <span style="font-size: 1.1em; color: #ccc;" id="dogId">#0000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metadata-grid">
+                    <div class="metadata-item">
+                        <div class="metadata-label">Rank</div>
+                        <div class="metadata-value" id="dogRank">0</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Fur Color</div>
+                        <div class="metadata-value" id="dogFur">Unknown</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Pattern</div>
+                        <div class="metadata-value" id="dogPattern">Unknown</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Eyes</div>
+                        <div class="metadata-value" id="dogEyes">Unknown</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Clothes</div>
+                        <div class="metadata-value" id="dogClothes">None</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-label">Realm</div>
+                        <div class="metadata-value" id="dogRealm">Unknown</div>
+                    </div>
+                </div>
+
+                <!-- Hidden fields for metadata -->
+                <input type="hidden" name="Dog_ID" id="formDogId">
+                <input type="hidden" name="Rank" id="formRank">
+                <input type="hidden" name="Fur_Color" id="formFur">
+                <input type="hidden" name="Pattern" id="formPattern">
+                <input type="hidden" name="Eyes" id="formEyes">
+                <input type="hidden" name="Clothes" id="formClothes">
+                <input type="hidden" name="Realm" id="formRealm">
+                <input type="hidden" name="Order" id="formOrder">
+
+                <div class="editable-section">
+                    <div class="section-title">✨ Customizable Fields</div>
+                    
+                    <label for="dogNameInput" style="color: #ccc; display: block; margin-bottom: 5px;">Dog Name:</label>
+                    <input type="text" class="editable-input" id="dogNameInput" name="Dog_Name" placeholder="Enter custom name for your wizard dog">
+                    
+                    <label for="dogStoryInput" style="color: #ccc; display: block; margin-top: 20px; margin-bottom: 5px;">Origin Story:</label>
+                    <textarea class="editable-input story-textarea" id="dogStoryInput" name="Origin_Story" placeholder="Write or edit the origin story..."></textarea>
+                </div>
+
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn">🔮 Submit to the Order 🔮</button>
+                    <p style="margin-top: 15px; color: #aaa; font-size: 0.9em;">
+                        This will send all the dog's information to NoGraveStudios@gmail.com
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Complete data for all 86 Wizard Dogs
+        const wizardDogs = {
+            // 🟠 FLAME ORDER - 18 Wizards
+            "8728": {
+                id: "8728", rank: 554, fur: "Gray", pattern: "Husky", eyes: "Square Glasses", clothes: "Scarf", realm: "Frosthollow", order: "Flame", hatColor: "Orange",
+                suggestedName: "Frostforge the Scarf-Bearer",
+                suggestedStory: "The rarest Flame Wizard, and the greatest contradiction in the Order. A Husky from Frosthollow's deepest glaciers, wielding fire magic with scholarly precision. The orange hat found Frostforge during the worst blizzard in Frosthollow's recorded history. While other dogs sought shelter, they stood alone on an exposed peak, reading by the faint aurora light — not seeking warmth, but studying the mathematics of cold. When the hat manifested in the storm, wreathed in flame that never touched their scarf, it chose not courage over fear, but curiosity over comfort.\n\nFrostforge brings the analytical mind of ice to the explosive art of fire. Their signature technique — Measured Burn — creates flames that burn only what needs burning, no more, no less. The scarf they wear isn't fashion; it's a reminder that some heat must be contained to be useful. They are the Flame's chief theoretical researcher, developing new forms of forge magic through the marriage of Frosthollow's patience and Emberhowl's power.",
+                image: "images/8728.png"
+            },
+            "5035": {
+                id: "5035", rank: 1443, fur: "Black", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "Scarf", realm: "Frosthollow", order: "Flame", hatColor: "Orange",
+                suggestedName: "Blizzardflame the Ice-Hearted",
+                suggestedStory: "Born during the Great Silence, when all magic died for forty-nine hours, Blizzardflame spent their earliest days in a world without warmth spells or fire magic. They learned to find heat in movement, in purpose, in the friction of determination against impossibility. When magic returned and the orange hat sought them out, it found a Husky who had already discovered that the hottest flame comes from the coldest heart — not from lack of feeling, but from feelings so intense they burn white-hot.\n\nTheir sleepy eyes mask an inner fire that never dims. Blizzardflame practices the most extreme form of Flame discipline: Cold Fire, flames that burn blue-white and feel ice-cold to the touch while melting steel. They serve as the Forge Spire's connection to Frosthollow, carrying messages through blizzards that would kill other messengers.",
+                image: "images/5035.png"
+            },
+            "9758": {
+                id: "9758", rank: 2989, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "Classic Hoodie", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                suggestedName: "Commonflame the Everyman",
+                suggestedStory: "The most politically savvy Flame Wizard, and perhaps the most important. A Classic from the Violet Highlands — the realm of 25 Wizards and endless debate — who found their orange hat not through spectacular trial but through quiet, daily courage. Commonflame was a city scribe who walked the same route to work every day through increasingly dangerous streets during the pre-Loyalty Wars tensions. While nobles hired guards and merchants found new routes, Commonflame simply... kept walking. The hat found them on a Tuesday, manifesting not in dramatic flame but as a warm glow on their head as they helped an injured stranger.\n\nTheir power lies not in extraordinary combat magic but in extraordinary determination. Commonflame's flames never go out — not flashy, but absolutely reliable. They serve as the Flame's ambassador to the Violet Highlands' Grand Assembly, translating between the political language of Classics and the direct language of fire.",
+                image: "images/9758.png"
+            },
+            "3030": {
+                id: "3030", rank: 3305, fur: "White", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                suggestedName: "Pureflame the Unadorned",
+                suggestedStory: "The most minimalist Flame Wizard. No accessories, no distinctive clothing, nothing but white fur and black eyes and an orange hat. Pureflame's origin story is almost disappointingly simple: they walked into the Trial by Fire with nothing and emerged with everything. The Flame's magic chose them precisely because they brought no expectations, no baggage, no preconceptions about what fire magic should be.\n\nTheir specialty is Essential Flame — fire stripped of everything except the core concept of transformation. When Pureflame casts, their magic appears as simple orange light, but it cuts through the most complex defensive spells like they're paper. They refuse all ornamentation, all titles beyond their name, all complications that might dilute their focus.",
+                image: "images/3030.png"
+            },
+            "986": {
+                id: "986", rank: 3638, fur: "Gray", pattern: "Split", eyes: "Square Glasses", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
+                suggestedName: "Splitforge the Dual-Natured",
+                suggestedStory: "A Split-furred diplomat from the Abyssal Reaches who found their orange hat in the most unlikely place: the middle of a peace negotiation. Splitforge was mediating a dispute between rival fishing fleets when both sides' anger erupted into violence. Instead of fleeing or choosing sides, they stood between the combatants and spoke — not words of peace, but words of challenge. 'If you must fight,' they said, 'fight something that fights back.' The hat manifested as they offered themselves as the target for both fleets' rage.\n\nSplitforge's dual nature makes them unique among the Flame. Their Split fur literally divides their magical expression — one half channels aggressive flame, the other controlled burn. They can simultaneously attack and defend, destroy and preserve.",
+                image: "images/986.png"
+            },
+            "165": {
+                id: "165", rank: 3732, fur: "Gray", pattern: "Husky", eyes: "Visor", clothes: "None", realm: "Frosthollow", order: "Flame", hatColor: "Orange",
+                suggestedName: "Vanguard the Glacier-Walker",
+                suggestedStory: "The third Husky in the Flame Order, proving that Frosthollow breeds something special in ice-dogs who choose fire. Vanguard earned their orange hat by doing what no other dog had done: they walked across the Frozen Lake of Echoes during a blizzard, guided only by the visor that protected their eyes from ice-glare. The lake preserves sounds from thousands of years — howls, conversations, the echoes of the First Howl itself. As Vanguard crossed, they listened to every preserved sound and chose the ones worth preserving in flame.\n\nTheir visor isn't just protection; it's a magical focus that lets them see heat signatures through ice, smoke, and flame. Vanguard serves as the Flame's arctic specialist, the only Wizard who can forge weapons in sub-zero temperatures.",
+                image: "images/165.png"
+            },
+            "5275": {
+                id: "5275", rank: 3857, fur: "Brown", pattern: "Split", eyes: "Yellow Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
+                suggestedName: "Tideforge the Current-Rider",
+                suggestedStory: "From the coastal cliffs where land meets sea, Tideforge brought the rhythm of waves to the chaos of flame. Their Split nature — half sea-blue, half sun-gold — made them natural mediators in the Abyssal Reaches' constantly shifting politics. The orange hat found them during the Tidal Court sessions, when they alone spoke for both the above-water and below-water factions simultaneously. As they argued two contradictory positions with equal passion, the hat manifested, recognizing that sometimes the greatest courage is being willing to disagree with yourself.\n\nTheir yellow eyes see through water as clearly as air, making them the Flame's naval specialist. Tideforge's fire burns even underwater, fed by the friction between opposing forces rather than by air.",
+                image: "images/5275.png"
+            },
+            "8667": {
+                id: "8667", rank: 3969, fur: "Orange", pattern: "Solid", eyes: "Sleepy Eyes", clothes: "None", realm: "Sunward Heights", order: "Flame", hatColor: "Orange",
+                suggestedName: "Goldforge the Sun-Touched",
+                suggestedStory: "The only orange-furred Flame Wizard, creating a perfect visual harmony between breed and Order. From the sun-drenched Sunward Heights, where everything is pure and bright, Goldforge seemed destined for the Radiant Order's light magic. But when the Sorting Ceremony came, it was an orange hat that chose them — not because they radiated light, but because they absorbed it. Their sleepy eyes hide an inner furnace that burns on stored solar energy, making them most powerful at noon and during solar storms.\n\nGoldforge represents the Flame's connection to stellar fire rather than earthly flame. Their magic draws directly from the sun, creating weapons that blaze with daylight intensity.",
+                image: "images/8667.png"
+            },
+            "7770": {
+                id: "7770", rank: 3986, fur: "Gray", pattern: "Tiger", eyes: "Red Eyes", clothes: "None", realm: "Ember Wastes", order: "Flame", hatColor: "Orange",
+                suggestedName: "Stripesight the Pattern-Burner",
+                suggestedStory: "A Tiger from the volcanic Ember Wastes, where Tigers naturally thrive, but unique even among their stripe-patterned kin. Stripesight's red eyes — the rarest eye color among Wizards — see not just heat but the patterns within fire. When other Tigers practice solitary ambush magic, Stripesight studied the mathematical beauty of flame spread, the fractal patterns of ember trails, the hidden geometry of explosion. Their orange hat appeared during the Ash Garden burns, manifesting as they traced flame patterns in volcanic ash.\n\nTheir Tiger stripes store magical energy in complex patterns, releasing it in controlled burns that follow precise mathematical sequences. Stripesight creates fire that burns in fractals, flames that follow geometric progression, controlled explosions that bloom in perfect spirals.",
+                image: "images/7770.png"
+            },
+            "7710": {
+                id: "7710", rank: 4081, fur: "Yellow", pattern: "Solid", eyes: "Sleepy Eyes", clothes: "None", realm: "Sunward Heights", order: "Flame", hatColor: "Orange",
+                suggestedName: "Goldstrike the Lightning-Fast",
+                suggestedStory: "Another Solid from the Sunward Heights, but where Goldforge burns steady and bright, Goldstrike burns in rapid bursts. Their yellow fur gleams like captured lightning, and despite their sleepy appearance, they are the fastest draw in the Flame Order. The orange hat found them during a moment of perfect reaction time — a rockslide threatening a trading caravan, Goldstrike moving without thought to create a controlled explosion that redirected the falling stones.\n\nTheir magic manifests as Lightning Fire — flame that moves at the speed of electricity, strikes with surgical precision, and dissipates immediately. Perfect for rescue operations where sustained heat would cause more damage than the original problem.",
+                image: "images/7710.png"
+            },
+            "1848": {
+                id: "1848", rank: 4120, fur: "Yellow", pattern: "Tiger", eyes: "Round Glasses", clothes: "None", realm: "Ember Wastes", order: "Flame", hatColor: "Orange",
+                suggestedName: "Lensfire the Tiger Scholar",
+                suggestedStory: "The most academic Tiger in the Ember Wastes, and possibly the only Tiger who reads for pleasure. Lensfire's round glasses mark them as scholarly in a realm that values instinct over study, independence over collaboration. But when their orange hat manifested, it wasn't during solo meditation but during the most collaborative moment of their life — teaching young Tigers how to control their stripe-stored magic. The hat recognized that sometimes the greatest courage is admitting you don't know everything.\n\nTheir glasses focus more than just vision; they focus flame into precise tools for magical research. Lensfire burns away ignorance the way others burn away enemies, using fire to reveal hidden truths by destroying everything that obscures them.",
+                image: "images/1848.png"
+            },
+            "4540": {
+                id: "4540", rank: 4490, fur: "White", pattern: "Blotted", eyes: "Visor", clothes: "None", realm: "Shadowmire", order: "Flame", hatColor: "Orange",
+                suggestedName: "Blotforge the Chaos-Shaper",
+                suggestedStory: "The only Shadowmire representative in the Flame Order, carrying the prejudices of both their dark homeland and their fire-bright Order. Blotforge's blotted pattern — irregular, asymmetric, chaotic — makes them an outcast in an Order that values controlled power and disciplined technique. But their white base color reflects all light, making their unpredictable blots into a strength rather than a weakness. The orange hat found them in the Shifting Grounds during a territory rearrangement, when they alone remained standing as the earth literally reformed around them.\n\nTheir visor protects against the chaos of their own magic as much as external threats. Blotforge's flame follows no pattern because pattern is limitation — their fire adapts, mutates, and evolves in real time to overcome any obstacle.",
+                image: "images/4540.png"
+            },
+            "8095": {
+                id: "8095", rank: 4524, fur: "Gray", pattern: "Split", eyes: "Pink Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
+                suggestedName: "Rosestrike the Pink-Eyed",
+                suggestedStory: "From the tidal politics of the Abyssal Reaches, where every decision requires balancing two perspectives, Rosestrike brought the rare gift of pink eyes — eyes that see emotional energy as clearly as physical matter. In their homeland's Twin Council system, they served as the emotional interpreter, helping negotiators understand not just what was said but what was felt. The orange hat manifested during a particularly heated debate when they stood up and declared, 'Stop arguing about positions. Fight for principles.'\n\nTheir pink eyes let them see the emotional fuel behind magical energy, making them uniquely suited to combat magic that draws on passion rather than technique. Rosestrike's flames burn brightest when fighting for something rather than against something.",
+                image: "images/8095.png"
+            },
+            "5518": {
+                id: "5518", rank: 5144, fur: "Black", pattern: "Split", eyes: "Green Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
+                suggestedName: "Voidstrike the Green-Eyed",
+                suggestedStory: "The darkest-furred Flame Wizard, their black Split pattern creating a visual contradiction with orange flame that somehow works perfectly. Voidstrike's green eyes — unusual for any breed — see magical voids, the empty spaces where magic should be but isn't. They found their calling during the Great Silence's aftermath, identifying and mapping the 'dead bonds' left in the Loyalty Network by the magical shutdown. The orange hat appeared as they worked to reforge broken magical connections through controlled flame.\n\nTheir specialty is Void Fire — flame that burns in magical darkness, drawing fuel from the absence of other magic rather than its presence. When enemies create magical barriers or null-magic zones, Voidstrike's fire burns brighter.",
+                image: "images/5518.png"
+            },
+            "1714": {
+                id: "1714", rank: 5584, fur: "Brown", pattern: "Classic", eyes: "Pink Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                suggestedName: "Roseheart the Gentle Flame",
+                suggestedStory: "The most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality. Roseheart's pink eyes and gentle demeanor make them seem more suited to the Heart Order than the Flame, but their orange hat chose them precisely because they understand that the hottest flame is controlled flame. They found their calling during post-Loyalty Wars reconstruction, using precisely controlled fire to clear debris without damaging anything salvageable.\n\nTheir Brown Classic fur marks them as steady and reliable, while their pink eyes let them see the emotional damage that combat leaves behind. Roseheart's flames never cause unnecessary harm — they burn away what needs burning and preserve what needs preserving.",
+                image: "images/1714.png"
+            },
+            "246": {
+                id: "246", rank: 5884, fur: "Orange", pattern: "Solid", eyes: "Black Eyes", clothes: "None", realm: "Sunward Heights", order: "Flame", hatColor: "Orange",
+                suggestedName: "Goldburn the Solar Flame",
+                suggestedStory: "The second orange-furred Flame Wizard, but where Goldforge channels stored solar energy, Goldburn channels direct solar flame. Their orange Solid coat creates perfect resonance with orange hat magic, making them a walking embodiment of pure Flame discipline. The hat found them during high noon on the summer solstice, as they stood unprotected on the Purified Plateau, deliberately absorbing as much solar energy as their body could hold.\n\nTheir black eyes create stark contrast with orange fur, marking them as a being of absolute focus within absolute power. Goldburn's magic doesn't just use fire — it IS fire, in the purest possible form.",
+                image: "images/246.png"
+            },
+            "4042": {
+                id: "4042", rank: 6804, fur: "Gray", pattern: "Classic", eyes: "Pink Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                suggestedName: "Roseflame the Pink-Eyed",
+                suggestedStory: "The third pink-eyed Flame Wizard, proving that emotional sight is more common in the Order than initially recognized. Roseflame's gray Classic appearance makes them blend into any crowd in the Violet Highlands, but their pink eyes reveal the emotional currents flowing beneath political discourse. They earned their orange hat during a Grand Assembly session when they stood up and used flame magic to literally illuminate the emotional dishonesty in several speakers' arguments.\n\nTheir power lies in Emotional Flame — fire that burns lies, cowardice, and dishonor while leaving truth, courage, and integrity untouched. In the politically complex Violet Highlands, this makes them both invaluable and dangerous.",
+                image: "images/4042.png"
+            },
+            "1053": {
+                id: "1053", rank: 7607, fur: "Black", pattern: "Zombie", eyes: "Black Eyes", clothes: "None", realm: "Shadowmire", order: "Flame", hatColor: "Orange",
+                suggestedName: "Deathforge the Undying",
+                suggestedStory: "The darkest Wizard in the entire Order of 86, both literally and figuratively. A Zombie from the Shadowmire practicing fire magic — decay and transformation meeting flame and renewal. Deathforge earned their orange hat by walking through the Great Rot's infected territory and emerging not just unharmed, but changed. The corruption that destroys other living things feeds their Zombie nature, and they learned to burn rot away from the inside out.\n\nTheir all-black appearance — black fur, black eyes, black pattern — makes them invisible in smoke and shadow. But when Deathforge channels flame magic, their entire body glows from within like a coal in the darkness.",
+                image: "images/1053.png"
+            },
+
+            // 🟢 WILD ORDER - 18 Wizards
+            "3449": {
+                id: "3449", rank: 627, fur: "Brown", pattern: "Tiger", eyes: "Pink Eyes", clothes: "Poncho", realm: "Ember Wastes", order: "Wild", hatColor: "Green",
+                suggestedName: "Stripeheart the Bridge-Walker",
+                suggestedStory: "The rarest Wild Wizard and the greatest contradiction in the Order. A solitary Tiger from the volcanic Ember Wastes, where independence is survival, who found their green hat by doing the most un-Tiger thing possible: they established a permanent beast sanctuary. Stripeheart's pink eyes — the gift of emotional sight — let them see the terror in animals fleeing volcanic eruptions. Instead of hunting prey weakened by disaster, they guided them to safety. The green hat manifested as they stood between a pack of terrified creatures and a lava flow, using their own body as a bridge to guide them across cooling stone.\n\nTheir poncho, woven from plant fibers that grow only in volcanic soil, marks them as a traveler between realms. Stripeheart carries seeds from the Heartwood throughout the Ember Wastes, creating networks of green growth in the most unlikely places.",
+                image: "images/3449.png"
+            },
+            "8272": {
+                id: "8272", rank: 1073, fur: "White", pattern: "Spotted", eyes: "Round Glasses", clothes: "Lumberjack", realm: "Deepwood", order: "Wild", hatColor: "Green",
+                suggestedName: "Spotforge the Pattern-Reader",
+                suggestedStory: "A native of the Deepwood who earned their green hat through the most scholarly form of nature magic: pattern recognition. Spotforge's white coat with dark spots creates a living map of the forest's health — each spot corresponds to a different grove, and the spots' color and size change to reflect the condition of their linked trees. Their round glasses focus not just vision but magical perception, letting them read the deep patterns that connect all growing things.\n\nTheir lumberjack outfit marks them as one of the Wild Order's few members who works with dead wood as well as living trees. Spotforge practices Sustainable Magic — they can tell exactly how much can be taken from a forest without damaging its long-term health.",
+                image: "images/8272.png"
+            },
+            "8822": {
+                id: "8822", rank: 1415, fur: "White", pattern: "Blotted", eyes: "Square Glasses", clothes: "Sport Hoodie", realm: "Shadowmire", order: "Wild", hatColor: "Green",
+                suggestedName: "Chaosbloom the Change-Bringer",
+                suggestedStory: "From the ever-changing Shadowmire to the ever-growing Heartwood, Chaosbloom brings the gift of controlled chaos to nature magic. Their blotted pattern shifts and changes like the Shadowmire's terrain, never quite the same from day to day. The square glasses they wear focus chaotic energy into readable patterns, while their sport hoodie suggests an active, dynamic approach to magic that matches their homeland's embrace of transformation.\n\nChaosbloom's specialty is Accelerated Evolution — using Wild magic to speed up natural selection and adaptation processes. When the Great Rot threatens specific plant species, they help those plants develop resistance in days instead of generations.",
+                image: "images/8822.png"
+            },
+            "6398": {
+                id: "6398", rank: 1466, fur: "Brown", pattern: "Split", eyes: "Black Eyes", clothes: "Shirt", realm: "Abyssal Reaches", order: "Wild", hatColor: "Green",
+                suggestedName: "Tideseed the Shore-Walker",
+                suggestedStory: "From the coastal cliffs where land meets sea, Tideseed brings the rhythm of tides to the patience of growth. Their Split nature — half earth-brown, half sea-blue — makes them natural ambassadors between terrestrial plants and marine ecosystems. The shirt they wear is woven from kelp fibers, creating clothing that breathes with the tide's rhythm. Their green hat manifested as they successfully grafted land plants onto underwater root systems, creating the first truly amphibious forest.\n\nTheir magic specializes in Tidal Growth — plants that flourish in both salt and fresh water, roots that grow stronger when submerged, seeds that use wave action to spread.",
+                image: "images/6398.png"
+            },
+            "2426": {
+                id: "2426", rank: 2082, fur: "White", pattern: "Blotted", eyes: "Black Eyes", clothes: "Turtleneck", realm: "Shadowmire", order: "Wild", hatColor: "Green",
+                suggestedName: "Blotbark the Corruption-Fighter",
+                suggestedStory: "The second Shadowmire Wizard in the Wild Order, specializing in the fight against the Great Rot. Blotbark's white base color with chaotic dark blotting creates perfect camouflage in partially corrupted forest — they can move through Rot-touched territory undetected by matching their pattern to diseased bark. Their turtleneck provides protection against airborne spores and magical contamination, while their black eyes see corruption as clearly as other Wild Wizards see healthy growth.\n\nTheir unique ability is Rot Reversal — using controlled decay to fight uncontrolled corruption. By accelerating the natural decomposition of infected plant matter, they prevent the Rot from spreading through root networks.",
+                image: "images/2426.png"
+            },
+            "1977": {
+                id: "1977", rank: 2547, fur: "Black", pattern: "Classic", eyes: "Green Eyes", clothes: "Collar", realm: "Violet Highlands", order: "Wild", hatColor: "Green",
+                suggestedName: "Greensight the Network-Walker",
+                suggestedStory: "From the scholarly Violet Highlands, where information flows through written networks, Greensight brings academic discipline to biological networks. Their green eyes — matching their Order's color — see the root networks that connect forest ecosystems as clearly as a Classic sees library catalogs. The collar they wear is living vine that stays green year-round, demonstrating their permanent connection to growing things even in winter.\n\nTheir specialty is Network Magic — using the root systems of forests as communication and transport networks. Messages carried through tree roots travel faster than any conventional messenger, while the root networks can detect threats to forest health before surface symptoms appear.",
+                image: "images/1977.png"
+            },
+            "1976": {
+                id: "1976", rank: 2938, fur: "Gray", pattern: "Husky", eyes: "Black Eyes", clothes: "Collar", realm: "Frosthollow", order: "Wild", hatColor: "Green",
+                suggestedName: "Frostbark the Ice-Grower",
+                suggestedStory: "The most unlikely Wild Wizard — a Husky from the frozen realm practicing magic of growth and warmth. Frostbark's gray fur and endurance breeding make them perfectly suited to Frosthollow's harsh conditions, but their green hat chose them for their understanding of life persisting in impossible circumstances. They found their calling tending the few hardy plants that grow in Frosthollow's brief summers, coaxing maximum life from minimal growing seasons.\n\nTheir collar is woven from arctic moss — the only plant that stays green through Frosthollow's winters. Frostbark's magic specializes in Cold Growth — plants that thrive in sub-freezing temperatures, roots that draw nutrients from ice, and growing seasons that extend into winter months.",
+                image: "images/1976.png"
+            },
+            "3758": {
+                id: "3758", rank: 3040, fur: "Purple", pattern: "Zombie", eyes: "Red Eyes", clothes: "None", realm: "Shadowmire", order: "Wild", hatColor: "Green",
+                suggestedName: "Deathbloom the Renewal-Bringer",
+                suggestedStory: "The most visually striking Wild Wizard — purple fur with red eyes from the realm of decay practicing the magic of growth. Deathbloom represents the Wild's understanding that death and growth are partners, not enemies. Their Zombie heritage means they understand decay from the inside, while their red eyes see the life force that persists even in dying things. The green hat chose them during their first bloom — a moment when their purple fur sprouted actual flowers, proving that even death-touched beings can nurture life.\n\nTheir magic is Necromantic Botany — growing plants from dead soil, using the nutrients in decay to fuel new growth, and creating gardens that flourish in graveyards and battlefields.",
+                image: "images/3758.png"
+            },
+            "8965": {
+                id: "8965", rank: 3183, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "Scarf", realm: "Violet Highlands", order: "Wild", hatColor: "Green",
+                suggestedName: "Brownthorn the Shield-Grower",
+                suggestedStory: "A practical Classic from the Violet Highlands who earned their green hat through defensive magic rather than aggressive growth. Brownthorn's brown fur blends perfectly with tree bark and rich soil, while their scarf is woven from thorn-vine fibers that provide natural armor. They found their calling during the Loyalty Wars, when they used rapid-growth magic to create living barriers that protected civilians from combat magic.\n\nTheir specialty is Defensive Botany — walls of thorns that grow in seconds, root networks that detect approaching threats, and tree canopies that provide natural shelter.",
+                image: "images/8965.png"
+            },
+            "6873": {
+                id: "6873", rank: 3935, fur: "Yellow", pattern: "Solid", eyes: "Mixed Eyes", clothes: "None", realm: "Sunward Heights", order: "Wild", hatColor: "Green",
+                suggestedName: "Goldleaf the Multi-Eyed",
+                suggestedStory: "The only Wild Wizard with mixed-color eyes, creating a connection to multiple magical frequencies simultaneously. Goldleaf's yellow Solid fur creates perfect resonance with sunlight, while their mixed eyes let them see both solar energy and earth energy as interconnected systems. They earned their green hat by creating the first plants that could photosynthesize moonlight as efficiently as sunlight, extending growing seasons into the night.\n\nTheir magic specializes in Solar Botany — plants that store sunlight like batteries, releasing it gradually to power growth during cloudy periods.",
+                image: "images/6873.png"
+            },
+            "2807": {
+                id: "2807", rank: 4035, fur: "Green", pattern: "Zombie", eyes: "Visor", clothes: "None", realm: "Shadowmire", order: "Wild", hatColor: "Green",
+                suggestedName: "Voidbloom the Visor-Wearer",
+                suggestedStory: "The second Zombie in the Wild Order, but where Deathbloom works with death-to-life transitions, Voidbloom specializes in void-to-growth magic. Their green fur matches their Order's color perfectly, while the visor they wear protects against the disorientation of seeing plants grow in magical darkness. Voidbloom earned their place by growing the first garden in the Shadowmire's dark valleys, where normal photosynthesis is impossible.\n\nTheir magic is Void Botany — plants that grow without sunlight, drawing energy from magical darkness and shadow. These shadow plants serve as food sources in underground areas and during eclipse periods when normal agriculture fails.",
+                image: "images/2807.png"
+            },
+            "9952": {
+                id: "9952", rank: 4082, fur: "Black", pattern: "Zombie", eyes: "Green Eyes", clothes: "None", realm: "Shadowmire", order: "Wild", hatColor: "Green",
+                suggestedName: "Grimbloom the Green-Eyed",
+                suggestedStory: "The darkest Wild Wizard, their black Zombie fur creating stark contrast with green Order magic. Grimbloom's green eyes see life force directly, making them capable of detecting the faintest spark of vitality in seemingly dead environments. They specialize in resurrection botany — bringing dead plants back to life, not as undead vegetation but as renewed living things.\n\nTheir magic focuses on Second Chance Growth — giving failed crops another opportunity to thrive, reviving forests damaged by magical combat, and maintaining the Shadowmire's ecosystem despite constant decay and transformation.",
+                image: "images/9952.png"
+            },
+            "8284": {
+                id: "8284", rank: 4766, fur: "Black", pattern: "Tiger", eyes: "Round Glasses", clothes: "None", realm: "Ember Wastes", order: "Wild", hatColor: "Green",
+                suggestedName: "Stripesight the Pattern-Hunter",
+                suggestedStory: "A black Tiger from the Ember Wastes whose solitary hunting instincts evolved into pattern-tracking abilities that serve the collective needs of forest ecosystems. Stripesight's black fur with faint stripe patterns creates perfect camouflage in burnt forest areas, while their round glasses help them see growth patterns in areas damaged by volcanic activity. They earned their green hat by tracking and cataloging every surviving seed in post-eruption wastelands.\n\nTheir specialty is Recovery Botany — identifying which plants will grow back naturally after disasters and which need magical assistance.",
+                image: "images/8284.png"
+            },
+            "5374": {
+                id: "5374", rank: 5224, fur: "Black", pattern: "Spotted", eyes: "Red Eyes", clothes: "None", realm: "Deepwood", order: "Wild", hatColor: "Green",
+                suggestedName: "Redsight the Spotted Tracker",
+                suggestedStory: "A native Deepwood Wizard whose black coat with spots creates living camouflage that changes pattern based on surroundings. Redsight's red eyes — the rarest eye color — see heat signatures and life force simultaneously, making them the Wild's most effective tracker of both healthy and diseased plant life. They earned recognition by being the first to identify the Great Rot's early symptoms, tracking the corruption's spread through forest networks before it became visible to normal sight.\n\nTheir magic is Diagnostic Botany — identifying plant diseases, tracking the health of forest networks, and prescribing natural remedies for ecosystem problems.",
+                image: "images/5374.png"
+            },
+            "3826": {
+                id: "3826", rank: 5283, fur: "Orange", pattern: "Classic", eyes: "Green Eyes", clothes: "None", realm: "Violet Highlands", order: "Wild", hatColor: "Green",
+                suggestedName: "Orangeheart the Classic Bridge",
+                suggestedStory: "The only orange-furred Wild Wizard, creating a visual connection between Wild green magic and Flame orange energy. Orangeheart's green eyes provide perfect color balance, while their Classic breeding brings Violet Highlands scholarship to nature magic. They specialize in Fire-Growth Symbiosis — understanding how forest fires create conditions for new growth, and managing controlled burns that rejuvenate ecosystems without causing lasting damage.\n\nTheir orange fur reflects and focuses flame energy, making them immune to natural fire while their green Order magic guides post-fire regeneration.",
+                image: "images/3826.png"
+            },
+            "5177": {
+                id: "5177", rank: 5878, fur: "Gray", pattern: "Husky", eyes: "Black Eyes", clothes: "None", realm: "Frosthollow", order: "Wild", hatColor: "Green",
+                suggestedName: "Frostgrow the Gray Endurer",
+                suggestedStory: "The second Husky in the Wild Order, but where Frostbark specializes in cold-weather plants, Frostgrow focuses on plants that bridge seasonal transitions. Their gray fur provides perfect camouflage during the brief Frosthollow summers when snow melts to reveal the brown earth beneath. They earned their green hat by creating the migration gardens — rest stops with magical food sources that sustain animals during long journeys between breeding and wintering grounds.\n\nTheir magic is Transition Botany — plants that change their properties with the seasons, roots that remain active under ice, and seed dispersal systems that work in arctic conditions.",
+                image: "images/5177.png"
+            },
+            "5538": {
+                id: "5538", rank: 7282, fur: "Gray", pattern: "Solid", eyes: "Black Eyes", clothes: "None", realm: "Sunward Heights", order: "Wild", hatColor: "Green",
+                suggestedName: "Graystorm the Weather-Walker",
+                suggestedStory: "From the eternally sunny Sunward Heights, Graystorm brings understanding of what plants need when the sun doesn't shine. Their gray Solid fur contrasts sharply with their homeland's bright environment, marking them as different from their sun-loving neighbors. They earned their green hat during the Great Silence, when even the sun seemed dim, by keeping food plants alive through forty-nine hours of magical darkness.\n\nTheir magic is Weather-Independent Botany — plants that thrive regardless of weather conditions, root systems that store nutrients for extended dry periods, and agricultural techniques that work during storms, droughts, or unnatural darkness.",
+                image: "images/5538.png"
+            },
+            "9713": {
+                id: "9713", rank: 8952, fur: "Black", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Wild", hatColor: "Green",
+                suggestedName: "Darkleaf the Shadow-Grower",
+                suggestedStory: "The least common Wild Wizard, ranking very low in the collection but serving a crucial role in the Order. Darkleaf's all-black appearance makes them nearly invisible in deep forest shadows, while their Classic stability provides the patience needed for deep-shade botany. They specialize in Under-Story Magic — the plants that grow beneath forest canopies, in the shadow of larger trees, creating the complex ecosystem layers that support forest health.\n\nTheir magic focuses on Symbiotic Growth — plants that support each other through root networks, leaf-litter cycles that enrich soil, and the delicate balance of competition and cooperation that keeps forests healthy.",
+                image: "images/9713.png"
+            },
+
+            // 🟣 ARCANE ORDER - 13 Wizards (Note: #9089 was moved to Heart based on pixel analysis)
+            "8518": {
+                id: "8518", rank: 407, fur: "Black", pattern: "Tiger", eyes: "Yellow Eyes", clothes: "None", realm: "Ember Wastes", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Goldstripe the Time-Stalker",
+                suggestedStory: "The second-rarest Arcane Wizard, a solitary Tiger whose hunting instincts evolved into something far more sophisticated: hunting through time itself. Goldstripe's black fur with golden stripes creates perfect camouflage in the shifting light-and-shadow patterns of temporal magic, while their yellow eyes see not just heat signatures but temporal signatures — the traces left by past and future events. They earned their purple hat by successfully stalking and observing the same historical moment from seventeen different temporal angles.\n\nTheir specialty is Temporal Archaeology — using time-sight magic to witness past events and gather information that was lost to conventional history.",
+                image: "images/8518.png"
+            },
+            "3406": {
+                id: "3406", rank: 912, fur: "Yellow", pattern: "Solid", eyes: "Blue Eyes", clothes: "Shirt", realm: "Sunward Heights", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Blueshirt the Dimensional Scholar",
+                suggestedStory: "From the bright, simple Sunward Heights, where everything is one pure color and one pure truth, Blueshirt brings clarity to the complex theories of dimensional magic. Their yellow Solid fur creates perfect color purity, while their blue eyes provide a secondary focus for magical sight that doesn't interfere with their primary yellow resonance. The shirt they wear is woven from dimensional fabric — appearing solid from one angle, translucent from another, demonstrating their specialty in multi-dimensional perception.\n\nTheir magic focuses on Dimensional Mapping — charting the layers of reality that exist parallel to Pawtheon's normal dimension.",
+                image: "images/3406.png"
+            },
+            "9234": {
+                id: "9234", rank: 2843, fur: "Black", pattern: "Spotted", eyes: "Black Eyes", clothes: "Scarf", realm: "Deepwood", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Shadowspot the Pattern-Keeper",
+                suggestedStory: "A Deepwood native whose spotted pattern serves as a living memory storage system. Shadowspot's black base color with dark spots creates patterns that shift and change to record observed information, while their scarf is woven from memory-silk that preserves important conversations in its fibers. They earned their purple hat by demonstrating that their spotted pattern could store and replay visual memories with perfect accuracy, creating a living archive of everything they've witnessed.\n\nTheir specialty is Memory Magic — storing experiences in physical patterns, sharing memories between individuals, and preserving important information in forms that can't be destroyed by conventional means.",
+                image: "images/9234.png"
+            },
+            "8311": {
+                id: "8311", rank: 3893, fur: "Yellow", pattern: "Tiger", eyes: "Visor", clothes: "None", realm: "Ember Wastes", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Goldvisor the Tiger Theorist",
+                suggestedStory: "The second Tiger in the Arcane Order, but where Goldstripe hunts through time, Goldvisor develops the theoretical frameworks that make temporal magic possible. Their yellow fur resonates with light-based magic, while their visor protects against the disorienting effects of working with multiple theoretical frameworks simultaneously. They earned recognition by developing the mathematical models that predict when temporal magic will succeed or cause paradoxes.\n\nTheir magic is Theoretical Arcane — creating the underlying principles that guide practical applications of complex magic.",
+                image: "images/8311.png"
+            },
+            "9301": {
+                id: "9301", rank: 3938, fur: "Yellow", pattern: "Solid", eyes: "Pink Eyes", clothes: "None", realm: "Sunward Heights", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Rosegold the Pink-Eyed Theorist",
+                suggestedStory: "The second yellow Solid in the Arcane Order, but where Blueshirt focuses on dimensional magic, Rosegold specializes in the intersection between magical theory and emotional reality. Their pink eyes see the emotional components of magical energy, while their yellow Solid fur provides the clarity needed to analyze complex emotional patterns without being overwhelmed by them. They developed the theoretical framework for understanding how emotional energy affects magical efficiency.\n\nTheir specialty is Emotional Arcane — understanding how feelings influence magical outcomes, predicting which emotions will enhance or interfere with specific spells.",
+                image: "images/9301.png"
+            },
+            "5056": {
+                id: "5056", rank: 4059, fur: "Brown", pattern: "Tiger", eyes: "Visor", clothes: "None", realm: "Ember Wastes", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Brownvisor the Research Director",
+                suggestedStory: "The third Tiger in the Arcane Order, completing the triangle of Tiger scholars who bring predatory focus to academic research. Brownvisor's brown fur provides perfect camouflage in library settings, while their visor displays research notes and magical formulas directly in their field of vision. They serve as the research coordinator for the most dangerous magical experiments, ensuring that Tiger reflexes protect researchers when theory meets practice.\n\nTheir magic is Experimental Arcane — testing new magical theories under controlled conditions, developing safety protocols for dangerous research.",
+                image: "images/5056.png"
+            },
+            "5240": {
+                id: "5240", rank: 4173, fur: "Gray", pattern: "Solid", eyes: "Sleepy Eyes", clothes: "None", realm: "Sunward Heights", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Graysleep the Dream-Walker",
+                suggestedStory: "The third Solid from the Sunward Heights, but unlike their bright-colored colleagues, Graysleep specializes in magic that works during sleep and unconsciousness. Their gray fur provides neutrality that doesn't interfere with dream magic, while their permanently sleepy appearance reflects their specialty in unconscious mental states. They earned their purple hat by successfully entering and mapping the collective unconscious of an entire realm.\n\nTheir magic is Dream Arcane — working with sleeping minds, accessing memories that are only available during unconsciousness.",
+                image: "images/5240.png"
+            },
+            "4994": {
+                id: "4994", rank: 4600, fur: "White", pattern: "Collie", eyes: "Red Eyes", clothes: "None", realm: "Deepwood", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Whitecoat the Collie Coordinator",
+                suggestedStory: "The only Collie in the Arcane Order, bringing herding instincts to the challenge of organizing magical knowledge. Whitecoat's white fur and red eyes create striking visual contrast, while their Collie breeding provides the coordination skills needed to keep track of multiple complex research projects simultaneously. They earned recognition by successfully organizing the Violet Citadel's entire library system, ensuring that no knowledge is ever truly lost.\n\nTheir specialty is Information Herding — keeping track of how different pieces of knowledge relate to each other.",
+                image: "images/4994.png"
+            },
+            "8342": {
+                id: "8342", rank: 4624, fur: "White", pattern: "Split", eyes: "Red Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Whiteheart the Split Researcher",
+                suggestedStory: "From the realm of duality and diplomatic complexity, Whiteheart brings Split perspectives to magical research. Their white base color with subtle dual-toning reflects their ability to see both sides of theoretical debates, while their red eyes provide the emotional insight needed to understand why different researchers reach different conclusions from the same evidence. They specialize in research that requires considering multiple incompatible theories simultaneously.\n\nTheir magic is Paradox Arcane — working with magical theories that seem to contradict each other but are somehow both true.",
+                image: "images/8342.png"
+            },
+            "9826": {
+                id: "9826", rank: 4845, fur: "Green", pattern: "Zombie", eyes: "Black Eyes", clothes: "None", realm: "Shadowmire", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Greenbone the Chaos Scholar",
+                suggestedStory: "The only Shadowmire representative in the Arcane Order, bringing chaos magic principles to scholarly research. Greenbone's green Zombie fur creates a living connection to decay and transformation processes, while their black eyes see the order hidden within apparent chaos. They earned their purple hat by successfully cataloguing and organizing the Shadowmire's shapeshifting terrain, creating maps of a landscape that changes faster than maps can be drawn.\n\nTheir specialty is Chaos Theory Arcane — finding the hidden patterns in random events, predicting probable outcomes from chaotic systems.",
+                image: "images/9826.png"
+            },
+            "6095": {
+                id: "6095", rank: 5093, fur: "White", pattern: "Dalmatian", eyes: "Square Glasses", clothes: "None", realm: "Deepwood", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Dalmatianscript the Unique Scholar",
+                suggestedStory: "The collection's only Dalmatian Wizard, making them as unique among the 86 as their breed is among all dogs. Dalmatianscript's white coat with perfectly placed spots creates a living text where each spot represents a different piece of magical knowledge. Their square glasses focus not just vision but magical perception, allowing them to read the hidden texts that appear on surfaces throughout the Violet Citadel when illuminated by Umbra's light.\n\nTheir specialty is Textual Arcane — magic that works through written symbols, spells that are cast by writing rather than speaking.",
+                image: "images/6095.png"
+            },
+            "9898": {
+                id: "9898", rank: 5299, fur: "Orange", pattern: "Classic", eyes: "Green Eyes", clothes: "None", realm: "Violet Highlands", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Orangeheart the Classic Bridge",
+                suggestedStory: "An unusual color combination — orange Classic fur with green eyes — creating visual connections to multiple Orders simultaneously. Orangeheart serves as the Arcane's liaison to other Orders, using their orange fur to connect with Flame discipline and their green eyes to understand Wild magic theory. Their Classic breeding provides the diplomatic stability needed to translate between different magical philosophies without losing essential meaning.\n\nTheir magic is Translation Arcane — converting magical techniques from one discipline to another, finding the common theoretical foundations that underlie different Orders' approaches to magic.",
+                image: "images/9898.png"
+            },
+            "8154": {
+                id: "8154", rank: 5549, fur: "Gray", pattern: "Classic", eyes: "Square Glasses", clothes: "None", realm: "Violet Highlands", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Grayglasses the Foundation Scholar",
+                suggestedStory: "The most typical-looking Arcane Wizard — gray Classic fur, square glasses, nothing flashy or distinctive. But Grayglasses represents the foundation of all Arcane magic: patient, methodical, thorough research into basic principles that support more advanced magical development. Their gray coloring provides perfect neutrality for magical experiments, while their square glasses focus their attention on precise details that more dramatic researchers might overlook.\n\nTheir magic is Foundation Arcane — establishing the basic principles that allow advanced magic to work, maintaining the ward systems that protect the Violet Citadel.",
+                image: "images/8154.png"
+            },
+
+            // 🔵 DEEP ORDER - 13 Wizards
+            "4165": {
+                id: "4165", rank: 854, fur: "White", pattern: "Collie", eyes: "Pink Eyes", clothes: "Poncho", realm: "Deepwood", order: "Deep", hatColor: "Blue",
+                suggestedName: "Pinkgaze the Emotional Seer",
+                suggestedStory: "The rarest Deep Wizard, whose Collie herding instincts evolved into something far more sophisticated: herding probable futures into manageable patterns. Pinkgaze's white fur reflects all magical energies without absorption, while their pink eyes see emotional currents flowing through time as clearly as water flowing through streams. The poncho they wear is woven from water-resistant fibers that repel both liquid water and liquid time, protecting them from temporal splash-back during deep scrying sessions.\n\nTheir specialty is Emotional Prophecy — predicting future events by tracking the emotional currents that drive decision-making.",
+                image: "images/4165.png"
+            },
+            "9530": {
+                id: "9530", rank: 2023, fur: "White", pattern: "Bernard", eyes: "Black Eyes", clothes: "Shirt", realm: "Frosthollow", order: "Deep", hatColor: "Blue",
+                suggestedName: "Bernardguard the Truth-Keeper",
+                suggestedStory: "The collection's only Bernard Wizard, embodying the perfect convergence of breed instinct and Order discipline. Bernards are the rescue breed — built for finding lost travelers in hostile conditions, carrying supplies to sustain life in crisis. Bernardguard earned their blue hat by successfully guiding a lost expedition through a blizzard to the Truth Mirror's location, then standing guard as each member looked into the mirror and faced what they truly were.\n\nTheir magic is Guardian Prophecy — seeing the dangerous truths that people seek and determining whether they're strong enough to survive the knowledge they want.",
+                image: "images/9530.png"
+            },
+            "3557": {
+                id: "3557", rank: 3868, fur: "Yellow", pattern: "Tiger", eyes: "Yellow Eyes", clothes: "None", realm: "Ember Wastes", order: "Deep", hatColor: "Blue",
+                suggestedName: "Goldstare the Solar Prophet",
+                suggestedStory: "A Tiger from the volcanic Ember Wastes whose perfect yellow-on-yellow coloring creates unique resonance with light-based prophecy. Goldstare's solitary hunting instincts evolved into patient observation of probability patterns, while their yellow eyes see not just heat signatures but the thermal patterns of possible futures. They earned their blue hat during a volcanic eruption, when they successfully predicted the exact path of lava flows by reading the heat signatures of probability itself.\n\nTheir specialty is Solar Scrying — using concentrated sunlight as a medium for prophecy, reading futures in the patterns of light and shadow.",
+                image: "images/3557.png"
+            },
+            "2634": {
+                id: "2634", rank: 4331, fur: "Black", pattern: "Split", eyes: "Mixed Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Deep", hatColor: "Blue",
+                suggestedName: "Mixedsight the Paradox Prophet",
+                suggestedStory: "From the realm of duality and impossible perspectives, Mixedsight brings Split double-vision to prophecy magic. Their black Split fur creates perfect contrast patterns, while their mixed-color eyes see different aspects of the same future simultaneously. One eye sees what will happen if current trends continue; the other sees what will happen if key variables change. They earned their blue hat by successfully predicting both outcomes of a major political crisis, then watching both futures occur simultaneously in parallel timeline streams.\n\nTheir specialty is Paradox Prophecy — seeing futures that contradict each other but are somehow both true.",
+                image: "images/2634.png"
+            },
+            "4742": {
+                id: "4742", rank: 5050, fur: "White", pattern: "Blotted", eyes: "Sleepy Eyes", clothes: "None", realm: "Shadowmire", order: "Deep", hatColor: "Blue",
+                suggestedName: "Blottedmist the Chaos Seer",
+                suggestedStory: "From the ever-changing Shadowmire, Blottedmist brings chaos magic principles to prophecy work. Their white base color with irregular blotting provides perfect camouflage in situations where normal pattern-recognition fails, while their sleepy eyes mask intense concentration on probability patterns that shift too rapidly for normal observation. They earned recognition by successfully predicting events in the Shadowmire's shapeshifting terrain, where normal prophecy magic fails because the landscape changes faster than visions can form.\n\nTheir magic is Chaos Prophecy — predicting the unpredictable, finding pattern in randomness, and reading futures in systems too complex for conventional analysis.",
+                image: "images/4742.png"
+            },
+            "6135": {
+                id: "6135", rank: 5309, fur: "Blue", pattern: "Classic", eyes: "Visor", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Bluevisor the Technology Prophet",
+                suggestedStory: "The only blue-furred Deep Wizard, creating perfect color resonance between their coat and their Order's discipline. Bluevisor's visor displays not just current information but probability projections and timeline analysis, turning their field of vision into a real-time prophecy interface. They earned their position by developing new techniques for technological prophecy — predicting not just what will happen, but what inventions and magical developments will make it possible.\n\nTheir specialty is Innovation Prophecy — seeing the future discoveries that will change how magic works.",
+                image: "images/6135.png"
+            },
+            "5516": {
+                id: "5516", rank: 5977, fur: "White", pattern: "Classic", eyes: "Black Eyes", clothes: "Collar", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Whiteguard the Shield Prophet",
+                suggestedStory: "A defensive specialist whose white fur reflects magical attacks while their black eyes see the aggressive intentions behind them. Whiteguard's collar is woven from ward-silk that provides protection against psychic attacks, essential equipment for a prophet who must look into the minds of those planning violence. They earned their blue hat by successfully predicting and preventing a series of assassination attempts during the post-Loyalty Wars period, using prophecy magic to identify threats before they became action.\n\nTheir magic is Protective Prophecy — seeing dangers before they manifest, predicting attacks in time to prepare defenses.",
+                image: "images/5516.png"
+            },
+            "6232": {
+                id: "6232", rank: 6043, fur: "Yellow", pattern: "Solid", eyes: "Black Eyes", clothes: "None", realm: "Sunward Heights", order: "Deep", hatColor: "Blue",
+                suggestedName: "Goldsolid the Pure Prophet",
+                suggestedStory: "From the realm of pure colors and simple truths, Goldsolid brings Solid-breed clarity to the complex art of prophecy. Their yellow Solid fur creates perfect color purity with no distracting patterns, while their black eyes provide absolute focus on single-thread futures without the complications that multi-colored eyes create. They specialize in Simple Prophecy — clear, unambiguous visions of straightforward futures with minimal complications.\n\nTheir magic focuses on Pure Truth Prophecy — seeing futures without interpretation, bias, or wishful thinking.",
+                image: "images/6232.png"
+            },
+            "6597": {
+                id: "6597", rank: 6539, fur: "Black", pattern: "Classic", eyes: "Square Glasses", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Blackglasses the Archive Prophet",
+                suggestedStory: "A scholarly prophet whose black fur absorbs magical energy without reflection, while their square glasses focus on detailed analysis of specific future events rather than broad prophetic sweeps. Blackglasses earned their position by developing techniques for archival prophecy — not just seeing what will happen, but creating permanent records of prophetic visions that can be studied and referenced later.\n\nTheir specialty is Documentation Prophecy — creating detailed, searchable records of prophetic visions, cross-referencing predictions to identify patterns in future-events.",
+                image: "images/6597.png"
+            },
+            "7257": {
+                id: "7257", rank: 7436, fur: "Gray", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Graydreamer the Sleep Prophet",
+                suggestedStory: "A Classic whose permanently sleepy appearance reflects their specialty in dream-state prophecy and unconscious vision work. Graydreamer's gray fur provides perfect neutrality for dream magic, while their sleepy eyes are actually processing multiple layers of prophetic information simultaneously. They earned recognition by successfully maintaining continuous prophetic surveillance through extended sleep periods, providing 24-hour future monitoring.\n\nTheir magic is Dream Prophecy — seeing futures through prophetic dreams, accessing visions that only appear during unconscious states.",
+                image: "images/7257.png"
+            },
+            "1841": {
+                id: "1841", rank: 8023, fur: "Orange", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Orangeclassic the Bridge Prophet",
+                suggestedStory: "An unusual color combination for the Deep Order — orange Classic fur creating visual connection to Flame magic while practicing water-based prophecy. Orangeclassic serves as liaison between the Deep and Flame Orders, using their orange coloring to understand how fire magic will develop and evolve. Their black eyes provide the focus needed to see through the distraction of contradictory magical resonances.\n\nTheir specialty is Cross-Order Prophecy — predicting how different magical disciplines will interact, seeing futures that depend on cooperation between Orders.",
+                image: "images/1841.png"
+            },
+            "3417": {
+                id: "3417", rank: 9083, fur: "Orange", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Orangeshield the Flame Prophet",
+                suggestedStory: "The second orange-furred Deep Wizard, but where Orangeclassic focuses on Order relations, Orangeshield specializes in fire-related prophecy. Their orange fur creates sympathetic resonance with fire magic, allowing them to predict volcanic eruptions, magical fire accidents, and Flame Order activities with unusual accuracy. Their black eyes provide the cool focus needed to observe fire futures without being overwhelmed by their intensity.\n\nTheir magic is Elemental Opposition Prophecy — using water magic to predict fire events, finding the points where opposing forces create prophetic clarity.",
+                image: "images/3417.png"
+            },
+            "7226": {
+                id: "7226", rank: 9172, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Deep", hatColor: "Blue",
+                suggestedName: "Tanwatcher the Patient Prophet",
+                suggestedStory: "The lowest-ranking Deep Wizard, but ranking means nothing when prophecy is the goal. Tanwatcher's tan Classic fur provides perfect camouflage in earthtone environments, while their black eyes maintain absolute focus on long-term prophetic patterns that other Wizards find too boring to track. They specialize in Patient Prophecy — following probability threads for years or decades to see how small changes create major outcomes.\n\nTheir magic focuses on Long-Term Vision — seeing the consequences of current decisions decades into the future.",
+                image: "images/7226.png"
+            },
+
+            // 🟡 RADIANT ORDER - 12 Wizards
+            "9684": {
+                id: "9684", rank: 66, fur: "White", pattern: "Blotted", eyes: "Yellow Eyes", clothes: "Shirt", realm: "Shadowmire", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Goldblot the Luminous Shadow",
+                suggestedStory: "The rarest Radiant Wizard and the greatest paradox in the Order. A Blotted from the dark Shadowmire practicing the magic of absolute light. Goldblot's white base color with chaotic dark blotting creates the perfect canvas for light magic — the blots absorb and concentrate solar energy while the white fur reflects and amplifies it. Their yellow eyes match their Order's color perfectly, while the shirt they wear is woven from light-capturing fibers that glow softly in darkness.\n\nTheir magic is Shadow-Light Synthesis — using darkness to define light, creating illumination that is only visible in contrast to shadow, and purifying corruption by burning it away from the inside.",
+                image: "images/9684.png"
+            },
+            "9604": {
+                id: "9604", rank: 277, fur: "Beige", pattern: "Classic", eyes: "Black Eyes", clothes: "Lumberjack", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Beigelumber the Worker's Light",
+                suggestedStory: "A working-class Classic whose beige fur and lumberjack outfit mark them as different from the typical scholarly atmosphere of both their home realm and their Order. Beigelumber earned their yellow hat not through theoretical study but through practical application — using light magic to guide rescue operations in collapsed buildings, providing illumination for emergency medical procedures, and creating light-based tools for construction work.\n\nTheir magic is Practical Radiance — light that serves immediate, useful purposes rather than dramatic displays.",
+                image: "images/9604.png"
+            },
+            "9469": {
+                id: "9469", rank: 464, fur: "White", pattern: "Blotted", eyes: "Sleepy Eyes", clothes: "None", realm: "Shadowmire", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Whitemist the Sleepy Purifier",
+                suggestedStory: "The second Shadowmire Wizard in the Radiant Order, but where Goldblot works with shadow-light synthesis, Whitemist specializes in gentle purification that works while the patient sleeps. Their white base color with soft blotting creates perfect channels for healing light, while their permanently sleepy appearance reflects their specialty in unconscious purification magic.\n\nTheir magic is Dream Purification — cleansing corruption, fear, and negative emotions while the subject sleeps, removing magical contamination without the pain that conscious purification causes.",
+                image: "images/9469.png"
+            },
+            "7833": {
+                id: "7833", rank: 1025, fur: "Bronze", pattern: "Shiny", eyes: "Black Eyes", clothes: "Sport Hoodie", realm: "Shadowmire", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Bronzebeacon the Shiny Light",
+                suggestedStory: "The collection's only Shiny Wizard, making them as unique among the 86 as their breed is among all dogs. Bronzebeacon's metallic bronze fur literally glows with its own light, while their sport hoodie suggests an active, dynamic approach to light magic that matches their role as beacon-keeper in the dark Shadowmire. Their black eyes provide stark contrast to their glowing fur, creating perfect focus for directing concentrated light magic.\n\nTheir specialty is Beacon Magic — creating permanent points of light that guide lost travelers, establishing magical lighthouses that pierce any darkness.",
+                image: "images/7833.png"
+            },
+            "9396": {
+                id: "9396", rank: 2131, fur: "Tan", pattern: "Husky", eyes: "Black Eyes", clothes: "Collar", realm: "Frosthollow", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Tancollar the Diplomatic Light",
+                suggestedStory: "A Husky from ice-realm Frosthollow practicing sun magic — another example of the productive tension between breed instinct and Order discipline. Tancollar's tan fur provides earth-tone grounding for solar energy, while their collar is woven from sun-crystal fibers that store daylight for use during Frosthollow's long winter nights. They earned their yellow hat by successfully establishing the first permanent light-beacon in the deepest arctic regions.\n\nTheir magic is Cold Light — solar energy that provides illumination and warmth without the heat that would melt delicate ice formations.",
+                image: "images/9396.png"
+            },
+            "5381": {
+                id: "5381", rank: 2521, fur: "Pink", pattern: "Classic", eyes: "Black Eyes", clothes: "Tracksuit", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Roseclassic the Pink Diplomat",
+                suggestedStory: "An unusual color for any Order — pink Classic fur creating visual connection to Heart magic while practicing Radiant discipline. Roseclassic's tracksuit marks them as athletic and active, suggesting dynamic rather than contemplative light magic. They earned recognition by developing techniques for Emotional Purification — using light magic to cleanse negative emotions rather than just revealing truth.\n\nTheir magic is Gentle Radiance — purification that heals rather than burns, light that reveals truth gradually rather than blindingly.",
+                image: "images/5381.png"
+            },
+            "7731": {
+                id: "7731", rank: 2866, fur: "Beige", pattern: "Classic", eyes: "Black Eyes", clothes: "Shirt", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Beigelight the Steady Illuminator",
+                suggestedStory: "The second beige Classic in the Radiant Order, but where Beigelumber focuses on practical applications, Beigelight specializes in sustained illumination for scholarly work. Their beige fur provides perfect neutrality for extended magical work, while the shirt they wear contains light-gathering threads that store solar energy for nighttime use.\n\nTheir magic is Scholarly Radiance — steady, reliable light for reading and research, illumination that doesn't interfere with delicate magical experiments.",
+                image: "images/7731.png"
+            },
+            "9025": {
+                id: "9025", rank: 3879, fur: "Gray", pattern: "Split", eyes: "Red Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Grayheart the Split Revealer",
+                suggestedStory: "From the realm of duality and complex perspectives, Grayheart brings Split vision to revelation magic. Their gray base color with subtle split-toning provides perfect neutrality for truth-magic, while their red eyes see emotional truth as clearly as factual truth. They specialize in Diplomatic Revelation — showing people uncomfortable truths in ways that promote understanding rather than conflict.\n\nTheir magic focuses on Balanced Truth — revealing both sides of complex situations, showing how apparent contradictions can both be true.",
+                image: "images/9025.png"
+            },
+            "6203": {
+                id: "6203", rank: 4781, fur: "Tan", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Sleepytan the Dream Revealer",
+                suggestedStory: "The second Husky in the Radiant Order, but where Tancollar focuses on arctic light-magic, Sleepytan specializes in revelation that occurs during rest and unconsciousness. Their tan fur provides earth-tone stability for dream-work, while their permanently sleepy appearance reflects their specialty in unconscious truth-revelation.\n\nTheir magic is Sleep Revelation — showing people important truths through prophetic dreams, cleansing false beliefs while the subject sleeps.",
+                image: "images/6203.png"
+            },
+            "9183": {
+                id: "9183", rank: 5726, fur: "White", pattern: "Split", eyes: "Pink Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Whiteheart the Pink-Eyed Illuminator",
+                suggestedStory: "A Split from the diplomatic Abyssal Reaches whose white fur and pink eyes create perfect harmony for compassionate revelation magic. Whiteheart's white base color reflects all forms of light without absorption, while their pink eyes see the emotional impact of revealed truth. They specialize in Truth with Mercy — showing people difficult truths in ways that encourage growth rather than despair.\n\nTheir magic is Compassionate Radiance — light that reveals truth gradually, purification that heals rather than burns.",
+                image: "images/9183.png"
+            },
+            "4458": {
+                id: "4458", rank: 5746, fur: "White", pattern: "Split", eyes: "Square Glasses", clothes: "None", realm: "Abyssal Reaches", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Whiteglasses the Precision Revealer",
+                suggestedStory: "The second white Split in the Radiant Order, but where Whiteheart focuses on emotional aspects of revelation, Whiteglasses specializes in precise, detailed truth-magic. Their square glasses focus light magic into exact measurements and specific details rather than broad illumination. They earned recognition by developing techniques for Forensic Radiance — using light magic to reveal exactly what happened in complex situations.\n\nTheir magic is Precision Truth — illuminating specific facts rather than general truths, revealing exact details that solve mysteries.",
+                image: "images/4458.png"
+            },
+            "3186": {
+                id: "3186", rank: 9281, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Brownheart the Common Light",
+                suggestedStory: "The least rare Wizard in the entire Order of 86 — ranking 9,281 out of 10,000, more common than 92.8% of all Doginal Dogs. Yet Brownheart practices the magic of absolute truth and divine light. Their brown Classic fur is completely ordinary, their black eyes provide simple focus, and they wear no distinctive clothing or accessories. They are the most unremarkable-looking being practicing the most remarkable magic.\n\nTheir power lies not in spectacular displays but in Simple Truth — basic, honest light that reveals reality without interpretation or complication.",
+                image: "images/3186.png"
+            },
+
+            // 🩷 HEART ORDER - 11 Wizards (Confirmed via pixel analysis)
+            "9089": {
+                id: "9089", rank: 46, fur: "Black", pattern: "Split", eyes: "Red Eyes", clothes: "Tracksuit", realm: "Abyssal Reaches", order: "Heart", hatColor: "Pink",
+                suggestedName: "Raredheart the Ultimate Amplifier",
+                suggestedStory: "The rarest Wizard in the Order of 86. The rarest Wizard in the entire Doginal Dogs collection. And they're Heart. A Black Split from the Abyssal Reaches — the realm of duality and impossible perspectives — wearing a Tracksuit (one of the very few clothed Wizards) and carrying a Ball (unique among all 86). Red eyes in a black face, the rarest eye color combined with the starkest fur contrast.\n\nRaredheart's incredible rarity translates to raw magical potential that terrifies even experienced Wizards. When they join a pack cast, the multiplicative effect of Heart magic reaches levels that could reshape reality itself. Their Red eyes — the rarest eye color among the Wizards — see emotional bonds as physical threads, visible and tangible as rope or wire. The most powerful entity in the Caninosphere carries a ball and wears a tracksuit. That's not a contradiction — that's the point.",
+                image: "images/9089.png"
+            },
+            "2498": {
+                id: "2498", rank: 888, fur: "Gray", pattern: "Classic", eyes: "Square Glasses", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Glassesheart the Scholarly Amplifier",
+                suggestedStory: "From the academic Violet Highlands, Glassesheart brings scholarly analysis to the intuitive magic of emotional bonds. Their square glasses focus not just vision but emotional perception, allowing them to study the mathematical principles underlying bond magic. The collar they wear is woven from empathy-silk that responds to emotional changes in their environment, serving as both magical focus and emotional barometer.\n\nTheir magic is Analytical Empathy — understanding exactly why emotional bonds form, predicting which relationships will strengthen or weaken over time, and optimizing pack configurations for maximum magical efficiency.",
+                image: "images/2498.png"
+            },
+            "5097": {
+                id: "5097", rank: 2327, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Tancollar the Steady Bond",
+                suggestedStory: "The second Classic in the Heart Order, but where Glassesheart focuses on theory, Tancollar specializes in long-term relationship maintenance. Their tan fur provides earth-tone stability for sustained emotional magic, while their collar contains memory-threads that preserve important emotional moments between bonded individuals.\n\nTheir magic is Relationship Maintenance — strengthening bonds that have weakened over time, helping partners rediscover what they originally loved about each other, and preventing small emotional problems from becoming major conflicts.",
+                image: "images/5097.png"
+            },
+            "6093": {
+                id: "6093", rank: 3344, fur: "Tan", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Sleepyheart the Dream Bonder",
+                suggestedStory: "The third Classic in the Heart Order, specializing in emotional bonds that form during sleep and unconscious states. Their tan fur provides neutrality for dream-work, while their permanently sleepy appearance reflects their specialty in unconscious bonding magic. They earned recognition by successfully maintaining pack bonds between Wizards who were too traumatized by the Loyalty Wars to work together while awake.\n\nTheir magic is Dream Bonding — creating emotional connections through shared dreams, healing relationship trauma while subjects sleep.",
+                image: "images/6093.png"
+            },
+            "5698": {
+                id: "5698", rank: 4055, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Brownheart the Stable Amplifier",
+                suggestedStory: "The fourth Classic in the Heart Order, demonstrating that steady, reliable breeds are naturally suited to bond magic that requires long-term commitment. Brownheart's brown fur provides earth-tone grounding for emotional magic, while their black eyes maintain focus on individual relationships rather than getting overwhelmed by group dynamics.\n\nTheir magic is Steady Amplification — providing consistent emotional support that doesn't fluctuate with circumstances, maintaining stable magical amplification even during crisis periods.",
+                image: "images/5698.png"
+            },
+            "7482": {
+                id: "7482", rank: 4477, fur: "Tan", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Pink",
+                suggestedName: "Sleepyhusky the Gentle Endurer",
+                suggestedStory: "A Husky from the harsh arctic realm practicing the magic of gentle emotional connection. Sleepyhusky's tan fur provides warmth-tones that contrast with their ice-realm heritage, while their sleepy eyes mask the intense emotional endurance that Husky breeds bring to pack work. They earned their pink hat by maintaining pack bonds during the longest winter in Frosthollow's recorded history, when isolation and darkness threatened to break every social connection in the realm.\n\nTheir magic is Endurance Bonding — emotional connections that survive any hardship, pack magic that grows stronger under pressure.",
+                image: "images/7482.png"
+            },
+            "5937": {
+                id: "5937", rank: 4940, fur: "Black", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Pink",
+                suggestedName: "Blackhusky the Shadow Amplifier",
+                suggestedStory: "The second Husky in the Heart Order, but where Sleepyhusky focuses on endurance, Blackhusky specializes in amplifying the hidden emotional strengths that people don't know they possess. Their black fur absorbs and concentrates emotional energy, while their sleepy eyes see the dormant potential in damaged or discouraged individuals.\n\nTheir magic is Hidden Strength Amplification — finding the emotional resources that people have forgotten they possess, amplifying courage in those who think they're cowards.",
+                image: "images/5937.png"
+            },
+            "9547": {
+                id: "9547", rank: 6186, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Brownsteady the Reliable Heart",
+                suggestedStory: "The fifth Classic in the Heart Order, demonstrating the natural affinity between steady breeds and consistent emotional magic. Brownsteady's brown fur provides perfect grounding for long-term relationship work, while their black eyes maintain clear focus on individual emotional needs without being distracted by complex group dynamics.\n\nTheir magic is Reliable Love — emotional support that never wavers, amplification magic that works the same way every time, and the steady affection that makes long-term pack bonds possible.",
+                image: "images/9547.png"
+            },
+            "3809": {
+                id: "3809", rank: 6597, fur: "Gray", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Grayheart the Neutral Amplifier",
+                suggestedStory: "The sixth Classic in the Heart Order, specializing in neutral amplification that doesn't favor any particular emotional approach. Grayheart's gray fur provides perfect emotional neutrality, while their black eyes maintain focus without introducing personal bias into their amplification magic. They serve as the ideal amplifier for mixed groups where different personalities need different types of emotional support.\n\nTheir magic is Universal Amplification — enhancing whatever emotional strengths each individual brings to the pack, providing amplification that adapts to different personality types.",
+                image: "images/3809.png"
+            },
+            "2044": {
+                id: "2044", rank: 7046, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Tansteady the Patient Amplifier",
+                suggestedStory: "The seventh Classic in the Heart Order, demonstrating that the breed most suited to emotional magic is also the most common breed in Pawtheon. Tansteady's tan fur provides earth-tone stability, while their patient nature makes them ideal for emotional work that requires years rather than moments to complete.\n\nTheir magic is Patient Love — emotional support that works on long timescales, amplification that builds gradually rather than flaring dramatically.",
+                image: "images/2044.png"
+            },
+            "8044": {
+                id: "8044", rank: 7577, fur: "Gray", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                suggestedName: "Sleepysteady the Gentle Dreamer",
+                suggestedStory: "The eighth and final Classic in the Heart Order, specializing in gentle emotional work that occurs during rest and sleep. Their gray fur provides neutrality for unconscious emotional work, while their permanently sleepy appearance reflects their specialty in dream-state bonding and healing.\n\nTheir magic is Gentle Dream Healing — emotional recovery that happens while sleeping, bond magic that works through shared dreams, and the kind of subtle emotional support that heals without the subject realizing they're being healed.",
+                image: "images/8044.png"
+            },
+
+            // 🟣 The WANDERER - Outside All Orders
+            "6164": {
+                id: "6164", rank: 7277, fur: "Gray", pattern: "Classic", eyes: "Round Glasses", clothes: "None", realm: "None (The Wanderer)", order: "None (The Wanderer)", hatColor: "Purple (Pointy)",
+                suggestedName: "The Wanderer, First Dog, Author of the First Howl",
+                suggestedStory: "The most ordinary-looking dog in the collection. Gray fur. Classic pattern. No clothes. No accessories. Round glasses. Rank 7,277 — deep in the bottom quartile of rarity. By every objective metric, unremarkable. Except for one detail visible only in the art: his hat is pointy. Every other Wizard's hat is rounded or folded. The Wanderer's hat ends in a sharp point — the classic wizard's hat from legend.\n\nHe is the First Dog. The being who appeared in the emptiness before existence and howled the universe into being. His story is the origin story every pup in Pawtheon knows by heart: alone in the void, he sat patiently until patience became purpose, then opened his mouth and sang reality into existence with the First Howl. Seven tones, seven moons, seven realms, and everything that followed.\n\nHis hat is purple — the color of the Arcane — but he is not Arcane. The 14 purple-hatted Wizards don't include him in their count. His hat resonates with all six Order frequencies simultaneously and with Palehowl, the Starter Moon, the weakest of the seven. He draws his power not from the concentrated magic of the Orders but from the diffuse magic that touches every common dog in Pawtheon.\n\nHe walks. Between realms, between Orders, between the breed-world and the moon-world. He tells stories — especially his own, the tale of the First Howl. He sits patiently in places where patience is needed. He howls sometimes, late at night, when the seven moons align. And when he does, every dog in Pawtheon stops what they're doing and listens.\n\nThe Wanderer was offered leadership of the 86 after the Loyalty Wars. He refused. He was offered membership in the Arcane Order because his hat is purple. He refused. He was offered a home in the Violet Highlands because he's a Classic. He refused. He doesn't lead because leading would require choosing sides, and the dog who howled everything into existence doesn't take sides. He takes walks.",
+                image: "images/6164.png"
+            }
+        };
+
+        // Search functionality
+        function searchDog() {
+            const input = document.getElementById('searchInput');
+            const dogCard = document.getElementById('dogCard');
+            const errorMessage = document.getElementById('errorMessage');
+            const dogId = input.value.replace('#', '').trim();
+            
+            if (!dogId) {
+                dogCard.style.display = 'none';
+                errorMessage.style.display = 'none';
+                return;
+            }
+            
+            const dog = wizardDogs[dogId];
+            
+            if (dog) {
+                displayDog(dog);
+                dogCard.style.display = 'block';
+                errorMessage.style.display = 'none';
+            } else {
+                dogCard.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function displayDog(dog) {
+            // Update card styling based on order
+            const dogCard = document.getElementById('dogCard');
+            dogCard.className = 'dog-card ' + dog.order.toLowerCase().replace(/[^a-z]/g, '');
+            
+            // Update image
+            document.getElementById('dogImage').src = dog.image;
+            
+            // Update basic info
+            document.getElementById('dogName').textContent = dog.suggestedName;
+            document.getElementById('dogTitle').textContent = `#${dog.id} (Rank ${dog.rank})`;
+            document.getElementById('dogId').textContent = `#${dog.id}`;
+            
+            // Update order badge
+            const orderBadge = document.getElementById('orderBadge');
+            orderBadge.textContent = dog.order;
+            orderBadge.className = 'order-badge ' + dog.order.toLowerCase().replace(/[^a-z]/g, '');
+            
+            // Update metadata
+            document.getElementById('dogRank').textContent = dog.rank.toLocaleString();
+            document.getElementById('dogFur').textContent = dog.fur;
+            document.getElementById('dogPattern').textContent = dog.pattern;
+            document.getElementById('dogEyes').textContent = dog.eyes;
+            document.getElementById('dogClothes').textContent = dog.clothes;
+            document.getElementById('dogRealm').textContent = dog.realm;
+            
+            // Pre-fill editable fields
+            document.getElementById('dogNameInput').value = dog.suggestedName;
+            document.getElementById('dogStoryInput').value = dog.suggestedStory;
+            
+            // Update hidden form fields
+            document.getElementById('formDogId').value = dog.id;
+            document.getElementById('formRank').value = dog.rank;
+            document.getElementById('formFur').value = dog.fur;
+            document.getElementById('formPattern').value = dog.pattern;
+            document.getElementById('formEyes').value = dog.eyes;
+            document.getElementById('formClothes').value = dog.clothes;
+            document.getElementById('formRealm').value = dog.realm;
+            document.getElementById('formOrder').value = dog.order;
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', searchDog);
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDog();
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('dogForm').addEventListener('submit', function(e) {
+            // Form will submit normally to FormSubmit.co
+            // No need to prevent default
+        });
+    </script>
+</body>
+</html>

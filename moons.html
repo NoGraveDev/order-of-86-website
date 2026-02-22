@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231C1C1E' width='180' height='180' rx='40'/><text x='90' y='125' font-size='100' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
+    <title>Moons of Pawtheon — Order of 86</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-bg: #000000;
+            --color-surface: #1C1C1E;
+            --color-surface-2: #2C2C2E;
+            --color-surface-3: #3A3A3C;
+            --color-text: #F5F5F7;
+            --color-text-secondary: #98989D;
+            --color-text-tertiary: #636366;
+            --color-border: rgba(255,255,255,0.08);
+            --color-separator: rgba(84,84,88,0.65);
+            --color-accent: #c9a86c;
+            --color-accent-bright: #ffd700;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.35);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition-fast: 150ms cubic-bezier(0.25,0.1,0.25,1);
+            --transition-normal: 300ms cubic-bezier(0.25,0.1,0.25,1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 72px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: var(--color-text);
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+            font-size: clamp(14px, 3.5vw, 18px);
+            overscroll-behavior: none;
+        }
+
+        /* ── Nav Bar ──────────────────────────────────────── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: rgba(28,28,30,0.82);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--color-border);
+            padding-top: env(safe-area-inset-top);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        .nav-bar a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: color var(--transition-fast), background var(--transition-fast);
+            border-bottom: 2.5px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .nav-bar a:hover { color: var(--color-text); background: rgba(255,255,255,0.04); }
+        .nav-bar a:active { opacity: 0.7; }
+        .nav-bar a.active { color: var(--color-accent-bright); border-bottom-color: var(--color-accent-bright); }
+
+        .nav-hamburger {
+            display: none;
+            width: 44px; height: 44px;
+            align-items: center; justify-content: center;
+            background: none; border: none;
+            color: var(--color-text); font-size: 24px;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation; user-select: none;
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+        }
+        .nav-hamburger:active { opacity: 0.7; }
+        .nav-logo-mobile {
+            display: none; font-size: 15px; font-weight: 700;
+            color: var(--color-accent-bright); padding: 14px 16px;
+        }
+        .nav-links-mobile {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); z-index: 150;
+            flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+            padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-links-mobile.open { display: flex; }
+        .nav-links-mobile a {
+            color: var(--color-text-secondary); text-decoration: none;
+            font-size: 20px; font-weight: 600; padding: 16px 32px;
+            min-height: 44px; display: flex; align-items: center;
+            -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+        }
+        .nav-links-mobile a.active { color: var(--color-accent-bright); }
+        .nav-links-mobile a:active { opacity: 0.7; }
+        .nav-close-mobile {
+            position: absolute; top: env(safe-area-inset-top, 12px); right: 12px;
+            width: 44px; height: 44px; background: none; border: none;
+            color: var(--color-text); font-size: 28px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ── Starfield ────────────────────────────────────── */
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* ── Container ────────────────────────────────────── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
+
+        /* ── Hero ─────────────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 48px 16px 16px;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--color-accent-bright) 0%, var(--color-accent) 40%, #e8d5a3 70%, var(--color-accent-bright) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+            color: var(--color-text-secondary);
+            margin-top: 10px;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .accent-bar {
+            height: 3px;
+            border-radius: 2px;
+            margin: 14px auto 24px;
+            width: 160px;
+            transition: background 0.5s ease;
+        }
+
+        /* ── Orbit Layout ─────────────────────────────────── */
+        .orbit-wrapper { display: flex; justify-content: center; padding: 20px 0 50px; }
+        .orbit-ring { position: relative; width: 560px; height: 560px; }
+        .orbit-ring::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 420px; height: 420px;
+            transform: translate(-50%, -50%);
+            border: 1px dashed rgba(255,255,255,0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .moon-slot {
+            position: absolute;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            transform: translate(-50%, -50%);
+        }
+        .moon-slot .moon-wrap { position: relative; }
+        .moon-slot .moon-glow {
+            position: absolute; inset: -14px; border-radius: 50%;
+            filter: blur(16px); opacity: 0; pointer-events: none;
+            transition: opacity 1s ease;
+        }
+        .moon-slot .moon-body {
+            width: 90px; height: 90px; border-radius: 50%;
+            position: relative; overflow: hidden;
+        }
+        .moon-slot .moon-body canvas { width: 100%; height: 100%; display: block; }
+        .moon-slot .moon-name {
+            font-weight: 700; font-size: 13px; text-align: center;
+            transition: color 1s ease, opacity 1s ease;
+        }
+        .moon-slot .moon-phase {
+            font-size: 11px; color: #777; text-align: center;
+            min-height: 1em; transition: color 1s ease;
+        }
+        .moon-slot.palehowl .moon-body { width: 52px; height: 52px; }
+        .moon-slot.palehowl .moon-glow { inset: -10px; filter: blur(12px); }
+        .moon-slot.palehowl .moon-body canvas { width: 52px; height: 52px; }
+
+        /* ── Lore Sections (Glass Cards) ──────────────────── */
+        .lore-card {
+            background: rgba(28,28,30,0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            padding: 32px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            will-change: transform;
+        }
+        .lore-card.visible { opacity: 1; transform: translateY(0); }
+        .lore-card h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: var(--color-accent-bright);
+            letter-spacing: -0.01em;
+        }
+
+        .mechanic {
+            margin-bottom: 20px;
+            padding: 16px;
+            background: var(--color-surface-2);
+            border-radius: var(--radius-md);
+            border-left: 3px solid rgba(255,255,255,0.12);
+        }
+        .mechanic h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--color-text);
+        }
+        .mechanic p {
+            color: var(--color-text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .shard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .shard-card {
+            background: var(--color-surface-2);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--color-border);
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+        }
+        @media (hover: hover) {
+            .shard-card:hover {
+                transform: translateY(-3px);
+                box-shadow: var(--shadow-md);
+            }
+        }
+        .shard-card:active { transform: scale(0.98); }
+        .shard-card h4 { margin-bottom: 6px; font-size: 15px; font-weight: 700; }
+        .shard-card p { color: var(--color-text-secondary); font-size: 13px; line-height: 1.5; }
+        .shard-intro { margin-bottom: 20px; color: var(--color-text-secondary); font-size: 14px; line-height: 1.6; }
+
+        /* ── Responsive ───────────────────────────────────── */
+        @media (max-width: 768px) {
+            .nav-bar { justify-content: flex-start; position: relative; }
+            .nav-bar > a { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-logo-mobile { display: block; }
+            .orbit-ring { width: 340px; height: 340px; }
+            .orbit-ring::before { width: 250px; height: 250px; }
+            .moon-slot .moon-body { width: 56px; height: 56px; }
+            .moon-slot .moon-glow { inset: -10px; filter: blur(10px); }
+            .moon-slot.palehowl .moon-body { width: 36px; height: 36px; }
+            .moon-slot .moon-name { font-size: 11px; }
+            .moon-slot .moon-phase { font-size: 10px; }
+            .lore-card { padding: 20px; }
+            .shard-grid { grid-template-columns: 1fr; }
+            .hero { padding: 32px 16px 12px; }
+        }
+        @media (max-width: 480px) {
+            .orbit-ring { width: 280px; height: 280px; }
+            .orbit-ring::before { width: 200px; height: 200px; }
+            .moon-slot .moon-body { width: 44px; height: 44px; }
+            .moon-slot.palehowl .moon-body { width: 28px; height: 28px; }
+            .moon-slot .moon-name { font-size: 10px; }
+            .moon-slot .moon-phase { font-size: 9px; }
+            .lore-card { padding: 16px; }
+            .mechanic { padding: 12px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* bottom spacing */
+        .page-bottom { height: 64px; }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <span class="nav-logo-mobile">🌙 Moons of Pawtheon</span>
+    <a href="index.html">⚡ The 86 Wizards</a>
+    <a href="moons.html" class="active">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">☰</button>
+</nav>
+<div class="nav-links-mobile" id="navMobileMenu">
+    <button class="nav-close-mobile" id="navCloseMenu" aria-label="Close menu">✕</button>
+    <a href="index.html">⚡ The 86 Wizards</a>
+    <a href="moons.html" class="active">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+</div>
+
+<canvas id="starfield"></canvas>
+
+<div class="container">
+    <section class="hero">
+        <h1 class="hero-title">Moons of Pawtheon</h1>
+        <div class="hero-subtitle">Seven celestial bodies govern the tides of magic across the Caninosphere</div>
+        <div class="accent-bar" id="accentBar"></div>
+    </section>
+
+    <div class="orbit-wrapper">
+        <div class="orbit-ring" id="orbitRing"></div>
+    </div>
+
+    <div class="lore-card animate-on-scroll">
+        <h2>☽ Moon Mechanics</h2>
+        <div class="mechanic">
+            <h3>🌕 Full Moon — Peak Power</h3>
+            <p>When a moon reaches fullness, its aligned Order surges to maximum strength. Spells carry double resonance, and the Loyalty Network hums with amplified energy.</p>
+        </div>
+        <div class="mechanic">
+            <h3>🌑 New Moon — Lowest Ebb</h3>
+            <p>At new moon, the Order's magic dims to a whisper. Bonds stretch thin, spells fizzle, and the Loyalty Network transmits only the faintest signals.</p>
+        </div>
+        <div class="mechanic">
+            <h3>🌘 Eclipse — Destabilization</h3>
+            <p>When one moon passes before another, both Orders destabilize. Magic becomes unpredictable — spells may invert, bonds may sever. Feared and studied in equal measure.</p>
+        </div>
+        <div class="mechanic">
+            <h3>✨ Conjunction — Joint Magic</h3>
+            <p>Two moons full simultaneously unlock joint magic of extraordinary power. Flame-Wild conjunctions grow fire-resistant forests. Deep-Arcane conjunctions reveal truths hidden across time.</p>
+        </div>
+        <div class="mechanic">
+            <h3>🌟 Septenary Alignment — The Grand Convergence</h3>
+            <p>Once per century, all seven moons align at fullness. The Loyalty Network maxes out. Palehowl — the weakest moon — blazes brightest of all, channeling combined light through every common dog in Pawtheon.</p>
+        </div>
+    </div>
+
+    <div class="lore-card animate-on-scroll">
+        <h2>💎 Moon Shards</h2>
+        <p class="shard-intro">Crystallized moonlight fragments — the most valuable objects in the Caninosphere after the 86 Wizard Hats. Each shard carries a fraction of its moon's power and glows with its color forever.</p>
+        <div class="shard-grid">
+            <div class="shard-card" style="border-left:3px solid #FF6B00;"><h4 style="color:#FF6B00;">🟠 Emberhowl Shards</h4><p>Warm to the touch, never cool. Forge weapons that never lose their edge.</p></div>
+            <div class="shard-card" style="border-left:3px solid #FFD700;"><h4 style="color:#FFD700;">🟡 Solaris Shards</h4><p>Glow like trapped sunlight. Used in healing lamps and truth lanterns.</p></div>
+            <div class="shard-card" style="border-left:3px solid #1E90FF;"><h4 style="color:#1E90FF;">🔵 Deepwell Shards</h4><p>Cold and heavy. Used in scrying pools and prophecy mirrors. They hum when the future shifts.</p></div>
+            <div class="shard-card" style="border-left:3px solid #2ECC40;"><h4 style="color:#2ECC40;">🟢 Evergreen Shards</h4><p>Sprout tiny leaves when held. Buried ones create permanent groves.</p></div>
+            <div class="shard-card" style="border-left:3px solid #9B59B6;"><h4 style="color:#9B59B6;">🟣 Umbra Shards</h4><p>Shift between translucent and opaque. Whisper formulas when held to the ear.</p></div>
+            <div class="shard-card" style="border-left:3px solid #FF69B4;"><h4 style="color:#FF69B4;">🩷 Roseglow Shards</h4><p>Pulse like a heartbeat. Two dogs holding matching shards feel each other across any distance.</p></div>
+            <div class="shard-card" style="border-left:3px solid #C0C0C0;"><h4 style="color:#C0C0C0;">⚪ Palehowl Shards</h4><p>The rarest of all. A single shard can amplify any other shard's power tenfold.</p></div>
+        </div>
+    </div>
+
+    <div class="page-bottom"></div>
+</div>
+
+<script>
+// === Mobile Nav ===
+document.getElementById('navHamburger').addEventListener('click', () => {
+    document.getElementById('navMobileMenu').classList.add('open');
+});
+document.getElementById('navCloseMenu').addEventListener('click', () => {
+    document.getElementById('navMobileMenu').classList.remove('open');
+});
+
+// === Scroll-triggered animations ===
+const scrollObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            scrollObserver.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+
+// === MOON PHASE RENDERING ===
+const MOONS = [
+    { name: 'Emberhowl',  color: '#FF6B00', title: 'The Flame',   cycle: 18, wizards: 18, emoji: '🟠' },
+    { name: 'Solaris',     color: '#FFD700', title: 'The Radiant', cycle: 12, wizards: 12, emoji: '🟡' },
+    { name: 'Deepwell',    color: '#1E90FF', title: 'The Deep',    cycle: 13, wizards: 13, emoji: '🔵' },
+    { name: 'Evergreen',   color: '#2ECC40', title: 'The Wild',    cycle: 18, wizards: 18, emoji: '🟢' },
+    { name: 'Umbra',       color: '#9B59B6', title: 'The Arcane',  cycle: 14, wizards: 14, emoji: '🟣' },
+    { name: 'Roseglow',    color: '#FF69B4', title: 'The Heart',   cycle: 11, wizards: 11, emoji: '🩷' },
+    { name: 'Palehowl',    color: '#C0C0C0', title: 'The Wanderer',cycle: 30, wizards: 0,  emoji: '⚪', erratic: true },
+];
+
+const offsets = [0, 3.2, 6.1, 1.5, 8.7, 4.4, 12.0];
+
+// === Starfield ===
+(function(){
+    const c = document.getElementById('starfield'), ctx = c.getContext('2d');
+    let stars = [];
+    function resize(){
+        c.width = innerWidth; c.height = innerHeight;
+        stars = Array.from({length:180}, ()=>({
+            x:Math.random()*c.width, y:Math.random()*c.height,
+            r:Math.random()*1.4+0.3, a:Math.random(), da:(Math.random()-0.5)*0.012
+        }));
+    }
+    resize(); addEventListener('resize', resize);
+    (function draw(){
+        ctx.clearRect(0,0,c.width,c.height);
+        for(const s of stars){
+            s.a+=s.da; if(s.a>1||s.a<0.1)s.da*=-1;
+            ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+            ctx.fillStyle=`rgba(255,255,255,${s.a.toFixed(2)})`; ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    })();
+})();
+
+// === Build moon DOM ===
+const ring = document.getElementById('orbitRing');
+const ringW = () => ring.getBoundingClientRect().width;
+const ringH = () => ring.getBoundingClientRect().height;
+
+function hexToRgb(h){ return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
+
+const moonEls = MOONS.map((m, i) => {
+    const isPale = i === 6;
+    const size = isPale ? 52 : 90;
+    const res = size * 2;
+    const slot = document.createElement('div');
+    slot.className = 'moon-slot' + (isPale ? ' palehowl' : '');
+    slot.innerHTML = `
+        <div class="moon-wrap">
+            <div class="moon-glow" style="background:${m.color};"></div>
+            <div class="moon-body">
+                <canvas width="${res}" height="${res}"></canvas>
+            </div>
+        </div>
+        <div class="moon-name" style="color:${m.color};">${m.name}</div>
+        <div class="moon-phase"></div>
+    `;
+    ring.appendChild(slot);
+    const canvas = slot.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    return {
+        el: slot, canvas, ctx, size: res,
+        glow: slot.querySelector('.moon-glow'),
+        body: slot.querySelector('.moon-body'),
+        nameEl: slot.querySelector('.moon-name'),
+        phaseEl: slot.querySelector('.moon-phase'),
+        data: m, index: i
+    };
+});
+
+function positionMoons() {
+    const W = ringW(), H = ringH();
+    const cx = W/2, cy = H/2;
+    const orbitR = Math.min(W, H) * 0.375;
+    for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2 - Math.PI / 2;
+        moonEls[i].el.style.left = (cx + Math.cos(angle) * orbitR) + 'px';
+        moonEls[i].el.style.top = (cy + Math.sin(angle) * orbitR) + 'px';
+    }
+    moonEls[6].el.style.left = cx + 'px';
+    moonEls[6].el.style.top = cy + 'px';
+}
+positionMoons();
+addEventListener('resize', positionMoons);
+
+function getPhase(cycle, elapsed, erratic) {
+    let t = (elapsed % cycle) / cycle;
+    if (erratic) {
+        t += 0.05 * Math.sin(elapsed * 0.17) + 0.03 * Math.sin(elapsed * 0.31);
+        t = ((t % 1) + 1) % 1;
+    }
+    return t;
+}
+
+function phaseName(t) {
+    if (t < 0.05 || t > 0.95) return '🌑 New Moon';
+    if (t < 0.2) return '🌒 Waxing Crescent';
+    if (t < 0.3) return '🌓 First Quarter';
+    if (t < 0.45) return '🌔 Waxing Gibbous';
+    if (t < 0.55) return '🌕 Full Moon';
+    if (t < 0.7) return '🌖 Waning Gibbous';
+    if (t < 0.8) return '🌗 Last Quarter';
+    return '🌘 Waning Crescent';
+}
+
+function illumination(t) { return 1 - 2 * Math.abs(t - 0.5); }
+
+function drawMoonCanvas(el, phase) {
+    const ctx = el.ctx;
+    const S = el.size;
+    const R = S / 2;
+    const cx = R, cy = R;
+    const [r, g, b] = hexToRgb(el.data.color);
+    const illum = illumination(phase);
+    const waxing = phase <= 0.5;
+
+    ctx.clearRect(0, 0, S, S);
+
+    const bright = Math.max(0.08, illum);
+    const br = Math.round(r * bright), bg2 = Math.round(g * bright), bb = Math.round(b * bright);
+    const hr = Math.min(255, r + Math.round(100 * bright));
+    const hg = Math.min(255, g + Math.round(100 * bright));
+    const hb = Math.min(255, b + Math.round(100 * bright));
+    const baseGrd = ctx.createRadialGradient(cx * 0.75, cy * 0.7, 0, cx, cy, R);
+    baseGrd.addColorStop(0, `rgba(${hr},${hg},${hb},1)`);
+    baseGrd.addColorStop(0.5, `rgba(${br},${bg2},${bb},1)`);
+    baseGrd.addColorStop(1, `rgba(${Math.round(br*0.25)},${Math.round(bg2*0.25)},${Math.round(bb*0.25)},1)`);
+    ctx.beginPath();
+    ctx.arc(cx, cy, R - 1, 0, Math.PI * 2);
+    ctx.fillStyle = baseGrd;
+    ctx.fill();
+
+    const phaseAngle = Math.PI * (1 - illum);
+    const terminatorXRadius = R * Math.cos(phaseAngle);
+
+    ctx.save();
+    ctx.beginPath();
+
+    if (illum < 0.04) {
+        ctx.arc(cx, cy, R + 1, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(6,6,18,0.96)';
+        ctx.fill();
+    } else if (illum > 0.995) {
+        // skip
+    } else {
+        if (waxing) {
+            ctx.arc(cx, cy, R, -Math.PI / 2, Math.PI / 2, true);
+            ctx.ellipse(cx, cy, Math.max(1, Math.abs(terminatorXRadius)), R, 0, Math.PI / 2, -Math.PI / 2, terminatorXRadius < 0);
+        } else {
+            ctx.arc(cx, cy, R, Math.PI / 2, -Math.PI / 2, true);
+            ctx.ellipse(cx, cy, Math.max(1, Math.abs(terminatorXRadius)), R, 0, -Math.PI / 2, Math.PI / 2, terminatorXRadius < 0);
+        }
+        ctx.closePath();
+        const shadowAlpha = 0.88 + (1 - illum) * 0.1;
+        ctx.fillStyle = `rgba(6,6,18,${shadowAlpha.toFixed(2)})`;
+        ctx.fill();
+    }
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, R - 1, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(${r},${g},${b},${(0.15 + illum * 0.35).toFixed(2)})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    el.glow.style.opacity = (illum * 0.55).toFixed(2);
+    const gs = Math.round(illum * 22);
+    el.body.style.boxShadow = `0 0 ${gs}px ${Math.round(gs*0.6)}px rgba(${r},${g},${b},${(illum*0.45).toFixed(2)})`;
+    el.nameEl.style.opacity = (0.2 + illum * 0.8).toFixed(2);
+    el.phaseEl.textContent = phaseName(phase);
+    el.phaseEl.style.color = `rgba(${r},${g},${b},${(0.35 + illum * 0.65).toFixed(2)})`;
+}
+
+const accentBar = document.getElementById('accentBar');
+function updateTheme(phases) {
+    let bestIdx = 0, bestDist = 1;
+    phases.forEach((t,i) => {
+        const dist = Math.abs(t - 0.5);
+        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+    });
+    const m = MOONS[bestIdx];
+    const [r,g,b] = hexToRgb(m.color);
+    const s = 0.08 * (1 - bestDist * 2);
+    document.body.style.background = `linear-gradient(135deg,
+        rgb(${26+Math.round(r*s)},${26+Math.round(g*s)},${46+Math.round(b*s)}),
+        rgb(${22+Math.round(r*s*0.5)},${33+Math.round(g*s*0.5)},${62+Math.round(b*s*0.5)}),
+        rgb(${15+Math.round(r*s*0.3)},${52+Math.round(g*s*0.3)},${96+Math.round(b*s*0.3)}))`;
+    accentBar.style.background = m.color;
+}
+
+const t0 = performance.now() / 1000;
+function tick() {
+    const now = performance.now() / 1000 - t0;
+    const phases = [];
+    moonEls.forEach((el, i) => {
+        const phase = getPhase(el.data.cycle, now + offsets[i], el.data.erratic);
+        phases.push(phase);
+        drawMoonCanvas(el, phase);
+    });
+    updateTheme(phases);
+    requestAnimationFrame(tick);
+}
+tick();
+</script>
+</body>
+</html>

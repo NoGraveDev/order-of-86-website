@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a1a2e">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231C1C1E' width='180' height='180' rx='40'/><text x='90' y='125' font-size='100' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
+<title>Order of 86: Tower Defense</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:#1a1a2e;color:#e0d6c8;font-family:'Courier New',monospace;display:flex;flex-direction:column;align-items:center;min-height:100vh;min-height:100dvh;overflow-x:hidden;overscroll-behavior:none}
+nav{width:100%;background:#0f0f1e;padding:8px 20px;display:flex;gap:20px;align-items:center;border-bottom:2px solid #3a2a1a}
+nav a{color:#c9a86c;text-decoration:none;font-size:14px;transition:color .2s}
+nav a:hover{color:#ffd700}
+nav a:active{opacity:.7}
+nav a,nav .logo{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;min-height:44px;display:inline-flex;align-items:center}
+nav .logo{font-weight:bold;font-size:16px;color:#ffd700}
+#gameWrap{display:flex;gap:0;margin:10px auto;position:relative}
+canvas{border:2px solid #3a2a1a;cursor:crosshair;image-rendering:pixelated}
+#ui{width:200px;background:#12122a;border:2px solid #3a2a1a;border-left:none;padding:10px;display:flex;flex-direction:column;gap:8px;font-size:12px}
+#ui h3{color:#ffd700;font-size:14px;text-align:center;border-bottom:1px solid #3a2a1a;padding-bottom:4px}
+.tower-btn{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#1a1a3a;border:2px solid #333;border-radius:4px;cursor:pointer;color:#e0d6c8;font-family:inherit;font-size:11px;transition:all .15s}
+.tower-btn:hover{border-color:#ffd700;background:#222250}
+.tower-btn.selected{border-color:#ffd700;background:#2a2a5a}
+.tower-btn .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tower-btn .cost{color:#c9a86c;margin-left:auto}
+#info{background:#1a1a3a;padding:8px;border-radius:4px;min-height:80px;font-size:11px;line-height:1.4}
+#info .name{color:#ffd700;font-size:13px}
+.action-btn{padding:5px;background:#2a2a5a;border:1px solid #555;color:#e0d6c8;cursor:pointer;font-family:inherit;font-size:11px;border-radius:3px;transition:all .15s}
+.action-btn:hover{background:#3a3a7a;border-color:#ffd700}
+#topBar{width:800px;background:#0f0f1e;border:2px solid #3a2a1a;border-bottom:none;padding:6px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+#topBar span{display:flex;align-items:center;gap:4px}
+#waveBtn{padding:4px 14px;background:#2a5a2a;border:2px solid #4a4;color:#fff;cursor:pointer;font-family:inherit;font-size:12px;font-weight:bold;border-radius:4px;transition:all .15s}
+#waveBtn:hover{background:#3a7a3a}
+#waveBtn:disabled{background:#333;border-color:#555;color:#888;cursor:default}
+#bottomBar{width:1000px;background:#0f0f1e;border:2px solid #3a2a1a;border-top:none;padding:6px 12px;font-size:11px;color:#8a7a6a;font-style:italic;text-align:center;min-height:28px}
+#overlay{position:absolute;top:0;left:0;width:800px;height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,10,20,.92);z-index:10;text-align:center}
+#overlay h1{font-size:32px;color:#ffd700;margin-bottom:8px;text-shadow:0 0 20px rgba(255,215,0,.5)}
+#overlay h2{font-size:20px;color:#c9a86c;margin-bottom:20px}
+#overlay p{color:#8a7a6a;margin-bottom:20px;max-width:400px;line-height:1.5;font-size:13px}
+#overlay button{padding:10px 40px;font-size:18px;background:#2a5a2a;border:3px solid #4a4;color:#ffd700;cursor:pointer;font-family:inherit;font-weight:bold;border-radius:6px;transition:all .2s}
+#overlay button:hover{background:#3a7a3a;transform:scale(1.05)}
+#overlay button:active{transform:scale(.95)}
+
+/* Rotate device overlay */
+#rotateOverlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(10,10,20,.96);flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#e0d6c8;padding:20px}
+#rotateOverlay .rotate-icon{font-size:64px;margin-bottom:16px;animation:rotateHint 2s ease-in-out infinite}
+#rotateOverlay h2{color:#ffd700;margin-bottom:8px;font-size:20px}
+#rotateOverlay p{color:#8a7a6a;max-width:280px;font-size:14px;line-height:1.5}
+@keyframes rotateHint{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
+
+/* Tower buttons touch targets */
+.tower-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;min-height:44px}
+.tower-btn:active{transform:scale(.95)}
+.action-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;min-height:44px}
+.action-btn:active{transform:scale(.95)}
+#waveBtn{-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;min-height:48px;font-size:14px;padding:8px 20px}
+#waveBtn:active:not(:disabled){transform:scale(.95)}
+
+/* Mobile responsive */
+@media (max-width:1024px){
+    #gameWrap{flex-direction:column;width:100%;max-width:100vw}
+    canvas{width:100%!important;height:auto!important;max-width:100vw}
+    #ui{width:100%;flex-direction:row;flex-wrap:wrap;border-left:2px solid #3a2a1a;border-top:none;padding:8px;gap:6px}
+    #ui h3{width:100%;font-size:12px;margin:0;padding:0;border:none;text-align:left}
+    .tower-btn{flex:0 0 auto;padding:8px 10px;font-size:12px}
+    #info{flex:1 1 100%;min-height:40px;font-size:11px}
+    #topBar{width:100%;font-size:12px;flex-wrap:wrap;gap:8px;justify-content:center}
+    #bottomBar{width:100%;font-size:10px}
+}
+
+@media (max-width:768px) and (orientation:portrait){
+    #rotateOverlay{display:flex}
+}
+@media (max-width:768px) and (orientation:landscape){
+    #rotateOverlay{display:none}
+    nav{padding:4px 10px;gap:10px}
+    nav a{font-size:12px}
+    #topBar{padding:4px 8px;font-size:11px}
+    #gameWrap{flex-direction:row;margin:4px auto}
+    canvas{width:auto;height:calc(100dvh - 90px);max-height:calc(100dvh - 90px)}
+    #ui{width:160px;flex-direction:column;border-left:none;border-left:2px solid #3a2a1a}
+    .tower-btn{font-size:11px;padding:6px 8px}
+    #bottomBar{padding:2px 8px;font-size:10px}
+}
+</style>
+</head>
+<body>
+<nav>
+<span class="logo">🐕‍🦺 Order of 86</span>
+<a href="../order-of-86-website/index.html">Main Site</a>
+<a href="../order-of-86-website/moons.html">Moons</a>
+<a href="#" style="color:#ffd700">Tower Defense</a>
+</nav>
+
+<div id="topBar">
+<span>🌊 Wave: <b id="waveNum">0</b>/15</span>
+<span>🌙 <b id="shards">100</b> Shards</span>
+<span>❤️ <b id="lives">20</b> Lives</span>
+<button id="waveBtn" onclick="startWave()">Start Wave 1</button>
+</div>
+
+<div id="gameWrap">
+<canvas id="c" width="800" height="600"></canvas>
+<div id="ui">
+<h3>🧙 Towers</h3>
+<button class="tower-btn" onclick="selectTower(0)"><span class="dot" style="background:#e87020"></span>Flame<span class="cost">25</span></button>
+<button class="tower-btn" onclick="selectTower(1)"><span class="dot" style="background:#e8d020"></span>Radiant<span class="cost">40</span></button>
+<button class="tower-btn" onclick="selectTower(2)"><span class="dot" style="background:#2080e0"></span>Deep<span class="cost">25</span></button>
+<button class="tower-btn" onclick="selectTower(3)"><span class="dot" style="background:#30a030"></span>Wild<span class="cost">25</span></button>
+<button class="tower-btn" onclick="selectTower(4)"><span class="dot" style="background:#9040d0"></span>Arcane<span class="cost">40</span></button>
+<button class="tower-btn" onclick="selectTower(5)"><span class="dot" style="background:#e060a0"></span>Heart<span class="cost">30</span></button>
+<h3>📋 Info</h3>
+<div id="info">Click a tower type to place it, or click a placed tower for details.</div>
+<div style="display:flex;gap:4px">
+<button class="action-btn" style="flex:1" id="upgradeBtn" onclick="upgradeTower()">Upgrade</button>
+<button class="action-btn" style="flex:1" id="sellBtn" onclick="sellTower()">Sell</button>
+</div>
+</div>
+<div id="overlay">
+<h1>🐕‍🦺 Order of 86</h1>
+<h2>Tower Defense</h2>
+<p>The Great Rot seeps into Pawtheon. Only the six Wizard Orders can hold the line. Place your towers, defend the realm!</p>
+<button onclick="startGame()">⚔️ Play</button>
+</div>
+</div>
+
+<div id="bottomBar">The wizards of Pawtheon await your command...</div>
+
+<div id="rotateOverlay">
+    <div class="rotate-icon">📱</div>
+    <h2>Rotate Your Device</h2>
+    <p>Tower defense works best in landscape mode. Please rotate your phone for the full experience!</p>
+</div>
+
+<script>
+const canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+ctx.imageSmoothingEnabled=false;
+const W=800,H=600,TW=40,COLS=20,ROWS=15;
+
+// Path definition (grid coords) - S-curve
+const PATH=[
+[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[6,2],[7,2],[8,2],[9,2],[10,2],
+[10,3],[10,4],[10,5],[10,6],
+[9,6],[8,6],[7,6],[6,6],[5,6],[4,6],[3,6],[2,6],
+[2,7],[2,8],[2,9],[2,10],
+[3,10],[4,10],[5,10],[6,10],[7,10],[8,10],[9,10],[10,10],[11,10],[12,10],[13,10],[14,10],
+[14,9],[14,8],[14,7],
+[15,7],[16,7],[17,7],
+[17,8],[17,9],[17,10],[17,11],[17,12],
+[18,12],[19,12]
+];
+
+const pathSet=new Set(PATH.map(p=>p[0]+','+p[1]));
+// Pixel path (center of each tile)
+const pixelPath=PATH.map(p=>({x:p[0]*TW+TW/2,y:p[1]*TW+TW/2}));
+
+// Tower definitions
+const TOWERS=[
+{name:'Flame Tower',order:'Flame',color:'#e87020',cost:25,range:120,damage:15,rate:60,splash:50,type:'flame',desc:'Fireball with splash damage'},
+{name:'Radiant Tower',order:'Radiant',color:'#e8d020',cost:40,range:160,damage:25,rate:100,splash:0,type:'radiant',desc:'Piercing solar beam'},
+{name:'Deep Tower',order:'Deep',color:'#2080e0',cost:25,range:110,damage:8,rate:30,splash:0,type:'deep',desc:'Ice bolt, slows enemies'},
+{name:'Wild Tower',order:'Wild',color:'#30a030',cost:25,range:100,damage:10,rate:50,splash:60,type:'wild',desc:'Vine whip, poison DOT'},
+{name:'Arcane Tower',order:'Arcane',color:'#9040d0',cost:40,range:200,damage:35,rate:80,splash:0,type:'arcane',desc:'Long range arcane bolt'},
+{name:'Heart Tower',order:'Heart',color:'#e060a0',cost:30,range:0,damage:0,rate:0,splash:0,type:'heart',desc:'Boosts adjacent towers +50%'}
+];
+
+const UPGRADE_COSTS=[20,35];
+
+// Enemy definitions
+const ENEMY_TYPES={
+rot:{name:'Rot Spawn',hp:40,speed:1,reward:5,lives:1},
+starter:{name:'Corrupted Starter',hp:80,speed:1.5,reward:8,lives:2},
+lizard:{name:'Dark Lizard',hp:30,speed:2.5,reward:4,lives:1},
+owl:{name:'Shadow Owl',hp:60,speed:1.8,reward:10,lives:2,flying:true},
+titan:{name:'Rot Titan',hp:500,speed:0.7,reward:30,lives:3,boss:true}
+};
+
+// Wave definitions
+const WAVES=[
+[{type:'rot',count:10}],
+[{type:'rot',count:12},{type:'lizard',count:5}],
+[{type:'starter',count:8},{type:'rot',count:8}],
+[{type:'lizard',count:15},{type:'rot',count:5}],
+[{type:'rot',count:10},{type:'starter',count:5},{type:'titan',count:1}],// boss
+[{type:'starter',count:12},{type:'lizard',count:8}],
+[{type:'owl',count:6},{type:'rot',count:10}],
+[{type:'lizard',count:20},{type:'starter',count:5}],
+[{type:'owl',count:8},{type:'starter',count:8}],
+[{type:'rot',count:15},{type:'starter',count:8},{type:'titan',count:1}],// boss
+[{type:'owl',count:10},{type:'lizard',count:15}],
+[{type:'starter',count:15},{type:'owl',count:8}],
+[{type:'lizard',count:25},{type:'starter',count:10}],
+[{type:'owl',count:12},{type:'starter',count:12},{type:'rot',count:10}],
+[{type:'titan',count:3},{type:'starter',count:15},{type:'owl',count:10},{type:'lizard',count:20}]// final
+];
+
+// Flavor text
+const FLAVOR=[
+"The Rot advances from the northern wastes...",
+"Emberhowl blazes with righteous fury!",
+"The Deep wizards call upon frozen tides.",
+"Wildgrowth vines entangle the darkness.",
+"Arcane bolts pierce the veil of shadow!",
+"The Heart amplifies the pack's resolve.",
+"Crystal Lizards scurry through the gloom...",
+"Shadow Owls darken the Pawtheon skies!",
+"A Rot Titan shakes the earth!",
+"The six Orders stand united against the dark.",
+"Moon Shards shimmer with protective magic.",
+"Hold the line, brave wizards of Pawtheon!"
+];
+
+// Game state
+let state='title',shards=100,lives=20,wave=0,waving=false;
+let towers=[],enemies=[],projectiles=[],particles=[];
+let selectedType=-1,selectedTower=null;
+let spawnQueue=[],spawnTimer=0;
+let mouseX=0,mouseY=0,hoverCol=-1,hoverRow=-1;
+let flavorText=FLAVOR[0],flavorTimer=0;
+let frame=0;
+
+// Decorations (generated once)
+let decorations=[];
+function genDecorations(){
+decorations=[];
+const rng=(s)=>{s=s*1337+7;return((s*s*31337)&0x7fffffff)/0x7fffffff};
+for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+if(pathSet.has(c+','+r))continue;
+let v=rng(r*COLS+c+42);
+if(v<.12)decorations.push({x:c,y:r,type:'tree'});
+else if(v<.18)decorations.push({x:c,y:r,type:'rock'});
+else if(v<.22)decorations.push({x:c,y:r,type:'mush'});
+}}
+
+function startGame(){
+state='playing';
+document.getElementById('overlay').style.display='none';
+shards=100;lives=20;wave=0;waving=false;
+towers=[];enemies=[];projectiles=[];particles=[];
+spawnQueue=[];
+updateUI();
+genDecorations();
+}
+
+function updateUI(){
+document.getElementById('waveNum').textContent=wave;
+document.getElementById('shards').textContent=shards;
+document.getElementById('lives').textContent=lives;
+const btn=document.getElementById('waveBtn');
+if(wave>=15){btn.disabled=true;btn.textContent='Complete!';}
+else if(waving){btn.disabled=true;btn.textContent='In Progress...';}
+else{btn.disabled=false;btn.textContent=`Start Wave ${wave+1}`;}
+}
+
+function selectTower(i){
+selectedTower=null;
+selectedType=(selectedType===i)?-1:i;
+document.querySelectorAll('.tower-btn').forEach((b,j)=>b.classList.toggle('selected',j===selectedType));
+if(selectedType>=0){
+const t=TOWERS[selectedType];
+document.getElementById('info').innerHTML=`<div class="name">${t.name}</div>${t.desc}<br>Cost: ${t.cost} 🌙<br>${t.type==='heart'?'Boosts adjacent +50%':`DMG: ${t.damage} | Range: ${t.range/TW|0} tiles`}`;
+}else{
+document.getElementById('info').textContent='Click a tower type to place.';
+}
+updateInfoButtons();
+}
+
+function updateInfoButtons(){
+document.getElementById('upgradeBtn').style.display=selectedTower?'block':'none';
+document.getElementById('sellBtn').style.display=selectedTower?'block':'none';
+}
+
+function selectPlacedTower(t){
+selectedType=-1;
+selectedTower=t;
+document.querySelectorAll('.tower-btn').forEach(b=>b.classList.remove('selected'));
+const def=TOWERS[t.typeIdx];
+const boosted=getBoost(t);
+const dmg=Math.round(def.damage*(1+.5*t.level)*(boosted?1.5:1));
+document.getElementById('info').innerHTML=`<div class="name">${def.name} Lv.${t.level+1}</div>${def.desc}<br>${def.type==='heart'?'Boosting adjacent towers':`DMG: ${dmg} | Range: ${(def.range+t.level*20)/TW|0}`}<br>${t.level<2?`Upgrade: ${UPGRADE_COSTS[t.level]} 🌙`:'MAX LEVEL'}${boosted?' | 💗 Boosted':''}`;
+updateInfoButtons();
+}
+
+function getBoost(t){
+return towers.some(o=>o.typeIdx===5&&o!==t&&Math.abs(o.col-t.col)<=1&&Math.abs(o.row-t.row)<=1);
+}
+
+function upgradeTower(){
+if(!selectedTower||selectedTower.level>=2)return;
+const cost=UPGRADE_COSTS[selectedTower.level];
+if(shards<cost)return;
+shards-=cost;
+selectedTower.level++;
+selectPlacedTower(selectedTower);
+updateUI();
+}
+
+function sellTower(){
+if(!selectedTower)return;
+const def=TOWERS[selectedTower.typeIdx];
+const refund=Math.floor(def.cost*.6);
+shards+=refund;
+towers=towers.filter(t=>t!==selectedTower);
+selectedTower=null;
+document.getElementById('info').textContent='Tower sold!';
+updateInfoButtons();
+updateUI();
+}
+
+function startWave(){
+if(waving||wave>=15||state!=='playing')return;
+wave++;
+waving=true;
+spawnQueue=[];
+const waveDef=WAVES[wave-1];
+const hpMult=1+wave*.15;
+for(const g of waveDef){
+for(let i=0;i<g.count;i++){
+const et=ENEMY_TYPES[g.type];
+spawnQueue.push({
+type:g.type,hp:Math.round(et.hp*hpMult),maxHp:Math.round(et.hp*hpMult),
+speed:et.speed,reward:et.reward,lives:et.lives,
+flying:et.flying||false,boss:et.boss||false,
+pathIdx:0,x:pixelPath[0].x,y:pixelPath[0].y,
+slow:0,poison:0,poisonDmg:0
+});
+}
+}
+flavorText=FLAVOR[Math.floor(Math.random()*FLAVOR.length)];
+updateUI();
+}
+
+// Canvas click
+canvas.addEventListener('click',e=>{
+if(state!=='playing')return;
+const rect=canvas.getBoundingClientRect();
+const sx=W/rect.width,sy=H/rect.height;
+const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;
+const col=Math.floor(mx/TW),row=Math.floor(my/TW);
+if(col<0||col>=COLS||row<0||row>=ROWS)return;
+
+// Check if clicking existing tower
+const existing=towers.find(t=>t.col===col&&t.row===row);
+if(existing&&selectedType<0){selectPlacedTower(existing);return;}
+
+// Place tower
+if(selectedType>=0&&!pathSet.has(col+','+row)&&!existing){
+const def=TOWERS[selectedType];
+if(shards<def.cost)return;
+shards-=def.cost;
+towers.push({typeIdx:selectedType,col,row,level:0,cooldown:0});
+particles.push({x:col*TW+TW/2,y:row*TW+TW/2,life:20,color:def.color,type:'place'});
+updateUI();
+}
+});
+
+canvas.addEventListener('mousemove',e=>{
+const rect=canvas.getBoundingClientRect();
+const sx=W/rect.width,sy=H/rect.height;
+mouseX=(e.clientX-rect.left)*sx;mouseY=(e.clientY-rect.top)*sy;
+hoverCol=Math.floor(mouseX/TW);hoverRow=Math.floor(mouseY/TW);
+});
+
+// Touch support for mobile
+canvas.addEventListener('touchstart',e=>{
+if(state!=='playing')return;
+e.preventDefault();
+const touch=e.touches[0];
+const rect=canvas.getBoundingClientRect();
+const sx=W/rect.width,sy=H/rect.height;
+const mx=(touch.clientX-rect.left)*sx,my=(touch.clientY-rect.top)*sy;
+mouseX=mx;mouseY=my;
+hoverCol=Math.floor(mx/TW);hoverRow=Math.floor(my/TW);
+const col=hoverCol,row=hoverRow;
+if(col<0||col>=COLS||row<0||row>=ROWS)return;
+const existing=towers.find(t=>t.col===col&&t.row===row);
+if(existing&&selectedType<0){selectPlacedTower(existing);return;}
+if(selectedType>=0&&!pathSet.has(col+','+row)&&!existing){
+const def=TOWERS[selectedType];
+if(shards<def.cost)return;
+shards-=def.cost;
+towers.push({typeIdx:selectedType,col,row,level:0,cooldown:0});
+particles.push({x:col*TW+TW/2,y:row*TW+TW/2,life:20,color:def.color,type:'place'});
+updateUI();
+}
+},{passive:false});
+
+canvas.addEventListener('touchmove',e=>{
+e.preventDefault();
+const touch=e.touches[0];
+const rect=canvas.getBoundingClientRect();
+const sx=W/rect.width,sy=H/rect.height;
+mouseX=(touch.clientX-rect.left)*sx;mouseY=(touch.clientY-rect.top)*sy;
+hoverCol=Math.floor(mouseX/TW);hoverRow=Math.floor(mouseY/TW);
+},{passive:false});
+
+// ---- DRAWING ----
+function drawTile(c,r,color){ctx.fillStyle=color;ctx.fillRect(c*TW,r*TW,TW,TW);}
+
+function drawMap(){
+// Grass
+ctx.fillStyle='#2d5a1e';ctx.fillRect(0,0,W,H);
+// Slight variation
+for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+if((c+r)%2===0){ctx.fillStyle='#2a5520';ctx.fillRect(c*TW,r*TW,TW,TW);}
+}
+// Path
+for(const p of PATH){
+ctx.fillStyle='#8b6c42';ctx.fillRect(p[0]*TW,p[1]*TW,TW,TW);
+ctx.fillStyle='#7a5c35';ctx.fillRect(p[0]*TW+2,p[1]*TW+2,TW-4,TW-4);
+// Path dots
+ctx.fillStyle='#6b4c28';
+ctx.fillRect(p[0]*TW+8,p[1]*TW+8,4,4);
+ctx.fillRect(p[0]*TW+24,p[1]*TW+20,3,3);
+}
+// Decorations
+for(const d of decorations){
+const bx=d.x*TW,by=d.y*TW;
+if(d.type==='tree'){
+ctx.fillStyle='#1a4010';ctx.fillRect(bx+14,by+6,12,14);
+ctx.fillStyle='#2a6020';ctx.fillRect(bx+16,by+8,8,10);
+ctx.fillStyle='#5a3a20';ctx.fillRect(bx+18,by+20,4,12);
+}else if(d.type==='rock'){
+ctx.fillStyle='#666';ctx.fillRect(bx+12,by+18,16,12);
+ctx.fillStyle='#888';ctx.fillRect(bx+14,by+20,12,8);
+}else{
+ctx.fillStyle='#cc4444';ctx.fillRect(bx+16,by+22,8,8);
+ctx.fillStyle='#fff';ctx.fillRect(bx+18,by+20,4,4);
+}
+}
+// Hover
+if(state==='playing'&&hoverCol>=0&&hoverCol<COLS&&hoverRow>=0&&hoverRow<ROWS&&selectedType>=0){
+const onPath=pathSet.has(hoverCol+','+hoverRow);
+const occupied=towers.some(t=>t.col===hoverCol&&t.row===hoverRow);
+ctx.fillStyle=(!onPath&&!occupied)?'rgba(255,255,255,.15)':'rgba(255,0,0,.2)';
+ctx.fillRect(hoverCol*TW,hoverRow*TW,TW,TW);
+// Range preview
+if(!onPath&&!occupied){
+const def=TOWERS[selectedType];
+if(def.range>0){
+ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1;
+ctx.beginPath();ctx.arc(hoverCol*TW+TW/2,hoverRow*TW+TW/2,def.range,0,Math.PI*2);ctx.stroke();
+}
+}
+}
+// Entry/exit markers
+ctx.fillStyle='rgba(0,255,0,.3)';ctx.fillRect(PATH[0][0]*TW,PATH[0][1]*TW,TW,TW);
+ctx.fillStyle='rgba(255,0,0,.3)';const last=PATH[PATH.length-1];ctx.fillRect(last[0]*TW,last[1]*TW,TW,TW);
+}
+
+function drawDog(cx,cy,color,hatColor,level,size){
+// size: 1=tower(32x32 in 40px tile), smaller for enemies
+const s=size||1;
+// Platform
+ctx.fillStyle='#666';ctx.fillRect(cx-8*s,cy+4*s,16*s,6*s);
+ctx.fillStyle='#888';ctx.fillRect(cx-6*s,cy+4*s,12*s,4*s);
+// Body
+ctx.fillStyle=color;
+ctx.fillRect(cx-5*s,cy-2*s,10*s,8*s);
+// Head
+ctx.fillRect(cx-3*s,cy-7*s,8*s,7*s);
+// Ear
+ctx.fillRect(cx-3*s,cy-10*s,3*s,4*s);
+// Eye
+ctx.fillStyle='#fff';ctx.fillRect(cx+1*s,cy-5*s,2*s,2*s);
+ctx.fillStyle='#000';ctx.fillRect(cx+2*s,cy-5*s,1*s,1*s);
+// Hat
+ctx.fillStyle=hatColor;
+ctx.fillRect(cx-4*s,cy-10*s,10*s,3*s);// brim
+ctx.fillRect(cx-2*s,cy-16*s,6*s,6*s);// cone
+ctx.fillRect(cx,cy-18*s,2*s,3*s);// tip
+// Hat star for level
+if(level>0){ctx.fillStyle='#fff';ctx.fillRect(cx,cy-14*s,2*s,2*s);}
+if(level>1){ctx.fillStyle='#ffd700';ctx.fillRect(cx-1*s,cy-14*s,4*s,2*s);}
+// Wand
+ctx.fillStyle='#8B4513';ctx.fillRect(cx+5*s,cy-4*s,6*s,1*s);
+ctx.fillStyle=hatColor;ctx.fillRect(cx+10*s,cy-5*s,2*s,3*s);
+// Glow on wand tip
+ctx.fillStyle=hatColor+'88';ctx.fillRect(cx+9*s,cy-6*s,4*s,5*s);
+}
+
+function drawTowers(){
+for(const t of towers){
+const def=TOWERS[t.typeIdx];
+const cx=t.col*TW+TW/2,cy=t.row*TW+TW/2;
+const boosted=getBoost(t);
+if(boosted){
+ctx.fillStyle='rgba(224,96,160,'+(0.1+Math.sin(frame*.1)*.05)+')';
+ctx.fillRect(t.col*TW,t.row*TW,TW,TW);
+}
+drawDog(cx,cy,t.typeIdx===5?'#dda0c0':'#c8a070',def.color,t.level);
+// Selected indicator
+if(selectedTower===t){
+ctx.strokeStyle='#ffd700';ctx.lineWidth=2;
+ctx.strokeRect(t.col*TW+1,t.row*TW+1,TW-2,TW-2);
+// Range circle
+if(def.range>0){
+const range=def.range+t.level*20;
+ctx.strokeStyle='rgba(255,215,0,.3)';ctx.lineWidth=1;
+ctx.beginPath();ctx.arc(cx,cy,range,0,Math.PI*2);ctx.stroke();
+}
+}
+}
+}
+
+function drawEnemy(e){
+const cx=e.x,cy=e.y;
+if(e.type==='rot'){
+// Green-black blob
+ctx.fillStyle='#1a3a1a';
+ctx.fillRect(cx-6,cy-5,12,10);
+ctx.fillStyle='#0a2a0a';
+ctx.fillRect(cx-4,cy-3,8,6);
+// Eyes
+ctx.fillStyle='#ff0000';
+ctx.fillRect(cx-3,cy-2,2,2);
+ctx.fillRect(cx+1,cy-2,2,2);
+// Ooze
+ctx.fillStyle='#1a3a1a';
+ctx.fillRect(cx-7,cy+3,3,3);
+ctx.fillRect(cx+4,cy+4,3,2);
+}else if(e.type==='starter'){
+// Gray dog
+ctx.fillStyle='#888';
+ctx.fillRect(cx-5,cy-2,10,7);
+ctx.fillRect(cx-3,cy-6,7,5);
+ctx.fillStyle='#666';ctx.fillRect(cx-3,cy-8,3,3);
+ctx.fillStyle='#ff0000';
+ctx.fillRect(cx+1,cy-4,2,2);
+}else if(e.type==='lizard'){
+// Purple lizard
+ctx.fillStyle='#4a2060';
+ctx.fillRect(cx-5,cy-2,10,5);
+ctx.fillRect(cx-7,cy-1,3,3);// tail
+ctx.fillStyle='#6a3080';
+ctx.fillRect(cx+3,cy-4,3,3);// head
+ctx.fillStyle='#ff44ff';
+ctx.fillRect(cx+4,cy-3,1,1);// eye
+// Legs
+ctx.fillStyle='#4a2060';
+ctx.fillRect(cx-3,cy+3,2,3);ctx.fillRect(cx+2,cy+3,2,3);
+}else if(e.type==='owl'){
+// Dark owl (floating)
+const fy=cy-4+Math.sin(frame*.1+e.x)*3;
+ctx.fillStyle='#2a2040';
+ctx.fillRect(cx-6,fy-4,12,10);
+ctx.fillStyle='#3a3050';
+ctx.fillRect(cx-4,fy-6,8,5);
+// Wings
+ctx.fillRect(cx-8,fy-2+Math.sin(frame*.15)*2,4,6);
+ctx.fillRect(cx+4,fy-2-Math.sin(frame*.15)*2,4,6);
+// Eyes
+ctx.fillStyle='#ffff00';
+ctx.fillRect(cx-3,fy-4,2,2);ctx.fillRect(cx+1,fy-4,2,2);
+}else if(e.type==='titan'){
+// Large dark mass
+ctx.fillStyle='#1a0a1a';
+ctx.fillRect(cx-12,cy-10,24,22);
+ctx.fillStyle='#2a1a2a';
+ctx.fillRect(cx-10,cy-8,20,18);
+// Multiple eyes
+ctx.fillStyle='#ff0000';
+ctx.fillRect(cx-6,cy-5,2,2);ctx.fillRect(cx-1,cy-6,2,3);
+ctx.fillRect(cx+4,cy-4,2,2);ctx.fillRect(cx-3,cy,2,2);
+// Tendrils
+ctx.fillStyle='#1a0a1a';
+ctx.fillRect(cx-14,cy+8,4,6);ctx.fillRect(cx+10,cy+6,4,8);
+ctx.fillRect(cx-4,cy+10,3,5);ctx.fillRect(cx+3,cy+10,3,4);
+}
+
+// HP bar
+const barW=e.boss?24:12;
+ctx.fillStyle='#300';ctx.fillRect(cx-barW/2,cy-12-(e.boss?4:0),barW,3);
+ctx.fillStyle=e.hp/e.maxHp>.5?'#0f0':e.hp/e.maxHp>.25?'#ff0':'#f00';
+ctx.fillRect(cx-barW/2,cy-12-(e.boss?4:0),barW*(e.hp/e.maxHp),3);
+
+// Slow indicator
+if(e.slow>0){ctx.fillStyle='#4af';ctx.fillRect(cx-1,cy-14,2,2);}
+// Poison indicator
+if(e.poison>0){ctx.fillStyle='#4f4';ctx.fillRect(cx+2,cy-14,2,2);}
+}
+
+function drawProjectiles(){
+for(const p of projectiles){
+ctx.fillStyle=p.color;
+if(p.type==='radiant'){
+// Beam line
+ctx.globalAlpha=p.life/10;
+ctx.fillRect(Math.min(p.sx,p.x),Math.min(p.sy,p.y),Math.abs(p.x-p.sx)||3,Math.abs(p.y-p.sy)||3);
+ctx.globalAlpha=1;
+}else{
+ctx.fillRect(p.x-2,p.y-2,4,4);
+if(p.type==='flame'){ctx.fillStyle='#ff0';ctx.fillRect(p.x-1,p.y-1,2,2);}
+}
+}
+}
+
+function drawParticles(){
+for(const p of particles){
+ctx.globalAlpha=p.life/20;
+ctx.fillStyle=p.color;
+if(p.type==='place'){
+const r=20-p.life;
+ctx.strokeStyle=p.color;ctx.lineWidth=2;
+ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.stroke();
+}else if(p.type==='hit'){
+ctx.fillRect(p.x+Math.cos(p.a)*p.d-1,p.y+Math.sin(p.a)*p.d-1,3,3);
+}else if(p.type==='death'){
+const r=15-p.life;
+ctx.fillRect(p.x+Math.cos(p.a)*(r+5)-2,p.y+Math.sin(p.a)*(r+5)-2,4,4);
+}
+ctx.globalAlpha=1;
+}
+}
+
+// ---- UPDATE ----
+function update(){
+if(state!=='playing')return;
+frame++;
+
+// Spawn enemies
+if(spawnQueue.length>0){
+spawnTimer--;
+if(spawnTimer<=0){
+const e=spawnQueue.shift();
+enemies.push(e);
+spawnTimer=20;// frames between spawns
+}
+}
+
+// Move enemies
+for(const e of enemies){
+if(e.dead)continue;
+// Find target point on path
+let target;
+if(e.flying&&e.pathIdx<pixelPath.length-1){
+// Flying: skip ahead sometimes
+const skipTo=Math.min(e.pathIdx+3,pixelPath.length-1);
+target=pixelPath[skipTo];
+const dx=target.x-e.x,dy=target.y-e.y;
+const dist=Math.sqrt(dx*dx+dy*dy);
+const spd=e.speed*(e.slow>0?.5:1);
+if(dist<spd*2){e.pathIdx=skipTo+1;}
+else{e.x+=dx/dist*spd;e.y+=dy/dist*spd;}
+}else{
+if(e.pathIdx>=pixelPath.length){
+// Reached end
+lives-=e.lives;e.dead=true;
+flavorText="An enemy breached the defenses!";
+if(lives<=0){lives=0;gameOver(false);}
+updateUI();continue;
+}
+target=pixelPath[e.pathIdx];
+const dx=target.x-e.x,dy=target.y-e.y;
+const dist=Math.sqrt(dx*dx+dy*dy);
+const spd=e.speed*(e.slow>0?.5:1);
+if(dist<spd*2)e.pathIdx++;
+else{e.x+=dx/dist*spd;e.y+=dy/dist*spd;}
+}
+// Slow decay
+if(e.slow>0)e.slow--;
+// Poison
+if(e.poison>0){e.hp-=e.poisonDmg;e.poison--;}
+if(e.hp<=0&&!e.dead)killEnemy(e);
+}
+
+// Tower shooting
+for(const t of towers){
+const def=TOWERS[t.typeIdx];
+if(def.type==='heart')continue;// doesn't attack
+if(t.cooldown>0){t.cooldown--;continue;}
+const boosted=getBoost(t);
+const range=def.range+t.level*20;
+const dmg=Math.round(def.damage*(1+.5*t.level)*(boosted?1.5:1));
+const rate=Math.round(def.rate*(boosted?.67:1)/(1+t.level*.15));
+const cx=t.col*TW+TW/2,cy=t.row*TW+TW/2;
+
+// Find target
+let target=null,bestDist=Infinity;
+for(const e of enemies){
+if(e.dead)continue;
+const dx=e.x-cx,dy=e.y-cy;
+const d=Math.sqrt(dx*dx+dy*dy);
+if(d<range&&d<bestDist){bestDist=d;target=e;}
+}
+if(!target)continue;
+t.cooldown=rate;
+
+if(def.type==='radiant'){
+// Piercing beam - hit all in line
+const dx=target.x-cx,dy=target.y-cy;
+const d=Math.sqrt(dx*dx+dy*dy);
+const nx=dx/d,ny=dy/d;
+for(const e of enemies){
+if(e.dead)continue;
+// Check if enemy is roughly in line
+const ex=e.x-cx,ey=e.y-cy;
+const proj=ex*nx+ey*ny;
+if(proj<0||proj>range)continue;
+const perp=Math.abs(ex*(-ny)+ey*nx);
+if(perp<20){e.hp-=dmg;spawnHitParticles(e.x,e.y,def.color);}
+}
+projectiles.push({x:cx+nx*range,y:cy+ny*range,sx:cx,sy:cy,life:10,color:def.color,type:'radiant'});
+}else{
+projectiles.push({x:cx,y:cy,tx:target.x,ty:target.y,target,life:30,color:def.color,
+type:def.type,dmg,splash:def.splash,speed:6});
+}
+}
+
+// Move projectiles
+for(const p of projectiles){
+if(p.type==='radiant'){p.life--;continue;}
+if(!p.target||p.target.dead){
+// Aim at last known pos
+const dx=p.tx-p.x,dy=p.ty-p.y;
+const d=Math.sqrt(dx*dx+dy*dy);
+if(d<6){p.life=0;continue;}
+p.x+=dx/d*p.speed;p.y+=dy/d*p.speed;
+}else{
+p.tx=p.target.x;p.ty=p.target.y;
+const dx=p.tx-p.x,dy=p.ty-p.y;
+const d=Math.sqrt(dx*dx+dy*dy);
+if(d<8){
+// Hit
+if(p.splash>0){
+for(const e of enemies){
+if(e.dead)continue;
+const ex=e.x-p.x,ey=e.y-p.y;
+if(Math.sqrt(ex*ex+ey*ey)<p.splash){
+e.hp-=p.dmg;spawnHitParticles(e.x,e.y,p.color);
+if(p.type==='wild'){e.poison=120;e.poisonDmg=1;}
+}
+}
+}else{
+p.target.hp-=p.dmg;
+spawnHitParticles(p.target.x,p.target.y,p.color);
+if(p.type==='deep')p.target.slow=90;
+if(p.type==='wild'){p.target.poison=120;p.target.poisonDmg=1;}
+}
+p.life=0;
+}else{p.x+=dx/d*p.speed;p.y+=dy/d*p.speed;}
+}
+p.life--;
+}
+
+// Check enemy deaths
+for(const e of enemies){
+if(!e.dead&&e.hp<=0)killEnemy(e);
+}
+
+// Clean up
+enemies=enemies.filter(e=>!e.dead);
+projectiles=projectiles.filter(p=>p.life>0);
+particles=particles.filter(p=>{p.life--;if(p.d!==undefined)p.d+=1.5;return p.life>0;});
+
+// Wave complete check
+if(waving&&spawnQueue.length===0&&enemies.length===0){
+waving=false;
+shards+=10+wave*3;// bonus
+flavorText=wave>=15?"Victory! The Rot is vanquished!":"Wave complete! Prepare for the next assault.";
+if(wave>=15)gameOver(true);
+updateUI();
+}
+}
+
+function killEnemy(e){
+e.dead=true;
+shards+=e.reward;
+updateUI();
+// Death particles
+for(let i=0;i<6;i++){
+particles.push({x:e.x,y:e.y,a:Math.random()*Math.PI*2,d:0,life:15,
+color:e.type==='rot'?'#1a3a1a':e.type==='titan'?'#3a1a3a':'#666',type:'death'});
+}
+// Titan spawns rot on death
+if(e.boss){
+for(let i=0;i<3;i++){
+const re=ENEMY_TYPES.rot;
+const hpMult=1+wave*.15;
+enemies.push({
+type:'rot',hp:Math.round(re.hp*hpMult),maxHp:Math.round(re.hp*hpMult),
+speed:re.speed,reward:re.reward,lives:re.lives,flying:false,boss:false,
+pathIdx:Math.max(0,e.pathIdx-2),x:e.x+(i-1)*15,y:e.y,slow:0,poison:0,poisonDmg:0
+});
+}
+flavorText="The Titan falls... but its spawn emerge!";
+}
+}
+
+function spawnHitParticles(x,y,color){
+for(let i=0;i<3;i++){
+particles.push({x,y,a:Math.random()*Math.PI*2,d:0,life:10,color,type:'hit'});
+}
+}
+
+function gameOver(won){
+state=won?'won':'lost';
+const ov=document.getElementById('overlay');
+ov.style.display='flex';
+ov.innerHTML=won?
+`<h1>🎉 Victory!</h1><h2>Pawtheon is Saved!</h2><p>The six Orders have driven back the Great Rot. The Moon Shards glow with triumph!</p><button onclick="startGame()">Play Again</button>`:
+`<h1>💀 Defeat</h1><h2>The Rot Consumes Pawtheon</h2><p>The defenses have fallen. But the Orders will rise again...</p><button onclick="startGame()">Try Again</button>`;
+}
+
+// ---- MAIN LOOP ----
+function draw(){
+ctx.clearRect(0,0,W,H);
+drawMap();
+drawTowers();
+for(const e of enemies)if(!e.dead)drawEnemy(e);
+drawProjectiles();
+drawParticles();
+}
+
+function loop(){
+update();
+draw();
+// Update flavor text
+document.getElementById('bottomBar').textContent=flavorText;
+requestAnimationFrame(loop);
+}
+loop();
+
+// Keyboard shortcut
+document.addEventListener('keydown',e=>{
+if(e.key>='1'&&e.key<='6')selectTower(+e.key-1);
+if(e.key==='Escape'){selectedType=-1;selectedTower=null;
+document.querySelectorAll('.tower-btn').forEach(b=>b.classList.remove('selected'));
+document.getElementById('info').textContent='Click a tower type to place.';updateInfoButtons();}
+if(e.key===' '||e.key==='Enter'){e.preventDefault();startWave();}
+});
+</script>
+</body>
+</html>

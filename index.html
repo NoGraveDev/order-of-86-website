@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231C1C1E' width='180' height='180' rx='40'/><text x='90' y='125' font-size='100' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
+    <title>Order of 86 — Wizard Dogs of Pawtheon</title>
+    <style>
+        /* ── Reset & Tokens ───────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-bg: #000000;
+            --color-surface: #1C1C1E;
+            --color-surface-2: #2C2C2E;
+            --color-surface-3: #3A3A3C;
+            --color-text: #F5F5F7;
+            --color-text-secondary: #98989D;
+            --color-text-tertiary: #636366;
+            --color-border: rgba(255,255,255,0.08);
+            --color-separator: rgba(84,84,88,0.65);
+            --color-accent: #c9a86c;
+            --color-accent-bright: #ffd700;
+            --color-accent-subtle: rgba(201,168,108,0.15);
+
+            --color-flame: #FF6B00;
+            --color-radiant: #F1C40F;
+            --color-deep: #3498DB;
+            --color-wild: #2ECC71;
+            --color-arcane: #9B6EFF;
+            --color-heart: #FF69B4;
+            --color-wanderer: #9966ff;
+
+            --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.35);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition-fast: 150ms cubic-bezier(0.25,0.1,0.25,1);
+            --transition-normal: 300ms cubic-bezier(0.25,0.1,0.25,1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 72px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-size: clamp(14px, 3.5vw, 18px);
+            overscroll-behavior: none;
+        }
+
+        /* ── Nav Bar ──────────────────────────────────────── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: rgba(28,28,30,0.82);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--color-border);
+            padding-top: env(safe-area-inset-top);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        .nav-bar a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: color var(--transition-fast), background var(--transition-fast);
+            border-bottom: 2.5px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .nav-bar a:hover { color: var(--color-text); background: rgba(255,255,255,0.04); }
+        .nav-bar a:active { opacity: 0.7; }
+        .nav-bar a.active { color: var(--color-accent-bright); border-bottom-color: var(--color-accent-bright); }
+
+        /* Hamburger menu for mobile */
+        .nav-hamburger {
+            display: none;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 24px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 101;
+        }
+        .nav-hamburger:active { opacity: 0.7; }
+        .nav-logo-mobile {
+            display: none;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-accent-bright);
+            padding: 14px 16px;
+        }
+        .nav-links-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 150;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .nav-links-mobile.open { display: flex; }
+        .nav-links-mobile a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 16px 32px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .nav-links-mobile a.active { color: var(--color-accent-bright); }
+        .nav-links-mobile a:active { opacity: 0.7; }
+        .nav-close-mobile {
+            position: absolute;
+            top: env(safe-area-inset-top, 12px);
+            right: 12px;
+            width: 44px;
+            height: 44px;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ── Container ────────────────────────────────────── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+        /* ── Hero ─────────────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 64px 16px 32px;
+        }
+        .hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--color-accent-bright) 0%, var(--color-accent) 40%, #e8d5a3 70%, var(--color-accent-bright) 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 200% center; }
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--color-text-secondary);
+            margin-top: 12px;
+            font-weight: 400;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ── Stats Bar ────────────────────────────────────── */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 16px;
+            margin: 0 auto 24px;
+            max-width: 800px;
+        }
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+        }
+        .stat-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Search & Filters ─────────────────────────────── */
+        .search-section {
+            background: rgba(28,28,30,0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 17px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface-2);
+            color: var(--color-text);
+            outline: none;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .search-box::placeholder { color: var(--color-text-tertiary); }
+        .search-box:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-subtle);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .filter-chip {
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 13px;
+            font-weight: 600;
+            border: 1.5px solid;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: transparent;
+            font-family: var(--font-sans);
+            letter-spacing: 0.02em;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+        .filter-chip:hover { transform: translateY(-1px); }
+        .filter-chip:active { transform: scale(0.95); }
+        .filter-chip.active { color: #fff !important; }
+        .filter-chip[data-order="flame"] { color: var(--color-flame); border-color: var(--color-flame); }
+        .filter-chip[data-order="flame"].active { background: var(--color-flame); }
+        .filter-chip[data-order="radiant"] { color: var(--color-radiant); border-color: var(--color-radiant); }
+        .filter-chip[data-order="radiant"].active { background: var(--color-radiant); color: #1C1C1E !important; }
+        .filter-chip[data-order="deep"] { color: var(--color-deep); border-color: var(--color-deep); }
+        .filter-chip[data-order="deep"].active { background: var(--color-deep); }
+        .filter-chip[data-order="wild"] { color: var(--color-wild); border-color: var(--color-wild); }
+        .filter-chip[data-order="wild"].active { background: var(--color-wild); }
+        .filter-chip[data-order="arcane"] { color: var(--color-arcane); border-color: var(--color-arcane); }
+        .filter-chip[data-order="arcane"].active { background: var(--color-arcane); }
+        .filter-chip[data-order="heart"] { color: var(--color-heart); border-color: var(--color-heart); }
+        .filter-chip[data-order="heart"].active { background: var(--color-heart); }
+        .filter-chip[data-order="all"] { color: var(--color-text-secondary); border-color: var(--color-text-tertiary); }
+        .filter-chip[data-order="all"].active { background: var(--color-surface-3); color: var(--color-text) !important; }
+
+        /* ── Card Grid ────────────────────────────────────── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 48px;
+            contain: layout style paint;
+        }
+        @media (max-width: 1024px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .card-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media (max-width: 360px) { .card-grid { grid-template-columns: 1fr; } }
+
+        .dog-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+            opacity: 0;
+            transform: translateY(20px);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            contain: layout style paint;
+            will-change: transform;
+        }
+        .dog-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow var(--transition-normal);
+        }
+        @media (hover: hover) {
+            .dog-card:hover {
+                transform: translateY(-4px) scale(1.02);
+                box-shadow: var(--shadow-lg);
+            }
+        }
+        .dog-card:active {
+            transform: scale(0.98);
+        }
+        .dog-card.visible:hover {
+            transform: translateY(-4px) scale(1.02);
+        }
+        .card-accent {
+            height: 3px;
+            width: 100%;
+        }
+        .card-img-wrap {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--color-surface-2);
+            overflow: hidden;
+            position: relative;
+        }
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-rank-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: var(--color-text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+        }
+        .card-body {
+            padding: 14px 16px 16px;
+        }
+        .card-number {
+            font-size: 11px;
+            color: var(--color-text-tertiary);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .card-name {
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-top: 2px;
+            color: var(--color-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .card-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            background: var(--color-surface-2);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+        .card-order-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            color: #fff;
+        }
+
+        /* ── Detail Modal ─────────────────────────────────── */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-backdrop.active { opacity: 1; pointer-events: auto; }
+        .modal-sheet {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            max-height: 92vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            background: var(--color-surface);
+            border-radius: 20px 20px 0 0;
+            z-index: 201;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
+            padding: 0 0 calc(env(safe-area-inset-bottom, 24px) + 16px);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        .modal-sheet.active { transform: translateY(0); }
+        .modal-handle {
+            width: 36px;
+            height: 5px;
+            background: var(--color-text-tertiary);
+            border-radius: 3px;
+            margin: 10px auto 0;
+        }
+        .modal-content { padding: 16px 24px 32px; }
+
+        .detail-header {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+        .detail-img {
+            width: 120px;
+            height: 120px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            border: 2px solid var(--color-border);
+            flex-shrink: 0;
+        }
+        .detail-info { flex: 1; min-width: 0; }
+        .detail-name {
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+        .detail-id {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+        .detail-order-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .meta-item {
+            background: var(--color-surface-2);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+        .meta-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .meta-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-top: 2px;
+        }
+
+        .section-heading {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--color-accent-bright);
+        }
+
+        .editable-input {
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface-2);
+            color: var(--color-text);
+            font-size: 16px;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        .editable-input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px var(--color-accent-subtle);
+        }
+        .story-textarea {
+            height: 180px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+        .field-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            margin-top: 16px;
+            display: block;
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px 32px;
+            margin-top: 24px;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: var(--font-sans);
+            color: #1C1C1E;
+            background: linear-gradient(135deg, var(--color-accent-bright), var(--color-accent));
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+            box-shadow: 0 4px 16px rgba(201,168,108,0.3);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            min-height: 48px;
+        }
+        @media (hover: hover) {
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 24px rgba(201,168,108,0.4);
+            }
+        }
+        .submit-btn:active { transform: scale(0.97); }
+        .submit-note {
+            text-align: center;
+            font-size: 13px;
+            color: var(--color-text-tertiary);
+            margin-top: 12px;
+        }
+
+        /* ── Empty State ──────────────────────────────────── */
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 64px 16px;
+            text-align: center;
+        }
+        .empty-state.visible { display: flex; }
+        .empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .empty-desc { font-size: 14px; color: var(--color-text-secondary); max-width: 320px; }
+
+        /* ── Reduced Motion ───────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ── Mobile nav ───────────────────────────────────── */
+        @media (max-width: 768px) {
+            .nav-bar { justify-content: flex-start; position: relative; }
+            .nav-bar > a { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-logo-mobile { display: block; }
+            .filter-row {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                padding-bottom: 4px;
+            }
+            .filter-row::-webkit-scrollbar { display: none; }
+        }
+        @media (max-width: 480px) {
+            .hero { padding: 32px 16px 20px; }
+            .hero-title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+            .hero-subtitle { font-size: clamp(0.85rem, 3.5vw, 1rem); }
+            .search-section { padding: 14px; }
+            .search-box { font-size: 16px; padding: 12px 16px; }
+            .detail-header { flex-direction: column; align-items: center; text-align: center; }
+            .detail-img { width: 100px; height: 100px; }
+            .modal-content { padding: 16px 16px 32px; }
+            .stat-pill { font-size: 12px; padding: 5px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <span class="nav-logo-mobile">⚡ Order of 86</span>
+    <a href="index.html" class="active">⚡ The 86 Wizards</a>
+    <a href="moons.html">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">☰</button>
+</nav>
+<div class="nav-links-mobile" id="navMobileMenu">
+    <button class="nav-close-mobile" id="navCloseMenu" aria-label="Close menu">✕</button>
+    <a href="index.html" class="active">⚡ The 86 Wizards</a>
+    <a href="moons.html">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+</div>
+
+<section class="hero">
+    <h1 class="hero-title">The Order of 86</h1>
+    <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon — ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
+</section>
+
+<div class="container">
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="search-section">
+        <input type="text" class="search-box" placeholder="Search by ID, name, breed, realm…" id="searchInput" autocomplete="off">
+        <div class="filter-row" id="filterRow">
+            <button class="filter-chip active" data-order="all">All Orders</button>
+            <button class="filter-chip" data-order="flame">🔥 Flame</button>
+            <button class="filter-chip" data-order="radiant">☀️ Radiant</button>
+            <button class="filter-chip" data-order="deep">🌊 Deep</button>
+            <button class="filter-chip" data-order="wild">🌿 Wild</button>
+            <button class="filter-chip" data-order="arcane">🔮 Arcane</button>
+            <button class="filter-chip" data-order="heart">💗 Heart</button>
+        </div>
+    </div>
+
+    <div class="card-grid" id="cardGrid"></div>
+    <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🔮</div>
+        <div class="empty-title">No wizards found</div>
+        <div class="empty-desc">Try a different search term or filter to discover the wizard dogs of Pawtheon.</div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-content">
+        <form action="https://formsubmit.co/NoGraveStudios@gmail.com" method="POST" id="dogForm">
+            <input type="hidden" name="_subject" value="Order of 86 - Dog Submission">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+
+            <div class="detail-header">
+                <img class="detail-img" id="detailImg" src="" alt="Wizard Dog">
+                <div class="detail-info">
+                    <div class="detail-name" id="detailName"></div>
+                    <div class="detail-id" id="detailId"></div>
+                    <div class="detail-order-badge" id="detailBadge"></div>
+                </div>
+            </div>
+
+            <div class="meta-grid" id="metaGrid"></div>
+
+            <input type="hidden" name="Dog_ID" id="formDogId">
+            <input type="hidden" name="Rank" id="formRank">
+            <input type="hidden" name="Fur_Color" id="formFur">
+            <input type="hidden" name="Pattern" id="formPattern">
+            <input type="hidden" name="Eyes" id="formEyes">
+            <input type="hidden" name="Clothes" id="formClothes">
+            <input type="hidden" name="Realm" id="formRealm">
+            <input type="hidden" name="Order" id="formOrder">
+
+            <div class="section-heading">✨ Customizable Fields</div>
+            <label class="field-label" for="dogNameInput">Dog Name</label>
+            <input type="text" class="editable-input" id="dogNameInput" name="Dog_Name" placeholder="Enter custom name…">
+            <label class="field-label" for="dogStoryInput">Origin Story</label>
+            <textarea class="editable-input story-textarea" id="dogStoryInput" name="Origin_Story" placeholder="Write or edit the origin story…"></textarea>
+
+            <button type="button" class="submit-btn" disabled style="opacity:0.4;cursor:not-allowed;">🔮 Submissions Coming Soon</button>
+            <p class="submit-note">Sends this wizard's info to NoGraveStudios@gmail.com</p>
+        </form>
+    </div>
+</div>
+
+<script>
+// ── Dog Data ─────────────────────────────────────────────
+const wizardDogs = {
+    "8728": { id:"8728",rank:554,fur:"Gray",pattern:"Husky",eyes:"Square Glasses",clothes:"Scarf",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Frostforge the Scarf-Bearer",suggestedStory:"The rarest Flame Wizard, and the greatest contradiction in the Order. A Husky from Frosthollow's deepest glaciers, wielding fire magic with scholarly precision. The orange hat found Frostforge during the worst blizzard in Frosthollow's recorded history. While other dogs sought shelter, they stood alone on an exposed peak, reading by the faint aurora light — not seeking warmth, but studying the mathematics of cold. When the hat manifested in the storm, wreathed in flame that never touched their scarf, it chose not courage over fear, but curiosity over comfort.\n\nFrostforge brings the analytical mind of ice to the explosive art of fire. Their signature technique — Measured Burn — creates flames that burn only what needs burning, no more, no less. The scarf they wear isn't fashion; it's a reminder that some heat must be contained to be useful. They are the Flame's chief theoretical researcher, developing new forms of forge magic through the marriage of Frosthollow's patience and Emberhowl's power.",image:"images/8728.png"},
+    "5035": { id:"5035",rank:1443,fur:"Black",pattern:"Husky",eyes:"Sleepy Eyes",clothes:"Scarf",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Blizzardflame the Ice-Hearted",suggestedStory:"Born during the Great Silence, when all magic died for forty-nine hours, Blizzardflame spent their earliest days in a world without warmth spells or fire magic. They learned to find heat in movement, in purpose, in the friction of determination against impossibility. When magic returned and the orange hat sought them out, it found a Husky who had already discovered that the hottest flame comes from the coldest heart — not from lack of feeling, but from feelings so intense they burn white-hot.\n\nTheir sleepy eyes mask an inner fire that never dims. Blizzardflame practices the most extreme form of Flame discipline: Cold Fire, flames that burn blue-white and feel ice-cold to the touch while melting steel. They serve as the Forge Spire's connection to Frosthollow, carrying messages through blizzards that would kill other messengers.",image:"images/5035.png"},
+    "9758": { id:"9758",rank:2989,fur:"Tan",pattern:"Classic",eyes:"Black Eyes",clothes:"Classic Hoodie",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Commonflame the Everyman",suggestedStory:"The most politically savvy Flame Wizard, and perhaps the most important. A Classic from the Violet Highlands — the realm of 25 Wizards and endless debate — who found their orange hat not through spectacular trial but through quiet, daily courage.",image:"images/9758.png"},
+    "3030": { id:"3030",rank:3305,fur:"White",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Pureflame the Unadorned",suggestedStory:"The most minimalist Flame Wizard. No accessories, no distinctive clothing, nothing but white fur and black eyes and an orange hat.",image:"images/3030.png"},
+    "986": { id:"986",rank:3638,fur:"Gray",pattern:"Split",eyes:"Square Glasses",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Splitforge the Dual-Natured",suggestedStory:"A Split-furred diplomat from the Abyssal Reaches who found their orange hat in the most unlikely place: the middle of a peace negotiation.",image:"images/986.png"},
+    "165": { id:"165",rank:3732,fur:"Gray",pattern:"Husky",eyes:"Visor",clothes:"None",realm:"Frosthollow",order:"Flame",hatColor:"Orange",suggestedName:"Vanguard the Glacier-Walker",suggestedStory:"The third Husky in the Flame Order, proving that Frosthollow breeds something special in ice-dogs who choose fire.",image:"images/165.png"},
+    "5275": { id:"5275",rank:3857,fur:"Brown",pattern:"Split",eyes:"Yellow Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Tideforge the Current-Rider",suggestedStory:"From the coastal cliffs where land meets sea, Tideforge brought the rhythm of waves to the chaos of flame.",image:"images/5275.png"},
+    "8667": { id:"8667",rank:3969,fur:"Orange",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldforge the Sun-Touched",suggestedStory:"The only orange-furred Flame Wizard, creating a perfect visual harmony between breed and Order.",image:"images/8667.png"},
+    "7770": { id:"7770",rank:3986,fur:"Gray",pattern:"Tiger",eyes:"Red Eyes",clothes:"None",realm:"Ember Wastes",order:"Flame",hatColor:"Orange",suggestedName:"Stripesight the Pattern-Burner",suggestedStory:"A Tiger from the volcanic Ember Wastes, where Tigers naturally thrive, but unique even among their stripe-patterned kin.",image:"images/7770.png"},
+    "7710": { id:"7710",rank:4081,fur:"Yellow",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldstrike the Lightning-Fast",suggestedStory:"Another Solid from the Sunward Heights, but where Goldforge burns steady and bright, Goldstrike burns in rapid bursts.",image:"images/7710.png"},
+    "1848": { id:"1848",rank:4120,fur:"Yellow",pattern:"Tiger",eyes:"Round Glasses",clothes:"None",realm:"Ember Wastes",order:"Flame",hatColor:"Orange",suggestedName:"Lensfire the Tiger Scholar",suggestedStory:"The most academic Tiger in the Ember Wastes, and possibly the only Tiger who reads for pleasure.",image:"images/1848.png"},
+    "4540": { id:"4540",rank:4490,fur:"White",pattern:"Blotted",eyes:"Visor",clothes:"None",realm:"Shadowmire",order:"Flame",hatColor:"Orange",suggestedName:"Blotforge the Chaos-Shaper",suggestedStory:"The only Shadowmire representative in the Flame Order, carrying the prejudices of both their dark homeland and their fire-bright Order.",image:"images/4540.png"},
+    "8095": { id:"8095",rank:4524,fur:"Gray",pattern:"Split",eyes:"Pink Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Rosestrike the Pink-Eyed",suggestedStory:"From the tidal politics of the Abyssal Reaches, Rosestrike brought the rare gift of pink eyes — eyes that see emotional energy.",image:"images/8095.png"},
+    "5518": { id:"5518",rank:5144,fur:"Black",pattern:"Split",eyes:"Green Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Flame",hatColor:"Orange",suggestedName:"Voidstrike the Green-Eyed",suggestedStory:"The darkest-furred Flame Wizard, their black Split pattern creating a visual contradiction with orange flame.",image:"images/5518.png"},
+    "1714": { id:"1714",rank:5584,fur:"Brown",pattern:"Classic",eyes:"Pink Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Roseheart the Gentle Flame",suggestedStory:"The most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality.",image:"images/1714.png"},
+    "246": { id:"246",rank:5884,fur:"Orange",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Flame",hatColor:"Orange",suggestedName:"Goldburn the Solar Flame",suggestedStory:"The second orange-furred Flame Wizard, channeling direct solar flame.",image:"images/246.png"},
+    "4042": { id:"4042",rank:6804,fur:"Gray",pattern:"Classic",eyes:"Pink Eyes",clothes:"None",realm:"Violet Highlands",order:"Flame",hatColor:"Orange",suggestedName:"Roseflame the Pink-Eyed",suggestedStory:"The third pink-eyed Flame Wizard, proving that emotional sight is more common in the Order than initially recognized.",image:"images/4042.png"},
+    "1053": { id:"1053",rank:7607,fur:"Black",pattern:"Zombie",eyes:"Black Eyes",clothes:"None",realm:"Shadowmire",order:"Flame",hatColor:"Orange",suggestedName:"Deathforge the Undying",suggestedStory:"The darkest Wizard in the entire Order of 86, both literally and figuratively. A Zombie from the Shadowmire practicing fire magic.",image:"images/1053.png"},
+    "3449": { id:"3449",rank:627,fur:"Brown",pattern:"Tiger",eyes:"Pink Eyes",clothes:"Poncho",realm:"Ember Wastes",order:"Wild",hatColor:"Green",suggestedName:"Stripeheart the Bridge-Walker",suggestedStory:"The rarest Wild Wizard and the greatest contradiction in the Order.",image:"images/3449.png"},
+    "8272": { id:"8272",rank:1073,fur:"White",pattern:"Spotted",eyes:"Round Glasses",clothes:"Lumberjack",realm:"Deepwood",order:"Wild",hatColor:"Green",suggestedName:"Spotforge the Pattern-Reader",suggestedStory:"A native of the Deepwood who earned their green hat through the most scholarly form of nature magic.",image:"images/8272.png"},
+    "8822": { id:"8822",rank:1415,fur:"White",pattern:"Blotted",eyes:"Square Glasses",clothes:"Sport Hoodie",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Chaosbloom the Change-Bringer",suggestedStory:"From the ever-changing Shadowmire to the ever-growing Heartwood, Chaosbloom brings the gift of controlled chaos.",image:"images/8822.png"},
+    "6398": { id:"6398",rank:1466,fur:"Brown",pattern:"Split",eyes:"Black Eyes",clothes:"Shirt",realm:"Abyssal Reaches",order:"Wild",hatColor:"Green",suggestedName:"Tideseed the Shore-Walker",suggestedStory:"From the coastal cliffs where land meets sea, Tideseed brings the rhythm of tides to the patience of growth.",image:"images/6398.png"},
+    "2426": { id:"2426",rank:2082,fur:"White",pattern:"Blotted",eyes:"Black Eyes",clothes:"Turtleneck",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Blotbark the Corruption-Fighter",suggestedStory:"The second Shadowmire Wizard in the Wild Order, specializing in the fight against the Great Rot.",image:"images/2426.png"},
+    "1977": { id:"1977",rank:2547,fur:"Black",pattern:"Classic",eyes:"Green Eyes",clothes:"Collar",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Greensight the Network-Walker",suggestedStory:"From the scholarly Violet Highlands, Greensight brings academic discipline to biological networks.",image:"images/1977.png"},
+    "1976": { id:"1976",rank:2938,fur:"Gray",pattern:"Husky",eyes:"Black Eyes",clothes:"Collar",realm:"Frosthollow",order:"Wild",hatColor:"Green",suggestedName:"Frostbark the Ice-Grower",suggestedStory:"The most unlikely Wild Wizard — a Husky from the frozen realm practicing magic of growth and warmth.",image:"images/1976.png"},
+    "3758": { id:"3758",rank:3040,fur:"Purple",pattern:"Zombie",eyes:"Red Eyes",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Deathbloom the Renewal-Bringer",suggestedStory:"The most visually striking Wild Wizard — purple fur with red eyes from the realm of decay.",image:"images/3758.png"},
+    "8965": { id:"8965",rank:3183,fur:"Brown",pattern:"Classic",eyes:"Black Eyes",clothes:"Scarf",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Brownthorn the Shield-Grower",suggestedStory:"A practical Classic who earned their green hat through defensive magic rather than aggressive growth.",image:"images/8965.png"},
+    "6873": { id:"6873",rank:3935,fur:"Yellow",pattern:"Solid",eyes:"Mixed",clothes:"None",realm:"Sunward Heights",order:"Wild",hatColor:"Green",suggestedName:"Goldleaf the Multi-Eyed",suggestedStory:"The only Wild Wizard with mixed-color eyes, creating a connection to multiple magical frequencies.",image:"images/6873.png"},
+    "2807": { id:"2807",rank:4035,fur:"Green",pattern:"Zombie",eyes:"Visor",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Voidbloom the Visor-Wearer",suggestedStory:"The second Zombie in the Wild Order, specializing in void-to-growth magic.",image:"images/2807.png"},
+    "9952": { id:"9952",rank:4082,fur:"Black",pattern:"Zombie",eyes:"Green Eyes",clothes:"None",realm:"Shadowmire",order:"Wild",hatColor:"Green",suggestedName:"Grimbloom the Green-Eyed",suggestedStory:"The darkest Wild Wizard, their black Zombie fur creating stark contrast with green Order magic.",image:"images/9952.png"},
+    "8284": { id:"8284",rank:4766,fur:"Black",pattern:"Tiger",eyes:"Round Glasses",clothes:"None",realm:"Ember Wastes",order:"Wild",hatColor:"Green",suggestedName:"Stripesight the Pattern-Hunter",suggestedStory:"A black Tiger whose solitary hunting instincts evolved into pattern-tracking abilities.",image:"images/8284.png"},
+    "5374": { id:"5374",rank:5224,fur:"Black",pattern:"Spotted",eyes:"Red Eyes",clothes:"None",realm:"Deepwood",order:"Wild",hatColor:"Green",suggestedName:"Redsight the Spotted Tracker",suggestedStory:"A native Deepwood Wizard whose black coat with spots creates living camouflage.",image:"images/5374.png"},
+    "3826": { id:"3826",rank:5283,fur:"Orange",pattern:"Classic",eyes:"Green Eyes",clothes:"None",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Orangeheart the Classic Bridge",suggestedStory:"The only orange-furred Wild Wizard, creating a visual connection between Wild green magic and Flame orange energy.",image:"images/3826.png"},
+    "5177": { id:"5177",rank:5878,fur:"Gray",pattern:"Husky",eyes:"Black Eyes",clothes:"None",realm:"Frosthollow",order:"Wild",hatColor:"Green",suggestedName:"Frostgrow the Gray Endurer",suggestedStory:"The second Husky in the Wild Order, focusing on plants that bridge seasonal transitions.",image:"images/5177.png"},
+    "5538": { id:"5538",rank:7282,fur:"Gray",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Wild",hatColor:"Green",suggestedName:"Graystorm the Weather-Walker",suggestedStory:"From the eternally sunny Sunward Heights, Graystorm brings understanding of what plants need when the sun doesn't shine.",image:"images/5538.png"},
+    "9713": { id:"9713",rank:8952,fur:"Black",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Wild",hatColor:"Green",suggestedName:"Darkleaf the Shadow-Grower",suggestedStory:"The least common Wild Wizard, ranking very low in the collection but serving a crucial role.",image:"images/9713.png"},
+    "8518": { id:"8518",rank:407,fur:"Black",pattern:"Tiger",eyes:"Yellow Eyes",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Goldstripe the Time-Stalker",suggestedStory:"The second-rarest Arcane Wizard, a solitary Tiger whose hunting instincts evolved into hunting through time itself.",image:"images/8518.png"},
+    "3406": { id:"3406",rank:912,fur:"Yellow",pattern:"Solid",eyes:"Blue Eyes",clothes:"Shirt",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Blueshirt the Dimensional Scholar",suggestedStory:"From the bright, simple Sunward Heights, Blueshirt brings clarity to the complex theories of dimensional magic.",image:"images/3406.png"},
+    "9234": { id:"9234",rank:2843,fur:"Black",pattern:"Spotted",eyes:"Black Eyes",clothes:"Scarf",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Shadowspot the Pattern-Keeper",suggestedStory:"A Deepwood native whose spotted pattern serves as a living memory storage system.",image:"images/9234.png"},
+    "8311": { id:"8311",rank:3893,fur:"Yellow",pattern:"Tiger",eyes:"Visor",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Goldvisor the Tiger Theorist",suggestedStory:"The second Tiger in the Arcane Order, developing the theoretical frameworks for temporal magic.",image:"images/8311.png"},
+    "9301": { id:"9301",rank:3938,fur:"Yellow",pattern:"Solid",eyes:"Pink Eyes",clothes:"None",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Rosegold the Pink-Eyed Theorist",suggestedStory:"Specializing in the intersection between magical theory and emotional reality.",image:"images/9301.png"},
+    "5056": { id:"5056",rank:4059,fur:"Brown",pattern:"Tiger",eyes:"Visor",clothes:"None",realm:"Ember Wastes",order:"Arcane",hatColor:"Purple",suggestedName:"Brownvisor the Research Director",suggestedStory:"The third Tiger in the Arcane Order, the research coordinator for dangerous magical experiments.",image:"images/5056.png"},
+    "5240": { id:"5240",rank:4173,fur:"Gray",pattern:"Solid",eyes:"Sleepy Eyes",clothes:"None",realm:"Sunward Heights",order:"Arcane",hatColor:"Purple",suggestedName:"Graysleep the Dream-Walker",suggestedStory:"Specializing in magic that works during sleep and unconsciousness.",image:"images/5240.png"},
+    "4994": { id:"4994",rank:4600,fur:"White",pattern:"Collie",eyes:"Red Eyes",clothes:"None",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Whitecoat the Collie Coordinator",suggestedStory:"The only Collie in the Arcane Order, bringing herding instincts to organizing magical knowledge.",image:"images/4994.png"},
+    "8342": { id:"8342",rank:4624,fur:"White",pattern:"Split",eyes:"Red Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Arcane",hatColor:"Purple",suggestedName:"Whiteheart the Split Researcher",suggestedStory:"From the realm of duality, Whiteheart brings Split perspectives to magical research.",image:"images/8342.png"},
+    "9826": { id:"9826",rank:4845,fur:"Green",pattern:"Zombie",eyes:"Black Eyes",clothes:"None",realm:"Shadowmire",order:"Arcane",hatColor:"Purple",suggestedName:"Greenbone the Chaos Scholar",suggestedStory:"The only Shadowmire representative in the Arcane Order, bringing chaos magic to scholarly research.",image:"images/9826.png"},
+    "6095": { id:"6095",rank:5093,fur:"White",pattern:"Dalmatian",eyes:"Square Glasses",clothes:"None",realm:"Deepwood",order:"Arcane",hatColor:"Purple",suggestedName:"Dalmatianscript the Unique Scholar",suggestedStory:"The collection's only Dalmatian Wizard, making them as unique among the 86 as their breed.",image:"images/6095.png"},
+    "9898": { id:"9898",rank:5299,fur:"Orange",pattern:"Classic",eyes:"Green Eyes",clothes:"None",realm:"Violet Highlands",order:"Arcane",hatColor:"Purple",suggestedName:"Orangeheart the Classic Bridge",suggestedStory:"An unusual color combination creating visual connections to multiple Orders simultaneously.",image:"images/9898.png"},
+    "8154": { id:"8154",rank:5549,fur:"Gray",pattern:"Classic",eyes:"Square Glasses",clothes:"None",realm:"Violet Highlands",order:"Arcane",hatColor:"Purple",suggestedName:"Grayglasses the Foundation Scholar",suggestedStory:"The most typical-looking Arcane Wizard — gray Classic fur, square glasses, nothing flashy.",image:"images/8154.png"},
+    "4165": { id:"4165",rank:854,fur:"White",pattern:"Collie",eyes:"Pink Eyes",clothes:"Poncho",realm:"Deepwood",order:"Deep",hatColor:"Blue",suggestedName:"Pinkgaze the Emotional Seer",suggestedStory:"The rarest Deep Wizard, whose Collie herding instincts evolved into herding probable futures.",image:"images/4165.png"},
+    "9530": { id:"9530",rank:2023,fur:"White",pattern:"Bernard",eyes:"Black Eyes",clothes:"Shirt",realm:"Frosthollow",order:"Deep",hatColor:"Blue",suggestedName:"Bernardguard the Truth-Keeper",suggestedStory:"The collection's only Bernard Wizard, embodying the perfect convergence of breed instinct and Order discipline.",image:"images/9530.png"},
+    "3557": { id:"3557",rank:3868,fur:"Yellow",pattern:"Tiger",eyes:"Yellow Eyes",clothes:"None",realm:"Ember Wastes",order:"Deep",hatColor:"Blue",suggestedName:"Goldstare the Solar Prophet",suggestedStory:"A Tiger whose perfect yellow-on-yellow coloring creates unique resonance with light-based prophecy.",image:"images/3557.png"},
+    "2634": { id:"2634",rank:4331,fur:"Black",pattern:"Split",eyes:"Mixed",clothes:"None",realm:"Abyssal Reaches",order:"Deep",hatColor:"Blue",suggestedName:"Mixedsight the Paradox Prophet",suggestedStory:"From the realm of duality, Mixedsight brings Split double-vision to prophecy magic.",image:"images/2634.png"},
+    "4742": { id:"4742",rank:5050,fur:"White",pattern:"Blotted",eyes:"Sleepy Eyes",clothes:"None",realm:"Shadowmire",order:"Deep",hatColor:"Blue",suggestedName:"Blottedmist the Chaos Seer",suggestedStory:"From the ever-changing Shadowmire, Blottedmist brings chaos magic principles to prophecy work.",image:"images/4742.png"},
+    "6135": { id:"6135",rank:5309,fur:"Blue",pattern:"Classic",eyes:"Visor",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Bluevisor the Technology Prophet",suggestedStory:"The only blue-furred Deep Wizard, creating perfect color resonance between their coat and their Order.",image:"images/6135.png"},
+    "5516": { id:"5516",rank:5977,fur:"White",pattern:"Classic",eyes:"Black Eyes",clothes:"Collar",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Whiteguard the Shield Prophet",suggestedStory:"A defensive specialist whose white fur reflects magical attacks.",image:"images/5516.png"},
+    "6232": { id:"6232",rank:6043,fur:"Yellow",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Deep",hatColor:"Blue",suggestedName:"Goldsolid the Pure Prophet",suggestedStory:"From the realm of pure colors and simple truths, Goldsolid brings Solid-breed clarity to prophecy.",image:"images/6232.png"},
+    "6597": { id:"6597",rank:6539,fur:"Black",pattern:"Classic",eyes:"Square Glasses",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Blackglasses the Archive Prophet",suggestedStory:"A scholarly prophet who develops techniques for archival prophecy.",image:"images/6597.png"},
+    "7257": { id:"7257",rank:7436,fur:"Gray",pattern:"Classic",eyes:"Sleepy Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Graydreamer the Sleep Prophet",suggestedStory:"A Classic whose permanently sleepy appearance reflects their specialty in dream-state prophecy.",image:"images/7257.png"},
+    "1841": { id:"1841",rank:8023,fur:"Orange",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Orangeclassic the Bridge Prophet",suggestedStory:"An unusual color combination for the Deep Order — orange Classic fur.",image:"images/1841.png"},
+    "3417": { id:"3417",rank:9083,fur:"Orange",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Orangeshield the Flame Prophet",suggestedStory:"The second orange-furred Deep Wizard, specializing in fire-related prophecy.",image:"images/3417.png"},
+    "7226": { id:"7226",rank:9172,fur:"Tan",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Deep",hatColor:"Blue",suggestedName:"Tanwatcher the Patient Prophet",suggestedStory:"The lowest-ranking Deep Wizard, specializing in Patient Prophecy.",image:"images/7226.png"},
+    "9684": { id:"9684",rank:66,fur:"White",pattern:"Blotted",eyes:"Yellow Eyes",clothes:"Shirt",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Goldblot the Luminous Shadow",suggestedStory:"The rarest Radiant Wizard and the greatest paradox in the Order.",image:"images/9684.png"},
+    "9604": { id:"9604",rank:277,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"Lumberjack",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Beigelumber the Worker's Light",suggestedStory:"A working-class Classic whose beige fur and lumberjack outfit mark them as different.",image:"images/9604.png"},
+    "9469": { id:"9469",rank:464,fur:"White",pattern:"Blotted",eyes:"Sleepy Eyes",clothes:"None",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Whitemist the Sleepy Purifier",suggestedStory:"Specializing in gentle purification that works while the patient sleeps.",image:"images/9469.png"},
+    "7833": { id:"7833",rank:1025,fur:"Bronze",pattern:"Shiny",eyes:"Black Eyes",clothes:"Sport Hoodie",realm:"Shadowmire",order:"Radiant",hatColor:"Yellow",suggestedName:"Bronzebeacon the Shiny Light",suggestedStory:"The collection's only Shiny Wizard, making them as unique among the 86 as their breed.",image:"images/7833.png"},
+    "9396": { id:"9396",rank:2131,fur:"Tan",pattern:"Husky",eyes:"Black Eyes",clothes:"Collar",realm:"Frosthollow",order:"Radiant",hatColor:"Yellow",suggestedName:"Tancollar the Diplomatic Light",suggestedStory:"A Husky from ice-realm Frosthollow practicing sun magic.",image:"images/9396.png"},
+    "5381": { id:"5381",rank:2521,fur:"Pink",pattern:"Classic",eyes:"Black Eyes",clothes:"Tracksuit",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Roseclassic the Pink Diplomat",suggestedStory:"An unusual color for any Order — pink Classic fur creating visual connection to Heart magic.",image:"images/5381.png"},
+    "7731": { id:"7731",rank:2866,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"Shirt",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Beigelight the Steady Illuminator",suggestedStory:"Specializing in sustained illumination for scholarly work.",image:"images/7731.png"},
+    "9025": { id:"9025",rank:3879,fur:"Gray",pattern:"Split",eyes:"Red Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Grayheart the Split Revealer",suggestedStory:"From the realm of duality, Grayheart brings Split vision to revelation magic.",image:"images/9025.png"},
+    "6203": { id:"6203",rank:4781,fur:"Tan",pattern:"Husky",eyes:"Sleepy Eyes",clothes:"None",realm:"Frosthollow",order:"Radiant",hatColor:"Yellow",suggestedName:"Sleepytan the Dream Revealer",suggestedStory:"Specializing in revelation that occurs during rest and unconsciousness.",image:"images/6203.png"},
+    "9183": { id:"9183",rank:5726,fur:"White",pattern:"Split",eyes:"Pink Eyes",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Whiteheart the Pink-Eyed Illuminator",suggestedStory:"A Split whose white fur and pink eyes create perfect harmony for compassionate revelation magic.",image:"images/9183.png"},
+    "4458": { id:"4458",rank:5746,fur:"White",pattern:"Split",eyes:"Square Glasses",clothes:"None",realm:"Abyssal Reaches",order:"Radiant",hatColor:"Yellow",suggestedName:"Whiteglasses the Precision Revealer",suggestedStory:"Specializing in precise, detailed truth-magic.",image:"images/4458.png"},
+    "3186": { id:"3186",rank:9281,fur:"Brown",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Radiant",hatColor:"Yellow",suggestedName:"Brownheart the Common Light",suggestedStory:"The least rare Wizard in the entire Order of 86 — ranking 9,281 out of 10,000.",image:"images/3186.png"},
+    "9089": { id:"9089",rank:46,fur:"Black",pattern:"Split",eyes:"Red Eyes",clothes:"Tracksuit",realm:"Abyssal Reaches",order:"Heart",hatColor:"Pink",suggestedName:"Raredheart the Ultimate Amplifier",suggestedStory:"The rarest Wizard in the Order of 86. The rarest Wizard in the entire Doginal Dogs collection. And they're Heart.",image:"images/9089.png"},
+    "2855": { id:"2855",rank:5958,fur:"Brown",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Glassesheart the Scholarly Amplifier",suggestedStory:"From the academic Violet Highlands, Glassesheart brings scholarly analysis to emotional bonds.",image:"images/2855.png"},
+    "3735": { id:"3735",rank:7823,fur:"Pink",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Tancollar the Steady Bond",suggestedStory:"Specializing in long-term relationship maintenance.",image:"images/3735.png"},
+    "6502": { id:"6502",rank:7031,fur:"White",pattern:"Collie",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Sleepyheart the Dream Bonder",suggestedStory:"Specializing in emotional bonds that form during sleep and unconscious states.",image:"images/6502.png"},
+    "4650": { id:"4650",rank:7071,fur:"Tan",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Brownheart the Stable Amplifier",suggestedStory:"Demonstrating that steady, reliable breeds are naturally suited to bond magic.",image:"images/4650.png"},
+    "7439": { id:"7439",rank:5732,fur:"Yellow",pattern:"Solid",eyes:"Black Eyes",clothes:"None",realm:"Sunward Heights",order:"Heart",hatColor:"Pink",suggestedName:"Sleepyhusky the Gentle Endurer",suggestedStory:"A Husky from the harsh arctic realm practicing the magic of gentle emotional connection.",image:"images/7439.png"},
+    "6198": { id:"6198",rank:6042,fur:"Gray",pattern:"Tiger",eyes:"Black Eyes",clothes:"None",realm:"Ember Wastes",order:"Heart",hatColor:"Pink",suggestedName:"Blackhusky the Shadow Amplifier",suggestedStory:"Specializing in amplifying the hidden emotional strengths that people don't know they possess.",image:"images/6198.png"},
+    "9624": { id:"9624",rank:7914,fur:"Black",pattern:"Spotted",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Brownsteady the Reliable Heart",suggestedStory:"Demonstrating the natural affinity between steady breeds and consistent emotional magic.",image:"images/9624.png"},
+    "3479": { id:"3479",rank:7641,fur:"Beige",pattern:"Classic",eyes:"Black Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Grayheart the Neutral Amplifier",suggestedStory:"Specializing in neutral amplification that doesn't favor any particular emotional approach.",image:"images/3479.png"},
+    "1271": { id:"1271",rank:6653,fur:"White",pattern:"Collie",eyes:"Black Eyes",clothes:"None",realm:"Deepwood",order:"Heart",hatColor:"Pink",suggestedName:"Tansteady the Patient Amplifier",suggestedStory:"Demonstrating that the breed most suited to emotional magic is also the most common.",image:"images/1271.png"},
+    "9017": { id:"9017",rank:6598,fur:"Tan",pattern:"Classic",eyes:"Yellow Eyes",clothes:"None",realm:"Violet Highlands",order:"Heart",hatColor:"Pink",suggestedName:"Sleepysteady the Gentle Dreamer",suggestedStory:"Specializing in gentle emotional work that occurs during rest and sleep.",image:"images/9017.png"},
+    "6164": { id:"6164",rank:7277,fur:"Gray",pattern:"Classic",eyes:"Round Glasses",clothes:"None",realm:"Violet Highlands",order:"Wanderer",hatColor:"Purple",suggestedName:"The Wanderer, First Dog, Author of the First Howl",suggestedStory:"The most ordinary-looking dog in the collection. Gray fur. Classic pattern. No clothes. No accessories. Round glasses. Rank 7,277. He is the First Dog. The being who appeared in the emptiness before existence and howled the universe into being.",image:"images/6164.png"}
+};
+
+// ── Order Colors ─────────────────────────────────────────
+const orderColors = {
+    Flame: 'var(--color-flame)', Wild: 'var(--color-wild)', Arcane: 'var(--color-arcane)',
+    Deep: 'var(--color-deep)', Radiant: 'var(--color-radiant)', Heart: 'var(--color-heart)',
+    Wanderer: 'var(--color-wanderer)'
+};
+const orderColorsHex = {
+    Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF',
+    Deep:'#3498DB', Radiant:'#F1C40F', Heart:'#FF69B4', Wanderer:'#9966ff'
+};
+
+// ── Build Stats Bar ──────────────────────────────────────
+const dogs = Object.values(wizardDogs);
+const orderCounts = {};
+dogs.forEach(d => { orderCounts[d.order] = (orderCounts[d.order]||0)+1; });
+const statsBar = document.getElementById('statsBar');
+statsBar.innerHTML = `<div class="stat-pill"><strong>${dogs.length}</strong>&nbsp;Wizards</div>` +
+    Object.entries(orderCounts).map(([o,c]) =>
+        `<div class="stat-pill"><div class="stat-dot" style="background:${orderColorsHex[o]}"></div>${o} <strong>${c}</strong></div>`
+    ).join('');
+
+// ── Build Card Grid ──────────────────────────────────────
+const cardGrid = document.getElementById('cardGrid');
+const emptyState = document.getElementById('emptyState');
+let activeFilter = 'all';
+let searchQuery = '';
+
+function getOrderColor(order) { return orderColorsHex[order] || '#9966ff'; }
+
+function buildCards(filteredDogs) {
+    cardGrid.innerHTML = '';
+    if (filteredDogs.length === 0) {
+        emptyState.classList.add('visible');
+        return;
+    }
+    emptyState.classList.remove('visible');
+
+    filteredDogs.forEach((dog, i) => {
+        const card = document.createElement('div');
+        card.className = 'dog-card';
+        card.dataset.id = dog.id;
+        card.style.transitionDelay = `${Math.min(i * 40, 600)}ms`;
+        const col = getOrderColor(dog.order);
+        card.innerHTML = `
+            <div class="card-accent" style="background:${col}"></div>
+            <div class="card-img-wrap">
+                <img src="${dog.image}" alt="${dog.suggestedName}" loading="lazy">
+                <div class="card-rank-badge">#${dog.rank}</div>
+            </div>
+            <div class="card-body">
+                <div class="card-number">#${dog.id}</div>
+                <div class="card-name">${dog.suggestedName}</div>
+                <div class="card-meta">
+                    <span class="card-order-tag" style="background:${col}">${dog.order}</span>
+                    <span class="card-tag">${dog.pattern}</span>
+                    <span class="card-tag">${dog.fur}</span>
+                </div>
+            </div>
+        `;
+        card.addEventListener('click', () => openDetail(dog));
+        cardGrid.appendChild(card);
+    });
+
+    // Intersection Observer for stagger animation
+    requestAnimationFrame(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        cardGrid.querySelectorAll('.dog-card').forEach(c => observer.observe(c));
+    });
+}
+
+function filterDogs() {
+    const q = searchQuery.toLowerCase();
+    const filtered = dogs.filter(d => {
+        if (activeFilter !== 'all' && d.order.toLowerCase() !== activeFilter) return false;
+        if (!q) return true;
+        return [d.id, d.suggestedName, d.fur, d.pattern, d.eyes, d.realm, d.order, d.clothes]
+            .some(v => v && v.toLowerCase().includes(q));
+    });
+    // Sort: Wanderer (#6164) always first, then by rank
+    filtered.sort((a,b) => {
+        if (a.id === '6164') return -1;
+        if (b.id === '6164') return 1;
+        return a.rank - b.rank;
+    });
+    buildCards(filtered);
+}
+
+// ── Filter Chips ─────────────────────────────────────────
+document.querySelectorAll('.filter-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeFilter = chip.dataset.order;
+        filterDogs();
+    });
+});
+
+// ── Search ───────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', e => {
+    searchQuery = e.target.value.trim();
+    filterDogs();
+});
+
+// ── Detail Modal ─────────────────────────────────────────
+const backdrop = document.getElementById('modalBackdrop');
+const sheet = document.getElementById('modalSheet');
+
+function openDetail(dog) {
+    const col = getOrderColor(dog.order);
+    document.getElementById('detailImg').src = dog.image;
+    document.getElementById('detailName').textContent = dog.suggestedName;
+    document.getElementById('detailId').textContent = `#${dog.id} · Rank ${dog.rank.toLocaleString()}`;
+    const badge = document.getElementById('detailBadge');
+    badge.textContent = dog.order;
+    badge.style.background = col;
+
+    const metaItems = [
+        ['Fur', dog.fur], ['Pattern', dog.pattern], ['Eyes', dog.eyes],
+        ['Clothes', dog.clothes], ['Realm', dog.realm], ['Rank', '#' + dog.rank.toLocaleString()]
+    ];
+    document.getElementById('metaGrid').innerHTML = metaItems.map(([l,v]) =>
+        `<div class="meta-item"><div class="meta-label">${l}</div><div class="meta-value">${v}</div></div>`
+    ).join('');
+
+    document.getElementById('dogNameInput').value = dog.suggestedName;
+    document.getElementById('dogStoryInput').value = dog.suggestedStory;
+    document.getElementById('formDogId').value = dog.id;
+    document.getElementById('formRank').value = dog.rank;
+    document.getElementById('formFur').value = dog.fur;
+    document.getElementById('formPattern').value = dog.pattern;
+    document.getElementById('formEyes').value = dog.eyes;
+    document.getElementById('formClothes').value = dog.clothes;
+    document.getElementById('formRealm').value = dog.realm;
+    document.getElementById('formOrder').value = dog.order;
+
+    backdrop.classList.add('active');
+    sheet.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+    backdrop.classList.remove('active');
+    sheet.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+backdrop.addEventListener('click', closeDetail);
+sheet.querySelector('.modal-handle').addEventListener('click', closeDetail);
+
+// ── Mobile Nav ───────────────────────────────────────────
+document.getElementById('navHamburger').addEventListener('click', () => {
+    document.getElementById('navMobileMenu').classList.add('open');
+});
+document.getElementById('navCloseMenu').addEventListener('click', () => {
+    document.getElementById('navMobileMenu').classList.remove('open');
+});
+
+// ── Init ─────────────────────────────────────────────────
+filterDogs();
+</script>
+</body>
+</html>
