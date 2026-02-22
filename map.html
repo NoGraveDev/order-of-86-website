@@ -1389,7 +1389,7 @@ function createDogModel(dog) {
     const orderHex = parseInt(orderColor.replace('#',''), 16);
 
     // Load PFP image as billboard sprite
-    const imgPath = `wizard-images/${id}.png`;
+    const imgPath = `images/${id}.png`;
     const spriteMat = new THREE.SpriteMaterial({ color: 0xffffff, transparent: true, alphaTest: 0.1, depthTest: true, sizeAttenuation: true, fog: false });
     const sprite = new THREE.Sprite(spriteMat);
     sprite.scale.set(22, 22, 1);
