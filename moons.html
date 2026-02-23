@@ -443,25 +443,146 @@ const MOONS = [
 
 const offsets = [0, 3.2, 6.1, 1.5, 8.7, 4.4, 12.0];
 
-// === Starfield ===
+// === Realistic Starfield with Shooting Stars ===
 (function(){
     const c = document.getElementById('starfield'), ctx = c.getContext('2d');
-    let stars = [];
+    let W, H;
+    
+    // Multi-layer stars for depth
+    const layers = [
+        { count: 400, minR: 0.2, maxR: 0.6, minA: 0.15, maxA: 0.4, speed: 0.003 },  // distant dim
+        { count: 200, minR: 0.5, maxR: 1.2, minA: 0.3, maxA: 0.7, speed: 0.008 },    // mid
+        { count: 60,  minR: 1.0, maxR: 2.0, minA: 0.5, maxA: 1.0, speed: 0.015 },    // bright close
+    ];
+    let allStars = [];
+    
+    // Colored bright stars (realistic: blue, white, yellow, orange tints)
+    const starColors = [
+        [255,255,255], [200,220,255], [255,240,220], [255,200,150],
+        [180,200,255], [255,255,230], [255,220,180], [220,230,255]
+    ];
+    
+    // Shooting stars
+    let shootingStars = [];
+    const SHOOT_INTERVAL = 3000; // avg ms between shooting stars
+    let lastShoot = 0;
+    
+    function makeShootingStar() {
+        const startX = Math.random() * W * 0.8;
+        const startY = Math.random() * H * 0.4;
+        const angle = Math.PI * 0.15 + Math.random() * Math.PI * 0.2; // roughly diagonal
+        const speed = 8 + Math.random() * 12;
+        const len = 80 + Math.random() * 120;
+        return {
+            x: startX, y: startY, angle, speed, len,
+            life: 1.0, decay: 0.015 + Math.random() * 0.01,
+            brightness: 0.7 + Math.random() * 0.3,
+            width: 1 + Math.random() * 1.5
+        };
+    }
+    
     function resize(){
-        c.width = innerWidth; c.height = innerHeight;
-        stars = Array.from({length:180}, ()=>({
-            x:Math.random()*c.width, y:Math.random()*c.height,
-            r:Math.random()*1.4+0.3, a:Math.random(), da:(Math.random()-0.5)*0.012
-        }));
+        W = c.width = innerWidth; H = c.height = innerHeight;
+        allStars = [];
+        for (const L of layers) {
+            for (let i = 0; i < L.count; i++) {
+                const col = starColors[Math.floor(Math.random() * starColors.length)];
+                allStars.push({
+                    x: Math.random() * W, y: Math.random() * H,
+                    r: L.minR + Math.random() * (L.maxR - L.minR),
+                    a: L.minA + Math.random() * (L.maxA - L.minA),
+                    baseA: L.minA + Math.random() * (L.maxA - L.minA),
+                    twinkleSpeed: L.speed * (0.5 + Math.random()),
+                    twinklePhase: Math.random() * Math.PI * 2,
+                    col
+                });
+            }
+        }
     }
     resize(); addEventListener('resize', resize);
+    
+    let time = 0;
     (function draw(){
-        ctx.clearRect(0,0,c.width,c.height);
-        for(const s of stars){
-            s.a+=s.da; if(s.a>1||s.a<0.1)s.da*=-1;
-            ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-            ctx.fillStyle=`rgba(255,255,255,${s.a.toFixed(2)})`; ctx.fill();
+        time += 0.016;
+        ctx.clearRect(0, 0, W, H);
+        
+        // Subtle nebula glow patches
+        const grd1 = ctx.createRadialGradient(W*0.2, H*0.3, 0, W*0.2, H*0.3, W*0.35);
+        grd1.addColorStop(0, 'rgba(30,20,60,0.08)');
+        grd1.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grd1; ctx.fillRect(0,0,W,H);
+        
+        const grd2 = ctx.createRadialGradient(W*0.75, H*0.6, 0, W*0.75, H*0.6, W*0.3);
+        grd2.addColorStop(0, 'rgba(20,30,50,0.06)');
+        grd2.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grd2; ctx.fillRect(0,0,W,H);
+        
+        // Draw stars
+        for (const s of allStars) {
+            const twinkle = Math.sin(time * s.twinkleSpeed + s.twinklePhase);
+            const a = Math.max(0.05, s.baseA + twinkle * s.baseA * 0.5);
+            
+            // Glow for brighter stars
+            if (s.r > 1.2) {
+                const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
+                glow.addColorStop(0, `rgba(${s.col[0]},${s.col[1]},${s.col[2]},${(a*0.15).toFixed(3)})`);
+                glow.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = glow;
+                ctx.fillRect(s.x - s.r*4, s.y - s.r*4, s.r*8, s.r*8);
+            }
+            
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a.toFixed(3)})`;
+            ctx.fill();
         }
+        
+        // Spawn shooting stars
+        if (time * 1000 - lastShoot > SHOOT_INTERVAL + Math.random() * 2000) {
+            shootingStars.push(makeShootingStar());
+            lastShoot = time * 1000;
+            // Occasionally spawn a double
+            if (Math.random() < 0.2) {
+                setTimeout(() => shootingStars.push(makeShootingStar()), 200 + Math.random() * 400);
+            }
+        }
+        
+        // Draw shooting stars
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+            const ss = shootingStars[i];
+            ss.x += Math.cos(ss.angle) * ss.speed;
+            ss.y += Math.sin(ss.angle) * ss.speed;
+            ss.life -= ss.decay;
+            
+            if (ss.life <= 0 || ss.x > W + 50 || ss.y > H + 50) {
+                shootingStars.splice(i, 1);
+                continue;
+            }
+            
+            const tailX = ss.x - Math.cos(ss.angle) * ss.len * ss.life;
+            const tailY = ss.y - Math.sin(ss.angle) * ss.len * ss.life;
+            
+            const grad = ctx.createLinearGradient(tailX, tailY, ss.x, ss.y);
+            grad.addColorStop(0, `rgba(255,255,255,0)`);
+            grad.addColorStop(0.6, `rgba(200,220,255,${(ss.life * ss.brightness * 0.3).toFixed(3)})`);
+            grad.addColorStop(1, `rgba(255,255,255,${(ss.life * ss.brightness).toFixed(3)})`);
+            
+            ctx.beginPath();
+            ctx.moveTo(tailX, tailY);
+            ctx.lineTo(ss.x, ss.y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = ss.width * ss.life;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+            
+            // Bright head glow
+            const headGlow = ctx.createRadialGradient(ss.x, ss.y, 0, ss.x, ss.y, 6);
+            headGlow.addColorStop(0, `rgba(255,255,255,${(ss.life * ss.brightness * 0.6).toFixed(3)})`);
+            headGlow.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = headGlow;
+            ctx.fillRect(ss.x - 6, ss.y - 6, 12, 12);
+        }
+        
         requestAnimationFrame(draw);
     })();
 })();
