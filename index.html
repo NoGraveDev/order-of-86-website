@@ -212,7 +212,14 @@
         /* ── Hero ─────────────────────────────────────────── */
         .hero {
             text-align: center;
-            padding: 64px 16px 32px;
+            padding: 48px 16px 32px;
+        }
+        .hero-image {
+            width: clamp(80px, 15vw, 140px);
+            height: auto;
+            image-rendering: pixelated;
+            margin-bottom: 16px;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
         }
         .hero-title {
             font-size: clamp(2.2rem, 5vw, 3.5rem);
@@ -702,6 +709,7 @@
 </div>
 
 <section class="hero">
+    <img src="header-hat.jpeg" alt="Wizard Hat" class="hero-image">
     <h1 class="hero-title">The Order of 86</h1>
     <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon — ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
 </section>
