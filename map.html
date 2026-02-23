@@ -789,71 +789,6 @@ towers[1].position.y += 10;
 
 setProgress(72);
 
-// ── Loyalty Network (tower-to-moon lines, dynamic) ──
-const loyaltyGroup = new THREE.Group();
-
-const towerPositions = towers.map(t => t.position.clone().add(new THREE.Vector3(0,35,0)));
-
-// Each tower connects to its corresponding moon (same index: 0=Flame/Emberhowl, 1=Radiant/Solaris, etc.)
-const loyaltyPaths = [];
-const loyaltyLines = [];
-const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4];
-for (let i = 0; i < 6; i++) {
-    const towerPos = towerPositions[i];
-    const moonPos = moons[i].position.clone();
-    const mid = new THREE.Vector3(
-        (towerPos.x + moonPos.x) * 0.5,
-        (towerPos.y + moonPos.y) * 0.5 + 30,
-        (towerPos.z + moonPos.z) * 0.5
-    );
-    const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
-    const pts = curve.getPoints(24);
-    const lineMat = new THREE.LineDashedMaterial({ color: towerMoonColors[i], transparent: true, opacity: 0.5, dashSize: 6, gapSize: 3, linewidth: 1 });
-    const geo = new THREE.BufferGeometry().setFromPoints(pts);
-    const line = new THREE.Line(geo, lineMat);
-    line.computeLineDistances();
-    loyaltyGroup.add(line);
-    loyaltyLines.push(line);
-    loyaltyPaths.push({ from: towerPos, moonIdx: i });
-}
-scene.add(loyaltyGroup);
-
-// Update loyalty lines to follow moving moons
-function updateLoyaltyLines() {
-    for (let i = 0; i < 6; i++) {
-        const towerPos = towerPositions[i];
-        const moonPos = moons[i].position;
-        const mid = new THREE.Vector3(
-            (towerPos.x + moonPos.x) * 0.5,
-            (towerPos.y + moonPos.y) * 0.5 + 30,
-            (towerPos.z + moonPos.z) * 0.5
-        );
-        const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
-        const pts = curve.getPoints(24);
-        loyaltyLines[i].geometry.setFromPoints(pts);
-        loyaltyLines[i].computeLineDistances();
-        loyaltyPaths[i].to = moonPos.clone();
-        loyaltyPaths[i].mid = mid;
-    }
-}
-
-// Traveling dots on loyalty network
-const dotCount = 30;
-const dotGeo = new THREE.BufferGeometry();
-const dotPositions = new Float32Array(dotCount*3);
-const dotProgress = new Float32Array(dotCount);
-const dotPathIdx = new Uint8Array(dotCount);
-for (let i=0;i<dotCount;i++) {
-    dotProgress[i] = Math.random();
-    dotPathIdx[i] = Math.floor(Math.random()*loyaltyPaths.length);
-}
-dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPositions, 3));
-const dotMat = new THREE.PointsMaterial({ color:0xffd700, size:4, sizeAttenuation:true, transparent:true, opacity:0.9 });
-const dots = new THREE.Points(dotGeo, dotMat);
-scene.add(dots);
-
-setProgress(78);
-
 // ── Seven Moons ──
 const moonData = [
     { name:'Emberhowl',  color:0xFF6B00, order:'Flame',   cycle:18, wizards:18 },
@@ -940,6 +875,71 @@ for (let i = 0; i < 7; i++) {
     moons.push(moon);
 }
 scene.add(moonGroup);
+
+setProgress(78);
+
+// ── Loyalty Network (tower-to-moon lines, dynamic) ──
+const loyaltyGroup = new THREE.Group();
+
+const towerPositions = towers.map(t => t.position.clone().add(new THREE.Vector3(0,35,0)));
+
+// Each tower connects to its corresponding moon (same index: 0=Flame/Emberhowl, 1=Radiant/Solaris, etc.)
+const loyaltyPaths = [];
+const loyaltyLines = [];
+const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4];
+for (let i = 0; i < 6; i++) {
+    const towerPos = towerPositions[i];
+    const moonPos = moons[i].position.clone();
+    const mid = new THREE.Vector3(
+        (towerPos.x + moonPos.x) * 0.5,
+        (towerPos.y + moonPos.y) * 0.5 + 30,
+        (towerPos.z + moonPos.z) * 0.5
+    );
+    const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
+    const pts = curve.getPoints(24);
+    const lineMat = new THREE.LineDashedMaterial({ color: towerMoonColors[i], transparent: true, opacity: 0.5, dashSize: 6, gapSize: 3, linewidth: 1 });
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const line = new THREE.Line(geo, lineMat);
+    line.computeLineDistances();
+    loyaltyGroup.add(line);
+    loyaltyLines.push(line);
+    loyaltyPaths.push({ from: towerPos, moonIdx: i });
+}
+scene.add(loyaltyGroup);
+
+// Update loyalty lines to follow moving moons
+function updateLoyaltyLines() {
+    for (let i = 0; i < 6; i++) {
+        const towerPos = towerPositions[i];
+        const moonPos = moons[i].position;
+        const mid = new THREE.Vector3(
+            (towerPos.x + moonPos.x) * 0.5,
+            (towerPos.y + moonPos.y) * 0.5 + 30,
+            (towerPos.z + moonPos.z) * 0.5
+        );
+        const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
+        const pts = curve.getPoints(24);
+        loyaltyLines[i].geometry.setFromPoints(pts);
+        loyaltyLines[i].computeLineDistances();
+        loyaltyPaths[i].to = moonPos.clone();
+        loyaltyPaths[i].mid = mid;
+    }
+}
+
+// Traveling dots on loyalty network
+const dotCount = 30;
+const dotGeo = new THREE.BufferGeometry();
+const dotPositions = new Float32Array(dotCount*3);
+const dotProgress = new Float32Array(dotCount);
+const dotPathIdx = new Uint8Array(dotCount);
+for (let i=0;i<dotCount;i++) {
+    dotProgress[i] = Math.random();
+    dotPathIdx[i] = Math.floor(Math.random()*loyaltyPaths.length);
+}
+dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dotPositions, 3));
+const dotMat = new THREE.PointsMaterial({ color:0xffd700, size:4, sizeAttenuation:true, transparent:true, opacity:0.9 });
+const dots = new THREE.Points(dotGeo, dotMat);
+scene.add(dots);
 
 setProgress(82);
 
