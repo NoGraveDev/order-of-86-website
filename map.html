@@ -789,21 +789,18 @@ towers[1].position.y += 10;
 
 setProgress(72);
 
-// ── Loyalty Network (tower-to-moon lines) ──
+// ── Loyalty Network (tower-to-moon lines, dynamic) ──
 const loyaltyGroup = new THREE.Group();
 
 const towerPositions = towers.map(t => t.position.clone().add(new THREE.Vector3(0,35,0)));
 
 // Each tower connects to its corresponding moon (same index: 0=Flame/Emberhowl, 1=Radiant/Solaris, etc.)
-// Palehowl (index 6) has no tower, it's the starter moon
 const loyaltyPaths = [];
+const loyaltyLines = [];
 const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4];
 for (let i = 0; i < 6; i++) {
     const towerPos = towerPositions[i];
-    // Moon positions are set later, so we store the index and update in animation
-    // Pre-calculate moon position (same formula used later in moon creation)
-    const moonAngle = (i / 7) * Math.PI - Math.PI/2;
-    const moonPos = new THREE.Vector3(Math.cos(moonAngle)*400, 350 + Math.sin(moonAngle)*50, Math.sin(moonAngle)*200 - 200);
+    const moonPos = moons[i].position.clone();
     const mid = new THREE.Vector3(
         (towerPos.x + moonPos.x) * 0.5,
         (towerPos.y + moonPos.y) * 0.5 + 30,
@@ -816,9 +813,29 @@ for (let i = 0; i < 6; i++) {
     const line = new THREE.Line(geo, lineMat);
     line.computeLineDistances();
     loyaltyGroup.add(line);
-    loyaltyPaths.push({ from: towerPos, to: moonPos, mid: mid, moonIdx: i });
+    loyaltyLines.push(line);
+    loyaltyPaths.push({ from: towerPos, moonIdx: i });
 }
 scene.add(loyaltyGroup);
+
+// Update loyalty lines to follow moving moons
+function updateLoyaltyLines() {
+    for (let i = 0; i < 6; i++) {
+        const towerPos = towerPositions[i];
+        const moonPos = moons[i].position;
+        const mid = new THREE.Vector3(
+            (towerPos.x + moonPos.x) * 0.5,
+            (towerPos.y + moonPos.y) * 0.5 + 30,
+            (towerPos.z + moonPos.z) * 0.5
+        );
+        const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
+        const pts = curve.getPoints(24);
+        loyaltyLines[i].geometry.setFromPoints(pts);
+        loyaltyLines[i].computeLineDistances();
+        loyaltyPaths[i].to = moonPos.clone();
+        loyaltyPaths[i].mid = mid;
+    }
+}
 
 // Traveling dots on loyalty network
 const dotCount = 30;
@@ -838,23 +855,87 @@ scene.add(dots);
 setProgress(78);
 
 // ── Seven Moons ──
-const moonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4, 0xdddddd];
-const moonNames = ['Emberhowl','Solara','Tidemoon','Verdant','Veilmoon','Heartmoon','Palehowl'];
+const moonData = [
+    { name:'Emberhowl',  color:0xFF6B00, order:'Flame',   cycle:18, wizards:18 },
+    { name:'Solaris',    color:0xF1C40F, order:'Radiant', cycle:12, wizards:12 },
+    { name:'Deepwell',   color:0x3498DB, order:'Deep',    cycle:13, wizards:13 },
+    { name:'Evergreen',  color:0x2ECC71, order:'Wild',    cycle:18, wizards:18 },
+    { name:'Umbra',      color:0x9B6EFF, order:'Arcane',  cycle:14, wizards:14 },
+    { name:'Roseglow',   color:0xFF69B4, order:'Heart',   cycle:11, wizards:11 },
+    { name:'Palehowl',   color:0xdddddd, order:'Starter', cycle:30, wizards:0  }
+];
 const moonGroup = new THREE.Group();
 const moons = [];
+const moonLights = [];
 for (let i = 0; i < 7; i++) {
-    const angle = (i / 7) * Math.PI - Math.PI/2;
-    const r = i === 6 ? 3 : 5;
-    const moon = new THREE.Mesh(
-        new THREE.SphereGeometry(r, 20, 16),
-        new THREE.MeshStandardMaterial({ color:moonColors[i], emissive:moonColors[i], emissiveIntensity:1.2 })
-    );
-    moon.position.set(Math.cos(angle)*400, 350 + Math.sin(angle)*50, Math.sin(angle)*200 - 200);
-    moon.userData = { type:'moon', name:moonNames[i], index:i };
+    const md = moonData[i];
+    const angle = (i / 7) * Math.PI * 2;
+    const orbitR = i === 6 ? 300 : 400;
+    const baseY = i === 6 ? 320 : 350;
+    const r = i === 6 ? 3.5 : 6;
 
-    const moonLight = new THREE.PointLight(moonColors[i], 0.3, 800);
+    // Lit half (emissive moon surface)
+    const moonMat = new THREE.MeshStandardMaterial({
+        color: md.color,
+        emissive: md.color,
+        emissiveIntensity: 1.0,
+        transparent: true,
+        opacity: 1.0
+    });
+    const moon = new THREE.Mesh(new THREE.SphereGeometry(r, 32, 24), moonMat);
+
+    // Dark overlay hemisphere for phase shadow
+    const shadowGeo = new THREE.SphereGeometry(r + 0.05, 32, 24, 0, Math.PI);
+    const shadowMat = new THREE.MeshBasicMaterial({
+        color: 0x000000,
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide
+    });
+    const shadow = new THREE.Mesh(shadowGeo, shadowMat);
+    shadow.rotation.y = 0;
+    moon.add(shadow);
+
+    // Phase glow ring
+    const glowGeo = new THREE.RingGeometry(r + 0.5, r + 2, 32);
+    const glowMat = new THREE.MeshBasicMaterial({
+        color: md.color,
+        transparent: true,
+        opacity: 0.15,
+        side: THREE.DoubleSide
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.lookAt(camera.position);
+    moon.add(glow);
+
+    // Position on orbit
+    moon.position.set(
+        Math.cos(angle) * orbitR,
+        baseY + Math.sin(angle) * 30,
+        Math.sin(angle) * orbitR * 0.5 - 200
+    );
+    moon.userData = {
+        type: 'moon',
+        name: md.name,
+        index: i,
+        cycle: md.cycle,
+        order: md.order,
+        wizards: md.wizards,
+        orbitRadius: orbitR,
+        baseY: baseY,
+        shadow: shadow,
+        glow: glow,
+        glowMat: glowMat,
+        moonMat: moonMat,
+        orbitSpeed: (1 / md.cycle) * 0.3,  // Faster cycle = faster orbit
+        phaseSpeed: (1 / md.cycle) * 2.0,  // Phase rotation speed tied to cycle
+        phaseOffset: i * 1.3               // Stagger phases so they're not all synced
+    };
+
+    const moonLight = new THREE.PointLight(md.color, 0.3, 800);
     moonLight.position.copy(moon.position);
     moonGroup.add(moonLight);
+    moonLights.push(moonLight);
     moonGroup.add(moon);
     moons.push(moon);
 }
@@ -1937,11 +2018,52 @@ function showTowerPanel(data) {
 function showMoonPanel(data) {
     const panel = document.getElementById('infoPanel');
     const content = document.getElementById('infoPanelContent');
-    const hex = '#' + new THREE.Color(moonColors[data.index]).getHexString();
+    const md = moonData[data.index];
+    const hex = '#' + new THREE.Color(md.color).getHexString();
+
+    // Calculate current phase
+    const time = clock.getElapsedTime();
+    const phase = (time * data.phaseSpeed + data.phaseOffset) % (Math.PI * 2);
+    const phasePct = (Math.sin(phase) + 1) / 2;
+    let phaseName = 'New';
+    if (phasePct > 0.9) phaseName = 'Full';
+    else if (phasePct > 0.6) phaseName = 'Waxing Gibbous';
+    else if (phasePct > 0.45) phaseName = 'First Quarter';
+    else if (phasePct > 0.2) phaseName = 'Waxing Crescent';
+    else phaseName = 'New';
+    // Check if waning
+    const phaseDir = Math.cos(phase);
+    if (phaseDir < 0 && phasePct < 0.9) {
+        phaseName = phaseName.replace('Waxing', 'Waning').replace('First', 'Third');
+    }
+
+    const magicStr = phasePct > 0.8 ? 'Surging' : phasePct > 0.5 ? 'Strong' : phasePct > 0.2 ? 'Dim' : 'Dormant';
+    const barWidth = Math.round(phasePct * 100);
+
+    const isPalehowl = data.index === 6;
+    const desc = isPalehowl
+        ? 'The smallest, dimmest moon. The seventh tone of the First Howl, carrying not power but possibility. It provides baseline magic to all non-wizard dogs. Weak individually, but it touches EVERYONE. The Wanderer resonates with Palehowl.'
+        : `Tied to the ${md.order} Order. Its ${md.cycle}-day cycle matches its ${md.wizards} Wizards. When full, ${md.order} magic surges. When new, ${md.order} Wizards rely on raw skill and pack bonds.`;
+
     content.innerHTML = `
-        <div class="info-realm-name" style="color:${hex}">${data.name}</div>
-        <div class="info-motto">Moon of Pawtheon</div>
-        <div class="info-section"><p>${data.name === 'Palehowl' ? 'The smallest and most mysterious moon, pale and quiet, watching over all.' : 'One of the Seven Moons that illuminate Pawtheon\'s sky, tied to the magical Orders.'}</p></div>
+        <div class="info-realm-name" style="color:${hex}">${md.name}</div>
+        <div class="info-motto">${isPalehowl ? 'The Starter Moon' : md.order + ' Order Moon'}</div>
+        <div class="info-section">
+            <h3>Current Phase</h3>
+            <p style="font-size:1.1em;color:${hex};font-weight:600">${phaseName}</p>
+            <div style="margin:8px 0;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden">
+                <div style="width:${barWidth}%;height:100%;background:${hex};border-radius:4px;transition:width 0.3s"></div>
+            </div>
+            <p style="font-size:0.85em;color:rgba(255,255,255,0.5)">Magic Power: ${magicStr} (${Math.round(phasePct*100)}%)</p>
+        </div>
+        <div class="info-section">
+            <h3>Cycle</h3>
+            <p>${md.cycle}-day orbital period${!isPalehowl ? ' | ' + md.wizards + ' Wizards' : ''}</p>
+        </div>
+        <div class="info-section">
+            <h3>Lore</h3>
+            <p>${desc}</p>
+        </div>
     `;
     panel.classList.add('open');
 }
@@ -2088,9 +2210,51 @@ function updateWater(time) {
     pos.needsUpdate = true;
 }
 
-// Moon orbit
+// Moon orbit + phase cycling
 function updateMoons(time) {
-    moonGroup.rotation.y = time * 0.02;
+    for (let i = 0; i < moons.length; i++) {
+        const moon = moons[i];
+        const ud = moon.userData;
+
+        // Individual orbital motion (each moon orbits at its own speed)
+        const orbitAngle = (i / 7) * Math.PI * 2 + time * ud.orbitSpeed;
+        moon.position.x = Math.cos(orbitAngle) * ud.orbitRadius;
+        moon.position.y = ud.baseY + Math.sin(orbitAngle * 0.7) * 30;
+        moon.position.z = Math.sin(orbitAngle) * ud.orbitRadius * 0.5 - 200;
+
+        // Update corresponding light
+        if (moonLights[i]) moonLights[i].position.copy(moon.position);
+
+        // Phase cycle: shadow hemisphere rotates to show phase
+        // Full cycle = shadow rotates 360 degrees over the cycle period
+        const phase = (time * ud.phaseSpeed + ud.phaseOffset) % (Math.PI * 2);
+        if (ud.shadow) {
+            ud.shadow.rotation.y = phase;
+        }
+
+        // Calculate phase percentage (0 = new moon, 0.5 = full moon, 1 = new again)
+        const phasePct = (Math.sin(phase) + 1) / 2; // 0 to 1, where 1 = full
+
+        // Emissive intensity pulses with phase (brighter at full)
+        if (ud.moonMat) {
+            ud.moonMat.emissiveIntensity = 0.3 + phasePct * 1.2;
+        }
+
+        // Glow ring intensity follows phase
+        if (ud.glowMat) {
+            ud.glowMat.opacity = 0.03 + phasePct * 0.25;
+        }
+
+        // Point light intensity follows phase
+        if (moonLights[i]) {
+            moonLights[i].intensity = 0.05 + phasePct * 0.5;
+        }
+
+        // Glow ring always faces camera
+        if (ud.glow) {
+            ud.glow.lookAt(camera.position);
+        }
+    }
 }
 
 // Firefly blink
@@ -2135,8 +2299,9 @@ function animate() {
 
     controls.update();
     updateParticles(delta);
-    updateLoyaltyDots(time);
     updateMoons(time);
+    updateLoyaltyLines();
+    updateLoyaltyDots(time);
     updateFireflyBlink(time);
 
     // Only update water every few frames for performance
