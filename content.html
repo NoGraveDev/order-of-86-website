@@ -915,12 +915,20 @@ function downloadBackground() {
 }
 
 async function compositeGif(gifUrl, dogImg) {
-    await loadScript('https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js');
-    await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
+    // omggif uses CommonJS exports — shim it for browser
+    if (!window.GifReader) {
+        window.exports = window.exports || {};
+        await loadScript('https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js');
+        window.GifReader = window.exports.GifReader;
+        window.GifWriter = window.exports.GifWriter;
+    }
+    if (!window.GIF) {
+        await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
+    }
     
     const resp = await fetch(gifUrl);
     const buff = await resp.arrayBuffer();
-    const reader = new GifReader(new Uint8Array(buff));
+    const reader = new window.GifReader(new Uint8Array(buff));
     
     const w = reader.width;
     const h = reader.height;
