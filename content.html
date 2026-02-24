@@ -904,11 +904,7 @@ function downloadBackground() {
             hideLoading();
         }).catch(err => {
             console.error('GIF composite failed:', err);
-            alert('GIF creation failed. Downloading background only.');
-            const link = document.createElement('a');
-            link.download = `background-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
-            link.href = gifUrl;
-            link.click();
+            alert('GIF creation failed: ' + err.message + '. Check console for details.');
             hideLoading();
         });
     };
@@ -941,7 +937,7 @@ async function compositeGif(gifUrl, dogImg) {
         quality: 10,
         width: w,
         height: h,
-        workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js'
+        workerScript: 'gif.worker.js'
     });
     
     // Accumulator canvas (handles frame disposal properly)
