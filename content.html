@@ -184,7 +184,7 @@
             <div class="download-section">
                 <div class="download-buttons">
                     <button class="download-btn" id="downloadStill" onclick="downloadStill()" disabled>Download Still (PNG)</button>
-                    <button class="download-btn secondary" id="downloadBg" onclick="downloadBackground()" disabled style="display:none">Download Background (GIF)</button>
+                    <button class="download-btn secondary" id="downloadBg" onclick="downloadBackground()" disabled style="display:none">Download GIF (with Wizard)</button>
                 </div>
             </div>
         </div>
@@ -876,10 +876,164 @@ function downloadBackground() {
         return;
     }
     
-    const link = document.createElement('a');
-    link.download = `background-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
-    link.href = `content-bg/${selectedBackground.file}`;
-    link.click();
+    if (!selectedWizard) {
+        // No wizard selected — just download raw GIF
+        const link = document.createElement('a');
+        link.download = `background-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
+        link.href = `content-bg/${selectedBackground.file}`;
+        link.click();
+        return;
+    }
+    
+    showLoading();
+    
+    // Load the dog image first
+    const dog = new Image();
+    dog.crossOrigin = 'anonymous';
+    dog.src = `wizard-images-transparent/${selectedWizard.id}.png`;
+    
+    dog.onload = () => {
+        // Fetch GIF and decode frames using canvas + SuperGif-style approach
+        const gifUrl = `content-bg/${selectedBackground.file}`;
+        
+        // We'll use gifuct-js to parse and gif.js to encode
+        const workerScript = URL.createObjectURL(new Blob([`
+            self.onmessage = function(e) {
+                // gif.js worker
+                var GIFEncoder, frames = [], width, height;
+                // Minimal LZW + GIF encoder
+                ${gifWorkerCode}
+            };
+        `], {type: 'application/javascript'}));
+        
+        // Use a simpler approach: fetch GIF, parse with gifuct-js, composite, re-encode with gif.js
+        compositeGif(gifUrl, dog).then(blob => {
+            const link = document.createElement('a');
+            link.download = `wizard-${selectedWizard.id}-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+            hideLoading();
+        }).catch(err => {
+            console.error('GIF composite failed:', err);
+            alert('GIF creation failed. Downloading background only.');
+            const link = document.createElement('a');
+            link.download = `background-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
+            link.href = gifUrl;
+            link.click();
+            hideLoading();
+        });
+    };
+}
+
+async function compositeGif(gifUrl, dogImg) {
+    // Load gifuct-js and gif.js from CDN
+    if (!window.parseGIF) {
+        await loadScript('https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.min.js');
+    }
+    if (!window.GIF) {
+        await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
+    }
+    
+    // Fetch and parse the GIF
+    const resp = await fetch(gifUrl);
+    const buff = await resp.arrayBuffer();
+    const gif = window.gifuctJs ? window.gifuctJs.parseGIF(buff) : parseGIF(buff);
+    const frames = window.gifuctJs ? window.gifuctJs.decompressFrames(gif, true) : decompressFrames(gif, true);
+    
+    if (!frames.length) throw new Error('No frames found');
+    
+    const w = frames[0].dims.width;
+    const h = frames[0].dims.height;
+    
+    // Create encoder
+    const encoder = new GIF({
+        workers: 2,
+        quality: 10,
+        width: w,
+        height: h,
+        workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js'
+    });
+    
+    // Temp canvas for compositing
+    const tc = document.createElement('canvas');
+    tc.width = w;
+    tc.height = h;
+    const tctx = tc.getContext('2d');
+    
+    // Previous frame canvas for disposal
+    const pc = document.createElement('canvas');
+    pc.width = w;
+    pc.height = h;
+    const pctx = pc.getContext('2d');
+    
+    const scale = parseFloat(document.getElementById('dogScale').value);
+    const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (w / 400);
+    const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (h / 400);
+    
+    for (let i = 0; i < frames.length; i++) {
+        const frame = frames[i];
+        const imageData = new ImageData(new Uint8ClampedArray(frame.patch), frame.dims.width, frame.dims.height);
+        
+        // Handle disposal
+        if (i === 0) {
+            tctx.clearRect(0, 0, w, h);
+        }
+        
+        // Draw the frame patch at its position
+        const tempPatch = document.createElement('canvas');
+        tempPatch.width = frame.dims.width;
+        tempPatch.height = frame.dims.height;
+        tempPatch.getContext('2d').putImageData(imageData, 0, 0);
+        
+        if (frame.disposalType === 2) {
+            // Restore to background
+            pctx.drawImage(tc, 0, 0);
+        }
+        
+        tctx.drawImage(tempPatch, frame.dims.left, frame.dims.top);
+        
+        // Now composite the dog on top
+        const composite = document.createElement('canvas');
+        composite.width = w;
+        composite.height = h;
+        const cctx = composite.getContext('2d');
+        cctx.drawImage(tc, 0, 0);
+        
+        cctx.save();
+        cctx.translate(w/2 + offsetX, h/2 + offsetY);
+        cctx.scale(scale, scale);
+        cctx.drawImage(dogImg, -w/2, -h/2, w, h);
+        cctx.restore();
+        
+        encoder.addFrame(composite, {delay: frame.delay || 100, copy: true});
+        
+        // Handle disposal after adding frame
+        if (frame.disposalType === 2) {
+            tctx.clearRect(0, 0, w, h);
+            tctx.drawImage(pc, 0, 0);
+            tctx.clearRect(frame.dims.left, frame.dims.top, frame.dims.width, frame.dims.height);
+        } else if (frame.disposalType === 3) {
+            tctx.clearRect(0, 0, w, h);
+            tctx.drawImage(pc, 0, 0);
+        }
+    }
+    
+    return new Promise((resolve, reject) => {
+        encoder.on('finished', blob => resolve(blob));
+        encoder.render();
+    });
+}
+
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+    });
 }
 
 // Utility Functions
