@@ -934,9 +934,10 @@ async function compositeGif(gifUrl, dogImg) {
     
     const encoder = new GIF({
         workers: 2,
-        quality: 10,
+        quality: 1,
         width: w,
         height: h,
+        dither: false,
         workerScript: 'gif.worker.js'
     });
     
@@ -948,6 +949,24 @@ async function compositeGif(gifUrl, dogImg) {
     const scale = parseFloat(document.getElementById('dogScale').value);
     const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (w / 400);
     const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (h / 400);
+    
+    // Pre-render the dog layer ONCE so it's pixel-identical every frame
+    const dogLayer = document.createElement('canvas');
+    dogLayer.width = w; dogLayer.height = h;
+    const dctx = dogLayer.getContext('2d');
+    dctx.save();
+    dctx.translate(w/2 + offsetX, h/2 + offsetY);
+    dctx.scale(scale, scale);
+    dctx.drawImage(dogImg, -w/2, -h/2, w, h);
+    dctx.restore();
+    
+    // Get dog pixel data to use as a stable overlay
+    const dogPixels = dctx.getImageData(0, 0, w, h);
+    
+    // Reusable composite canvas
+    const comp = document.createElement('canvas');
+    comp.width = w; comp.height = h;
+    const cctx = comp.getContext('2d');
     
     for (let i = 0; i < numFrames; i++) {
         const info = reader.frameInfo(i);
@@ -961,19 +980,12 @@ async function compositeGif(gifUrl, dogImg) {
         tmp.getContext('2d').putImageData(frameData, 0, 0);
         actx.drawImage(tmp, 0, 0);
         
-        // Composite: background + dog
-        const comp = document.createElement('canvas');
-        comp.width = w; comp.height = h;
-        const cctx = comp.getContext('2d');
+        // Composite: background + pre-rendered dog overlay
+        cctx.clearRect(0, 0, w, h);
         cctx.drawImage(acc, 0, 0);
+        cctx.drawImage(dogLayer, 0, 0);
         
-        cctx.save();
-        cctx.translate(w/2 + offsetX, h/2 + offsetY);
-        cctx.scale(scale, scale);
-        cctx.drawImage(dogImg, -w/2, -h/2, w, h);
-        cctx.restore();
-        
-        encoder.addFrame(comp, {delay: info.delay * 10, copy: true});
+        encoder.addFrame(cctx, {delay: info.delay * 10, copy: true});
     }
     
     return new Promise((resolve, reject) => {
