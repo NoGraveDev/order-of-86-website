@@ -7,8 +7,10 @@ fs.mkdirSync(OUT, { recursive: true });
 
 // Pixel art at 160x160, upscaled 5x to 800x800
 const PX = 160;
-const SCALE = 5;
-const SIZE = PX * SCALE;
+const DRAW_SIZE = 160;
+const OUT_PX = 100;
+const SCALE = 8;
+const SIZE = OUT_PX * SCALE;
 
 function makeCanvas(bgColor = '#0a0a0a') {
   const c = createCanvas(PX, PX);
@@ -21,10 +23,16 @@ function makeCanvas(bgColor = '#0a0a0a') {
 }
 
 function save(name, canvas) {
+  // First downscale 160->100 (pixel-perfect)
+  const mid = createCanvas(OUT_PX, OUT_PX);
+  const mctx = mid.getContext('2d');
+  mctx.imageSmoothingEnabled = false;
+  mctx.drawImage(canvas, 0, 0, OUT_PX, OUT_PX);
+  // Then upscale 100->800 (nearest neighbor for chunky pixels)
   const out = createCanvas(SIZE, SIZE);
   const octx = out.getContext('2d');
   octx.imageSmoothingEnabled = false;
-  octx.drawImage(canvas, 0, 0, SIZE, SIZE);
+  octx.drawImage(mid, 0, 0, SIZE, SIZE);
   const buf = out.toBuffer('image/png');
   fs.writeFileSync(path.join(OUT, name), buf);
   console.log(`✅ ${name} (${buf.length} bytes)`);
