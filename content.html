@@ -667,57 +667,58 @@ async function compositeGif(gifUrl, dogImg) {
     
     if (!numFrames) throw new Error('No frames found');
     
+    // Output at 1000x1000 for high quality (matches still download size)
+    const outW = 1000, outH = 1000;
+    
     const encoder = new GIF({
         workers: 2,
         quality: 1,
-        width: w,
-        height: h,
+        width: outW,
+        height: outH,
         dither: false,
         workerScript: 'gif.worker.js'
     });
     
-    // Accumulator canvas (handles frame disposal properly)
+    // Accumulator canvas at GIF native resolution
     const acc = document.createElement('canvas');
     acc.width = w; acc.height = h;
     const actx = acc.getContext('2d');
     
     const scale = parseFloat(document.getElementById('dogScale').value);
-    const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (w / 400);
-    const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (h / 400);
+    const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (outW / 400);
+    const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (outH / 400);
     
-    // Pre-render the dog layer ONCE so it's pixel-identical every frame
+    // Pre-render the dog layer at output resolution
     const dogLayer = document.createElement('canvas');
-    dogLayer.width = w; dogLayer.height = h;
+    dogLayer.width = outW; dogLayer.height = outH;
     const dctx = dogLayer.getContext('2d');
     dctx.save();
-    dctx.translate(w/2 + offsetX, h/2 + offsetY);
+    dctx.translate(outW/2 + offsetX, outH/2 + offsetY);
     dctx.scale(scale, scale);
-    dctx.drawImage(dogImg, -w/2, -h/2, w, h);
+    dctx.drawImage(dogImg, -outW/2, -outH/2, outW, outH);
     dctx.restore();
     
-    // Get dog pixel data to use as a stable overlay
-    const dogPixels = dctx.getImageData(0, 0, w, h);
-    
-    // Reusable composite canvas
+    // Reusable composite canvas at output resolution
     const comp = document.createElement('canvas');
-    comp.width = w; comp.height = h;
+    comp.width = outW; comp.height = outH;
     const cctx = comp.getContext('2d');
+    cctx.imageSmoothingEnabled = false;
     
     for (let i = 0; i < numFrames; i++) {
         const info = reader.frameInfo(i);
         const pixels = new Uint8Array(w * h * 4);
         reader.decodeAndBlitFrameRGBA(i, pixels);
         
-        // Put decoded frame onto accumulator
+        // Put decoded frame onto accumulator at native res
         const frameData = new ImageData(new Uint8ClampedArray(pixels.buffer), w, h);
         const tmp = document.createElement('canvas');
         tmp.width = w; tmp.height = h;
         tmp.getContext('2d').putImageData(frameData, 0, 0);
         actx.drawImage(tmp, 0, 0);
         
-        // Composite: background + pre-rendered dog overlay
-        cctx.clearRect(0, 0, w, h);
-        cctx.drawImage(acc, 0, 0);
+        // Upscale background to output resolution + composite dog
+        cctx.clearRect(0, 0, outW, outH);
+        cctx.drawImage(acc, 0, 0, outW, outH);
         cctx.drawImage(dogLayer, 0, 0);
         
         encoder.addFrame(cctx, {delay: info.delay * 10, copy: true});
