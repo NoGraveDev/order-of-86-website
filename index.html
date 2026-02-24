@@ -1081,7 +1081,7 @@ filterDogs();
 
     const particles = [];
     const colors = ['#ffd700','#ffb800','#ffe066','#fff5cc','#e8a317','#ffffff'];
-    const NUM = 60;
+    const NUM = 20;
 
     for(let i=0;i<NUM;i++){
         particles.push({
@@ -1130,15 +1130,7 @@ filterDogs();
             ctx.fillStyle = p.color;
             ctx.globalAlpha = a;
             ctx.fill();
-            // glow
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r*3, 0, Math.PI*2);
-            const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*3);
-            g.addColorStop(0, p.color);
-            g.addColorStop(1, 'transparent');
-            ctx.fillStyle = g;
-            ctx.globalAlpha = a*0.3;
-            ctx.fill();
+
         }
         ctx.globalAlpha = 1;
         requestAnimationFrame(draw);
