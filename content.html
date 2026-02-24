@@ -422,7 +422,7 @@ function buildStillBgGrid() {
         <div class="bg-thumb ${selectedBackground && selectedBackground.file === bg.file ? 'selected' : ''}" 
              onclick="selectStillBackground(${index})">
             <div class="bg-type-badge">PNG</div>
-            <img src="content-bg/still/${bg.file}" alt="${bg.name}" loading="lazy">
+            <img src="content-bg/still/${bg.file}?v=2" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
         </div>
     `).join('');
