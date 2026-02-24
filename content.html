@@ -893,20 +893,8 @@ function downloadBackground() {
     dog.src = `wizard-images-transparent/${selectedWizard.id}.png`;
     
     dog.onload = () => {
-        // Fetch GIF and decode frames using canvas + SuperGif-style approach
         const gifUrl = `content-bg/${selectedBackground.file}`;
         
-        // We'll use gifuct-js to parse and gif.js to encode
-        const workerScript = URL.createObjectURL(new Blob([`
-            self.onmessage = function(e) {
-                // gif.js worker
-                var GIFEncoder, frames = [], width, height;
-                // Minimal LZW + GIF encoder
-                ${gifWorkerCode}
-            };
-        `], {type: 'application/javascript'}));
-        
-        // Use a simpler approach: fetch GIF, parse with gifuct-js, composite, re-encode with gif.js
         compositeGif(gifUrl, dog).then(blob => {
             const link = document.createElement('a');
             link.download = `wizard-${selectedWizard.id}-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
@@ -927,26 +915,19 @@ function downloadBackground() {
 }
 
 async function compositeGif(gifUrl, dogImg) {
-    // Load gifuct-js and gif.js from CDN
-    if (!window.parseGIF) {
-        await loadScript('https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.min.js');
-    }
-    if (!window.GIF) {
-        await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
-    }
+    await loadScript('https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js');
+    await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
     
-    // Fetch and parse the GIF
     const resp = await fetch(gifUrl);
     const buff = await resp.arrayBuffer();
-    const gif = window.gifuctJs ? window.gifuctJs.parseGIF(buff) : parseGIF(buff);
-    const frames = window.gifuctJs ? window.gifuctJs.decompressFrames(gif, true) : decompressFrames(gif, true);
+    const reader = new GifReader(new Uint8Array(buff));
     
-    if (!frames.length) throw new Error('No frames found');
+    const w = reader.width;
+    const h = reader.height;
+    const numFrames = reader.numFrames();
     
-    const w = frames[0].dims.width;
-    const h = frames[0].dims.height;
+    if (!numFrames) throw new Error('No frames found');
     
-    // Create encoder
     const encoder = new GIF({
         workers: 2,
         quality: 10,
@@ -955,50 +936,32 @@ async function compositeGif(gifUrl, dogImg) {
         workerScript: 'https://unpkg.com/gif.js@0.2.0/dist/gif.worker.js'
     });
     
-    // Temp canvas for compositing
-    const tc = document.createElement('canvas');
-    tc.width = w;
-    tc.height = h;
-    const tctx = tc.getContext('2d');
-    
-    // Previous frame canvas for disposal
-    const pc = document.createElement('canvas');
-    pc.width = w;
-    pc.height = h;
-    const pctx = pc.getContext('2d');
+    // Accumulator canvas (handles frame disposal properly)
+    const acc = document.createElement('canvas');
+    acc.width = w; acc.height = h;
+    const actx = acc.getContext('2d');
     
     const scale = parseFloat(document.getElementById('dogScale').value);
     const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (w / 400);
     const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (h / 400);
     
-    for (let i = 0; i < frames.length; i++) {
-        const frame = frames[i];
-        const imageData = new ImageData(new Uint8ClampedArray(frame.patch), frame.dims.width, frame.dims.height);
+    for (let i = 0; i < numFrames; i++) {
+        const info = reader.frameInfo(i);
+        const pixels = new Uint8Array(w * h * 4);
+        reader.decodeAndBlitFrameRGBA(i, pixels);
         
-        // Handle disposal
-        if (i === 0) {
-            tctx.clearRect(0, 0, w, h);
-        }
+        // Put decoded frame onto accumulator
+        const frameData = new ImageData(new Uint8ClampedArray(pixels.buffer), w, h);
+        const tmp = document.createElement('canvas');
+        tmp.width = w; tmp.height = h;
+        tmp.getContext('2d').putImageData(frameData, 0, 0);
+        actx.drawImage(tmp, 0, 0);
         
-        // Draw the frame patch at its position
-        const tempPatch = document.createElement('canvas');
-        tempPatch.width = frame.dims.width;
-        tempPatch.height = frame.dims.height;
-        tempPatch.getContext('2d').putImageData(imageData, 0, 0);
-        
-        if (frame.disposalType === 2) {
-            // Restore to background
-            pctx.drawImage(tc, 0, 0);
-        }
-        
-        tctx.drawImage(tempPatch, frame.dims.left, frame.dims.top);
-        
-        // Now composite the dog on top
-        const composite = document.createElement('canvas');
-        composite.width = w;
-        composite.height = h;
-        const cctx = composite.getContext('2d');
-        cctx.drawImage(tc, 0, 0);
+        // Composite: background + dog
+        const comp = document.createElement('canvas');
+        comp.width = w; comp.height = h;
+        const cctx = comp.getContext('2d');
+        cctx.drawImage(acc, 0, 0);
         
         cctx.save();
         cctx.translate(w/2 + offsetX, h/2 + offsetY);
@@ -1006,21 +969,12 @@ async function compositeGif(gifUrl, dogImg) {
         cctx.drawImage(dogImg, -w/2, -h/2, w, h);
         cctx.restore();
         
-        encoder.addFrame(composite, {delay: frame.delay || 100, copy: true});
-        
-        // Handle disposal after adding frame
-        if (frame.disposalType === 2) {
-            tctx.clearRect(0, 0, w, h);
-            tctx.drawImage(pc, 0, 0);
-            tctx.clearRect(frame.dims.left, frame.dims.top, frame.dims.width, frame.dims.height);
-        } else if (frame.disposalType === 3) {
-            tctx.clearRect(0, 0, w, h);
-            tctx.drawImage(pc, 0, 0);
-        }
+        encoder.addFrame(comp, {delay: info.delay * 10, copy: true});
     }
     
     return new Promise((resolve, reject) => {
         encoder.on('finished', blob => resolve(blob));
+        encoder.on('error', reject);
         encoder.render();
     });
 }
