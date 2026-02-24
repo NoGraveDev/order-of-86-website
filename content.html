@@ -47,11 +47,11 @@
         .bg-label{position:absolute;bottom:0;left:0;right:0;padding:4px;background:rgba(0,0,0,0.7);color:#F5F5F7;font-size:0.65rem;text-align:center}
         .bg-thumb.none-bg{display:flex;align-items:center;justify-content:center;background:#2C2C2E;color:#98989D;font-size:0.75rem}
 
-        .preview-area{text-align:center;margin-bottom:1rem}
-        #previewCanvas{max-width:100%;width:500px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:#2C2C2E}
-        .selected-name{margin-top:0.75rem;font-size:1rem;color:#ffd700;font-weight:600}
+        .preview-area{text-align:center;margin-bottom:2rem;padding:2rem 0}
+        #previewCanvas{max-width:100%;width:400px;border-radius:16px;border:2px solid rgba(255,215,0,0.15);background:#1C1C1E;box-shadow:0 8px 32px rgba(0,0,0,0.5)}
+        .selected-name{margin-top:1rem;font-size:1.1rem;color:#ffd700;font-weight:600}
 
-        .download-btn{display:block;width:100%;max-width:500px;margin:0 auto;padding:1rem;background:linear-gradient(135deg,#ffd700,#e6a800);color:#000;font-size:1.1rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em}
+        .download-btn{display:inline-block;padding:0.8rem 3rem;background:linear-gradient(135deg,#ffd700,#e6a800);color:#000;font-size:1rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;margin-top:1rem}
         .download-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(255,215,0,0.3)}
     </style>
 </head>
@@ -74,8 +74,19 @@
     <h1>Content Generator</h1>
     <h2>Pick a wizard, swap the background, download</h2>
 
+    <div class="preview-area">
+        <canvas id="previewCanvas" width="1000" height="1000"></canvas>
+        <div class="selected-name" id="selectedName">Select a wizard below</div>
+        <button class="download-btn" onclick="downloadImage()">Download</button>
+    </div>
+
     <div class="panel">
-        <h3>Choose Your Wizard</h3>
+        <h3>Background</h3>
+        <div class="bg-grid" id="bgGrid"></div>
+    </div>
+
+    <div class="panel">
+        <h3>Wizards</h3>
         <div class="dog-controls">
             <input type="text" class="dog-search" id="dogSearch" placeholder="Search by name or ID...">
             <select class="order-filter" id="orderFilter" onchange="filterDogs()">
@@ -85,19 +96,6 @@
             </select>
         </div>
         <div class="dogs-grid" id="dogsGrid"></div>
-    </div>
-
-    <div class="panel">
-        <h3>Choose Background</h3>
-        <div class="bg-grid" id="bgGrid"></div>
-    </div>
-
-    <div class="panel">
-        <div class="preview-area">
-            <canvas id="previewCanvas" width="1000" height="1000"></canvas>
-            <div class="selected-name" id="selectedName"></div>
-        </div>
-        <button class="download-btn" onclick="downloadImage()">Download</button>
     </div>
 </div>
 
