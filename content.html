@@ -4,94 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Content Generator | Order of 86</title>
-    <meta name="description" content="Create wizard dog content for social media. Select your wizard, pick a background, and download.">
-    <link rel="canonical" href="https://theorderof86.com/content.html">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%231C1C1E' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--bg:#000;--surface:#1C1C1E;--surface2:#2C2C2E;--gold:#ffd700;--text:#F5F5F7;--text2:#98989D;--border:rgba(255,255,255,0.08)}
-        body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
-        
-        /* Nav */
-        .nav-bar{display:flex;align-items:center;gap:1.5rem;padding:1rem 2rem;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-        .nav-bar a{color:var(--text2);text-decoration:none;font-size:0.9rem;transition:color 0.2s}
-        .nav-bar a:hover,.nav-bar a.active{color:var(--gold)}
-        .nav-logo-mobile{display:none;color:var(--gold);font-weight:700;font-size:1.1rem}
-        .nav-hamburger{display:none;background:none;border:none;color:var(--gold);font-size:1.5rem;cursor:pointer}
+        body{background:#000;color:#F5F5F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+        .nav-bar{display:flex;align-items:center;gap:1.5rem;padding:1rem 2rem;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:100}
+        .nav-bar a{color:#98989D;text-decoration:none;font-size:0.9rem;transition:color 0.2s}
+        .nav-bar a:hover,.nav-bar a.active{color:#ffd700}
+        .nav-logo-mobile{display:none;color:#ffd700;font-weight:700;font-size:1.1rem}
+        .nav-hamburger{display:none;background:none;border:none;color:#ffd700;font-size:1.5rem;cursor:pointer}
         .nav-links-mobile{display:none;flex-direction:column;gap:1rem;padding:2rem;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);position:fixed;top:0;left:0;right:0;bottom:0;z-index:200}
         .nav-links-mobile.open{display:flex}
-        .nav-links-mobile a{color:var(--text);text-decoration:none;font-size:1.3rem;padding:0.5rem 0;border-bottom:1px solid var(--border)}
-        .nav-links-mobile a:hover{color:var(--gold)}
-        .nav-close-mobile{background:none;border:none;color:var(--gold);font-size:2rem;cursor:pointer;align-self:flex-end}
-        @media(max-width:768px){
-            .nav-bar a:not(.nav-logo-mobile){display:none}
-            .nav-logo-mobile,.nav-hamburger{display:block}
-        }
+        .nav-links-mobile a{color:#F5F5F7;text-decoration:none;font-size:1.3rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.08)}
+        .nav-close-mobile{background:none;border:none;color:#ffd700;font-size:2rem;cursor:pointer;align-self:flex-end}
+        @media(max-width:768px){.nav-bar a:not(.nav-logo-mobile){display:none}.nav-logo-mobile,.nav-hamburger{display:block}}
 
-        /* Layout */
-        .container{max-width:1400px;margin:0 auto;padding:2rem}
-        h1{font-size:2.2rem;color:var(--gold);margin-bottom:0.5rem}
-        h2{font-size:1.1rem;color:var(--text2);margin-bottom:1.5rem;font-weight:400}
-        h3{font-size:1rem;color:var(--gold);margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.05em}
+        .container{max-width:1200px;margin:0 auto;padding:2rem}
+        h1{font-size:2rem;color:#ffd700;margin-bottom:0.3rem}
+        h2{font-size:1rem;color:#98989D;margin-bottom:2rem;font-weight:400}
+        h3{font-size:0.9rem;color:#ffd700;margin-bottom:1rem;text-transform:uppercase;letter-spacing:0.05em}
+        .panel{background:#1C1C1E;border-radius:16px;padding:1.5rem;border:1px solid rgba(255,255,255,0.08);margin-bottom:1.5rem}
 
-        /* Main grid */
-        .main-grid{display:grid;grid-template-columns:1fr 500px;gap:2rem;margin-top:2rem}
-        @media(max-width:1024px){.main-grid{grid-template-columns:1fr}}
-
-        /* Panels */
-        .panel{background:var(--surface);border-radius:16px;padding:1.5rem;border:1px solid var(--border)}
-
-        /* Dog grid */
         .dog-controls{display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap}
-        .dog-search{flex:1;min-width:150px;padding:0.6rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.9rem;outline:none}
-        .dog-search:focus{border-color:var(--gold)}
-        .order-filter{padding:0.6rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;cursor:pointer}
-        .dogs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(65px,1fr));gap:6px;max-height:350px;overflow-y:auto;padding-right:4px}
+        .dog-search{flex:1;min-width:150px;padding:0.6rem 1rem;background:#2C2C2E;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#F5F5F7;font-size:0.9rem;outline:none}
+        .dog-search:focus{border-color:#ffd700}
+        .order-filter{padding:0.6rem;background:#2C2C2E;border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#F5F5F7;font-size:0.85rem;cursor:pointer}
+
+        .dogs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(65px,1fr));gap:6px;max-height:300px;overflow-y:auto}
         .dogs-grid::-webkit-scrollbar{width:4px}
-        .dogs-grid::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
-        .dog-thumb{width:100%;aspect-ratio:1;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;overflow:hidden;background:var(--surface2)}
+        .dogs-grid::-webkit-scrollbar-thumb{background:#2C2C2E;border-radius:2px}
+        .dog-thumb{width:100%;aspect-ratio:1;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;overflow:hidden;background:#2C2C2E}
         .dog-thumb img{width:100%;height:100%;object-fit:cover}
         .dog-thumb:hover{border-color:rgba(255,215,0,0.4);transform:scale(1.05)}
-        .dog-thumb.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(255,215,0,0.3)}
+        .dog-thumb.selected{border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,0.3)}
 
-        /* Background grid */
-        .bg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+        .bg-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
         @media(max-width:600px){.bg-grid{grid-template-columns:repeat(2,1fr)}}
         .bg-thumb{aspect-ratio:1;border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all 0.2s;overflow:hidden;position:relative}
         .bg-thumb img{width:100%;height:100%;object-fit:cover}
         .bg-thumb:hover{border-color:rgba(255,215,0,0.4)}
-        .bg-thumb.selected{border-color:var(--gold);box-shadow:0 0 12px rgba(255,215,0,0.3)}
-        .bg-label{position:absolute;bottom:0;left:0;right:0;padding:4px;background:rgba(0,0,0,0.7);color:var(--text);font-size:0.65rem;text-align:center}
+        .bg-thumb.selected{border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,0.3)}
+        .bg-label{position:absolute;bottom:0;left:0;right:0;padding:4px;background:rgba(0,0,0,0.7);color:#F5F5F7;font-size:0.65rem;text-align:center}
+        .bg-thumb.none-bg{display:flex;align-items:center;justify-content:center;background:#2C2C2E;color:#98989D;font-size:0.75rem}
 
-        /* Preview */
-        .preview-wrap{position:relative;width:100%;max-width:500px;margin:0 auto}
-        .preview-canvas{width:100%;border-radius:12px;border:1px solid var(--border);background:var(--surface2)}
+        .preview-area{text-align:center;margin-bottom:1rem}
+        #previewCanvas{max-width:100%;width:500px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:#2C2C2E}
+        .selected-name{margin-top:0.75rem;font-size:1rem;color:#ffd700;font-weight:600}
 
-        /* Controls */
-        .controls{display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
-        .control-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-        .control-row label{color:var(--text2);font-size:0.85rem;min-width:80px}
-        .control-row input[type="checkbox"]{accent-color:var(--gold);width:18px;height:18px;cursor:pointer}
-        .control-row input[type="range"]{flex:1;accent-color:var(--gold)}
-        .control-row input[type="color"]{width:36px;height:28px;border:1px solid var(--border);border-radius:4px;cursor:pointer;background:none}
-        .control-row select{padding:0.4rem 0.6rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.85rem}
-
-        /* Download */
-        .download-btn{display:block;width:100%;padding:1rem;background:linear-gradient(135deg,var(--gold),#e6a800);color:#000;font-size:1.1rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;margin-top:1rem;text-transform:uppercase;letter-spacing:0.05em}
+        .download-btn{display:block;width:100%;max-width:500px;margin:0 auto;padding:1rem;background:linear-gradient(135deg,#ffd700,#e6a800);color:#000;font-size:1.1rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em}
         .download-btn:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(255,215,0,0.3)}
-
-        /* Selected info */
-        .selected-info{margin-top:1rem;padding:1rem;background:var(--surface2);border-radius:10px;text-align:center}
-        .selected-info .name{font-size:1.1rem;color:var(--gold);font-weight:600}
-        .selected-info .order-badge{display:inline-block;padding:0.2rem 0.8rem;border-radius:20px;font-size:0.75rem;margin-top:0.4rem;font-weight:600}
-
-        .order-Flame .order-badge{background:rgba(255,100,0,0.2);color:#ff6400}
-        .order-Wild .order-badge{background:rgba(0,180,0,0.2);color:#00b400}
-        .order-Arcane .order-badge{background:rgba(130,80,200,0.2);color:#8250c8}
-        .order-Deep .order-badge{background:rgba(0,100,200,0.2);color:#0064c8}
-        .order-Radiant .order-badge{background:rgba(255,215,0,0.2);color:#ffd700}
-        .order-Heart .order-badge{background:rgba(200,80,150,0.2);color:#c85096}
-        .order-Wanderer .order-badge{background:rgba(255,215,0,0.2);color:#ffd700}
     </style>
 </head>
 <body>
@@ -102,324 +63,154 @@
     <a href="map.html">Map</a>
     <a href="lore.html">Lore</a>
     <a href="content.html" class="active">Content</a>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Menu" onclick="document.getElementById('navMobileMenu').classList.toggle('open')">&#9776;</button>
+    <button class="nav-hamburger" onclick="document.getElementById('navMobileMenu').classList.toggle('open')">&#9776;</button>
 </nav>
 <div class="nav-links-mobile" id="navMobileMenu">
     <button class="nav-close-mobile" onclick="this.parentElement.classList.remove('open')">&#10005;</button>
-    <a href="index.html">The 86 Wizards</a>
-    <a href="moons.html">Moons</a>
-    <a href="map.html">Map</a>
-    <a href="lore.html">Lore</a>
-    <a href="content.html">Content</a>
+    <a href="index.html">The 86 Wizards</a><a href="moons.html">Moons</a><a href="map.html">Map</a><a href="lore.html">Lore</a><a href="content.html">Content</a>
 </div>
 
 <div class="container">
     <h1>Content Generator</h1>
-    <h2>Select a wizard, choose a background, download your creation</h2>
+    <h2>Pick a wizard, swap the background, download</h2>
 
-    <div class="main-grid">
-        <!-- Left: Selectors -->
-        <div>
-            <div class="panel">
-                <h3>Choose Your Wizard</h3>
-                <div class="dog-controls">
-                    <input type="text" class="dog-search" id="dogSearch" placeholder="Search by name or ID...">
-                    <select class="order-filter" id="orderFilter" onchange="filterDogs()">
-                        <option value="">All Orders</option>
-                        <option value="Flame">Flame</option>
-                        <option value="Wild">Wild</option>
-                        <option value="Arcane">Arcane</option>
-                        <option value="Deep">Deep</option>
-                        <option value="Radiant">Radiant</option>
-                        <option value="Heart">Heart</option>
-                        <option value="Wanderer">Wanderer</option>
-                    </select>
-                </div>
-                <div class="dogs-grid" id="dogsGrid"></div>
-            </div>
-
-            <div class="panel" style="margin-top:1.5rem">
-                <h3>Choose Background</h3>
-                <div class="bg-grid" id="bgGrid"></div>
-            </div>
+    <div class="panel">
+        <h3>Choose Your Wizard</h3>
+        <div class="dog-controls">
+            <input type="text" class="dog-search" id="dogSearch" placeholder="Search by name or ID...">
+            <select class="order-filter" id="orderFilter" onchange="filterDogs()">
+                <option value="">All Orders</option>
+                <option value="Flame">Flame</option><option value="Wild">Wild</option><option value="Arcane">Arcane</option>
+                <option value="Deep">Deep</option><option value="Radiant">Radiant</option><option value="Heart">Heart</option><option value="Wanderer">Wanderer</option>
+            </select>
         </div>
+        <div class="dogs-grid" id="dogsGrid"></div>
+    </div>
 
-        <!-- Right: Preview + Controls -->
-        <div>
-            <div class="panel">
-                <h3>Preview</h3>
-                <div class="preview-wrap">
-                    <canvas id="previewCanvas" class="preview-canvas" width="1200" height="1200"></canvas>
-                </div>
-                <div class="selected-info" id="selectedInfo">
-                    <div class="name">Select a wizard to begin</div>
-                </div>
-                <div class="controls">
-                    <div class="control-row">
-                        <label>Show Name</label>
-                        <input type="checkbox" id="showName" checked onchange="render()">
-                    </div>
-                    <div class="control-row">
-                        <label>Show Order</label>
-                        <input type="checkbox" id="showOrder" checked onchange="render()">
-                    </div>
-                    <div class="control-row">
-                        <label>Font Size</label>
-                        <input type="range" id="fontSize" min="24" max="80" value="48" onchange="render()">
-                    </div>
-                    <div class="control-row">
-                        <label>Text Color</label>
-                        <input type="color" id="textColor" value="#ffd700" onchange="render()">
-                    </div>
-                    <div class="control-row">
-                        <label>Text Position</label>
-                        <select id="textPos" onchange="render()">
-                            <option value="bottom">Bottom</option>
-                            <option value="top">Top</option>
-                        </select>
-                    </div>
-                </div>
-                <button class="download-btn" onclick="downloadImage()">Download PNG</button>
-            </div>
+    <div class="panel">
+        <h3>Choose Background</h3>
+        <div class="bg-grid" id="bgGrid"></div>
+    </div>
+
+    <div class="panel">
+        <div class="preview-area">
+            <canvas id="previewCanvas" width="1000" height="1000"></canvas>
+            <div class="selected-name" id="selectedName"></div>
         </div>
+        <button class="download-btn" onclick="downloadImage()">Download</button>
     </div>
 </div>
 
 <script>
 const WIZARDS = [
-  {id:'165',name:'Vanguard the Glacier Walker',order:'Flame'},
-  {id:'246',name:'Goldburn the Solar Flame',order:'Flame'},
-  {id:'986',name:'Splitforge the Dual Natured',order:'Flame'},
-  {id:'1053',name:'Deathforge the Undying',order:'Flame'},
-  {id:'1271',name:'Snowcollie the Patient Amplifier',order:'Heart'},
-  {id:'1714',name:'Roseheart the Gentle Flame',order:'Flame'},
-  {id:'1841',name:'Ember Beard the Bridge Prophet',order:'Deep'},
-  {id:'1848',name:'Lensfire the Tiger Scholar',order:'Flame'},
-  {id:'1976',name:'Frostbark the Ice Grower',order:'Wild'},
-  {id:'1977',name:'Blackclassic the Network Walker',order:'Wild'},
-  {id:'2426',name:'Blotbark the Corruption Fighter',order:'Wild'},
-  {id:'2634',name:'Mixedsight the Paradox Prophet',order:'Deep'},
-  {id:'2807',name:'Voidbloom the Visor Wearer',order:'Wild'},
-  {id:'2855',name:'Lensheart the Scholarly Amplifier',order:'Heart'},
-  {id:'3030',name:'Pureflame the Unadorned',order:'Flame'},
-  {id:'3186',name:'Brownheart the Common Light',order:'Radiant'},
-  {id:'3406',name:'Pinkmantle the Dimensional Scholar',order:'Arcane'},
-  {id:'3417',name:'Orangeshield the Flame Prophet',order:'Deep'},
-  {id:'3449',name:'Stripeheart the Bridge Walker',order:'Wild'},
-  {id:'3479',name:'Dawnheart the Neutral Amplifier',order:'Heart'},
-  {id:'3557',name:'Goldstare the Solar Prophet',order:'Deep'},
-  {id:'3735',name:'Roseheart the Steady Bond',order:'Heart'},
-  {id:'3758',name:'Deathbloom the Renewal Bringer',order:'Wild'},
-  {id:'3826',name:'Rosefield the Wild Ember',order:'Wild'},
-  {id:'4042',name:'Roseflame the Pink Eyed',order:'Flame'},
-  {id:'4165',name:'Pearlgaze the Emotional Seer',order:'Deep'},
-  {id:'4458',name:'Clearsight the Precision Revealer',order:'Radiant'},
-  {id:'4540',name:'Blotforge the Chaos Shaper',order:'Flame'},
-  {id:'4650',name:'Sandstone the Stable Amplifier',order:'Arcane'},
-  {id:'4742',name:'Blottedmist the Chaos Seer',order:'Deep'},
-  {id:'4994',name:'Whitecoat the Collie Coordinator',order:'Arcane'},
-  {id:'5035',name:'Blizzardflame the Ice Hearted',order:'Flame'},
-  {id:'5056',name:'Brownvisor the Research Director',order:'Arcane'},
-  {id:'5177',name:'Frostgrow the Gray Endurer',order:'Wild'},
-  {id:'5240',name:'Graysleep the Dream Walker',order:'Arcane'},
-  {id:'5275',name:'Tideforge the Current Rider',order:'Flame'},
-  {id:'5374',name:'Redsight the Spotted Tracker',order:'Wild'},
-  {id:'5381',name:'Roseclassic the Pink Diplomat',order:'Radiant'},
-  {id:'5516',name:'Whiteguard the Shield Prophet',order:'Deep'},
-  {id:'5518',name:'Voidstrike the Green Eyed',order:'Flame'},
-  {id:'5538',name:'Graystorm the Weather Walker',order:'Wild'},
-  {id:'6095',name:'Dalmatianscript the Unique Scholar',order:'Arcane'},
-  {id:'6135',name:'Bluevisor the Technology Prophet',order:'Deep'},
-  {id:'6164',name:'The Wanderer',order:'Wanderer'},
-  {id:'6198',name:'Ashstripe the Veil Ripper',order:'Arcane'},
-  {id:'6203',name:'Sleepytan the Dream Revealer',order:'Radiant'},
-  {id:'6232',name:'Goldsolid the Pure Prophet',order:'Deep'},
-  {id:'6398',name:'Tideseed the Shore Walker',order:'Wild'},
-  {id:'6502',name:'Sleepyheart the Dream Bonder',order:'Arcane'},
-  {id:'6597',name:'Inkwell the Archive Prophet',order:'Deep'},
-  {id:'6873',name:'Goldleaf the Multi Eyed',order:'Wild'},
-  {id:'7226',name:'Tanwatcher the Patient Prophet',order:'Deep'},
-  {id:'7257',name:'Graydreamer the Sleep Prophet',order:'Deep'},
-  {id:'7439',name:'Goldsentry the Gentle Endurer',order:'Arcane'},
-  {id:'7710',name:'Goldstrike the Lightning Fast',order:'Flame'},
-  {id:'7731',name:'Beigelight the Steady Illuminator',order:'Radiant'},
-  {id:'7770',name:'Stripesight the Pattern Burner',order:'Flame'},
-  {id:'7833',name:'Bronzebeacon the Shiny Light',order:'Radiant'},
-  {id:'8095',name:'Rosestrike the Pink Eyed',order:'Flame'},
-  {id:'8154',name:'Grayveil the Foundation Scholar',order:'Arcane'},
-  {id:'8272',name:'Spotforge the Pattern Reader',order:'Wild'},
-  {id:'8284',name:'Stripesight the Pattern Hunter',order:'Wild'},
-  {id:'8311',name:'Goldvisor the Tiger Theorist',order:'Heart'},
-  {id:'8342',name:'Whiteheart the Split Researcher',order:'Heart'},
-  {id:'8518',name:'Goldstripe the Time Stalker',order:'Heart'},
-  {id:'8667',name:'Goldforge the Sun Touched',order:'Flame'},
-  {id:'8728',name:'Frostforge the Scarf Bearer',order:'Flame'},
-  {id:'8822',name:'Chaosbloom the Change Bringer',order:'Wild'},
-  {id:'8965',name:'Brownthorn the Shield Grower',order:'Wild'},
-  {id:'9017',name:'Sleepysteady the Gentle Dreamer',order:'Heart'},
-  {id:'9025',name:'Grayheart the Split Revealer',order:'Radiant'},
-  {id:'9089',name:'Raredheart the Ultimate Amplifier',order:'Heart'},
-  {id:'9183',name:'Whiteheart the Pink Eyed Illuminator',order:'Radiant'},
-  {id:'9234',name:'Shadowspot the Pattern Keeper',order:'Arcane'},
-  {id:'9301',name:'Rosegold the Pink Eyed Theorist',order:'Heart'},
-  {id:'9396',name:'Tancollar the Diplomatic Light',order:'Radiant'},
-  {id:'9469',name:'Whitemist the Sleepy Purifier',order:'Radiant'},
-  {id:'9530',name:'Bernardguard the Truth Keeper',order:'Deep'},
-  {id:'9604',name:"Beigelumber the Worker's Light",order:'Radiant'},
-  {id:'9624',name:'Inkspot the Silent Decoder',order:'Arcane'},
-  {id:'9684',name:'Goldblot the Luminous Shadow',order:'Radiant'},
-  {id:'9713',name:'Darkleaf the Shadow Grower',order:'Wild'},
-  {id:'9758',name:'Commonflame the Everyman',order:'Flame'},
-  {id:'9826',name:'Greenbone the Chaos Scholar',order:'Heart'},
-  {id:'9898',name:'Verdant the Arcane Flame',order:'Arcane'},
-  {id:'9952',name:'Grimbloom the Green Eyed',order:'Wild'}
+  {id:'165',name:'Vanguard the Glacier Walker',order:'Flame'},{id:'246',name:'Goldburn the Solar Flame',order:'Flame'},
+  {id:'986',name:'Splitforge the Dual Natured',order:'Flame'},{id:'1053',name:'Deathforge the Undying',order:'Flame'},
+  {id:'1271',name:'Snowcollie the Patient Amplifier',order:'Heart'},{id:'1714',name:'Roseheart the Gentle Flame',order:'Flame'},
+  {id:'1841',name:'Ember Beard the Bridge Prophet',order:'Deep'},{id:'1848',name:'Lensfire the Tiger Scholar',order:'Flame'},
+  {id:'1976',name:'Frostbark the Ice Grower',order:'Wild'},{id:'1977',name:'Blackclassic the Network Walker',order:'Wild'},
+  {id:'2426',name:'Blotbark the Corruption Fighter',order:'Wild'},{id:'2634',name:'Mixedsight the Paradox Prophet',order:'Deep'},
+  {id:'2807',name:'Voidbloom the Visor Wearer',order:'Wild'},{id:'2855',name:'Lensheart the Scholarly Amplifier',order:'Heart'},
+  {id:'3030',name:'Pureflame the Unadorned',order:'Flame'},{id:'3186',name:'Brownheart the Common Light',order:'Radiant'},
+  {id:'3406',name:'Pinkmantle the Dimensional Scholar',order:'Arcane'},{id:'3417',name:'Orangeshield the Flame Prophet',order:'Deep'},
+  {id:'3449',name:'Stripeheart the Bridge Walker',order:'Wild'},{id:'3479',name:'Dawnheart the Neutral Amplifier',order:'Heart'},
+  {id:'3557',name:'Goldstare the Solar Prophet',order:'Deep'},{id:'3735',name:'Roseheart the Steady Bond',order:'Heart'},
+  {id:'3758',name:'Deathbloom the Renewal Bringer',order:'Wild'},{id:'3826',name:'Rosefield the Wild Ember',order:'Wild'},
+  {id:'4042',name:'Roseflame the Pink Eyed',order:'Flame'},{id:'4165',name:'Pearlgaze the Emotional Seer',order:'Deep'},
+  {id:'4458',name:'Clearsight the Precision Revealer',order:'Radiant'},{id:'4540',name:'Blotforge the Chaos Shaper',order:'Flame'},
+  {id:'4650',name:'Sandstone the Stable Amplifier',order:'Arcane'},{id:'4742',name:'Blottedmist the Chaos Seer',order:'Deep'},
+  {id:'4994',name:'Whitecoat the Collie Coordinator',order:'Arcane'},{id:'5035',name:'Blizzardflame the Ice Hearted',order:'Flame'},
+  {id:'5056',name:'Brownvisor the Research Director',order:'Arcane'},{id:'5177',name:'Frostgrow the Gray Endurer',order:'Wild'},
+  {id:'5240',name:'Graysleep the Dream Walker',order:'Arcane'},{id:'5275',name:'Tideforge the Current Rider',order:'Flame'},
+  {id:'5374',name:'Redsight the Spotted Tracker',order:'Wild'},{id:'5381',name:'Roseclassic the Pink Diplomat',order:'Radiant'},
+  {id:'5516',name:'Whiteguard the Shield Prophet',order:'Deep'},{id:'5518',name:'Voidstrike the Green Eyed',order:'Flame'},
+  {id:'5538',name:'Graystorm the Weather Walker',order:'Wild'},{id:'6095',name:'Dalmatianscript the Unique Scholar',order:'Arcane'},
+  {id:'6135',name:'Bluevisor the Technology Prophet',order:'Deep'},{id:'6164',name:'The Wanderer',order:'Wanderer'},
+  {id:'6198',name:'Ashstripe the Veil Ripper',order:'Arcane'},{id:'6203',name:'Sleepytan the Dream Revealer',order:'Radiant'},
+  {id:'6232',name:'Goldsolid the Pure Prophet',order:'Deep'},{id:'6398',name:'Tideseed the Shore Walker',order:'Wild'},
+  {id:'6502',name:'Sleepyheart the Dream Bonder',order:'Arcane'},{id:'6597',name:'Inkwell the Archive Prophet',order:'Deep'},
+  {id:'6873',name:'Goldleaf the Multi Eyed',order:'Wild'},{id:'7226',name:'Tanwatcher the Patient Prophet',order:'Deep'},
+  {id:'7257',name:'Graydreamer the Sleep Prophet',order:'Deep'},{id:'7439',name:'Goldsentry the Gentle Endurer',order:'Arcane'},
+  {id:'7710',name:'Goldstrike the Lightning Fast',order:'Flame'},{id:'7731',name:'Beigelight the Steady Illuminator',order:'Radiant'},
+  {id:'7770',name:'Stripesight the Pattern Burner',order:'Flame'},{id:'7833',name:'Bronzebeacon the Shiny Light',order:'Radiant'},
+  {id:'8095',name:'Rosestrike the Pink Eyed',order:'Flame'},{id:'8154',name:'Grayveil the Foundation Scholar',order:'Arcane'},
+  {id:'8272',name:'Spotforge the Pattern Reader',order:'Wild'},{id:'8284',name:'Stripesight the Pattern Hunter',order:'Wild'},
+  {id:'8311',name:'Goldvisor the Tiger Theorist',order:'Heart'},{id:'8342',name:'Whiteheart the Split Researcher',order:'Heart'},
+  {id:'8518',name:'Goldstripe the Time Stalker',order:'Heart'},{id:'8667',name:'Goldforge the Sun Touched',order:'Flame'},
+  {id:'8728',name:'Frostforge the Scarf Bearer',order:'Flame'},{id:'8822',name:'Chaosbloom the Change Bringer',order:'Wild'},
+  {id:'8965',name:'Brownthorn the Shield Grower',order:'Wild'},{id:'9017',name:'Sleepysteady the Gentle Dreamer',order:'Heart'},
+  {id:'9025',name:'Grayheart the Split Revealer',order:'Radiant'},{id:'9089',name:'Raredheart the Ultimate Amplifier',order:'Heart'},
+  {id:'9183',name:'Whiteheart the Pink Eyed Illuminator',order:'Radiant'},{id:'9234',name:'Shadowspot the Pattern Keeper',order:'Arcane'},
+  {id:'9301',name:'Rosegold the Pink Eyed Theorist',order:'Heart'},{id:'9396',name:'Tancollar the Diplomatic Light',order:'Radiant'},
+  {id:'9469',name:'Whitemist the Sleepy Purifier',order:'Radiant'},{id:'9530',name:'Bernardguard the Truth Keeper',order:'Deep'},
+  {id:'9604',name:"Beigelumber the Worker's Light",order:'Radiant'},{id:'9624',name:'Inkspot the Silent Decoder',order:'Arcane'},
+  {id:'9684',name:'Goldblot the Luminous Shadow',order:'Radiant'},{id:'9713',name:'Darkleaf the Shadow Grower',order:'Wild'},
+  {id:'9758',name:'Commonflame the Everyman',order:'Flame'},{id:'9826',name:'Greenbone the Chaos Scholar',order:'Heart'},
+  {id:'9898',name:'Verdant the Arcane Flame',order:'Arcane'},{id:'9952',name:'Grimbloom the Green Eyed',order:'Wild'}
 ];
 
 const BACKGROUNDS = [
-  {file:'forge-spire.png',name:'Forge Spire'},
-  {file:'violet-citadel.png',name:'Violet Citadel'},
-  {file:'tidewatch.png',name:'Tidewatch'},
-  {file:'everhollow.png',name:'Everhollow'},
-  {file:'solar-spire.png',name:'Solar Spire'},
-  {file:'heartstring-tower.png',name:'Heartstring Tower'},
-  {file:'palehowl-night.png',name:'Palehowl Night'},
-  {file:'caninosphere.png',name:'The Caninosphere'}
+  {file:'forge-spire.png',name:'Forge Spire'},{file:'violet-citadel.png',name:'Violet Citadel'},
+  {file:'tidewatch.png',name:'Tidewatch'},{file:'everhollow.png',name:'Everhollow'},
+  {file:'solar-spire.png',name:'Solar Spire'},{file:'heartstring-tower.png',name:'Heartstring Tower'},
+  {file:'palehowl-night.png',name:'Palehowl Night'},{file:'caninosphere.png',name:'The Caninosphere'}
 ];
 
-let selectedWizard = null;
-let selectedBg = null;
-let dogImg = null;
-let bgImg = null;
+let selWiz = null, dogImg = null, bgImg = null;
 const canvas = document.getElementById('previewCanvas');
 const ctx = canvas.getContext('2d');
 
-// Build dog grid
-function buildDogGrid(filter='', order='') {
-    const grid = document.getElementById('dogsGrid');
-    const q = filter.toLowerCase();
-    const filtered = WIZARDS.filter(w => {
-        if (order && w.order !== order) return false;
-        if (q && !w.name.toLowerCase().includes(q) && !w.id.includes(q)) return false;
-        return true;
-    });
-    grid.innerHTML = filtered.map(w => `
-        <div class="dog-thumb ${selectedWizard && selectedWizard.id === w.id ? 'selected' : ''}" 
-             onclick="selectDog('${w.id}')" title="#${w.id} ${w.name}">
-            <img src="wizard-images/${w.id}.png" alt="${w.name}" loading="lazy">
-        </div>
-    `).join('');
+function buildDogGrid(q='', order='') {
+    const ql = q.toLowerCase();
+    const f = WIZARDS.filter(w => (!order || w.order===order) && (!ql || w.name.toLowerCase().includes(ql) || w.id.includes(ql)));
+    document.getElementById('dogsGrid').innerHTML = f.map(w =>
+        `<div class="dog-thumb ${selWiz&&selWiz.id===w.id?'selected':''}" onclick="selectDog('${w.id}')" title="#${w.id} ${w.name}"><img src="wizard-images/${w.id}.png" alt="${w.name}" loading="lazy"></div>`
+    ).join('');
 }
 
-// Build background grid
 function buildBgGrid() {
-    const grid = document.getElementById('bgGrid');
-    grid.innerHTML = BACKGROUNDS.map((bg, i) => `
-        <div class="bg-thumb ${selectedBg === bg.file ? 'selected' : ''}" onclick="selectBg('${bg.file}', ${i})">
-            <img src="content-bg/${bg.file}" alt="${bg.name}" loading="lazy">
-            <div class="bg-label">${bg.name}</div>
-        </div>
-    `).join('');
+    let html = `<div class="bg-thumb none-bg ${!bgImg?'selected':''}" onclick="clearBg()">None</div>`;
+    html += BACKGROUNDS.map(bg =>
+        `<div class="bg-thumb ${bgImg&&bgImg.dataset.file===bg.file?'selected':''}" onclick="selectBg('${bg.file}')"><img src="content-bg/${bg.file}" alt="${bg.name}" loading="lazy"><div class="bg-label">${bg.name}</div></div>`
+    ).join('');
+    document.getElementById('bgGrid').innerHTML = html;
 }
 
 function selectDog(id) {
-    selectedWizard = WIZARDS.find(w => w.id === id);
-    dogImg = new Image();
-    dogImg.crossOrigin = 'anonymous';
-    dogImg.onload = () => { render(); };
+    selWiz = WIZARDS.find(w => w.id===id);
+    dogImg = new Image(); dogImg.crossOrigin='anonymous';
+    dogImg.onload = render;
     dogImg.src = `wizard-images-transparent/${id}.png`;
-    
-    // Update info
-    const info = document.getElementById('selectedInfo');
-    info.className = `selected-info order-${selectedWizard.order}`;
-    info.innerHTML = `<div class="name">#${id} ${selectedWizard.name}</div><div class="order-badge">${selectedWizard.order} Order</div>`;
-    
+    document.getElementById('selectedName').textContent = `#${id} ${selWiz.name}`;
     buildDogGrid(document.getElementById('dogSearch').value, document.getElementById('orderFilter').value);
 }
 
-function selectBg(file, idx) {
-    selectedBg = file;
-    bgImg = new Image();
-    bgImg.crossOrigin = 'anonymous';
-    bgImg.onload = () => { render(); };
+function selectBg(file) {
+    bgImg = new Image(); bgImg.crossOrigin='anonymous'; bgImg.dataset.file=file;
+    bgImg.onload = () => { render(); buildBgGrid(); };
     bgImg.src = `content-bg/${file}`;
-    buildBgGrid();
 }
 
+function clearBg() { bgImg = null; render(); buildBgGrid(); }
+
 function render() {
-    ctx.clearRect(0, 0, 1200, 1200);
-    
-    // Draw background
-    if (bgImg && bgImg.complete) {
-        ctx.drawImage(bgImg, 0, 0, 1200, 1200);
-    } else {
-        ctx.fillStyle = '#1C1C1E';
-        ctx.fillRect(0, 0, 1200, 1200);
-    }
-    
-    // Draw dog
-    if (dogImg && dogImg.complete) {
-        const size = 840; // ~70% of 1200
-        const x = (1200 - size) / 2;
-        const y = (1200 - size) / 2 - 20;
-        ctx.drawImage(dogImg, x, y, size, size);
-    }
-    
-    if (!selectedWizard) return;
-    
-    const showName = document.getElementById('showName').checked;
-    const showOrder = document.getElementById('showOrder').checked;
-    const fSize = parseInt(document.getElementById('fontSize').value);
-    const tColor = document.getElementById('textColor').value;
-    const tPos = document.getElementById('textPos').value;
-    
-    if (showName || showOrder) {
-        ctx.textAlign = 'center';
-        ctx.fillStyle = tColor;
-        
-        // Text shadow for readability
-        ctx.shadowColor = 'rgba(0,0,0,0.8)';
-        ctx.shadowBlur = 8;
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        
-        let yPos = tPos === 'bottom' ? 1140 : 80;
-        
-        if (showName) {
-            ctx.font = `bold ${fSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`;
-            ctx.fillText(selectedWizard.name, 600, yPos);
-            yPos += tPos === 'bottom' ? -fSize - 10 : fSize + 10;
-        }
-        
-        if (showOrder) {
-            ctx.font = `600 ${Math.round(fSize * 0.6)}px -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`;
-            ctx.fillText(selectedWizard.order + ' Order', 600, tPos === 'bottom' ? yPos : yPos);
-        }
-        
-        ctx.shadowColor = 'transparent';
-        ctx.shadowBlur = 0;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
-    }
+    ctx.clearRect(0,0,1000,1000);
+    if (bgImg && bgImg.complete) ctx.drawImage(bgImg,0,0,1000,1000);
+    else { ctx.fillStyle='#1C1C1E'; ctx.fillRect(0,0,1000,1000); }
+    if (dogImg && dogImg.complete) ctx.drawImage(dogImg,0,0,1000,1000);
 }
 
 function downloadImage() {
-    if (!selectedWizard) { alert('Select a wizard first'); return; }
-    const link = document.createElement('a');
-    link.download = `order-of-86-${selectedWizard.id}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    if (!selWiz) { alert('Select a wizard first'); return; }
+    const a = document.createElement('a');
+    a.download = `wizard-${selWiz.id}.png`;
+    a.href = canvas.toDataURL('image/png');
+    a.click();
 }
 
-function filterDogs() {
-    buildDogGrid(document.getElementById('dogSearch').value, document.getElementById('orderFilter').value);
-}
-
+function filterDogs() { buildDogGrid(document.getElementById('dogSearch').value, document.getElementById('orderFilter').value); }
 document.getElementById('dogSearch').addEventListener('input', filterDogs);
 
-// Init
-buildDogGrid();
-buildBgGrid();
-render();
+buildDogGrid(); buildBgGrid(); render();
 </script>
 </body>
 </html>
