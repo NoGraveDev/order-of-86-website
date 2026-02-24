@@ -262,12 +262,20 @@
                     <div class="setting-group">
                         <label class="setting-label">Wizard Position</label>
                         <div class="setting-row">
-                            <input type="range" class="setting-input" id="dogOffsetX" min="-50" max="50" step="5" value="0" oninput="updatePreview()">
+                            <input type="range" class="setting-input" id="dogOffsetX" min="-200" max="200" step="5" value="0" oninput="updatePreview()">
                             <span class="setting-value" id="dogOffsetXValue">0px</span>
                         </div>
                         <div class="setting-row">
-                            <input type="range" class="setting-input" id="dogOffsetY" min="-50" max="50" step="5" value="0" oninput="updatePreview()">
+                            <input type="range" class="setting-input" id="dogOffsetY" min="-200" max="200" step="5" value="0" oninput="updatePreview()">
                             <span class="setting-value" id="dogOffsetYValue">0px</span>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <label class="setting-label">Wizard Rotation</label>
+                        <div class="setting-row">
+                            <input type="range" class="setting-input" id="dogRotation" min="-180" max="180" step="5" value="0" oninput="updatePreview()">
+                            <span class="setting-value" id="dogRotationValue">0°</span>
                         </div>
                     </div>
                 </div>
@@ -511,13 +519,15 @@ function updatePreview() {
     const scale = parseFloat(document.getElementById('dogScale').value);
     const offsetX = parseFloat(document.getElementById('dogOffsetX').value);
     const offsetY = parseFloat(document.getElementById('dogOffsetY').value);
+    const rotation = parseFloat(document.getElementById('dogRotation').value);
     
-    dogLayer.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+    dogLayer.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale}) rotate(${rotation}deg)`;
     
     // Update setting values
     document.getElementById('dogScaleValue').textContent = Math.round(scale * 100) + '%';
     document.getElementById('dogOffsetXValue').textContent = offsetX + 'px';
     document.getElementById('dogOffsetYValue').textContent = offsetY + 'px';
+    document.getElementById('dogRotationValue').textContent = rotation + '°';
 }
 
 function showLoading() {
@@ -574,10 +584,12 @@ function downloadStill() {
                 const scale = parseFloat(document.getElementById('dogScale').value);
                 const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (1000/400);
                 const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (1000/400);
+                const rotation = parseFloat(document.getElementById('dogRotation').value);
                 
                 ctx.save();
                 ctx.translate(500 + offsetX, 500 + offsetY);
                 ctx.scale(scale, scale);
+                ctx.rotate(rotation * Math.PI / 180);
                 ctx.drawImage(dog, -500, -500, 1000, 1000);
                 ctx.restore();
                 
@@ -596,10 +608,12 @@ function downloadStill() {
             const scale = parseFloat(document.getElementById('dogScale').value);
             const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (1000/400);
             const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (1000/400);
+            const rotation = parseFloat(document.getElementById('dogRotation').value);
             
             ctx.save();
             ctx.translate(500 + offsetX, 500 + offsetY);
             ctx.scale(scale, scale);
+            ctx.rotate(rotation * Math.PI / 180);
             ctx.drawImage(dog, -500, -500, 1000, 1000);
             ctx.restore();
             
@@ -695,6 +709,7 @@ async function compositeGif(gifUrl, dogImg) {
     const scale = parseFloat(document.getElementById('dogScale').value);
     const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (outW / 400);
     const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (outH / 400);
+    const rotation = parseFloat(document.getElementById('dogRotation').value);
     
     // Pre-render the dog layer at output resolution
     const dogLayer = document.createElement('canvas');
@@ -703,6 +718,7 @@ async function compositeGif(gifUrl, dogImg) {
     dctx.save();
     dctx.translate(outW/2 + offsetX, outH/2 + offsetY);
     dctx.scale(scale, scale);
+    dctx.rotate(rotation * Math.PI / 180);
     dctx.drawImage(dogImg, -outW/2, -outH/2, outW, outH);
     dctx.restore();
     
