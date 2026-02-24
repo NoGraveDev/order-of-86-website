@@ -966,23 +966,23 @@ function createParticles(count, regionX, regionZ, spread, color, sizeRange, yRan
 }
 
 // Snow - Frosthollow
-const snow = createParticles(400, -350, -300, 250, 0xffffff, 2, [getHeight(-350,-300), getHeight(-350,-300)+100]);
+const snow = createParticles(150, -350, -300, 250, 0xffffff, 2, [getHeight(-350,-300), getHeight(-350,-300)+100]);
 scene.add(snow);
 
 // Ash - Ember Wastes
-const ash = createParticles(250, 400, 100, 200, 0xff8844, 1.5, [getHeight(400,100), getHeight(400,100)+80]);
+const ash = createParticles(80, 400, 100, 200, 0xff8844, 1.5, [getHeight(400,100), getHeight(400,100)+80]);
 scene.add(ash);
 
 // Fireflies - Deepwood
-const fireflies = createParticles(180, 250, 350, 160, 0xaaff44, 2.5, [getHeight(250,350), getHeight(250,350)+30]);
+const fireflies = createParticles(60, 250, 350, 160, 0xaaff44, 2.5, [getHeight(250,350), getHeight(250,350)+30]);
 scene.add(fireflies);
 
 // Fog - Shadowmire
-const fog = createParticles(250, 0, 400, 200, 0x888877, 4, [getHeight(0,400)-5, getHeight(0,400)+10]);
+const fog = createParticles(80, 0, 400, 200, 0x888877, 4, [getHeight(0,400)-5, getHeight(0,400)+10]);
 scene.add(fog);
 
 // Lava particles
-const lava = createParticles(150, 400, 100, 180, 0xff4400, 2, [getHeight(400,100)-5, getHeight(400,100)+15]);
+const lava = createParticles(50, 400, 100, 180, 0xff4400, 2, [getHeight(400,100)-5, getHeight(400,100)+15]);
 scene.add(lava);
 
 const particleSystems = [
