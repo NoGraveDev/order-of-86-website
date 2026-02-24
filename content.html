@@ -553,6 +553,39 @@ function updateDownloadButtons() {
     }
 }
 
+function getPreviewSize() {
+    return document.getElementById('previewFrame').getBoundingClientRect().width || 400;
+}
+
+function drawDogOnCanvas(targetCtx, dogImg, canvasSize) {
+    const previewW = getPreviewSize();
+    const ratio = canvasSize / previewW;
+    const scale = parseFloat(document.getElementById('dogScale').value);
+    const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * ratio;
+    const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * ratio;
+    const rotation = parseFloat(document.getElementById('dogRotation').value);
+    
+    targetCtx.save();
+    targetCtx.translate(canvasSize/2 + offsetX, canvasSize/2 + offsetY);
+    targetCtx.scale(scale, scale);
+    targetCtx.rotate(rotation * Math.PI / 180);
+    targetCtx.drawImage(dogImg, -canvasSize/2, -canvasSize/2, canvasSize, canvasSize);
+    targetCtx.restore();
+}
+
+function triggerDownload(dataUrl, filename) {
+    // Safari/iOS fallback — open in new tab if link.click() doesn't work
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = dataUrl;
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(() => {
+        document.body.removeChild(link);
+        // Fallback: if still on page after 1s, open in new tab (iOS Safari)
+    }, 100);
+}
+
 function downloadStill() {
     if (!selectedWizard) {
         alert('Select a wizard first');
@@ -580,48 +613,18 @@ function downloadStill() {
             
             bg.onload = () => {
                 ctx.drawImage(bg, 0, 0, 1000, 1000);
+                drawDogOnCanvas(ctx, dog, 1000);
                 
-                const scale = parseFloat(document.getElementById('dogScale').value);
-                const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (1000/400);
-                const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (1000/400);
-                const rotation = parseFloat(document.getElementById('dogRotation').value);
-                
-                ctx.save();
-                ctx.translate(500 + offsetX, 500 + offsetY);
-                ctx.scale(scale, scale);
-                ctx.rotate(rotation * Math.PI / 180);
-                ctx.drawImage(dog, -500, -500, 1000, 1000);
-                ctx.restore();
-                
-                const link = document.createElement('a');
-                link.download = `wizard-${selectedWizard.id}-${selectedBackground ? selectedBackground.name.replace(/\s+/g, '-').toLowerCase() : 'no-bg'}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
+                const filename = `wizard-${selectedWizard.id}-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.png`;
+                triggerDownload(canvas.toDataURL('image/png'), filename);
                 hideLoading();
             };
         } else {
-            // No background - solid color
             ctx.fillStyle = '#1C1C1E';
             ctx.fillRect(0, 0, 1000, 1000);
+            drawDogOnCanvas(ctx, dog, 1000);
             
-            const scale = parseFloat(document.getElementById('dogScale').value);
-            const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (1000/400);
-            const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (1000/400);
-            const rotation = parseFloat(document.getElementById('dogRotation').value);
-            
-            ctx.save();
-            ctx.translate(500 + offsetX, 500 + offsetY);
-            ctx.scale(scale, scale);
-            ctx.rotate(rotation * Math.PI / 180);
-            ctx.drawImage(dog, -500, -500, 1000, 1000);
-            ctx.restore();
-            
-            const link = document.createElement('a');
-            link.download = `wizard-${selectedWizard.id}-no-bg.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
+            triggerDownload(canvas.toDataURL('image/png'), `wizard-${selectedWizard.id}-no-bg.png`);
             hideLoading();
         }
     };
@@ -653,11 +656,10 @@ function downloadBackground() {
         const gifUrl = `content-bg/${selectedBackground.file}`;
         
         compositeGif(gifUrl, dog).then(blob => {
-            const link = document.createElement('a');
-            link.download = `wizard-${selectedWizard.id}-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
-            link.href = URL.createObjectURL(blob);
-            link.click();
-            URL.revokeObjectURL(link.href);
+            const blobUrl = URL.createObjectURL(blob);
+            const filename = `wizard-${selectedWizard.id}-${selectedBackground.name.replace(/\s+/g, '-').toLowerCase()}.gif`;
+            triggerDownload(blobUrl, filename);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
             hideLoading();
         }).catch(err => {
             console.error('GIF composite failed:', err);
@@ -706,21 +708,11 @@ async function compositeGif(gifUrl, dogImg) {
     acc.width = w; acc.height = h;
     const actx = acc.getContext('2d');
     
-    const scale = parseFloat(document.getElementById('dogScale').value);
-    const offsetX = parseFloat(document.getElementById('dogOffsetX').value) * (outW / 400);
-    const offsetY = parseFloat(document.getElementById('dogOffsetY').value) * (outH / 400);
-    const rotation = parseFloat(document.getElementById('dogRotation').value);
-    
     // Pre-render the dog layer at output resolution
-    const dogLayer = document.createElement('canvas');
-    dogLayer.width = outW; dogLayer.height = outH;
-    const dctx = dogLayer.getContext('2d');
-    dctx.save();
-    dctx.translate(outW/2 + offsetX, outH/2 + offsetY);
-    dctx.scale(scale, scale);
-    dctx.rotate(rotation * Math.PI / 180);
-    dctx.drawImage(dogImg, -outW/2, -outH/2, outW, outH);
-    dctx.restore();
+    const dogLayerCanvas = document.createElement('canvas');
+    dogLayerCanvas.width = outW; dogLayerCanvas.height = outH;
+    const dctx = dogLayerCanvas.getContext('2d');
+    drawDogOnCanvas(dctx, dogImg, outW);
     
     // Reusable composite canvas at output resolution
     const comp = document.createElement('canvas');
@@ -743,7 +735,7 @@ async function compositeGif(gifUrl, dogImg) {
         // Upscale background to output resolution + composite dog
         cctx.clearRect(0, 0, outW, outH);
         cctx.drawImage(acc, 0, 0, outW, outH);
-        cctx.drawImage(dogLayer, 0, 0);
+        cctx.drawImage(dogLayerCanvas, 0, 0);
         
         encoder.addFrame(cctx, {delay: info.delay * 10, copy: true});
     }
