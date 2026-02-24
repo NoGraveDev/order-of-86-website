@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231C1C1E' width='180' height='180' rx='40'/><text x='90' y='125' font-size='100' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%231C1C1E' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23ffd700'>86</text></svg>">
+    <title>Content Generator | Order of 86 | Create Epic Wizard Dog Art</title>
+    <meta name="description" content="Create epic content with the Order of 86 wizard dogs. Generate profile pics, banners, and custom art with transparent dogs and magical backgrounds.">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Order of 86">
+    <meta name="keywords" content="Order of 86, wizard dogs, content generator, profile pic, banner maker, NFT art, transparent backgrounds">
+    <link rel="canonical" href="https://theorderof86.com/content.html">
+    <style>
+        /* ── Reset & Tokens ───────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --color-bg: #000000;
+            --color-surface: #1C1C1E;
+            --color-surface-2: #2C2C2E;
+            --color-surface-3: #3A3A3C;
+            --color-text: #F5F5F7;
+            --color-text-secondary: #98989D;
+            --color-text-tertiary: #636366;
+            --color-border: rgba(255,255,255,0.08);
+            --color-separator: rgba(84,84,88,0.65);
+            --color-accent: #c9a86c;
+            --color-accent-bright: #ffd700;
+            --color-accent-subtle: rgba(201,168,108,0.15);
+
+            --color-flame: #FF6B00;
+            --color-radiant: #F1C40F;
+            --color-deep: #3498DB;
+            --color-wild: #2ECC71;
+            --color-arcane: #9B6EFF;
+            --color-heart: #FF69B4;
+            --color-wanderer: #9966ff;
+
+            --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-md: 0 2px 4px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.35);
+            --shadow-lg: 0 4px 8px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            --transition-fast: 150ms cubic-bezier(0.25,0.1,0.25,1);
+            --transition-normal: 300ms cubic-bezier(0.25,0.1,0.25,1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 72px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.5;
+            min-height: 100vh;
+            font-size: clamp(14px, 3.5vw, 18px);
+            overscroll-behavior: none;
+        }
+
+        /* ── Nav Bar ──────────────────────────────────────── */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: rgba(28,28,30,0.82);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid var(--color-border);
+            padding-top: env(safe-area-inset-top);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
+        }
+        .nav-bar a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            padding: 16px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            transition: color var(--transition-fast), background var(--transition-fast);
+            border-bottom: 2.5px solid transparent;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .nav-bar a:hover { color: var(--color-text); background: rgba(255,255,255,0.04); }
+        .nav-bar a:active { opacity: 0.7; }
+        .nav-bar a.active { color: var(--color-accent-bright); border-bottom-color: var(--color-accent-bright); }
+
+        .nav-hamburger {
+            display: none;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 24px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 101;
+        }
+
+        .nav-logo-mobile {
+            display: none;
+            color: var(--color-accent-bright);
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .nav-links-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--color-surface);
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .nav-close-mobile {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: var(--color-text);
+            font-size: 28px;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+        }
+
+        /* Content Generator Styles */
+        .content-generator {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr 400px;
+        }
+
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-accent-bright);
+            margin-bottom: 16px;
+        }
+
+        .subsection-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 12px;
+        }
+
+        .preview-container {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .preview-canvas {
+            width: 100%;
+            max-width: 600px;
+            aspect-ratio: 1;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                        linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                        linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        #previewCanvas {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-sm);
+        }
+
+        .dog-selector {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .search-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+
+        .order-filter {
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            padding: 12px 16px;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .dogs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .dog-item {
+            aspect-ratio: 1;
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all var(--transition-fast);
+            background: var(--color-surface-2);
+        }
+
+        .dog-item:hover {
+            border-color: var(--color-accent);
+            transform: scale(1.05);
+        }
+
+        .dog-item.selected {
+            border-color: var(--color-accent-bright);
+            box-shadow: 0 0 0 2px var(--color-accent-bright);
+        }
+
+        .dog-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .background-selector {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+        }
+
+        .backgrounds-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .background-item {
+            aspect-ratio: 1;
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all var(--transition-fast);
+        }
+
+        .background-item:hover {
+            border-color: var(--color-accent);
+            transform: scale(1.05);
+        }
+
+        .background-item.selected {
+            border-color: var(--color-accent-bright);
+            box-shadow: 0 0 0 2px var(--color-accent-bright);
+        }
+
+        .background-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            appearance: none;
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox:checked {
+            background: var(--color-accent-bright);
+            border-color: var(--color-accent-bright);
+        }
+
+        .checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: black;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .slider {
+            flex: 1;
+            appearance: none;
+            height: 6px;
+            background: var(--color-surface-2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--color-accent-bright);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .color-picker {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            appearance: none;
+            background: var(--color-surface-2);
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .radio-option input[type="radio"]:checked {
+            border-color: var(--color-accent-bright);
+        }
+
+        .radio-option input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--color-accent-bright);
+            border-radius: 50%;
+        }
+
+        .export-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .export-btn {
+            background: var(--color-accent-bright);
+            color: black;
+            border: none;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity var(--transition-fast);
+        }
+
+        .export-btn:hover {
+            opacity: 0.8;
+        }
+
+        .export-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .templates {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .template-btn {
+            background: var(--color-surface-2);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .template-btn:hover {
+            background: var(--color-surface-3);
+            border-color: var(--color-accent);
+        }
+
+        .value-label {
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .loading-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--color-text-secondary);
+            font-style: italic;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-bar { justify-content: flex-start; position: relative; }
+            .nav-bar > a { display: none; }
+            .nav-hamburger { display: flex; }
+            .nav-logo-mobile { display: block; }
+
+            .content-generator {
+                grid-template-columns: 1fr;
+                padding: 20px 16px;
+                gap: 24px;
+            }
+
+            .controls-panel {
+                position: static;
+                order: -1;
+            }
+
+            .dogs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+                gap: 8px;
+            }
+
+            .backgrounds-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .search-controls {
+                flex-direction: column;
+            }
+
+            .search-input, .order-filter {
+                min-width: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav-bar">
+    <span class="nav-logo-mobile">⚡ Order of 86</span>
+    <a href="index.html">⚡ The 86 Wizards</a>
+    <a href="moons.html">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+    <a href="content.html" class="active">🎨 Content</a>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">☰</button>
+</nav>
+<div class="nav-links-mobile" id="navMobileMenu">
+    <button class="nav-close-mobile" id="navCloseMenu" aria-label="Close menu">✕</button>
+    <a href="index.html">⚡ The 86 Wizards</a>
+    <a href="moons.html">🌙 Moons</a>
+    <a href="map.html">🗺️ Map</a>
+    <a href="lore.html">📜 Lore</a>
+    <a href="content.html" class="active">🎨 Content</a>
+</div>
+
+<div class="content-generator">
+    <div class="main-panel">
+        <!-- Preview Canvas -->
+        <div class="preview-container">
+            <h2 class="section-title">Preview</h2>
+            <div class="preview-canvas">
+                <canvas id="previewCanvas" width="1200" height="1200"></canvas>
+            </div>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="downloadImage('png', 1200, 1200)">Download as PNG (1200x1200)</button>
+                <button class="export-btn" onclick="downloadImage('square', 1080, 1080)">Download as Square (1080x1080)</button>
+                <button class="export-btn" onclick="downloadImage('twitter', 1200, 675)">Download for X (1200x675)</button>
+            </div>
+        </div>
+
+        <!-- Dog Selector -->
+        <div class="dog-selector">
+            <h3 class="subsection-title">Choose Your Wizard</h3>
+            <div class="search-controls">
+                <input type="text" class="search-input" id="dogSearch" placeholder="Search by name or ID...">
+                <select class="order-filter" id="orderFilter">
+                    <option value="">All Orders</option>
+                    <option value="Flame">🔥 Flame</option>
+                    <option value="Wild">🌿 Wild</option>
+                    <option value="Arcane">🔮 Arcane</option>
+                    <option value="Heart">💕 Heart</option>
+                    <option value="Deep">🌊 Deep</option>
+                    <option value="Radiant">☀️ Radiant</option>
+                    <option value="Wanderer">🌟 Wanderer</option>
+                </select>
+            </div>
+            <div class="dogs-grid" id="dogsGrid">
+                <div class="loading-state">Loading wizard images...</div>
+            </div>
+        </div>
+
+        <!-- Background Selector -->
+        <div class="background-selector">
+            <h3 class="subsection-title">Choose Your Background</h3>
+            <div class="backgrounds-grid" id="backgroundsGrid">
+                <!-- Generated backgrounds will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="controls-panel">
+        <!-- Text Controls -->
+        <div class="control-group">
+            <h4 class="subsection-title">Text Overlays</h4>
+            <div class="control-row">
+                <input type="checkbox" class="checkbox" id="addName">
+                <label for="addName">Add Name</label>
+            </div>
+            <div class="control-row">
+                <input type="checkbox" class="checkbox" id="addOrder">
+                <label for="addOrder">Add Order Badge</label>
+            </div>
+        </div>
+
+        <!-- Text Style Controls -->
+        <div class="control-group">
+            <h4 class="subsection-title">Text Style</h4>
+            <div class="control-row">
+                <label>Font Size:</label>
+                <input type="range" class="slider" id="fontSize" min="20" max="100" value="48">
+                <span class="value-label" id="fontSizeValue">48px</span>
+            </div>
+            <div class="control-row">
+                <label>Text Color:</label>
+                <input type="color" class="color-picker" id="textColor" value="#ffd700">
+            </div>
+            <div class="control-row">
+                <label>Position:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" name="textPosition" value="top" id="posTop">
+                        <label for="posTop">Top</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" name="textPosition" value="bottom" id="posBottom" checked>
+                        <label for="posBottom">Bottom</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Templates -->
+        <div class="control-group">
+            <h4 class="subsection-title">Quick Templates</h4>
+            <div class="templates">
+                <button class="template-btn" onclick="applyTemplate('profile')">Profile Pic</button>
+                <button class="template-btn" onclick="applyTemplate('banner')">X Banner</button>
+                <button class="template-btn" onclick="applyTemplate('story')">Story (9:16)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Wizard data (we'll load this from the original images)
+let wizardData = {};
+let selectedDog = null;
+let selectedBackground = null;
+
+// Canvas setup
+const canvas = document.getElementById('previewCanvas');
+const ctx = canvas.getContext('2d');
+
+// Settings
+let settings = {
+    addName: false,
+    addOrder: false,
+    fontSize: 48,
+    textColor: '#ffd700',
+    textPosition: 'bottom'
+};
+
+// Background names
+const backgrounds = [
+    { name: 'forge-spire.png', title: 'Forge Spire' },
+    { name: 'violet-citadel.png', title: 'Violet Citadel' },
+    { name: 'tidewatch.png', title: 'Tidewatch' },
+    { name: 'everhollow.png', title: 'Everhollow' },
+    { name: 'solar-spire.png', title: 'Solar Spire' },
+    { name: 'heartstring-tower.png', title: 'Heartstring Tower' },
+    { name: 'palehowl-night.png', title: 'Palehowl Night' },
+    { name: 'caninosphere.png', title: 'The Caninosphere' }
+];
+
+// Initialize the app
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+    setupEventListeners();
+});
+
+function initializeApp() {
+    loadWizardImages();
+    loadBackgrounds();
+    drawPreview();
+}
+
+async function loadWizardImages() {
+    try {
+        // Get list of wizard images
+        const response = await fetch('/wizard-images/');
+        const imageFiles = [
+            '1053.png', '1271.png', '165.png', '1714.png', '1841.png', '1848.png', '1976.png',
+            '1977.png', '2426.png', '246.png', '2634.png', '2807.png', '2855.png', '3030.png',
+            '3186.png', '3406.png', '3417.png', '3449.png', '3479.png', '3557.png', '3735.png',
+            '3826.png', '4042.png', '4458.png', '4540.png', '4742.png', '4994.png', '5035.png',
+            '5056.png', '5240.png', '5275.png', '5381.png', '5516.png', '5518.png', '6095.png',
+            '6135.png', '6164.png', '6198.png', '6203.png', '6232.png', '6502.png', '6597.png',
+            '6873.png', '7226.png', '7257.png', '7710.png', '7731.png', '7770.png', '7833.png',
+            '8095.png', '8154.png', '8272.png', '8311.png', '8342.png', '8518.png', '8667.png',
+            '8965.png', '9017.png', '9025.png', '9089.png', '9183.png', '9234.png', '9301.png',
+            '9396.png', '9469.png', '9530.png', '9604.png', '9684.png', '9713.png', '9758.png',
+            '9826.png', '9898.png'
+        ];
+        
+        // Create wizard data based on image files
+        for (const file of imageFiles) {
+            const id = file.replace('.png', '');
+            wizardData[id] = {
+                id: id,
+                name: `Wizard #${id}`,
+                order: 'Unknown',
+                image: `wizard-images/${file}`,
+                transparentImage: `wizard-images-transparent/${file}`
+            };
+        }
+        
+        renderDogGrid();
+    } catch (error) {
+        console.error('Error loading wizard images:', error);
+        document.getElementById('dogsGrid').innerHTML = '<div class="loading-state">Error loading wizards. Please refresh.</div>';
+    }
+}
+
+function loadBackgrounds() {
+    const grid = document.getElementById('backgroundsGrid');
+    grid.innerHTML = '';
+    
+    backgrounds.forEach((bg, index) => {
+        const div = document.createElement('div');
+        div.className = 'background-item';
+        if (index === 0) {
+            div.classList.add('selected');
+            selectedBackground = bg.name;
+        }
+        
+        const img = document.createElement('img');
+        img.src = `content-bg/${bg.name}`;
+        img.alt = bg.title;
+        img.title = bg.title;
+        
+        div.appendChild(img);
+        div.onclick = () => selectBackground(bg.name, div);
+        grid.appendChild(div);
+    });
+}
+
+function renderDogGrid(filteredData = null) {
+    const grid = document.getElementById('dogsGrid');
+    const data = filteredData || wizardData;
+    
+    grid.innerHTML = '';
+    
+    Object.values(data).forEach((dog, index) => {
+        const div = document.createElement('div');
+        div.className = 'dog-item';
+        if (index === 0 && !selectedDog) {
+            div.classList.add('selected');
+            selectedDog = dog;
+        }
+        
+        const img = document.createElement('img');
+        img.src = dog.image;
+        img.alt = dog.name;
+        img.title = `${dog.name} - ${dog.order}`;
+        
+        div.appendChild(img);
+        div.onclick = () => selectDog(dog, div);
+        grid.appendChild(div);
+    });
+    
+    if (selectedDog) {
+        drawPreview();
+    }
+}
+
+function selectDog(dog, element) {
+    // Remove previous selection
+    document.querySelectorAll('.dog-item.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    
+    // Add selection to clicked item
+    element.classList.add('selected');
+    selectedDog = dog;
+    
+    drawPreview();
+}
+
+function selectBackground(backgroundName, element) {
+    // Remove previous selection
+    document.querySelectorAll('.background-item.selected').forEach(el => {
+        el.classList.remove('selected');
+    });
+    
+    // Add selection to clicked item
+    element.classList.add('selected');
+    selectedBackground = backgroundName;
+    
+    drawPreview();
+}
+
+function setupEventListeners() {
+    // Search functionality
+    document.getElementById('dogSearch').addEventListener('input', handleSearch);
+    document.getElementById('orderFilter').addEventListener('change', handleSearch);
+    
+    // Text controls
+    document.getElementById('addName').addEventListener('change', (e) => {
+        settings.addName = e.target.checked;
+        drawPreview();
+    });
+    
+    document.getElementById('addOrder').addEventListener('change', (e) => {
+        settings.addOrder = e.target.checked;
+        drawPreview();
+    });
+    
+    document.getElementById('fontSize').addEventListener('input', (e) => {
+        settings.fontSize = parseInt(e.target.value);
+        document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
+        drawPreview();
+    });
+    
+    document.getElementById('textColor').addEventListener('change', (e) => {
+        settings.textColor = e.target.value;
+        drawPreview();
+    });
+    
+    document.querySelectorAll('input[name="textPosition"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            settings.textPosition = e.target.value;
+            drawPreview();
+        });
+    });
+    
+    // Mobile nav
+    document.getElementById('navHamburger').addEventListener('click', () => {
+        document.getElementById('navMobileMenu').style.display = 'flex';
+    });
+    
+    document.getElementById('navCloseMenu').addEventListener('click', () => {
+        document.getElementById('navMobileMenu').style.display = 'none';
+    });
+}
+
+function handleSearch() {
+    const searchTerm = document.getElementById('dogSearch').value.toLowerCase();
+    const orderFilter = document.getElementById('orderFilter').value;
+    
+    let filteredData = {};
+    
+    Object.entries(wizardData).forEach(([id, dog]) => {
+        const matchesSearch = dog.name.toLowerCase().includes(searchTerm) || 
+                            dog.id.includes(searchTerm);
+        const matchesOrder = !orderFilter || dog.order === orderFilter;
+        
+        if (matchesSearch && matchesOrder) {
+            filteredData[id] = dog;
+        }
+    });
+    
+    renderDogGrid(filteredData);
+}
+
+function drawPreview() {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (!selectedBackground && !selectedDog) return;
+    
+    // Draw background
+    if (selectedBackground) {
+        const bgImg = new Image();
+        bgImg.onload = () => {
+            ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+            drawDog();
+        };
+        bgImg.src = `content-bg/${selectedBackground}`;
+    } else {
+        drawDog();
+    }
+}
+
+function drawDog() {
+    if (!selectedDog) return;
+    
+    const dogImg = new Image();
+    dogImg.onload = () => {
+        // Calculate dog size and position (70% of canvas)
+        const dogSize = canvas.width * 0.7;
+        const x = (canvas.width - dogSize) / 2;
+        const y = (canvas.height - dogSize) / 2;
+        
+        ctx.drawImage(dogImg, x, y, dogSize, dogSize);
+        drawText();
+    };
+    dogImg.src = selectedDog.transparentImage;
+}
+
+function drawText() {
+    if (!settings.addName && !settings.addOrder) return;
+    
+    ctx.font = `bold ${settings.fontSize}px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
+    ctx.fillStyle = settings.textColor;
+    ctx.textAlign = 'center';
+    ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+    ctx.lineWidth = settings.fontSize / 12;
+    
+    const centerX = canvas.width / 2;
+    let textY;
+    
+    if (settings.textPosition === 'top') {
+        textY = settings.fontSize + 40;
+    } else {
+        textY = canvas.height - 40;
+    }
+    
+    if (settings.addName) {
+        const text = selectedDog.name;
+        ctx.strokeText(text, centerX, textY);
+        ctx.fillText(text, centerX, textY);
+        textY += settings.fontSize + 20;
+    }
+    
+    if (settings.addOrder && selectedDog.order !== 'Unknown') {
+        const orderText = selectedDog.order + ' Order';
+        ctx.font = `${settings.fontSize * 0.7}px -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif`;
+        ctx.strokeText(orderText, centerX, textY);
+        ctx.fillText(orderText, centerX, textY);
+    }
+}
+
+function downloadImage(format, width, height) {
+    if (!selectedDog) {
+        alert('Please select a wizard first!');
+        return;
+    }
+    
+    // Create temporary canvas with desired dimensions
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = width;
+    tempCanvas.height = height;
+    
+    // Scale the current canvas to fit
+    if (format === 'twitter') {
+        // For Twitter banner, center the content
+        const scale = Math.min(width / canvas.width, height / canvas.height);
+        const scaledWidth = canvas.width * scale;
+        const scaledHeight = canvas.height * scale;
+        const x = (width - scaledWidth) / 2;
+        const y = (height - scaledHeight) / 2;
+        
+        // Fill background
+        tempCtx.fillStyle = '#000000';
+        tempCtx.fillRect(0, 0, width, height);
+        
+        tempCtx.drawImage(canvas, x, y, scaledWidth, scaledHeight);
+    } else {
+        tempCtx.drawImage(canvas, 0, 0, width, height);
+    }
+    
+    // Download
+    const link = document.createElement('a');
+    link.download = `${selectedDog.name}_${format}_${width}x${height}.png`;
+    link.href = tempCanvas.toDataURL();
+    link.click();
+}
+
+function applyTemplate(template) {
+    switch (template) {
+        case 'profile':
+            settings.addName = false;
+            settings.addOrder = false;
+            settings.fontSize = 36;
+            settings.textPosition = 'bottom';
+            break;
+            
+        case 'banner':
+            settings.addName = true;
+            settings.addOrder = true;
+            settings.fontSize = 52;
+            settings.textPosition = 'bottom';
+            break;
+            
+        case 'story':
+            settings.addName = true;
+            settings.addOrder = false;
+            settings.fontSize = 40;
+            settings.textPosition = 'top';
+            break;
+    }
+    
+    // Update UI controls
+    document.getElementById('addName').checked = settings.addName;
+    document.getElementById('addOrder').checked = settings.addOrder;
+    document.getElementById('fontSize').value = settings.fontSize;
+    document.getElementById('fontSizeValue').textContent = settings.fontSize + 'px';
+    document.querySelector(`input[value="${settings.textPosition}"]`).checked = true;
+    
+    drawPreview();
+}
+</script>
+
+</body>
+</html>
