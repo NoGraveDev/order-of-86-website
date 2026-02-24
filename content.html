@@ -309,323 +309,28 @@ const ANIMATED_BACKGROUNDS = [
 ];
 
 // Generate still backgrounds as data URIs
-function generateStillBackgrounds() {
-    const backgrounds = [];
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 800;
-    canvas.height = 800;
-
-    // Crystal Cave
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient1 = ctx.createRadialGradient(400, 400, 0, 400, 400, 400);
-    gradient1.addColorStop(0, '#1a0d3e');
-    gradient1.addColorStop(1, '#0a0520');
-    ctx.fillStyle = gradient1;
-    ctx.fillRect(0, 0, 800, 800);
-    // Crystals on sides
-    ctx.fillStyle = '#4a2c8a';
-    ctx.beginPath();
-    ctx.moveTo(0, 200); ctx.lineTo(150, 100); ctx.lineTo(180, 300); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(620, 150); ctx.lineTo(800, 80); ctx.lineTo(800, 250); ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = '#7a5cdb';
-    ctx.fillRect(50, 400, 120, 200);
-    ctx.fillRect(630, 350, 120, 250);
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Crystal Cave'});
-
-    // Moonlit Meadow
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient2 = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient2.addColorStop(0, '#1a1a3a');
-    gradient2.addColorStop(1, '#0d1a0d');
-    ctx.fillStyle = gradient2;
-    ctx.fillRect(0, 0, 800, 800);
-    // Trees on edges
-    ctx.fillStyle = '#2a4a2a';
-    ctx.fillRect(0, 200, 100, 600);
-    ctx.fillRect(700, 150, 100, 650);
-    ctx.fillStyle = '#1a3a1a';
-    ctx.beginPath();
-    ctx.arc(50, 200, 60, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(750, 150, 70, 0, Math.PI * 2);
-    ctx.fill();
-    // Moon
-    ctx.fillStyle = '#f0f0aa';
-    ctx.beginPath();
-    ctx.arc(400, 150, 50, 0, Math.PI * 2);
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Moonlit Meadow'});
-
-    // Enchanted Forest
-    ctx.clearRect(0, 0, 800, 800);
-    ctx.fillStyle = '#0a2a0a';
-    ctx.fillRect(0, 0, 800, 800);
-    // Thick trees framing sides
-    ctx.fillStyle = '#1a4a1a';
-    ctx.fillRect(0, 0, 200, 800);
-    ctx.fillRect(600, 0, 200, 800);
-    ctx.fillStyle = '#2a6a2a';
-    for(let i = 0; i < 5; i++) {
-        ctx.fillRect(20 + i * 30, 100 + i * 50, 20, 600);
-        ctx.fillRect(620 + i * 30, 80 + i * 60, 20, 650);
-    }
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Enchanted Forest'});
-
-    // Wizard Library
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient3 = ctx.createRadialGradient(400, 400, 0, 400, 400, 400);
-    gradient3.addColorStop(0, '#3a2a1a');
-    gradient3.addColorStop(1, '#1a0a0a');
-    ctx.fillStyle = gradient3;
-    ctx.fillRect(0, 0, 800, 800);
-    // Bookshelves on sides
-    ctx.fillStyle = '#4a3a2a';
-    ctx.fillRect(0, 100, 150, 600);
-    ctx.fillRect(650, 100, 150, 600);
-    ctx.fillStyle = '#8a6a4a';
-    for(let i = 0; i < 15; i++) {
-        ctx.fillRect(10, 120 + i * 35, 130, 25);
-        ctx.fillRect(660, 120 + i * 35, 130, 25);
-    }
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Wizard Library'});
-
-    // Sunset Cliffs
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient4 = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient4.addColorStop(0, '#ff6a3a');
-    gradient4.addColorStop(0.5, '#ff9a6a');
-    gradient4.addColorStop(1, '#aa3a1a');
-    ctx.fillStyle = gradient4;
-    ctx.fillRect(0, 0, 800, 800);
-    // Rock formations on sides
-    ctx.fillStyle = '#4a2a1a';
-    ctx.beginPath();
-    ctx.moveTo(0, 800); ctx.lineTo(0, 300); ctx.lineTo(180, 500); ctx.lineTo(200, 800); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(800, 800); ctx.lineTo(800, 250); ctx.lineTo(620, 450); ctx.lineTo(600, 800); ctx.closePath();
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Sunset Cliffs'});
-
-    // Starfield Void
-    ctx.clearRect(0, 0, 800, 800);
-    ctx.fillStyle = '#000510';
-    ctx.fillRect(0, 0, 800, 800);
-    // Nebula at edges
-    const gradient5 = ctx.createRadialGradient(100, 400, 0, 100, 400, 200);
-    gradient5.addColorStop(0, 'rgba(138, 43, 226, 0.3)');
-    gradient5.addColorStop(1, 'rgba(138, 43, 226, 0)');
-    ctx.fillStyle = gradient5;
-    ctx.fillRect(0, 200, 300, 400);
-    const gradient6 = ctx.createRadialGradient(700, 400, 0, 700, 400, 200);
-    gradient6.addColorStop(0, 'rgba(255, 20, 147, 0.3)');
-    gradient6.addColorStop(1, 'rgba(255, 20, 147, 0)');
-    ctx.fillStyle = gradient6;
-    ctx.fillRect(500, 200, 300, 400);
-    // Stars
-    ctx.fillStyle = '#ffffff';
-    for(let i = 0; i < 50; i++) {
-        ctx.beginPath();
-        ctx.arc(Math.random() * 800, Math.random() * 800, Math.random() * 2, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Starfield Void'});
-
-    // Ancient Ruins
-    ctx.clearRect(0, 0, 800, 800);
-    ctx.fillStyle = '#2a2a1a';
-    ctx.fillRect(0, 0, 800, 800);
-    // Pillars on sides
-    ctx.fillStyle = '#6a6a5a';
-    ctx.fillRect(50, 100, 80, 600);
-    ctx.fillRect(670, 100, 80, 600);
-    ctx.fillRect(30, 80, 120, 40);
-    ctx.fillRect(650, 80, 120, 40);
-    // Weathering
-    ctx.fillStyle = '#4a4a3a';
-    ctx.fillRect(55, 200, 70, 20);
-    ctx.fillRect(675, 300, 70, 20);
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Ancient Ruins'});
-
-    // Ember Wasteland
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient7 = ctx.createLinearGradient(0, 800, 0, 0);
-    gradient7.addColorStop(0, '#aa1a0a');
-    gradient7.addColorStop(1, '#2a0a0a');
-    ctx.fillStyle = gradient7;
-    ctx.fillRect(0, 0, 800, 800);
-    // Lava flows at edges
-    ctx.fillStyle = '#ff4a1a';
-    ctx.beginPath();
-    ctx.moveTo(0, 600); ctx.lineTo(150, 500); ctx.lineTo(120, 800); ctx.lineTo(0, 800); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(800, 550); ctx.lineTo(650, 450); ctx.lineTo(680, 800); ctx.lineTo(800, 800); ctx.closePath();
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Ember Wasteland'});
-
-    // Frozen Tundra
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient8 = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient8.addColorStop(0, '#e0f0ff');
-    gradient8.addColorStop(1, '#a0c0ff');
-    ctx.fillStyle = gradient8;
-    ctx.fillRect(0, 0, 800, 800);
-    // Ice crystals framing
-    ctx.fillStyle = '#c0e0ff';
-    ctx.beginPath();
-    ctx.moveTo(0, 300); ctx.lineTo(100, 200); ctx.lineTo(150, 350); ctx.lineTo(80, 400); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(800, 250); ctx.lineTo(700, 150); ctx.lineTo(650, 300); ctx.lineTo(720, 350); ctx.closePath();
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Frozen Tundra'});
-
-    // Mushroom Grove
-    ctx.clearRect(0, 0, 800, 800);
-    ctx.fillStyle = '#1a3a1a';
-    ctx.fillRect(0, 0, 800, 800);
-    // Giant mushrooms on sides
-    ctx.fillStyle = '#4a2a6a';
-    ctx.fillRect(40, 400, 60, 200);
-    ctx.fillRect(700, 350, 60, 250);
-    ctx.fillStyle = '#8a5a9a';
-    ctx.beginPath();
-    ctx.arc(70, 400, 80, 0, Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(730, 350, 90, 0, Math.PI);
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Mushroom Grove'});
-
-    // Arcane Circle
-    ctx.clearRect(0, 0, 800, 800);
-    ctx.fillStyle = '#1a0a2a';
-    ctx.fillRect(0, 0, 800, 800);
-    // Magic circles/runes framing
-    ctx.strokeStyle = '#aa6aff';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(150, 400, 100, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(650, 400, 120, 0, Math.PI * 2);
-    ctx.stroke();
-    // Runes
-    ctx.fillStyle = '#aa6aff';
-    ctx.font = '30px serif';
-    ctx.fillText('⚛', 130, 350);
-    ctx.fillText('⚡', 170, 450);
-    ctx.fillText('✦', 630, 350);
-    ctx.fillText('◊', 670, 450);
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Arcane Circle'});
-
-    // Misty Mountains
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient9 = ctx.createLinearGradient(0, 800, 0, 0);
-    gradient9.addColorStop(0, '#3a3a5a');
-    gradient9.addColorStop(1, '#1a1a3a');
-    ctx.fillStyle = gradient9;
-    ctx.fillRect(0, 0, 800, 800);
-    // Peaks on sides
-    ctx.fillStyle = '#2a2a4a';
-    ctx.beginPath();
-    ctx.moveTo(0, 800); ctx.lineTo(0, 300); ctx.lineTo(200, 500); ctx.lineTo(250, 800); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(800, 800); ctx.lineTo(800, 250); ctx.lineTo(600, 450); ctx.lineTo(550, 800); ctx.closePath();
-    ctx.fill();
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Misty Mountains'});
-
-    // Underwater Temple
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient10 = ctx.createRadialGradient(400, 400, 0, 400, 400, 400);
-    gradient10.addColorStop(0, '#1a3a5a');
-    gradient10.addColorStop(1, '#0a1a3a');
-    ctx.fillStyle = gradient10;
-    ctx.fillRect(0, 0, 800, 800);
-    // Coral/bubbles on sides
-    ctx.fillStyle = '#ff6a8a';
-    ctx.beginPath();
-    ctx.arc(80, 600, 40, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(120, 550, 30, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#6aaa8a';
-    ctx.beginPath();
-    ctx.arc(720, 580, 45, 0, Math.PI * 2);
-    ctx.fill();
-    // Bubbles
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-    for(let i = 0; i < 20; i++) {
-        ctx.beginPath();
-        ctx.arc(Math.random() * 200, 200 + Math.random() * 400, Math.random() * 8 + 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(600 + Math.random() * 200, 200 + Math.random() * 400, Math.random() * 8 + 2, 0, Math.PI * 2);
-        ctx.fill();
-    }
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Underwater Temple'});
-
-    // Golden Throne Room
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient11 = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient11.addColorStop(0, '#5a4a2a');
-    gradient11.addColorStop(1, '#3a2a1a');
-    ctx.fillStyle = gradient11;
-    ctx.fillRect(0, 0, 800, 800);
-    // Ornate pillars
-    ctx.fillStyle = '#aa8a4a';
-    ctx.fillRect(60, 100, 80, 600);
-    ctx.fillRect(660, 100, 80, 600);
-    ctx.fillRect(40, 80, 120, 40);
-    ctx.fillRect(640, 80, 120, 40);
-    // Red carpet center
-    ctx.fillStyle = '#8a2a2a';
-    ctx.fillRect(300, 600, 200, 200);
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Golden Throne Room'});
-
-    // Cherry Blossom Garden
-    ctx.clearRect(0, 0, 800, 800);
-    const gradient12 = ctx.createLinearGradient(0, 0, 0, 800);
-    gradient12.addColorStop(0, '#ffa8d8');
-    gradient12.addColorStop(1, '#d88ab8');
-    ctx.fillStyle = gradient12;
-    ctx.fillRect(0, 0, 800, 800);
-    // Branches framing sides
-    ctx.strokeStyle = '#8a4a2a';
-    ctx.lineWidth = 8;
-    ctx.beginPath();
-    ctx.moveTo(0, 200); ctx.quadraticCurveTo(100, 150, 200, 300);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(800, 180); ctx.quadraticCurveTo(700, 130, 600, 280);
-    ctx.stroke();
-    // Blossoms
-    ctx.fillStyle = '#ffaae8';
-    for(let i = 0; i < 30; i++) {
-        if(i < 15) {
-            ctx.beginPath();
-            ctx.arc(Math.random() * 200, 100 + Math.random() * 200, Math.random() * 8 + 3, 0, Math.PI * 2);
-            ctx.fill();
-        } else {
-            ctx.beginPath();
-            ctx.arc(600 + Math.random() * 200, 100 + Math.random() * 200, Math.random() * 8 + 3, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-    backgrounds.push({dataUri: canvas.toDataURL(), name: 'Cherry Blossom Garden'});
-
-    return backgrounds;
-}
-
-const STILL_BACKGROUNDS = generateStillBackgrounds();
+const STILL_BACKGROUNDS = [
+  {file:'01-frosthollow.png',name:'Frosthollow'},
+  {file:'02-ember-wastes.png',name:'The Ember Wastes'},
+  {file:'03-sunward-heights.png',name:'The Sunward Heights'},
+  {file:'04-deepwood.png',name:'The Deepwood'},
+  {file:'05-abyssal-reaches.png',name:'The Abyssal Reaches'},
+  {file:'06-violet-highlands.png',name:'The Violet Highlands'},
+  {file:'07-shadowmire.png',name:'The Shadowmire'},
+  {file:'08-forge-spire.png',name:'The Forge Spire'},
+  {file:'09-solar-spire.png',name:'The Solar Spire'},
+  {file:'10-tidewatch.png',name:'Tidewatch'},
+  {file:'11-heartwood-spire.png',name:'The Heartwood Spire'},
+  {file:'12-inscription-walls.png',name:'The Inscription Walls'},
+  {file:'13-heartstring-tower.png',name:'The Heartstring Tower'},
+  {file:'14-the-crucible.png',name:'The Crucible'},
+  {file:'15-truth-mirror.png',name:'The Truth Mirror'},
+  {file:'16-meadow-of-marks.png',name:'The Meadow of Marks'},
+  {file:'17-deep-shelf.png',name:'The Deep Shelf'},
+  {file:'18-septenary-alignment.png',name:'Septenary Alignment'},
+  {file:'19-moon-shard-grove.png',name:'Moon Shard Grove'},
+  {file:'20-great-rot.png',name:'The Great Rot'}
+];
 
 // State
 let selectedWizard = null;
@@ -709,10 +414,10 @@ function buildStillBgGrid() {
     const grid = document.getElementById('stillBgGrid');
     let html = `<div class="bg-thumb none-bg ${!selectedBackground ? 'selected' : ''}" onclick="clearBackground()">None</div>`;
     html += STILL_BACKGROUNDS.map((bg, index) => `
-        <div class="bg-thumb ${selectedBackground && selectedBackground.dataUri === bg.dataUri ? 'selected' : ''}" 
+        <div class="bg-thumb ${selectedBackground && selectedBackground.file === bg.file ? 'selected' : ''}" 
              onclick="selectStillBackground(${index})">
             <div class="bg-type-badge">PNG</div>
-            <img src="${bg.dataUri}" alt="${bg.name}" loading="lazy">
+            <img src="content-bg/still/${bg.file}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
         </div>
     `).join('');
@@ -737,7 +442,7 @@ function selectAnimatedBackground(file) {
 
 function selectStillBackground(index) {
     const bg = STILL_BACKGROUNDS[index];
-    selectedBackground = {type: 'still', dataUri: bg.dataUri, name: bg.name};
+    selectedBackground = {type: 'still', file: bg.file, name: bg.name};
     showLoading();
     
     bgLayer.onload = () => {
@@ -745,7 +450,7 @@ function selectStillBackground(index) {
         hideLoading();
         updateDownloadButtons();
     };
-    bgLayer.src = bg.dataUri;
+    bgLayer.src = `content-bg/still/${bg.file}`;
     bgLayer.style.display = 'block';
     
     buildAnimatedBgGrid();
@@ -822,7 +527,7 @@ function downloadStill() {
             if (selectedBackground.type === 'animated') {
                 bg.src = `content-bg/${selectedBackground.file}`;
             } else {
-                bg.src = selectedBackground.dataUri;
+                bg.src = `content-bg/still/${selectedBackground.file}`;
             }
             
             bg.onload = () => {
