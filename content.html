@@ -246,7 +246,7 @@
                         <select class="filter-select" id="orderFilter" onchange="filterWizards()">
                             <option value="">All Orders</option>
                             <option value="Flame">Flame</option><option value="Wild">Wild</option><option value="Arcane">Arcane</option>
-                            <option value="Deep">Deep</option><option value="Radiant">Radiant</option><option value="Heart">Heart</option><option value="Wanderer">Wanderer</option>
+                            <option value="Deep">Deep</option><option value="Radiant">Radiant</option><option value="Heart">Heart</option><option value="Wanderer">Wanderer</option><option value="Starter">Starter Dog</option>
                         </select>
                     </div>
                     <div class="grid wizards-grid" id="wizardsGrid"></div>
@@ -343,7 +343,11 @@ const WIZARDS = [
   {id:'9604',name:"Beigelumber the Worker's Light",order:'Radiant'},{id:'9624',name:'Inkspot the Silent Decoder',order:'Arcane'},
   {id:'9684',name:'Goldblot the Luminous Shadow',order:'Radiant'},{id:'9713',name:'Darkleaf the Shadow Grower',order:'Wild'},
   {id:'9758',name:'Commonflame the Everyman',order:'Flame'},{id:'9826',name:'Greenbone the Chaos Scholar',order:'Heart'},
-  {id:'9898',name:'Verdant the Arcane Flame',order:'Arcane'},{id:'9952',name:'Grimbloom the Green Eyed',order:'Wild'}
+  {id:'9898',name:'Verdant the Arcane Flame',order:'Arcane'},{id:'9952',name:'Grimbloom the Green Eyed',order:'Wild'},
+  {id:'starter-1',name:'Starter Dog 1',order:'Starter'},{id:'starter-2',name:'Starter Dog 2',order:'Starter'},
+  {id:'starter-3',name:'Starter Dog 3',order:'Starter'},{id:'starter-4',name:'Starter Dog 4',order:'Starter'},
+  {id:'starter-5',name:'Starter Dog 5',order:'Starter'},{id:'starter-6',name:'Starter Dog 6',order:'Starter'},
+  {id:'starter-7',name:'Starter Dog 7',order:'Starter'},{id:'starter-8',name:'Starter Dog 8',order:'Starter'}
 ];
 
 const ANIMATED_BACKGROUNDS = [
@@ -562,7 +566,7 @@ function selectWizard(id) {
         hideLoading();
         updateDownloadButtons();
     };
-    dogLayer.src = `wizard-images-transparent/${id}.png`;
+    dogLayer.src = id.startsWith('starter-') ? `images/starters/${id}.png` : `wizard-images-transparent/${id}.png`;
     dogLayer.style.display = 'block';
     
     document.getElementById('selectedName').textContent = `#${id} ${selectedWizard.name}`;
@@ -724,7 +728,7 @@ function downloadStill() {
     
     const dog = new Image();
     dog.crossOrigin = 'anonymous';
-    dog.src = `wizard-images-transparent/${selectedWizard.id}.png`;
+    dog.src = selectedWizard.id.startsWith('starter-') ? `images/starters/${selectedWizard.id}.png` : `wizard-images-transparent/${selectedWizard.id}.png`;
     
     dog.onload = () => {
         ctx.clearRect(0, 0, 1000, 1000);
@@ -778,7 +782,7 @@ function downloadBackground() {
     // Load the dog image first
     const dog = new Image();
     dog.crossOrigin = 'anonymous';
-    dog.src = `wizard-images-transparent/${selectedWizard.id}.png`;
+    dog.src = selectedWizard.id.startsWith('starter-') ? `images/starters/${selectedWizard.id}.png` : `wizard-images-transparent/${selectedWizard.id}.png`;
     
     dog.onload = () => {
         const gifUrl = `content-bg/${selectedBackground.file}`;
