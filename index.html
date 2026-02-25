@@ -243,49 +243,80 @@
 
         /* ── Hero ─────────────────────────────────────────── */
         .hero {
+            position: relative;
+            overflow: hidden;
             text-align: center;
-            padding: 48px 16px 32px;
+            padding: 0;
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .hero-image-wrap {
-            position: relative;
-            display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 16px;
-        }
-        #voxelHat canvas {
-            position: static !important;
-            top: auto !important;
-            left: auto !important;
-            transform: none !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: 1 !important;
-        }
-        .hero-image-wrap > canvas#magicCanvas {
+        /* Parallax layers */
+        .parallax-scene {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 140%;
-            height: 140%;
-            pointer-events: none;
-            z-index: 0;
+            inset: 0;
+            overflow: hidden;
         }
-        .hero-image {
-            position: relative;
-            z-index: 1;
-            width: clamp(200px, 35vw, 400px);
+        .parallax-layer {
+            position: absolute;
+            inset: -40px;
+            will-change: transform;
+            transition: transform 0.15s ease-out;
+        }
+        /* Stars layer */
+        .layer-stars { z-index: 0; }
+        .layer-stars .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .star--twinkle {
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+        /* Moons layer */
+        .layer-moons { z-index: 1; }
+        .moon {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+        }
+        .moon::after {
+            content: '';
+            position: absolute;
+            inset: -60%;
+            border-radius: 50%;
+            background: radial-gradient(circle, currentColor 0%, transparent 70%);
+            opacity: 0.25;
+        }
+        /* Hat layer */
+        .layer-hat { z-index: 2; display: flex; align-items: center; justify-content: center; }
+        .hat-svg {
+            width: clamp(180px, 30vw, 340px);
             height: auto;
-            image-rendering: pixelated;
-            filter: drop-shadow(0 0 24px rgba(255, 215, 0, 0.4)) drop-shadow(0 0 60px rgba(255, 215, 0, 0.15));
-            animation: hat-float 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255,215,0,0.5)) drop-shadow(0 0 80px rgba(255,150,0,0.2));
+            animation: hat-float 5s ease-in-out infinite;
         }
         @keyframes hat-float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+            50% { transform: translateY(-10px); }
+        }
+        /* Particles layer */
+        .layer-particles { z-index: 3; pointer-events: none; }
+        .layer-particles canvas { width: 100%; height: 100%; }
+        /* Text layer */
+        .hero-text {
+            position: relative;
+            z-index: 10;
+            padding: 48px 16px 32px;
         }
         .hero-title {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-size: clamp(2.4rem, 6vw, 4rem);
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.1;
@@ -295,6 +326,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             animation: shimmer 4s ease-in-out infinite;
+            text-shadow: none;
         }
         @keyframes shimmer {
             0%, 100% { background-position: 0% center; }
@@ -303,7 +335,7 @@
         .hero-subtitle {
             font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--color-text-secondary);
-            margin-top: 12px;
+            margin-top: 16px;
             font-weight: 400;
             max-width: 560px;
             margin-left: auto;
@@ -741,8 +773,9 @@
             .filter-row::-webkit-scrollbar { display: none; }
         }
         @media (max-width: 480px) {
-            .hero { padding: 32px 16px 20px; }
-            .hero-title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+            .hero { min-height: 400px; }
+            .hero-text { padding: 32px 16px 20px; }
+            .hero-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
             .hero-subtitle { font-size: clamp(0.85rem, 3.5vw, 1rem); }
             .search-section { padding: 14px; }
             .search-box { font-size: 16px; padding: 12px 16px; }
@@ -773,14 +806,63 @@
     <a href="content.html">🎨 Content</a>
 </div>
 
-<section class="hero">
-    <h1 class="hero-title">The Order of 86</h1>
-    <div class="hero-image-wrap" style="animation: hat-float 4s ease-in-out infinite;">
-        <canvas id="magicCanvas"></canvas>
-        <div id="voxelHat" style="position:relative;z-index:1;width:clamp(200px,35vw,400px);height:clamp(200px,35vw,400px);filter:drop-shadow(0 0 24px rgba(255,215,0,0.4)) drop-shadow(0 0 60px rgba(255,215,0,0.15));"></div>
-        <noscript><img src="header-hat.png" alt="Wizard Hat" class="hero-image"></noscript>
+<section class="hero" id="heroSection">
+    <!-- Parallax layers -->
+    <div class="parallax-scene" id="parallaxScene">
+        <div class="parallax-layer layer-stars" data-depth="0.02" id="layerStars"></div>
+        <div class="parallax-layer layer-moons" data-depth="0.05" id="layerMoons"></div>
+        <div class="parallax-layer layer-hat" data-depth="0.08">
+            <!-- Wizard hat SVG -->
+            <svg class="hat-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Hat brim -->
+                <ellipse cx="100" cy="140" rx="90" ry="16" fill="#1a0a00" stroke="#c35604" stroke-width="2"/>
+                <ellipse cx="100" cy="138" rx="88" ry="14" fill="url(#brimGrad)"/>
+                <!-- Hat cone -->
+                <path d="M46 138 L88 28 Q100 8 112 28 L154 138" fill="url(#hatGrad)" stroke="#8b4513" stroke-width="1.5"/>
+                <!-- Hat band -->
+                <rect x="46" y="126" width="108" height="14" rx="2" fill="url(#bandGrad)"/>
+                <!-- Buckle -->
+                <rect x="88" y="124" width="24" height="18" rx="3" fill="none" stroke="#ffd700" stroke-width="2.5"/>
+                <rect x="94" y="128" width="12" height="10" rx="1" fill="#ffd700"/>
+                <!-- Hat folds/creases -->
+                <path d="M70 100 Q100 90 130 100" stroke="rgba(0,0,0,0.2)" stroke-width="1" fill="none"/>
+                <path d="M76 80 Q100 72 124 80" stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none"/>
+                <!-- Stars on hat -->
+                <circle cx="80" cy="70" r="2" fill="#ffd700" opacity="0.7"/>
+                <circle cx="115" cy="55" r="1.5" fill="#ffd700" opacity="0.5"/>
+                <circle cx="95" cy="90" r="1.8" fill="#ffd700" opacity="0.6"/>
+                <circle cx="108" cy="105" r="1.2" fill="#ffd700" opacity="0.4"/>
+                <!-- Moon on hat -->
+                <path d="M105 42 Q112 38 108 30 Q118 36 112 46 Q108 48 105 42Z" fill="#ffd700" opacity="0.6"/>
+                <defs>
+                    <linearGradient id="hatGrad" x1="60" y1="30" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#f4762c"/>
+                        <stop offset="35%" stop-color="#c35604"/>
+                        <stop offset="70%" stop-color="#8b3a00"/>
+                        <stop offset="100%" stop-color="#5a2100"/>
+                    </linearGradient>
+                    <linearGradient id="brimGrad" x1="12" y1="130" x2="188" y2="145" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#8b3a00"/>
+                        <stop offset="50%" stop-color="#c35604"/>
+                        <stop offset="100%" stop-color="#6b2e00"/>
+                    </linearGradient>
+                    <linearGradient id="bandGrad" x1="46" y1="126" x2="154" y2="140" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#1a0800"/>
+                        <stop offset="50%" stop-color="#2a1200"/>
+                        <stop offset="100%" stop-color="#1a0800"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        <div class="parallax-layer layer-particles" data-depth="0.04">
+            <canvas id="particleCanvas"></canvas>
+        </div>
     </div>
-    <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
+    <!-- Text overlay -->
+    <div class="hero-text">
+        <h1 class="hero-title">The Order of 86</h1>
+        <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
+    </div>
 </section>
 
 <div class="container">
@@ -1146,7 +1228,7 @@ filterDogs();
 </script>
 <script>
 (function(){
-    const c = document.getElementById('magicCanvas');
+    const c = document.getElementById('particleCanvas');
     if(!c) return;
     const ctx = c.getContext('2d');
     let W, H;
@@ -1217,104 +1299,88 @@ filterDogs();
     draw();
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/examples/js/controls/OrbitControls.js"></script>
 <script>
+/* ── Parallax Stars & Moons ──────────────────────── */
 (function(){
-    const container = document.getElementById('voxelHat');
-    if (!container || typeof THREE === 'undefined') return;
+    const scene = document.getElementById('parallaxScene');
+    if (!scene) return;
+    const starsLayer = document.getElementById('layerStars');
+    const moonsLayer = document.getElementById('layerMoons');
 
-    // Pixel data extracted from header-hat.png
-    const voxels = [{"x":7,"y":5,"color":"#000000"},{"x":8,"y":5,"color":"#000000"},{"x":9,"y":5,"color":"#000000"},{"x":6,"y":6,"color":"#1e0000"},{"x":7,"y":6,"color":"#f4762c"},{"x":8,"y":6,"color":"#f4762c"},{"x":9,"y":6,"color":"#f4762c"},{"x":10,"y":6,"color":"#5a301a"},{"x":5,"y":7,"color":"#240000"},{"x":6,"y":7,"color":"#c35604"},{"x":7,"y":7,"color":"#ad5b29"},{"x":8,"y":7,"color":"#130002"},{"x":9,"y":7,"color":"#f4762c"},{"x":10,"y":7,"color":"#f4762c"},{"x":11,"y":7,"color":"#572b20"},{"x":6,"y":8,"color":"#000000"},{"x":7,"y":8,"color":"#140001"},{"x":8,"y":8,"color":"#c35500"},{"x":9,"y":8,"color":"#f4762c"},{"x":10,"y":8,"color":"#f4762c"},{"x":11,"y":8,"color":"#572b20"},{"x":7,"y":9,"color":"#140001"},{"x":8,"y":9,"color":"#c35500"},{"x":9,"y":9,"color":"#f4762c"},{"x":10,"y":9,"color":"#f4762c"},{"x":11,"y":9,"color":"#f4762c"},{"x":12,"y":9,"color":"#6b4129"},{"x":7,"y":10,"color":"#000000"},{"x":8,"y":10,"color":"#000000"},{"x":9,"y":10,"color":"#000000"},{"x":10,"y":10,"color":"#a2851d"},{"x":11,"y":10,"color":"#5c4b31"},{"x":12,"y":10,"color":"#000000"},{"x":6,"y":11,"color":"#220000"},{"x":7,"y":11,"color":"#cd5352"},{"x":8,"y":11,"color":"#f77d7c"},{"x":9,"y":11,"color":"#ec816f"},{"x":10,"y":11,"color":"#ff9d6c"},{"x":11,"y":11,"color":"#fbb748"},{"x":12,"y":11,"color":"#fdab71"},{"x":13,"y":11,"color":"#8b5958"},{"x":4,"y":12,"color":"#000000"},{"x":5,"y":12,"color":"#000000"},{"x":6,"y":12,"color":"#000000"},{"x":7,"y":12,"color":"#000000"},{"x":8,"y":12,"color":"#000000"},{"x":9,"y":12,"color":"#000000"},{"x":10,"y":12,"color":"#000000"},{"x":11,"y":12,"color":"#000000"},{"x":12,"y":12,"color":"#000000"},{"x":13,"y":12,"color":"#000000"},{"x":14,"y":12,"color":"#000000"},{"x":15,"y":12,"color":"#000000"},{"x":3,"y":13,"color":"#100000"},{"x":4,"y":13,"color":"#c35604"},{"x":5,"y":13,"color":"#c35604"},{"x":6,"y":13,"color":"#c35604"},{"x":7,"y":13,"color":"#c35604"},{"x":8,"y":13,"color":"#c15200"},{"x":9,"y":13,"color":"#f4762c"},{"x":10,"y":13,"color":"#f4762c"},{"x":11,"y":13,"color":"#f4762c"},{"x":12,"y":13,"color":"#f4762c"},{"x":13,"y":13,"color":"#f4762c"},{"x":14,"y":13,"color":"#f4762c"},{"x":15,"y":13,"color":"#f4762c"},{"x":16,"y":13,"color":"#4d2b21"},{"x":4,"y":14,"color":"#000000"},{"x":5,"y":14,"color":"#000000"},{"x":6,"y":14,"color":"#000000"},{"x":7,"y":14,"color":"#000000"},{"x":8,"y":14,"color":"#000000"},{"x":9,"y":14,"color":"#000000"},{"x":10,"y":14,"color":"#000000"},{"x":11,"y":14,"color":"#000000"},{"x":12,"y":14,"color":"#000000"},{"x":13,"y":14,"color":"#000000"},{"x":14,"y":14,"color":"#000000"},{"x":15,"y":14,"color":"#000000"}];
-
-    const DEPTH = 4; // voxels deep
-
-    // Compute bounds from data
-    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
-    voxels.forEach(v=>{if(v.x<minX)minX=v.x;if(v.x>maxX)maxX=v.x;if(v.y<minY)minY=v.y;if(v.y>maxY)maxY=v.y;});
-    const cx=(minX+maxX)/2, cy=(minY+maxY)/2;
-
-    // Scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
-    camera.position.set(0, 0, 12);
-
-    const SIZE = 400;
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
-    renderer.setSize(SIZE, SIZE);
-    container.appendChild(renderer.domElement);
-
-    function resize() {
-        camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize);
-
-    // Lighting
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    dirLight.position.set(5, 8, 10);
-    scene.add(dirLight);
-
-    // Helper: darken color
-    function darken(hex, factor) {
-        const c = new THREE.Color(hex);
-        c.multiplyScalar(factor);
-        return c;
+    // Generate stars
+    for (let i = 0; i < 120; i++) {
+        const star = document.createElement('div');
+        star.className = 'star' + (Math.random() > 0.6 ? ' star--twinkle' : '');
+        const size = Math.random() * 2.5 + 0.5;
+        star.style.cssText = `
+            width:${size}px; height:${size}px;
+            left:${Math.random()*100}%; top:${Math.random()*100}%;
+            opacity:${Math.random()*0.6+0.2};
+            animation-delay:${Math.random()*5}s;
+            animation-duration:${2+Math.random()*3}s;
+        `;
+        starsLayer.appendChild(star);
     }
 
-    // Build voxel group
-    const hatGroup = new THREE.Group();
-    const boxGeo = new THREE.BoxGeometry(1, 1, 1);
-    // Material cache
-    const matCache = {};
-    function getMats(hex) {
-        if (matCache[hex]) return matCache[hex];
-        const front = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.7, metalness: 0.1 });
-        const side = new THREE.MeshStandardMaterial({ color: darken(hex, 0.75), roughness: 0.7, metalness: 0.1 });
-        const back = new THREE.MeshStandardMaterial({ color: darken(hex, 0.55), roughness: 0.7, metalness: 0.1 });
-        // Order: +x, -x, +y, -y, +z (front), -z (back)
-        matCache[hex] = [side, side, side, side, front, back];
-        return matCache[hex];
-    }
-
-    voxels.forEach(v => {
-        const mats = getMats(v.color);
-        for (let z = 0; z < DEPTH; z++) {
-            const mesh = new THREE.Mesh(boxGeo, mats);
-            mesh.position.set(v.x - cx, -(v.y - cy), -z + DEPTH / 2 - 0.5);
-            hatGroup.add(mesh);
-        }
+    // 7 Moons from lore — positioned around the sky
+    const moons = [
+        { name:'Emberhowl',  color:'#ff4500', x:12, y:15, size:18 },
+        { name:'Solaris',    color:'#ffd700', x:82, y:10, size:22 },
+        { name:'Deepwell',   color:'#1e90ff', x:8,  y:55, size:14 },
+        { name:'Evergreen',  color:'#228b22', x:90, y:50, size:16 },
+        { name:'Umbra',      color:'#7b54c9', x:50, y:6,  size:20 },
+        { name:'Roseglow',   color:'#c55bb7', x:92, y:80, size:12 },
+        { name:'Palehowl',   color:'#d4c8a0', x:18, y:82, size:10 },
+    ];
+    moons.forEach(m => {
+        const el = document.createElement('div');
+        el.className = 'moon';
+        el.title = m.name;
+        el.style.cssText = `
+            left:${m.x}%; top:${m.y}%;
+            width:${m.size}px; height:${m.size}px;
+            background: radial-gradient(circle at 35% 35%, ${m.color}, ${m.color}88 60%, transparent);
+            color: ${m.color};
+            box-shadow: 0 0 ${m.size}px ${m.color}66, 0 0 ${m.size*2}px ${m.color}22;
+        `;
+        moonsLayer.appendChild(el);
     });
 
-    scene.add(hatGroup);
+    // Parallax mouse tracking
+    const layers = scene.querySelectorAll('.parallax-layer');
+    let targetX = 0, targetY = 0, curX = 0, curY = 0;
 
-    // OrbitControls - Y rotation + slight tilt
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableZoom = false;
-    controls.enablePan = false;
-    controls.minPolarAngle = Math.PI / 2 - 0.4;
-    controls.maxPolarAngle = Math.PI / 2 + 0.4;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.08;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 2.0;
+    document.addEventListener('mousemove', e => {
+        const rect = scene.getBoundingClientRect();
+        targetX = (e.clientX - rect.left - rect.width/2) / rect.width;
+        targetY = (e.clientY - rect.top - rect.height/2) / rect.height;
+    });
 
-    // Render only when visible
-    let isVisible = true;
-    const observer = new IntersectionObserver(entries => {
-        isVisible = entries[0].isIntersecting;
-    }, { threshold: 0.1 });
-    observer.observe(container);
+    // Scroll parallax
+    let scrollY = 0;
+    window.addEventListener('scroll', () => { scrollY = window.pageYOffset; }, { passive: true });
 
-    function animate() {
-        requestAnimationFrame(animate);
-        if (!isVisible) return;
-        controls.update();
-        renderer.render(scene, camera);
+    function animateParallax() {
+        curX += (targetX - curX) * 0.08;
+        curY += (targetY - curY) * 0.08;
+        layers.forEach(layer => {
+            const depth = parseFloat(layer.dataset.depth) || 0;
+            const moveX = curX * depth * 300;
+            const moveY = curY * depth * 200 + scrollY * depth * 0.5;
+            layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+        });
+        requestAnimationFrame(animateParallax);
     }
-    animate();
+    animateParallax();
+
+    // Touch parallax for mobile
+    scene.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        const rect = scene.getBoundingClientRect();
+        targetX = (t.clientX - rect.left - rect.width/2) / rect.width;
+        targetY = (t.clientY - rect.top - rect.height/2) / rect.height;
+    }, { passive: true });
+    scene.addEventListener('touchend', () => { targetX = 0; targetY = 0; });
 })();
 </script>
 </body>
