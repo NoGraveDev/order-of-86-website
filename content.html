@@ -552,7 +552,7 @@ function buildWizardGrid(query = '', order = '') {
         <div class="wizard-thumb ${selectedWizard && selectedWizard.id === w.id ? 'selected' : ''}" 
              onclick="selectWizard('${w.id}')" title="#${w.id} ${w.name}">
             <div class="wizard-id">#${w.id}</div>
-            <img src="${w.id.startsWith('starter-') ? 'images/starters/' + w.id + '.png' : 'wizard-images/' + w.id + '.png'}" alt="${w.name}" loading="lazy">
+            <img src="${w.id.startsWith('starter-') ? 'images/starters/thumbs/' + w.id + '.png' : 'wizard-images/' + w.id + '.png'}" alt="${w.name}" loading="lazy">
         </div>
     `).join('');
 }
