@@ -123,120 +123,6 @@
         }
 
         /* ── Nav Bar ──────────────────────────────────────── */
-        .nav-bar {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            background: rgba(28,28,30,0.82);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 0.5px solid var(--color-border);
-            padding-top: env(safe-area-inset-top);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
-        }
-        .nav-bar a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            padding: 16px 32px;
-            font-size: 15px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            transition: color var(--transition-fast), background var(--transition-fast);
-            border-bottom: 2.5px solid transparent;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-            user-select: none;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-        }
-        .nav-bar a:hover { color: var(--color-text); background: rgba(255,255,255,0.04); }
-        .nav-bar a:active { opacity: 0.7; }
-        .nav-bar a.active { color: var(--color-accent-bright); border-bottom-color: var(--color-accent-bright); }
-
-        /* Hamburger menu for mobile */
-        .nav-hamburger {
-            display: none;
-            width: 44px;
-            height: 44px;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            color: var(--color-text);
-            font-size: 24px;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-            user-select: none;
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 101;
-        }
-        .nav-hamburger:active { opacity: 0.7; }
-        .nav-logo-mobile {
-            display: none;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--color-accent-bright);
-            padding: 14px 16px;
-        }
-        .nav-links-mobile {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 150;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-links-mobile.open { display: flex; }
-        .nav-links-mobile a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            font-size: 20px;
-            font-weight: 600;
-            padding: 16px 32px;
-            min-height: 44px;
-            display: flex;
-            align-items: center;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-        .nav-links-mobile a.active { color: var(--color-accent-bright); }
-        .nav-links-mobile a:active { opacity: 0.7; }
-        .nav-close-mobile {
-            position: absolute;
-            top: env(safe-area-inset-top, 12px);
-            right: 12px;
-            width: 44px;
-            height: 44px;
-            background: none;
-            border: none;
-            color: var(--color-text);
-            font-size: 28px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            -webkit-tap-highlight-color: transparent;
-        }
 
         /* ── Container ────────────────────────────────────── */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
@@ -758,10 +644,6 @@
 
         /* ── Mobile nav ───────────────────────────────────── */
         @media (max-width: 768px) {
-            .nav-bar { justify-content: flex-start; position: relative; }
-            .nav-bar > a { display: none; }
-            .nav-hamburger { display: flex; }
-            .nav-logo-mobile { display: block; }
             .filter-row {
                 flex-wrap: nowrap;
                 overflow-x: auto;
@@ -784,26 +666,209 @@
             .modal-content { padding: 16px 16px 32px; }
             .stat-pill { font-size: 12px; padding: 5px 10px; }
         }
+    
+/* ── Modern Glassmorphism Nav ─────────────────────── */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 3vw, 48px);
+    padding-top: env(safe-area-inset-top);
+    height: 64px;
+    background: rgba(10, 10, 12, 0.55);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+    box-shadow: 0 1px 12px rgba(255, 215, 0, 0.03);
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.nav-bar.scrolled {
+    background: rgba(10, 10, 12, 0.92);
+    border-bottom-color: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 2px 20px rgba(255, 215, 0, 0.06);
+}
+.nav-logo {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffd700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1);
+    transition: text-shadow 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.nav-logo:hover {
+    text-shadow: 0 0 24px rgba(255, 215, 0, 0.5), 0 0 48px rgba(255, 215, 0, 0.2);
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.nav-links a {
+    position: relative;
+    color: rgba(245, 245, 247, 0.55);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    transition: color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: #ffd700;
+    border-radius: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+.nav-links a:hover {
+    color: rgba(245, 245, 247, 0.9);
+}
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+.nav-links a.active {
+    color: #ffd700;
+}
+.nav-links a.active::after {
+    transform: scaleX(1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* ── Hamburger ──────────────────────────────────────── */
+.nav-hamburger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    flex-shrink: 0;
+}
+.nav-hamburger-lines {
+    width: 22px;
+    height: 16px;
+    position: relative;
+}
+.nav-hamburger-lines span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #F5F5F7;
+    border-radius: 1px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-hamburger-lines span:nth-child(1) { top: 0; }
+.nav-hamburger-lines span:nth-child(2) { top: 7px; }
+.nav-hamburger-lines span:nth-child(3) { top: 14px; }
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(1) {
+    top: 7px; transform: rotate(45deg);
+}
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(2) {
+    opacity: 0; transform: scaleX(0);
+}
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(3) {
+    top: 7px; transform: rotate(-45deg);
+}
+
+/* ── Mobile Menu ────────────────────────────────────── */
+.nav-mobile-overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    padding: 8px 0 16px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-110%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    pointer-events: none;
+}
+.nav-mobile-overlay.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+.nav-mobile-overlay a {
+    color: rgba(245, 245, 247, 0.6);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    transition: color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.nav-mobile-overlay a:hover,
+.nav-mobile-overlay a:active {
+    color: #F5F5F7;
+    background: rgba(255, 255, 255, 0.04);
+}
+.nav-mobile-overlay a.active {
+    color: #ffd700;
+}
+
+/* ── Mobile Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+}
+
+/* ── Nav Spacer (push content below fixed nav) ──────── */
+.nav-spacer { height: 64px; padding-top: env(safe-area-inset-top); }
+
     </style>
 </head>
 <body>
 
-<nav class="nav-bar">
-    <span class="nav-logo-mobile">⚡ Order of 86</span>
-    <a href="index.html" class="active">⚡ The 86 Wizards</a>
-    <a href="moons.html">🌙 Moons</a>
-    <a href="map.html">🗺️ Map</a>
-    <a href="lore.html">📜 Lore</a>
-    <a href="content.html">🎨 Content</a>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">☰</button>
+<nav class="nav-bar" id="mainNav">
+    <a href="index.html" class="nav-logo">Order of 86</a>
+    <div class="nav-links">
+        <a href="index.html" class="active">Wizards</a>
+        <a href="moons.html">Moons</a>
+        <a href="map.html">Map</a>
+        <a href="lore.html">Lore</a>
+        <a href="content.html">Content</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+        <div class="nav-hamburger-lines"><span></span><span></span><span></span></div>
+    </button>
 </nav>
-<div class="nav-links-mobile" id="navMobileMenu">
-    <button class="nav-close-mobile" id="navCloseMenu" aria-label="Close menu">✕</button>
-    <a href="index.html" class="active">⚡ The 86 Wizards</a>
-    <a href="moons.html">🌙 Moons</a>
-    <a href="map.html">🗺️ Map</a>
-    <a href="lore.html">📜 Lore</a>
-    <a href="content.html">🎨 Content</a>
+<div class="nav-mobile-overlay" id="navMobileMenu">
+    <a href="index.html" class="active">Wizards</a>
+    <a href="moons.html">Moons</a>
+    <a href="map.html">Map</a>
+    <a href="lore.html">Lore</a>
+    <a href="content.html">Content</a>
 </div>
 
 <section class="hero" id="heroSection">
@@ -1181,13 +1246,7 @@ function closeDetail() {
 backdrop.addEventListener('click', closeDetail);
 sheet.querySelector('.modal-handle').addEventListener('click', closeDetail);
 
-// ── Mobile Nav ───────────────────────────────────────────
-document.getElementById('navHamburger').addEventListener('click', () => {
-    document.getElementById('navMobileMenu').classList.add('open');
-});
-document.getElementById('navCloseMenu').addEventListener('click', () => {
-    document.getElementById('navMobileMenu').classList.remove('open');
-});
+// ── Mobile Nav (handled by unified nav script) ──────────
 
 // ── Init ─────────────────────────────────────────────────
 filterDogs();
@@ -1347,6 +1406,14 @@ filterDogs();
         targetY = (t.clientY - rect.top - rect.height/2) / rect.height;
     }, { passive: true });
     scene.addEventListener('touchend', () => { targetX = 0; targetY = 0; });
+})();
+</script>
+<script>
+(function(){
+    var h=document.getElementById('navHamburger'),m=document.getElementById('navMobileMenu');
+    if(h&&m){h.addEventListener('click',function(){var o=m.classList.toggle('open');h.classList.toggle('is-open',o);});}
+    var nav=document.getElementById('mainNav');
+    if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});}
 })();
 </script>
 </body>

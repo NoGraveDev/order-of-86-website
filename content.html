@@ -23,16 +23,8 @@
         body{background:#0a0a0a;color:#F5F5F7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;overflow-x:hidden}
 
         /* Navigation */
-        .nav-bar{display:flex;align-items:center;gap:1.5rem;padding:1rem 2rem;background:rgba(0,0,0,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,215,0,0.1);position:sticky;top:0;z-index:100}
-        .nav-bar a{color:#98989D;text-decoration:none;font-size:0.9rem;transition:color 0.2s}
-        .nav-bar a:hover,.nav-bar a.active{color:#ffd700}
-        .nav-logo-mobile{display:none;color:#ffd700;font-weight:700;font-size:1.1rem}
-        .nav-hamburger{display:none;background:none;border:none;color:#ffd700;font-size:1.5rem;cursor:pointer}
-        .nav-links-mobile{display:none;flex-direction:column;gap:1rem;padding:2rem;background:rgba(0,0,0,0.98);backdrop-filter:blur(20px);position:fixed;top:0;left:0;right:0;bottom:0;z-index:200}
-        .nav-links-mobile.open{display:flex}
-        .nav-links-mobile a{color:#F5F5F7;text-decoration:none;font-size:1.3rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,215,0,0.1)}
         .nav-close-mobile{background:none;border:none;color:#ffd700;font-size:2rem;cursor:pointer;align-self:flex-end}
-        @media(max-width:768px){.nav-bar a:not(.nav-logo-mobile){display:none}.nav-logo-mobile,.nav-hamburger{display:block}}
+        @media(max-width:768px){.nav-bar a:not(.nav-logo-mobile){display:none}.nav-logo-mobile,}
 
         /* Layout */
         .main-container{display:flex;max-width:1400px;margin:0 auto;padding:2rem;gap:2rem;min-height:calc(100vh - 80px)}
@@ -170,22 +162,210 @@
             .setting-row{flex-direction:column;align-items:stretch;gap:0.5rem}
             .setting-value{text-align:left}
         }
+    
+/* ── Modern Glassmorphism Nav ─────────────────────── */
+.nav-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 clamp(16px, 3vw, 48px);
+    padding-top: env(safe-area-inset-top);
+    height: 64px;
+    background: rgba(10, 10, 12, 0.55);
+    backdrop-filter: saturate(180%) blur(24px);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+    box-shadow: 0 1px 12px rgba(255, 215, 0, 0.03);
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.nav-bar.scrolled {
+    background: rgba(10, 10, 12, 0.92);
+    border-bottom-color: rgba(255, 215, 0, 0.15);
+    box-shadow: 0 2px 20px rgba(255, 215, 0, 0.06);
+}
+.nav-logo {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffd700;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1);
+    transition: text-shadow 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.nav-logo:hover {
+    text-shadow: 0 0 24px rgba(255, 215, 0, 0.5), 0 0 48px rgba(255, 215, 0, 0.2);
+}
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.nav-links a {
+    position: relative;
+    color: rgba(245, 245, 247, 0.55);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    transition: color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: #ffd700;
+    border-radius: 1px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+.nav-links a:hover {
+    color: rgba(245, 245, 247, 0.9);
+}
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+.nav-links a.active {
+    color: #ffd700;
+}
+.nav-links a.active::after {
+    transform: scaleX(1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* ── Hamburger ──────────────────────────────────────── */
+.nav-hamburger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+    flex-shrink: 0;
+}
+.nav-hamburger-lines {
+    width: 22px;
+    height: 16px;
+    position: relative;
+}
+.nav-hamburger-lines span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #F5F5F7;
+    border-radius: 1px;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-hamburger-lines span:nth-child(1) { top: 0; }
+.nav-hamburger-lines span:nth-child(2) { top: 7px; }
+.nav-hamburger-lines span:nth-child(3) { top: 14px; }
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(1) {
+    top: 7px; transform: rotate(45deg);
+}
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(2) {
+    opacity: 0; transform: scaleX(0);
+}
+.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(3) {
+    top: 7px; transform: rotate(-45deg);
+}
+
+/* ── Mobile Menu ────────────────────────────────────── */
+.nav-mobile-overlay {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    padding: 8px 0 16px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-110%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    pointer-events: none;
+}
+.nav-mobile-overlay.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+.nav-mobile-overlay a {
+    color: rgba(245, 245, 247, 0.6);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    transition: color 0.2s ease, background 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+.nav-mobile-overlay a:hover,
+.nav-mobile-overlay a:active {
+    color: #F5F5F7;
+    background: rgba(255, 255, 255, 0.04);
+}
+.nav-mobile-overlay a.active {
+    color: #ffd700;
+}
+
+/* ── Mobile Responsive ──────────────────────────────── */
+@media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+}
+
+/* ── Nav Spacer (push content below fixed nav) ──────── */
+.nav-spacer { height: 64px; padding-top: env(safe-area-inset-top); }
+
     </style>
 </head>
 <body>
-<nav class="nav-bar">
-    <span class="nav-logo-mobile">Order of 86</span>
-    <a href="index.html">The 86 Wizards</a>
+<nav class="nav-bar" id="mainNav">
+    <a href="index.html" class="nav-logo">Order of 86</a>
+    <div class="nav-links">
+        <a href="index.html">Wizards</a>
+        <a href="moons.html">Moons</a>
+        <a href="map.html">Map</a>
+        <a href="lore.html">Lore</a>
+        <a href="content.html" class="active">Content</a>
+    </div>
+    <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+        <div class="nav-hamburger-lines"><span></span><span></span><span></span></div>
+    </button>
+</nav>
+<div class="nav-mobile-overlay" id="navMobileMenu">
+    <a href="index.html">Wizards</a>
     <a href="moons.html">Moons</a>
     <a href="map.html">Map</a>
     <a href="lore.html">Lore</a>
     <a href="content.html" class="active">Content</a>
-    <button class="nav-hamburger" onclick="document.getElementById('navMobileMenu').classList.toggle('open')">&#9776;</button>
-</nav>
-<div class="nav-links-mobile" id="navMobileMenu">
-    <button class="nav-close-mobile" onclick="this.parentElement.classList.remove('open')">&#10005;</button>
-    <a href="index.html">The 86 Wizards</a><a href="moons.html">Moons</a><a href="map.html">Map</a><a href="lore.html">Lore</a><a href="content.html">Content</a>
 </div>
+<div class="nav-spacer"></div>
 
 <div class="header">
     <h1>Content Generator</h1>
@@ -921,6 +1101,14 @@ buildWizardGrid();
 buildAnimatedBgGrid();
 buildStillBgGrid();
 updateDownloadButtons();
+</script>
+<script>
+(function(){
+    var h=document.getElementById('navHamburger'),m=document.getElementById('navMobileMenu');
+    if(h&&m){h.addEventListener('click',function(){var o=m.classList.toggle('open');h.classList.toggle('is-open',o);});}
+    var nav=document.getElementById('mainNav');
+    if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});}
+})();
 </script>
 </body>
 </html>
