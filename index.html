@@ -766,9 +766,10 @@
 
 <section class="hero">
     <h1 class="hero-title">The Order of 86</h1>
-    <div class="hero-image-wrap">
+    <div class="hero-image-wrap" style="animation: hat-float 4s ease-in-out infinite;">
         <canvas id="magicCanvas"></canvas>
-        <img src="header-hat.png" alt="Wizard Hat" class="hero-image">
+        <div id="voxelHat" style="position:relative;z-index:1;width:clamp(200px,35vw,400px);height:clamp(200px,35vw,400px);filter:drop-shadow(0 0 24px rgba(255,215,0,0.4)) drop-shadow(0 0 60px rgba(255,215,0,0.15));"></div>
+        <noscript><img src="header-hat.png" alt="Wizard Hat" class="hero-image"></noscript>
     </div>
     <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
 </section>
@@ -1205,6 +1206,115 @@ filterDogs();
         requestAnimationFrame(draw);
     }
     draw();
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function(){
+    const container = document.getElementById('voxelHat');
+    if (!container || typeof THREE === 'undefined') return;
+
+    // Pixel data extracted from header-hat.png
+    const voxels = [{"x":7,"y":5,"color":"#000000"},{"x":8,"y":5,"color":"#000000"},{"x":9,"y":5,"color":"#000000"},{"x":6,"y":6,"color":"#1e0000"},{"x":7,"y":6,"color":"#f4762c"},{"x":8,"y":6,"color":"#f4762c"},{"x":9,"y":6,"color":"#f4762c"},{"x":10,"y":6,"color":"#5a301a"},{"x":5,"y":7,"color":"#240000"},{"x":6,"y":7,"color":"#c35604"},{"x":7,"y":7,"color":"#ad5b29"},{"x":8,"y":7,"color":"#130002"},{"x":9,"y":7,"color":"#f4762c"},{"x":10,"y":7,"color":"#f4762c"},{"x":11,"y":7,"color":"#572b20"},{"x":6,"y":8,"color":"#000000"},{"x":7,"y":8,"color":"#140001"},{"x":8,"y":8,"color":"#c35500"},{"x":9,"y":8,"color":"#f4762c"},{"x":10,"y":8,"color":"#f4762c"},{"x":11,"y":8,"color":"#572b20"},{"x":7,"y":9,"color":"#140001"},{"x":8,"y":9,"color":"#c35500"},{"x":9,"y":9,"color":"#f4762c"},{"x":10,"y":9,"color":"#f4762c"},{"x":11,"y":9,"color":"#f4762c"},{"x":12,"y":9,"color":"#6b4129"},{"x":7,"y":10,"color":"#000000"},{"x":8,"y":10,"color":"#000000"},{"x":9,"y":10,"color":"#000000"},{"x":10,"y":10,"color":"#a2851d"},{"x":11,"y":10,"color":"#5c4b31"},{"x":12,"y":10,"color":"#000000"},{"x":6,"y":11,"color":"#220000"},{"x":7,"y":11,"color":"#cd5352"},{"x":8,"y":11,"color":"#f77d7c"},{"x":9,"y":11,"color":"#ec816f"},{"x":10,"y":11,"color":"#ff9d6c"},{"x":11,"y":11,"color":"#fbb748"},{"x":12,"y":11,"color":"#fdab71"},{"x":13,"y":11,"color":"#8b5958"},{"x":4,"y":12,"color":"#000000"},{"x":5,"y":12,"color":"#000000"},{"x":6,"y":12,"color":"#000000"},{"x":7,"y":12,"color":"#000000"},{"x":8,"y":12,"color":"#000000"},{"x":9,"y":12,"color":"#000000"},{"x":10,"y":12,"color":"#000000"},{"x":11,"y":12,"color":"#000000"},{"x":12,"y":12,"color":"#000000"},{"x":13,"y":12,"color":"#000000"},{"x":14,"y":12,"color":"#000000"},{"x":15,"y":12,"color":"#000000"},{"x":3,"y":13,"color":"#100000"},{"x":4,"y":13,"color":"#c35604"},{"x":5,"y":13,"color":"#c35604"},{"x":6,"y":13,"color":"#c35604"},{"x":7,"y":13,"color":"#c35604"},{"x":8,"y":13,"color":"#c15200"},{"x":9,"y":13,"color":"#f4762c"},{"x":10,"y":13,"color":"#f4762c"},{"x":11,"y":13,"color":"#f4762c"},{"x":12,"y":13,"color":"#f4762c"},{"x":13,"y":13,"color":"#f4762c"},{"x":14,"y":13,"color":"#f4762c"},{"x":15,"y":13,"color":"#f4762c"},{"x":16,"y":13,"color":"#4d2b21"},{"x":4,"y":14,"color":"#000000"},{"x":5,"y":14,"color":"#000000"},{"x":6,"y":14,"color":"#000000"},{"x":7,"y":14,"color":"#000000"},{"x":8,"y":14,"color":"#000000"},{"x":9,"y":14,"color":"#000000"},{"x":10,"y":14,"color":"#000000"},{"x":11,"y":14,"color":"#000000"},{"x":12,"y":14,"color":"#000000"},{"x":13,"y":14,"color":"#000000"},{"x":14,"y":14,"color":"#000000"},{"x":15,"y":14,"color":"#000000"}];
+
+    const DEPTH = 4; // voxels deep
+    const GRID = 20;
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+    camera.position.set(0, 0, 22);
+
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+
+    function resize() {
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    dirLight.position.set(5, 8, 10);
+    scene.add(dirLight);
+
+    // Helper: darken color
+    function darken(hex, factor) {
+        const c = new THREE.Color(hex);
+        c.multiplyScalar(factor);
+        return c;
+    }
+
+    // Build voxel group
+    const hatGroup = new THREE.Group();
+    const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+    // Center offset
+    const cx = GRID / 2, cy = GRID / 2;
+
+    // Material cache
+    const matCache = {};
+    function getMats(hex) {
+        if (matCache[hex]) return matCache[hex];
+        const front = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.7, metalness: 0.1 });
+        const side = new THREE.MeshStandardMaterial({ color: darken(hex, 0.75), roughness: 0.7, metalness: 0.1 });
+        const back = new THREE.MeshStandardMaterial({ color: darken(hex, 0.55), roughness: 0.7, metalness: 0.1 });
+        // Order: +x, -x, +y, -y, +z (front), -z (back)
+        matCache[hex] = [side, side, side, side, front, back];
+        return matCache[hex];
+    }
+
+    voxels.forEach(v => {
+        const mats = getMats(v.color);
+        for (let z = 0; z < DEPTH; z++) {
+            const mesh = new THREE.Mesh(boxGeo, mats);
+            mesh.position.set(v.x - cx, -(v.y - cy), -z + DEPTH / 2 - 0.5);
+            hatGroup.add(mesh);
+        }
+    });
+
+    // Center the hat vertically
+    const box = new THREE.Box3().setFromObject(hatGroup);
+    const center = box.getCenter(new THREE.Vector3());
+    hatGroup.position.sub(center);
+
+    scene.add(hatGroup);
+
+    // OrbitControls - Y rotation + slight tilt
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+    controls.enablePan = false;
+    controls.minPolarAngle = Math.PI / 2 - 0.4;
+    controls.maxPolarAngle = Math.PI / 2 + 0.4;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 2.0;
+
+    // Render only when visible
+    let isVisible = true;
+    const observer = new IntersectionObserver(entries => {
+        isVisible = entries[0].isIntersecting;
+    }, { threshold: 0.1 });
+    observer.observe(container);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (!isVisible) return;
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
 })();
 </script>
 </body>
