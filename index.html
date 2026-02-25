@@ -1224,12 +1224,11 @@ filterDogs();
     let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
     voxels.forEach(v=>{if(v.x<minX)minX=v.x;if(v.x>maxX)maxX=v.x;if(v.y<minY)minY=v.y;if(v.y>maxY)maxY=v.y;});
     const cx=(minX+maxX)/2, cy=(minY+maxY)/2;
-    const span=Math.max(maxX-minX,maxY-minY)+DEPTH;
 
     // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
-    camera.position.set(0, 0, span * 1.8);
+    camera.position.set(0, 0, 20);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
