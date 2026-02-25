@@ -1219,12 +1219,17 @@ filterDogs();
     const voxels = [{"x":7,"y":5,"color":"#000000"},{"x":8,"y":5,"color":"#000000"},{"x":9,"y":5,"color":"#000000"},{"x":6,"y":6,"color":"#1e0000"},{"x":7,"y":6,"color":"#f4762c"},{"x":8,"y":6,"color":"#f4762c"},{"x":9,"y":6,"color":"#f4762c"},{"x":10,"y":6,"color":"#5a301a"},{"x":5,"y":7,"color":"#240000"},{"x":6,"y":7,"color":"#c35604"},{"x":7,"y":7,"color":"#ad5b29"},{"x":8,"y":7,"color":"#130002"},{"x":9,"y":7,"color":"#f4762c"},{"x":10,"y":7,"color":"#f4762c"},{"x":11,"y":7,"color":"#572b20"},{"x":6,"y":8,"color":"#000000"},{"x":7,"y":8,"color":"#140001"},{"x":8,"y":8,"color":"#c35500"},{"x":9,"y":8,"color":"#f4762c"},{"x":10,"y":8,"color":"#f4762c"},{"x":11,"y":8,"color":"#572b20"},{"x":7,"y":9,"color":"#140001"},{"x":8,"y":9,"color":"#c35500"},{"x":9,"y":9,"color":"#f4762c"},{"x":10,"y":9,"color":"#f4762c"},{"x":11,"y":9,"color":"#f4762c"},{"x":12,"y":9,"color":"#6b4129"},{"x":7,"y":10,"color":"#000000"},{"x":8,"y":10,"color":"#000000"},{"x":9,"y":10,"color":"#000000"},{"x":10,"y":10,"color":"#a2851d"},{"x":11,"y":10,"color":"#5c4b31"},{"x":12,"y":10,"color":"#000000"},{"x":6,"y":11,"color":"#220000"},{"x":7,"y":11,"color":"#cd5352"},{"x":8,"y":11,"color":"#f77d7c"},{"x":9,"y":11,"color":"#ec816f"},{"x":10,"y":11,"color":"#ff9d6c"},{"x":11,"y":11,"color":"#fbb748"},{"x":12,"y":11,"color":"#fdab71"},{"x":13,"y":11,"color":"#8b5958"},{"x":4,"y":12,"color":"#000000"},{"x":5,"y":12,"color":"#000000"},{"x":6,"y":12,"color":"#000000"},{"x":7,"y":12,"color":"#000000"},{"x":8,"y":12,"color":"#000000"},{"x":9,"y":12,"color":"#000000"},{"x":10,"y":12,"color":"#000000"},{"x":11,"y":12,"color":"#000000"},{"x":12,"y":12,"color":"#000000"},{"x":13,"y":12,"color":"#000000"},{"x":14,"y":12,"color":"#000000"},{"x":15,"y":12,"color":"#000000"},{"x":3,"y":13,"color":"#100000"},{"x":4,"y":13,"color":"#c35604"},{"x":5,"y":13,"color":"#c35604"},{"x":6,"y":13,"color":"#c35604"},{"x":7,"y":13,"color":"#c35604"},{"x":8,"y":13,"color":"#c15200"},{"x":9,"y":13,"color":"#f4762c"},{"x":10,"y":13,"color":"#f4762c"},{"x":11,"y":13,"color":"#f4762c"},{"x":12,"y":13,"color":"#f4762c"},{"x":13,"y":13,"color":"#f4762c"},{"x":14,"y":13,"color":"#f4762c"},{"x":15,"y":13,"color":"#f4762c"},{"x":16,"y":13,"color":"#4d2b21"},{"x":4,"y":14,"color":"#000000"},{"x":5,"y":14,"color":"#000000"},{"x":6,"y":14,"color":"#000000"},{"x":7,"y":14,"color":"#000000"},{"x":8,"y":14,"color":"#000000"},{"x":9,"y":14,"color":"#000000"},{"x":10,"y":14,"color":"#000000"},{"x":11,"y":14,"color":"#000000"},{"x":12,"y":14,"color":"#000000"},{"x":13,"y":14,"color":"#000000"},{"x":14,"y":14,"color":"#000000"},{"x":15,"y":14,"color":"#000000"}];
 
     const DEPTH = 4; // voxels deep
-    const GRID = 20;
+
+    // Compute bounds from data
+    let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+    voxels.forEach(v=>{if(v.x<minX)minX=v.x;if(v.x>maxX)maxX=v.x;if(v.y<minY)minY=v.y;if(v.y>maxY)maxY=v.y;});
+    const cx=(minX+maxX)/2, cy=(minY+maxY)/2;
+    const span=Math.max(maxX-minX,maxY-minY)+DEPTH;
 
     // Scene setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-    camera.position.set(0, 0, 22);
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+    camera.position.set(0, 0, span * 1.8);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -1259,9 +1264,6 @@ filterDogs();
     // Build voxel group
     const hatGroup = new THREE.Group();
     const boxGeo = new THREE.BoxGeometry(1, 1, 1);
-    // Center offset
-    const cx = GRID / 2, cy = GRID / 2;
-
     // Material cache
     const matCache = {};
     function getMats(hex) {
