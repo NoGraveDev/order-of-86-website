@@ -69,7 +69,10 @@ http.createServer((req, res) => {
         }
         res.writeHead(200, {
             'Content-Type': MIME[ext] || 'application/octet-stream',
-            'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400'
+            'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400',
+            'X-Content-Type-Options': 'nosniff',
+            'X-Frame-Options': 'SAMEORIGIN',
+            'Referrer-Policy': 'strict-origin-when-cross-origin'
         });
         res.end(data);
     });
