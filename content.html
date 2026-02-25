@@ -788,12 +788,12 @@ async function compositeGif(gifUrl, dogImg) {
     // omggif uses CommonJS exports — shim it for browser
     if (!window.GifReader) {
         window.exports = window.exports || {};
-        await loadScript('https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js');
+        await loadScript('https://cdn.jsdelivr.net/npm/omggif@1.0.10/omggif.js', 'sha384-MyJfgL1BC/8IpGowcTSNInyyiYYLLUEEDACAIkOlzV68oYz87Pu5amdJWCO3NtFo');
         window.GifReader = window.exports.GifReader;
         window.GifWriter = window.exports.GifWriter;
     }
     if (!window.GIF) {
-        await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js');
+        await loadScript('https://unpkg.com/gif.js@0.2.0/dist/gif.js', 'sha384-4RMW82CWFobXY+HRHXe5go/V5acBhiIVGCT+2k7TEoxi7AiWKw8WoWb9qMU+FAFu');
     }
     
     const resp = await fetch(gifUrl);
@@ -862,11 +862,12 @@ async function compositeGif(gifUrl, dogImg) {
     });
 }
 
-function loadScript(src) {
+function loadScript(src, integrity) {
     return new Promise((resolve, reject) => {
         if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
         const s = document.createElement('script');
         s.src = src;
+        if (integrity) { s.integrity = integrity; s.crossOrigin = 'anonymous'; }
         s.onload = resolve;
         s.onerror = reject;
         document.head.appendChild(s);
