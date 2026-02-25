@@ -545,14 +545,14 @@ function buildWizardGrid(query = '', order = '') {
     );
     
     document.getElementById('wizardCount').textContent = 
-        `${filteredWizards.length} of 86 Wizards ${query || order ? '(filtered)' : ''}`;
+        `${filteredWizards.length} of ${WIZARDS.length} ${query || order ? '(filtered)' : ''}`;
     
     const grid = document.getElementById('wizardsGrid');
     grid.innerHTML = filteredWizards.map(w => `
         <div class="wizard-thumb ${selectedWizard && selectedWizard.id === w.id ? 'selected' : ''}" 
              onclick="selectWizard('${w.id}')" title="#${w.id} ${w.name}">
             <div class="wizard-id">#${w.id}</div>
-            <img src="wizard-images/${w.id}.png" alt="${w.name}" loading="lazy">
+            <img src="${w.id.startsWith('starter-') ? 'images/starters/' + w.id + '.png' : 'wizard-images/' + w.id + '.png'}" alt="${w.name}" loading="lazy">
         </div>
     `).join('');
 }
