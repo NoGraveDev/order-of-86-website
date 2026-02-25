@@ -812,47 +812,7 @@
         <div class="parallax-layer layer-stars" data-depth="0.02" id="layerStars"></div>
         <div class="parallax-layer layer-moons" data-depth="0.05" id="layerMoons"></div>
         <div class="parallax-layer layer-hat" data-depth="0.08">
-            <!-- Wizard hat SVG -->
-            <svg class="hat-svg" viewBox="0 0 200 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Hat brim -->
-                <ellipse cx="100" cy="140" rx="90" ry="16" fill="#1a0a00" stroke="#c35604" stroke-width="2"/>
-                <ellipse cx="100" cy="138" rx="88" ry="14" fill="url(#brimGrad)"/>
-                <!-- Hat cone -->
-                <path d="M46 138 L88 28 Q100 8 112 28 L154 138" fill="url(#hatGrad)" stroke="#8b4513" stroke-width="1.5"/>
-                <!-- Hat band -->
-                <rect x="46" y="126" width="108" height="14" rx="2" fill="url(#bandGrad)"/>
-                <!-- Buckle -->
-                <rect x="88" y="124" width="24" height="18" rx="3" fill="none" stroke="#ffd700" stroke-width="2.5"/>
-                <rect x="94" y="128" width="12" height="10" rx="1" fill="#ffd700"/>
-                <!-- Hat folds/creases -->
-                <path d="M70 100 Q100 90 130 100" stroke="rgba(0,0,0,0.2)" stroke-width="1" fill="none"/>
-                <path d="M76 80 Q100 72 124 80" stroke="rgba(0,0,0,0.15)" stroke-width="1" fill="none"/>
-                <!-- Stars on hat -->
-                <circle cx="80" cy="70" r="2" fill="#ffd700" opacity="0.7"/>
-                <circle cx="115" cy="55" r="1.5" fill="#ffd700" opacity="0.5"/>
-                <circle cx="95" cy="90" r="1.8" fill="#ffd700" opacity="0.6"/>
-                <circle cx="108" cy="105" r="1.2" fill="#ffd700" opacity="0.4"/>
-                <!-- Moon on hat -->
-                <path d="M105 42 Q112 38 108 30 Q118 36 112 46 Q108 48 105 42Z" fill="#ffd700" opacity="0.6"/>
-                <defs>
-                    <linearGradient id="hatGrad" x1="60" y1="30" x2="140" y2="140" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#f4762c"/>
-                        <stop offset="35%" stop-color="#c35604"/>
-                        <stop offset="70%" stop-color="#8b3a00"/>
-                        <stop offset="100%" stop-color="#5a2100"/>
-                    </linearGradient>
-                    <linearGradient id="brimGrad" x1="12" y1="130" x2="188" y2="145" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#8b3a00"/>
-                        <stop offset="50%" stop-color="#c35604"/>
-                        <stop offset="100%" stop-color="#6b2e00"/>
-                    </linearGradient>
-                    <linearGradient id="bandGrad" x1="46" y1="126" x2="154" y2="140" gradientUnits="userSpaceOnUse">
-                        <stop offset="0%" stop-color="#1a0800"/>
-                        <stop offset="50%" stop-color="#2a1200"/>
-                        <stop offset="100%" stop-color="#1a0800"/>
-                    </linearGradient>
-                </defs>
-            </svg>
+            <img src="hat-new.png" alt="Wizard Hat" class="hat-svg" style="image-rendering: pixelated;">
         </div>
         <div class="parallax-layer layer-particles" data-depth="0.04">
             <canvas id="particleCanvas"></canvas>
