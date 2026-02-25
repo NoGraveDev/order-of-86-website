@@ -247,7 +247,7 @@
             overflow: hidden;
             text-align: center;
             padding: 0;
-            min-height: 520px;
+            min-height: 580px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -295,7 +295,7 @@
             opacity: 0.25;
         }
         /* Hat layer */
-        .layer-hat { z-index: 2; display: flex; align-items: center; justify-content: center; }
+        .layer-hat { z-index: 2; display: flex; align-items: flex-start; justify-content: center; padding-top: 30px; }
         .hat-svg {
             width: clamp(180px, 30vw, 340px);
             height: auto;
@@ -860,6 +860,7 @@
     </div>
     <!-- Text overlay -->
     <div class="hero-text">
+        <div style="height: clamp(120px, 22vw, 220px);"></div>
         <h1 class="hero-title">The Order of 86</h1>
         <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninosphere.</p>
     </div>
