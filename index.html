@@ -1284,11 +1284,6 @@ filterDogs();
         }
     });
 
-    // Center the hat vertically
-    const box = new THREE.Box3().setFromObject(hatGroup);
-    const center = box.getCenter(new THREE.Vector3());
-    hatGroup.position.sub(center);
-
     scene.add(hatGroup);
 
     // OrbitControls - Y rotation + slight tilt
