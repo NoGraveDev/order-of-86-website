@@ -1239,21 +1239,16 @@ filterDogs();
     const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
     camera.position.set(0, 0, 12);
 
+    const SIZE = 400;
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
+    renderer.setSize(SIZE, SIZE);
     container.appendChild(renderer.domElement);
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
 
     function resize() {
-        const w = container.clientWidth;
-        const h = container.clientHeight;
-        renderer.setSize(w, h);
-        camera.aspect = w / h;
         camera.updateProjectionMatrix();
     }
-    resize();
     window.addEventListener('resize', resize);
 
     // Lighting
