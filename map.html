@@ -486,16 +486,17 @@ class SimplexNoise {
 
 // ── Setup ──
 const isMobile = window.innerWidth < 768;
-const subdivisions = isMobile ? 180 : 256;
+const isLowPower = isMobile || /iPad|iPhone/.test(navigator.userAgent) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+const subdivisions = isLowPower ? 128 : 256;
 const noise = new SimplexNoise(42);
 const noise2 = new SimplexNoise(137);
 const clock = new THREE.Clock();
 
 const renderer = new THREE.WebGLRenderer({ antialias:!isMobile, alpha:false, powerPreference:'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = !isMobile;
-renderer.shadowMap.type = isMobile ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(isLowPower ? 1 : Math.min(window.devicePixelRatio, 1.5));
+renderer.shadowMap.enabled = !isLowPower;
+renderer.shadowMap.type = isLowPower ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.1;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -560,7 +561,7 @@ scene.add(ambientLight);
 const sunLight = new THREE.DirectionalLight(0xfff4e0, 1.2);
 sunLight.position.set(200, 400, -100);
 sunLight.castShadow = true;
-sunLight.shadow.mapSize.set(isMobile?1024:2048, isMobile?1024:2048);
+sunLight.shadow.mapSize.set(isLowPower?512:1024, isLowPower?512:1024);
 sunLight.shadow.camera.left = -600; sunLight.shadow.camera.right = 600;
 sunLight.shadow.camera.top = 600; sunLight.shadow.camera.bottom = -600;
 sunLight.shadow.camera.near = 1; sunLight.shadow.camera.far = 1200;
@@ -746,7 +747,7 @@ for (const [name, r] of Object.entries(realms)) {
 }
 
 // ── Water ──
-const waterGeo = new THREE.PlaneGeometry(1400, 1400, 64, 64);
+const waterGeo = new THREE.PlaneGeometry(1400, 1400, isLowPower ? 32 : 48, isLowPower ? 32 : 48);
 waterGeo.rotateX(-Math.PI/2);
 const waterMat = new THREE.MeshPhysicalMaterial({
     color:0x1a5c7a, transparent:true, opacity:0.65, roughness:0.1, metalness:0.3,
@@ -2456,7 +2457,7 @@ function updateFireflyBlink(time) {
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
-if (!isMobile) {
+if (!isLowPower) {
     const bloomPass = new UnrealBloomPass(
         new THREE.Vector2(window.innerWidth, window.innerHeight),
         0.4,   // strength
@@ -2708,33 +2709,50 @@ function updateCrystalLizards(time, delta) {
 }
 
 let _animFrame = 0;
+let _fpsSum = 0, _fpsSamples = 0, _avgFps = 60, _lastFpsCheck = 0;
+let _skipFactor = 1; // 1 = normal, 2 = half updates, 4 = quarter
+
 function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
     const time = clock.getElapsedTime();
     _animFrame++;
 
+    // Adaptive performance: measure FPS every 60 frames
+    _fpsSum += (delta > 0 ? 1/delta : 60);
+    _fpsSamples++;
+    if (_fpsSamples >= 60) {
+        _avgFps = _fpsSum / _fpsSamples;
+        _fpsSum = 0; _fpsSamples = 0;
+        // If FPS < 15, go to aggressive skip mode
+        if (_avgFps < 15) _skipFactor = 4;
+        else if (_avgFps < 25) _skipFactor = 2;
+        else _skipFactor = 1;
+    }
+
     controls.update();
 
+    const skip = _skipFactor;
+
     // Stagger updates across frames to spread load
-    if (_animFrame % 2 === 0) updateParticles(delta);
-    updateMoons(time);
+    if (_animFrame % (2*skip) === 0) updateParticles(delta);
+    if (_animFrame % skip === 0) updateMoons(time);
     updateLoyaltyLines(); // internally throttled to every 60 frames
-    updateLoyaltyDots(time);
-    if (_animFrame % 4 === 0) updateFireflyBlink(time);
+    if (_animFrame % (2*skip) === 0) updateLoyaltyDots(time);
+    if (_animFrame % (4*skip) === 0) updateFireflyBlink(time);
 
-    // Water: every 4th frame
-    if (_animFrame % 4 === 0) updateWater(time);
+    // Water: less frequent
+    if (_animFrame % (4*skip) === 0) updateWater(time);
 
-    // Dogs: every frame (visible bob), lizards: every 2nd
-    updateDogs(time);
-    if (_animFrame % 2 === 0) updateCrystalLizards(time, delta);
+    // Dogs: every frame for smooth bob, lizards: staggered
+    if (_animFrame % skip === 0) updateDogs(time);
+    if (_animFrame % (2*skip) === 0) updateCrystalLizards(time, delta);
 
     // Billboards: internally throttled
-    updateBillboards();
+    if (_animFrame % (3*skip) === 0) updateBillboards();
 
-    // Castle flag wave: every 3rd frame
-    if (_animFrame % 3 === 0) {
+    // Castle flag wave
+    if (_animFrame % (3*skip) === 0) {
         for (const flag of castleFlags) {
             const pos = flag.geometry.attributes.position;
             const origPos = flag.geometry.userData.origPos || (flag.geometry.userData.origPos = pos.array.slice());
@@ -2746,11 +2764,11 @@ function animate() {
         }
     }
 
-    // Label fading: every 10th frame
-    if (_animFrame % 10 === 0) updateLabelFade();
+    // Label fading
+    if (_animFrame % (10*skip) === 0) updateLabelFade();
 
-    // Tower orb pulse: every 3rd frame
-    if (_animFrame % 3 === 0) {
+    // Tower orb pulse
+    if (_animFrame % (3*skip) === 0) {
         for (const t of towers) {
             const orb = t.children[2];
             if (orb) orb.material.emissiveIntensity = 1.2 + Math.sin(time*2 + t.position.x)*0.5;
