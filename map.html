@@ -2569,12 +2569,7 @@ function createCrystalLizard(moonColor, spawnX, spawnZ) {
     glow.position.set(0, 1.2, 0);
     group.add(glow);
 
-    // Get terrain height at spawn
-    const ray = new THREE.Raycaster(new THREE.Vector3(spawnX, 100, spawnZ), new THREE.Vector3(0, -1, 0));
-    const hits = ray.intersectObjects(scene.children, true);
-    const groundY = hits.length > 0 ? hits[0].point.y : 0;
-
-    group.position.set(spawnX, groundY, spawnZ);
+    group.position.set(spawnX, 1, spawnZ);
     group.scale.setScalar(0.7 + Math.random() * 0.3);
 
     scene.add(group);
