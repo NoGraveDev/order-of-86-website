@@ -35,7 +35,7 @@ async function generateOGCard(dog) {
     const canvas = createCanvas(W, H);
     const ctx = canvas.getContext('2d');
     const orderColor = ORDER_COLORS[dog.order] || '#ffd700';
-    const name = dog.suggestedName || `Wizard #${dog.id}`;
+    const name = (dog.suggestedName || `Wizard #${dog.id}`).replace(/[-–—]/g, ' ');
 
     // Background with subtle gradient
     const bgGrad = ctx.createLinearGradient(0, 0, W, H);
@@ -184,7 +184,7 @@ async function generateOGCard(dog) {
         ctx.fillStyle = '#4a4a4e';
         ctx.fillRect(textX, loreY, rightW, 1);
 
-        const storyClean = dog.suggestedStory.replace(/\*[^*]*\*\n?\n?/, '').trim();
+        const storyClean = dog.suggestedStory.replace(/\*[^*]*\*\n?\n?/, '').replace(/[-–—]/g, ' ').trim();
         const snippet = storyClean.substring(0, 200) + '…';
 
         ctx.fillStyle = '#8e8e93';
