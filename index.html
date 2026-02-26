@@ -139,62 +139,8 @@
             align-items: center;
             justify-content: center;
         }
-        /* Parallax layers */
-        .parallax-scene {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-        }
-        .parallax-layer {
-            position: absolute;
-            inset: -40px;
-            will-change: transform;
-            transition: transform 0.15s ease-out;
-        }
-        /* Stars layer */
-        .layer-stars { z-index: 0; }
-        .layer-stars .star {
-            position: absolute;
-            border-radius: 50%;
-            background: #fff;
-        }
-        .star--twinkle {
-            animation: twinkle 3s ease-in-out infinite alternate;
-        }
-        @keyframes twinkle {
-            0% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-        /* Moons layer */
-        .layer-moons { z-index: 1; }
-        .moon {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(1px);
-        }
-        .moon::after {
-            content: '';
-            position: absolute;
-            inset: -60%;
-            border-radius: 50%;
-            background: radial-gradient(circle, currentColor 0%, transparent 70%);
-            opacity: 0.25;
-        }
-        /* Hat layer */
-        .layer-hat { z-index: 2; display: flex; align-items: flex-start; justify-content: center; padding-top: 40px; }
-        .hat-svg {
-            width: clamp(220px, 38vw, 440px);
-            height: auto;
-            filter: drop-shadow(0 0 30px rgba(255,215,0,0.5)) drop-shadow(0 0 80px rgba(255,150,0,0.2));
-            animation: hat-float 5s ease-in-out infinite;
-        }
-        @keyframes hat-float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        /* Particles layer */
-        .layer-particles { z-index: 3; pointer-events: none; }
-        .layer-particles canvas { width: 100%; height: 100%; }
+        /* Voxel canvas */
+        #voxelCanvas { pointer-events: auto; }
         /* Text layer */
         .hero-text {
             position: relative;
@@ -659,8 +605,6 @@
         }
         @media (max-width: 480px) {
             .hero { min-height: 480px; padding-top: 0; }
-            .hat-svg { width: clamp(220px, 50vw, 340px); }
-            .layer-hat { padding-top: 80px; }
             .hero-text { padding: 24px 16px 20px; }
             .hero-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
             .hero-subtitle { font-size: clamp(0.85rem, 3.5vw, 1rem); }
@@ -877,20 +821,11 @@
 </div>
 
 <section class="hero" id="heroSection">
-    <!-- Parallax layers -->
-    <div class="parallax-scene" id="parallaxScene">
-        <div class="parallax-layer layer-stars" data-depth="0.02" id="layerStars"></div>
-        <div class="parallax-layer layer-moons" data-depth="0.05" id="layerMoons"></div>
-        <div class="parallax-layer layer-hat" data-depth="0.08">
-            <img src="hat-flame.png" alt="Wizard Hat" class="hat-svg" style="image-rendering: pixelated;">
-        </div>
-        <div class="parallax-layer layer-particles" data-depth="0.04">
-            <canvas id="particleCanvas"></canvas>
-        </div>
-    </div>
+    <!-- 3D Voxel Hat -->
+    <canvas id="voxelCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;"></canvas>
     <!-- Text overlay -->
     <div class="hero-text">
-        <div style="height: clamp(160px, 28vw, 280px);"></div>
+        <div style="height: clamp(200px, 35vw, 360px);"></div>
         <h1 class="hero-title">The Order of 86</h1>
         <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninsphere.</p>
     </div>
@@ -1256,161 +1191,159 @@ sheet.querySelector('.modal-handle').addEventListener('click', closeDetail);
 // ── Init ─────────────────────────────────────────────────
 filterDogs();
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+/* ── 3D Voxel Hat ──────────────────────────────── */
 (function(){
-    const c = document.getElementById('particleCanvas');
-    if(!c) return;
-    const ctx = c.getContext('2d');
-    let W, H;
-    function resize(){
-        const r = c.parentElement.getBoundingClientRect();
-        W = c.width = r.width * 1.4;
-        H = c.height = r.height * 1.4;
+    const canvas = document.getElementById('voxelCanvas');
+    if (!canvas) return;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+    camera.position.set(0, 2, 38);
+
+    // Lighting
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+    const dirLight = new THREE.DirectionalLight(0xffd700, 0.8);
+    dirLight.position.set(5, 10, 8);
+    scene.add(dirLight);
+    const backLight = new THREE.DirectionalLight(0x4488ff, 0.3);
+    backLight.position.set(-5, -3, -5);
+    scene.add(backLight);
+
+    // Voxel data (generated from hat-flame.png)
+    const HAT_W=40, HAT_H=26;
+    const HAT_VOXELS=[[11,25,"#000000"],[12,25,"#000000"],[13,25,"#000000"],[14,25,"#000000"],[15,25,"#000000"],[16,25,"#000000"],[17,25,"#000000"],[18,25,"#000000"],[19,25,"#000000"],[20,25,"#000000"],[11,24,"#000000"],[12,24,"#000000"],[13,24,"#000000"],[14,24,"#000000"],[15,24,"#000000"],[16,24,"#000000"],[17,24,"#000000"],[18,24,"#000000"],[19,24,"#000000"],[20,24,"#000000"],[11,23,"#040207"],[12,23,"#020005"],[13,23,"#020005"],[14,23,"#020005"],[15,23,"#020005"],[16,23,"#020005"],[17,23,"#020005"],[18,23,"#020005"],[19,23,"#020005"],[20,23,"#020005"],[8,22,"#020001"],[9,22,"#000000"],[10,22,"#000002"],[11,22,"#f4762c"],[12,22,"#f4762c"],[13,22,"#f4762c"],[14,22,"#f4762c"],[15,22,"#f4762c"],[16,22,"#f4762c"],[17,22,"#f4762c"],[18,22,"#f4762c"],[19,22,"#f4762c"],[20,22,"#f4762c"],[21,22,"#040000"],[22,22,"#000000"],[23,22,"#010100"],[8,21,"#000000"],[9,21,"#000000"],[10,21,"#000002"],[11,21,"#f4762c"],[12,21,"#f4762c"],[13,21,"#f4762c"],[14,21,"#f4762c"],[15,21,"#f5752c"],[16,21,"#f4762c"],[17,21,"#f4762c"],[18,21,"#f4762c"],[19,21,"#f4762c"],[20,21,"#f4762c"],[21,21,"#040000"],[22,21,"#010000"],[23,21,"#000000"],[5,20,"#060000"],[6,20,"#020001"],[7,20,"#020001"],[8,20,"#c25502"],[9,20,"#c35604"],[10,20,"#c35604"],[11,20,"#c35604"],[12,20,"#c35604"],[13,20,"#000000"],[14,20,"#010101"],[15,20,"#000002"],[16,20,"#f4762c"],[17,20,"#f4762c"],[18,20,"#f4762c"],[19,20,"#f4762c"],[20,20,"#f4762c"],[21,20,"#f5752c"],[22,20,"#f4762c"],[23,20,"#f4752e"],[24,20,"#020001"],[25,20,"#020001"],[26,20,"#020001"],[5,19,"#010101"],[6,19,"#000000"],[7,19,"#000000"],[8,19,"#c45705"],[9,19,"#c35604"],[10,19,"#c35604"],[11,19,"#c35604"],[12,19,"#c35604"],[13,19,"#010101"],[14,19,"#000000"],[15,19,"#000000"],[16,19,"#f4762c"],[17,19,"#f4762c"],[18,19,"#f4762c"],[19,19,"#f4762c"],[20,19,"#f4762c"],[21,19,"#f4762c"],[22,19,"#f4762c"],[23,19,"#f4752e"],[24,19,"#000000"],[25,19,"#000000"],[26,19,"#000000"],[5,18,"#010101"],[6,18,"#020001"],[7,18,"#020001"],[8,18,"#c25502"],[9,18,"#c35604"],[10,18,"#c35604"],[11,18,"#c35604"],[12,18,"#c35604"],[13,18,"#000000"],[14,18,"#000000"],[15,18,"#000000"],[16,18,"#f4762c"],[17,18,"#f4762c"],[18,18,"#f4762c"],[19,18,"#f4762c"],[20,18,"#f4762c"],[21,18,"#f4762c"],[22,18,"#f4762c"],[23,18,"#f4752e"],[24,18,"#000000"],[25,18,"#000000"],[26,18,"#000000"],[8,17,"#000000"],[9,17,"#000000"],[10,17,"#000000"],[11,17,"#000000"],[12,17,"#000000"],[13,17,"#c05602"],[14,17,"#c35604"],[15,17,"#c35604"],[16,17,"#f5752c"],[17,17,"#f4762c"],[18,17,"#f4762c"],[19,17,"#f4762c"],[20,17,"#f4762c"],[21,17,"#f4762c"],[22,17,"#f4762c"],[23,17,"#f4752e"],[24,17,"#000000"],[25,17,"#000000"],[26,17,"#000000"],[8,16,"#000000"],[9,16,"#000000"],[10,16,"#000000"],[11,16,"#000000"],[12,16,"#000000"],[13,16,"#c35604"],[14,16,"#c35604"],[15,16,"#c35604"],[16,16,"#f5752c"],[17,16,"#f4762c"],[18,16,"#f4762c"],[19,16,"#f4762c"],[20,16,"#f4762c"],[21,16,"#f4762c"],[22,16,"#f4762c"],[23,16,"#f4752e"],[24,16,"#000000"],[25,16,"#000000"],[26,16,"#000000"],[11,15,"#010101"],[12,15,"#000000"],[13,15,"#c45705"],[14,15,"#c35604"],[15,15,"#c35604"],[16,15,"#f5752c"],[17,15,"#f4762c"],[18,15,"#f4762c"],[19,15,"#f4762c"],[20,15,"#f4762c"],[21,15,"#f4762c"],[22,15,"#f4762c"],[23,15,"#f4762c"],[24,15,"#f77738"],[25,15,"#f67637"],[26,15,"#f67637"],[27,15,"#000004"],[28,15,"#000205"],[11,14,"#000000"],[12,14,"#000000"],[13,14,"#c25502"],[14,14,"#c35604"],[15,14,"#c35604"],[16,14,"#f5752c"],[17,14,"#f4762c"],[18,14,"#f4762c"],[19,14,"#f4762c"],[20,14,"#f4762c"],[21,14,"#f4762c"],[22,14,"#f4762c"],[23,14,"#f4762c"],[24,14,"#f4762c"],[25,14,"#f4762c"],[26,14,"#f4762c"],[27,14,"#000000"],[28,14,"#000000"],[11,13,"#000000"],[12,13,"#000000"],[13,13,"#c45705"],[14,13,"#c35604"],[15,13,"#c35604"],[16,13,"#f5752c"],[17,13,"#f4762c"],[18,13,"#f4762c"],[19,13,"#f4762c"],[20,13,"#f4762c"],[21,13,"#f4762c"],[22,13,"#f4762c"],[23,13,"#f4762c"],[24,13,"#f4762c"],[25,13,"#f4762c"],[26,13,"#f4762c"],[27,13,"#000000"],[28,13,"#000000"],[11,12,"#000000"],[12,12,"#000000"],[13,12,"#000000"],[14,12,"#000000"],[15,12,"#000000"],[16,12,"#000000"],[17,12,"#000000"],[18,12,"#000000"],[19,12,"#000000"],[20,12,"#000000"],[21,12,"#fddd2a"],[22,12,"#ffdb2b"],[23,12,"#ffdc1e"],[24,12,"#000000"],[25,12,"#000000"],[26,12,"#000000"],[27,12,"#000000"],[28,12,"#000000"],[11,11,"#000000"],[12,11,"#000000"],[13,11,"#000000"],[14,11,"#000000"],[15,11,"#000000"],[16,11,"#000000"],[17,11,"#000000"],[18,11,"#000000"],[19,11,"#000000"],[20,11,"#000000"],[21,11,"#ffdb23"],[22,11,"#ffdc20"],[23,11,"#ffdc20"],[24,11,"#000000"],[25,11,"#000000"],[26,11,"#000000"],[27,11,"#000000"],[28,11,"#000000"],[11,10,"#0b0000"],[12,10,"#0b0000"],[13,10,"#070101"],[14,10,"#080000"],[15,10,"#080000"],[16,10,"#080000"],[17,10,"#080000"],[18,10,"#080000"],[19,10,"#010100"],[20,10,"#020100"],[21,10,"#ffd83f"],[22,10,"#fed73c"],[23,10,"#ffd63c"],[24,10,"#0b0102"],[25,10,"#090001"],[26,10,"#080000"],[27,10,"#090100"],[28,10,"#090100"],[8,9,"#000000"],[9,9,"#000000"],[10,9,"#000200"],[11,9,"#cc5251"],[12,9,"#cc5251"],[13,9,"#f77d7c"],[14,9,"#f77d7c"],[15,9,"#f77d7c"],[16,9,"#f77d7c"],[17,9,"#f77d7c"],[18,9,"#f87d7f"],[19,9,"#ffdd26"],[20,9,"#ffdc20"],[21,9,"#fa7a79"],[22,9,"#f77d7c"],[23,9,"#f77d7c"],[24,9,"#ffdc20"],[25,9,"#ffdc20"],[26,9,"#ffdc20"],[27,9,"#f77d7c"],[28,9,"#f77d7c"],[29,9,"#040000"],[30,9,"#000000"],[31,9,"#000000"],[8,8,"#000000"],[9,8,"#000000"],[10,8,"#000200"],[11,8,"#cc5251"],[12,8,"#cc5251"],[13,8,"#f77d7c"],[14,8,"#f77d7c"],[15,8,"#f77d7c"],[16,8,"#f77d7c"],[17,8,"#f77d7c"],[18,8,"#f87d7f"],[19,8,"#ffdc20"],[20,8,"#ffdc20"],[21,8,"#fa7a79"],[22,8,"#f77d7c"],[23,8,"#f77d7c"],[24,8,"#ffdc20"],[25,8,"#ffdc20"],[26,8,"#ffdc20"],[27,8,"#f77d7c"],[28,8,"#f77d7c"],[29,8,"#040000"],[30,8,"#000000"],[31,8,"#000000"],[3,7,"#010302"],[4,7,"#010302"],[5,7,"#010302"],[6,7,"#010302"],[7,7,"#010302"],[8,7,"#000000"],[9,7,"#000000"],[10,7,"#020001"],[11,7,"#020001"],[12,7,"#020001"],[13,7,"#020001"],[14,7,"#020001"],[15,7,"#020001"],[16,7,"#020001"],[17,7,"#020001"],[18,7,"#020001"],[19,7,"#000000"],[20,7,"#000000"],[21,7,"#000000"],[22,7,"#000000"],[23,7,"#000000"],[24,7,"#000000"],[25,7,"#000000"],[26,7,"#000000"],[27,7,"#000103"],[28,7,"#000103"],[29,7,"#010101"],[30,7,"#000000"],[31,7,"#000000"],[32,7,"#000103"],[33,7,"#000103"],[34,7,"#000103"],[35,7,"#000103"],[36,7,"#000103"],[3,6,"#000000"],[4,6,"#000000"],[5,6,"#000000"],[6,6,"#000000"],[7,6,"#000000"],[8,6,"#000000"],[9,6,"#000000"],[10,6,"#000000"],[11,6,"#000000"],[12,6,"#000000"],[13,6,"#000000"],[14,6,"#000000"],[15,6,"#000000"],[16,6,"#000000"],[17,6,"#000000"],[18,6,"#000000"],[19,6,"#000000"],[20,6,"#000000"],[21,6,"#000000"],[22,6,"#000000"],[23,6,"#000000"],[24,6,"#000000"],[25,6,"#000000"],[26,6,"#000000"],[27,6,"#000000"],[28,6,"#000000"],[29,6,"#000000"],[30,6,"#000000"],[31,6,"#000000"],[32,6,"#000000"],[33,6,"#000000"],[34,6,"#000000"],[35,6,"#000000"],[36,6,"#000000"],[3,5,"#000000"],[4,5,"#000000"],[5,5,"#010101"],[6,5,"#000000"],[7,5,"#010101"],[8,5,"#000000"],[9,5,"#010101"],[10,5,"#010101"],[11,5,"#000000"],[12,5,"#010101"],[13,5,"#000000"],[14,5,"#010101"],[15,5,"#000000"],[16,5,"#000000"],[17,5,"#000000"],[18,5,"#000000"],[19,5,"#000000"],[20,5,"#000000"],[21,5,"#000000"],[22,5,"#000000"],[23,5,"#000000"],[24,5,"#000000"],[25,5,"#000000"],[26,5,"#000000"],[27,5,"#000000"],[28,5,"#000000"],[29,5,"#000000"],[30,5,"#000000"],[31,5,"#000000"],[32,5,"#000000"],[33,5,"#000000"],[34,5,"#000000"],[35,5,"#000000"],[36,5,"#000000"],[0,4,"#000000"],[1,4,"#000000"],[2,4,"#000000"],[3,4,"#c15604"],[4,4,"#c35604"],[5,4,"#c15604"],[6,4,"#c15604"],[7,4,"#c15604"],[8,4,"#c15604"],[9,4,"#c15604"],[10,4,"#c15604"],[11,4,"#c15604"],[12,4,"#c15604"],[13,4,"#c15604"],[14,4,"#c15604"],[15,4,"#c35604"],[16,4,"#f4762c"],[17,4,"#f4762c"],[18,4,"#f4762c"],[19,4,"#f4762c"],[20,4,"#f4762c"],[21,4,"#f4762c"],[22,4,"#f4762c"],[23,4,"#f4762c"],[24,4,"#f4762c"],[25,4,"#f4762c"],[26,4,"#f4762c"],[27,4,"#f4762c"],[28,4,"#f4762c"],[29,4,"#f4762c"],[30,4,"#f4762c"],[31,4,"#f4762c"],[32,4,"#f4762c"],[33,4,"#f4762c"],[34,4,"#f4762c"],[35,4,"#f4762c"],[36,4,"#f4762c"],[37,4,"#020401"],[38,4,"#000000"],[39,4,"#000000"],[0,3,"#000000"],[1,3,"#000000"],[2,3,"#000000"],[3,3,"#c05704"],[4,3,"#c35604"],[5,3,"#c35604"],[6,3,"#c35604"],[7,3,"#c35604"],[8,3,"#c35604"],[9,3,"#c35604"],[10,3,"#c35604"],[11,3,"#c35604"],[12,3,"#c35604"],[13,3,"#c35604"],[14,3,"#c35604"],[15,3,"#c35604"],[16,3,"#f5752c"],[17,3,"#f4762c"],[18,3,"#f4762c"],[19,3,"#f4762c"],[20,3,"#f4762c"],[21,3,"#f4762c"],[22,3,"#f4762c"],[23,3,"#f4762c"],[24,3,"#f4762c"],[25,3,"#f4762c"],[26,3,"#f4762c"],[27,3,"#f4762c"],[28,3,"#f4762c"],[29,3,"#f4762c"],[30,3,"#f4762c"],[31,3,"#f4762c"],[32,3,"#f4762c"],[33,3,"#f4762c"],[34,3,"#f4762c"],[35,3,"#f4762c"],[36,3,"#f4762c"],[37,3,"#020401"],[38,3,"#000000"],[39,3,"#000000"],[3,2,"#080000"],[4,2,"#080000"],[5,2,"#080000"],[6,2,"#080000"],[7,2,"#080000"],[8,2,"#080000"],[9,2,"#080000"],[10,2,"#080000"],[11,2,"#080000"],[12,2,"#080000"],[13,2,"#080000"],[14,2,"#080000"],[15,2,"#080000"],[16,2,"#060000"],[17,2,"#070101"],[18,2,"#070101"],[19,2,"#070101"],[20,2,"#070101"],[21,2,"#070101"],[22,2,"#070101"],[23,2,"#070101"],[24,2,"#070101"],[25,2,"#070101"],[26,2,"#070101"],[27,2,"#070101"],[28,2,"#070101"],[29,2,"#070101"],[30,2,"#070101"],[31,2,"#070101"],[32,2,"#070101"],[33,2,"#070101"],[34,2,"#070101"],[35,2,"#070101"],[36,2,"#070101"],[3,1,"#000000"],[4,1,"#000000"],[5,1,"#000000"],[6,1,"#000000"],[7,1,"#000000"],[8,1,"#000000"],[9,1,"#000000"],[10,1,"#000000"],[11,1,"#000000"],[12,1,"#000000"],[13,1,"#000000"],[14,1,"#000000"],[15,1,"#000000"],[16,1,"#000000"],[17,1,"#000000"],[18,1,"#000000"],[19,1,"#000000"],[20,1,"#000000"],[21,1,"#000000"],[22,1,"#000000"],[23,1,"#000000"],[24,1,"#000000"],[25,1,"#000000"],[26,1,"#000000"],[27,1,"#000000"],[28,1,"#000000"],[29,1,"#000000"],[30,1,"#000000"],[31,1,"#000000"],[32,1,"#000000"],[33,1,"#000000"],[34,1,"#000000"],[35,1,"#000000"],[36,1,"#000000"],[3,0,"#000000"],[4,0,"#000000"],[5,0,"#000000"],[6,0,"#000000"],[7,0,"#000000"],[8,0,"#000000"],[9,0,"#000000"],[10,0,"#000000"],[11,0,"#000000"],[12,0,"#000000"],[13,0,"#000000"],[14,0,"#000000"],[15,0,"#000000"],[16,0,"#000000"],[17,0,"#000000"],[18,0,"#000000"],[19,0,"#000000"],[20,0,"#000000"],[21,0,"#000000"],[22,0,"#000000"],[23,0,"#000000"],[24,0,"#000000"],[25,0,"#000000"],[26,0,"#000000"],[27,0,"#000000"],[28,0,"#000000"],[29,0,"#000000"],[30,0,"#000000"],[31,0,"#000000"],[32,0,"#000000"],[33,0,"#000000"],[34,0,"#000000"],[35,0,"#000000"],[36,0,"#000000"]];
+
+    // Build voxels using InstancedMesh per color for performance
+    const colorMap = {};
+    HAT_VOXELS.forEach(v => {
+        if (!colorMap[v[2]]) colorMap[v[2]] = [];
+        colorMap[v[2]].push([v[0], v[1]]);
+    });
+
+    const hatGroup = new THREE.Group();
+    const boxGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+
+    Object.entries(colorMap).forEach(([hex, positions]) => {
+        const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color(hex) });
+        const mesh = new THREE.InstancedMesh(boxGeo, mat, positions.length);
+        const dummy = new THREE.Object3D();
+        positions.forEach(([x, y], i) => {
+            dummy.position.set(x - HAT_W/2, y - HAT_H/2, 0);
+            dummy.updateMatrix();
+            mesh.setMatrixAt(i, dummy.matrix);
+        });
+        hatGroup.add(mesh);
+    });
+
+    // Add depth — extrude voxels 2-3 blocks deep for 3D feel
+    const depthLayers = [1, 2];
+    depthLayers.forEach(z => {
+        Object.entries(colorMap).forEach(([hex, positions]) => {
+            // Darken color for depth
+            const c = new THREE.Color(hex);
+            c.multiplyScalar(1 - z * 0.15);
+            const mat = new THREE.MeshLambertMaterial({ color: c });
+            const mesh = new THREE.InstancedMesh(boxGeo, mat, positions.length);
+            const dummy = new THREE.Object3D();
+            positions.forEach(([x, y], i) => {
+                dummy.position.set(x - HAT_W/2, y - HAT_H/2, -z);
+                dummy.updateMatrix();
+                mesh.setMatrixAt(i, dummy.matrix);
+            });
+            hatGroup.add(mesh);
+        });
+    });
+
+    scene.add(hatGroup);
+
+    // Stars as small white spheres in background
+    const starGeo = new THREE.BufferGeometry();
+    const starVerts = [];
+    for (let i = 0; i < 300; i++) {
+        starVerts.push(
+            (Math.random() - 0.5) * 100,
+            (Math.random() - 0.5) * 60,
+            -20 - Math.random() * 30
+        );
+    }
+    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.7 });
+    scene.add(new THREE.Points(starGeo, starMat));
+
+    // 7 Moons as glowing spheres
+    const moons = [
+        { color: 0xff4500, x: -18, y: 10 },
+        { color: 0xffd700, x: 22, y: 12 },
+        { color: 0x1e90ff, x: -20, y: -4 },
+        { color: 0x228b22, x: 24, y: -2 },
+        { color: 0x7b54c9, x: 2, y: 14 },
+        { color: 0xc55bb7, x: 26, y: -10 },
+        { color: 0xd4c8a0, x: -16, y: -10 },
+    ];
+    moons.forEach(m => {
+        const sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(0.6, 16, 16),
+            new THREE.MeshBasicMaterial({ color: m.color })
+        );
+        sphere.position.set(m.x, m.y, -15);
+        scene.add(sphere);
+    });
+
+    // Golden glow under hat
+    const glowGeo = new THREE.PlaneGeometry(30, 30);
+    const glowMat = new THREE.MeshBasicMaterial({
+        color: 0xffd700, transparent: true, opacity: 0.06, side: THREE.DoubleSide
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.position.z = -3;
+    scene.add(glow);
+
+    // Mouse tracking
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', e => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+    canvas.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        mouseX = (t.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (t.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    // Float animation
+    let time = 0;
+
+    function resize() {
+        const hero = canvas.parentElement;
+        const w = hero.clientWidth;
+        const h = hero.clientHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
     }
     resize();
     window.addEventListener('resize', resize);
 
-    const particles = [];
-    const colors = ['#ffd700','#ffb800','#ffe066','#fff5cc','#e8a317','#ffffff'];
-    const NUM = 20;
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.01;
 
-    for(let i=0;i<NUM;i++){
-        particles.push({
-            x: Math.random()*W,
-            y: Math.random()*H,
-            r: Math.random()*2.5+0.5,
-            dx: (Math.random()-0.5)*0.4,
-            dy: -Math.random()*0.8-0.2,
-            alpha: Math.random()*0.7+0.3,
-            color: colors[Math.floor(Math.random()*colors.length)],
-            pulse: Math.random()*Math.PI*2,
-            pulseSpeed: Math.random()*0.03+0.01,
-            life: Math.random()*200+100,
-            age: 0
-        });
+        // Slow auto-rotation + mouse influence
+        hatGroup.rotation.y = Math.sin(time * 0.5) * 0.3 + mouseX * 0.4;
+        hatGroup.rotation.x = Math.sin(time * 0.3) * 0.05 - mouseY * 0.15;
+
+        // Gentle float
+        hatGroup.position.y = Math.sin(time) * 0.5;
+
+        renderer.render(scene, camera);
     }
-
-    function respawn(p){
-        p.x = W*0.15 + Math.random()*W*0.7;
-        p.y = H*0.5 + Math.random()*H*0.4;
-        p.r = Math.random()*2.5+0.5;
-        p.dx = (Math.random()-0.5)*0.5;
-        p.dy = -Math.random()*0.8-0.2;
-        p.alpha = Math.random()*0.7+0.3;
-        p.color = colors[Math.floor(Math.random()*colors.length)];
-        p.age = 0;
-        p.life = Math.random()*200+100;
-    }
-
-    function draw(){
-        ctx.clearRect(0,0,W,H);
-        for(const p of particles){
-            p.x += p.dx;
-            p.y += p.dy;
-            p.pulse += p.pulseSpeed;
-            p.age++;
-            const fadeIn = Math.min(p.age/30, 1);
-            const fadeOut = Math.max(1 - (p.age - p.life + 40)/40, 0);
-            const a = p.alpha * Math.abs(Math.sin(p.pulse)) * fadeIn * fadeOut;
-            if(p.age > p.life || p.y < -10 || p.x < -10 || p.x > W+10){
-                respawn(p);
-                continue;
-            }
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = a;
-            ctx.fill();
-
-        }
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(draw);
-    }
-    draw();
-})();
-</script>
-<script>
-/* ── Parallax Stars & Moons ──────────────────────── */
-(function(){
-    const scene = document.getElementById('parallaxScene');
-    if (!scene) return;
-    const starsLayer = document.getElementById('layerStars');
-    const moonsLayer = document.getElementById('layerMoons');
-
-    // Generate stars
-    for (let i = 0; i < 120; i++) {
-        const star = document.createElement('div');
-        star.className = 'star' + (Math.random() > 0.6 ? ' star--twinkle' : '');
-        const size = Math.random() * 2.5 + 0.5;
-        star.style.cssText = `
-            width:${size}px; height:${size}px;
-            left:${Math.random()*100}%; top:${Math.random()*100}%;
-            opacity:${Math.random()*0.6+0.2};
-            animation-delay:${Math.random()*5}s;
-            animation-duration:${2+Math.random()*3}s;
-        `;
-        starsLayer.appendChild(star);
-    }
-
-    // 7 Moons from lore — positioned around the sky
-    const moons = [
-        { name:'Emberhowl',  color:'#ff4500', x:12, y:15, size:18 },
-        { name:'Solaris',    color:'#ffd700', x:82, y:10, size:22 },
-        { name:'Deepwell',   color:'#1e90ff', x:8,  y:55, size:14 },
-        { name:'Evergreen',  color:'#228b22', x:90, y:50, size:16 },
-        { name:'Umbra',      color:'#7b54c9', x:50, y:6,  size:20 },
-        { name:'Roseglow',   color:'#c55bb7', x:92, y:80, size:12 },
-        { name:'Palehowl',   color:'#d4c8a0', x:18, y:82, size:10 },
-    ];
-    moons.forEach(m => {
-        const el = document.createElement('div');
-        el.className = 'moon';
-        el.title = m.name;
-        el.style.cssText = `
-            left:${m.x}%; top:${m.y}%;
-            width:${m.size}px; height:${m.size}px;
-            background: radial-gradient(circle at 35% 35%, ${m.color}, ${m.color}88 60%, transparent);
-            color: ${m.color};
-            box-shadow: 0 0 ${m.size}px ${m.color}66, 0 0 ${m.size*2}px ${m.color}22;
-        `;
-        moonsLayer.appendChild(el);
-    });
-
-    // Parallax mouse tracking
-    const layers = scene.querySelectorAll('.parallax-layer');
-    let targetX = 0, targetY = 0, curX = 0, curY = 0;
-
-    document.addEventListener('mousemove', e => {
-        const rect = scene.getBoundingClientRect();
-        targetX = (e.clientX - rect.left - rect.width/2) / rect.width;
-        targetY = (e.clientY - rect.top - rect.height/2) / rect.height;
-    });
-
-    // Scroll parallax
-    let scrollY = 0;
-    window.addEventListener('scroll', () => { scrollY = window.pageYOffset; }, { passive: true });
-
-    function animateParallax() {
-        curX += (targetX - curX) * 0.08;
-        curY += (targetY - curY) * 0.08;
-        layers.forEach(layer => {
-            const depth = parseFloat(layer.dataset.depth) || 0;
-            const moveX = curX * depth * 300;
-            const moveY = curY * depth * 200 + scrollY * depth * 0.5;
-            layer.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        });
-        requestAnimationFrame(animateParallax);
-    }
-    animateParallax();
-
-    // Touch parallax for mobile
-    scene.addEventListener('touchmove', e => {
-        const t = e.touches[0];
-        const rect = scene.getBoundingClientRect();
-        targetX = (t.clientX - rect.left - rect.width/2) / rect.width;
-        targetY = (t.clientY - rect.top - rect.height/2) / rect.height;
-    }, { passive: true });
-    scene.addEventListener('touchend', () => { targetX = 0; targetY = 0; });
+    animate();
 })();
 </script>
 <script>
