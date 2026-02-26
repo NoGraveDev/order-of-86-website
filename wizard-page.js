@@ -130,6 +130,7 @@ function renderWizardPage(dog, baseUrl) {
     }
     </script>
     <script src="/sparkle.js"></script>
+    <script src="/moon-cursor.js"></script>
 </body>
 </html>`;
 }
