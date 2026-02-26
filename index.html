@@ -1203,7 +1203,7 @@ filterDogs();
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
-    camera.position.set(0, 2, 50);
+    camera.position.set(0, 2, 62);
 
     // Lighting
     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
@@ -1295,14 +1295,10 @@ filterDogs();
         scene.add(sphere);
     });
 
-    // Golden glow under hat
-    const glowGeo = new THREE.PlaneGeometry(30, 30);
-    const glowMat = new THREE.MeshBasicMaterial({
-        color: 0xffd700, transparent: true, opacity: 0.06, side: THREE.DoubleSide
-    });
-    const glow = new THREE.Mesh(glowGeo, glowMat);
-    glow.position.z = -3;
-    scene.add(glow);
+    // Subtle point light glow behind hat
+    const pointGlow = new THREE.PointLight(0xffd700, 0.4, 40);
+    pointGlow.position.set(0, 0, -5);
+    scene.add(pointGlow);
 
     // Mouse tracking
     let mouseX = 0, mouseY = 0;
