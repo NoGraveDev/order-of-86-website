@@ -133,7 +133,7 @@
             overflow: hidden;
             text-align: center;
             padding: 0;
-            min-height: 720px;
+            min-height: 420px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -604,7 +604,7 @@
             .filter-row::-webkit-scrollbar { display: none; }
         }
         @media (max-width: 480px) {
-            .hero { min-height: 560px; padding-top: 0; }
+            .hero { min-height: 300px; padding-top: 0; }
             .hero-text { padding: 24px 16px 20px; }
             .hero-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
             .hero-subtitle { font-size: clamp(0.85rem, 3.5vw, 1rem); }
@@ -823,16 +823,13 @@
 <section class="hero" id="heroSection">
     <!-- 3D Voxel Hat -->
     <canvas id="voxelCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;"></canvas>
-    <!-- Text overlay -->
-    <div class="hero-text">
-        <div style="height: clamp(280px, 45vw, 440px);"></div>
-        <h1 class="hero-title">The Order of 86</h1>
-        <p class="hero-subtitle">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninsphere.</p>
-    </div>
+
 </section>
 
 <div class="container">
     <div class="search-section">
+        <h1 class="hero-title" style="margin-bottom:8px;">The Order of 86</h1>
+        <p class="hero-subtitle" style="margin-bottom:20px;">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninsphere.</p>
         <div class="stats-bar" id="statsBar"></div>
         <input type="text" class="search-box" placeholder="Search by ID, name, breed, realm…" id="searchInput" autocomplete="off">
         <div class="filter-row" id="filterRow">
