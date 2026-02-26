@@ -1082,7 +1082,7 @@ function buildCards(filteredDogs) {
                 </div>
             </div>
         `;
-        card.addEventListener('click', () => openDetail(dog));
+        card.addEventListener('click', () => window.location.href = `/wizard/${dog.id}`);
         cardGrid.appendChild(card);
     });
 
