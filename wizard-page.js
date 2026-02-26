@@ -129,6 +129,7 @@ function renderWizardPage(dog, baseUrl) {
         }
     }
     </script>
+    <script src="/sparkle.js"></script>
 </body>
 </html>`;
 }
