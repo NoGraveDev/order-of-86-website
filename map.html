@@ -1131,6 +1131,7 @@ setProgress(82);
 
 // ── Particles ──
 function createParticles(count, regionX, regionZ, spread, color, sizeRange, yRange) {
+    if (isLowPower) count = Math.ceil(count / 3);
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(count*3);
     const vel = new Float32Array(count*3);
@@ -2101,7 +2102,20 @@ function updateDogs(time) {
 // Dog hover/click
 let hoveredDogGroup = null;
 
+let _lastRaycast = 0;
 function onMouseMove(e) {
+    // Throttle raycasting to max ~15fps (every 66ms)
+    const now = performance.now();
+    if (now - _lastRaycast < 66) {
+        // Still update tooltip position for smoothness
+        if (hoveredDogGroup) {
+            dogTooltip.style.left = (e.clientX + 12) + 'px';
+            dogTooltip.style.top = (e.clientY - 10) + 'px';
+        }
+        return;
+    }
+    _lastRaycast = now;
+
     const rect = renderer.domElement.getBoundingClientRect();
     mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -2128,7 +2142,10 @@ function onMouseMove(e) {
         renderer.domElement.style.cursor = '';
     }
 }
-renderer.domElement.addEventListener('mousemove', onMouseMove);
+// Only enable hover raycasting on desktop — too expensive on low-power
+if (!isLowPower) {
+    renderer.domElement.addEventListener('mousemove', onMouseMove);
+}
 
 // ── Raycasting & Interaction ──
 const raycaster = new THREE.Raycaster();
@@ -2482,15 +2499,19 @@ function hideLoadingAfterRender() {
 hideLoadingAfterRender();
 
 // ── Billboard Update for Dog PFP Planes ──
-let _billboardFrame = 0;
+const _billboardMeshes = []; // populated after dogs load
+let _billboardsCollected = false;
 function updateBillboards() {
-    if (++_billboardFrame % 3 !== 0) return; // every 3rd frame
-    for (const g of dogGroups) {
-        g.traverse(child => {
-            if (child.isMesh && child.userData.isBillboard) {
-                child.lookAt(camera.position);
-            }
-        });
+    if (!_billboardsCollected && dogGroups.length > 0) {
+        for (const g of dogGroups) {
+            g.traverse(child => {
+                if (child.isMesh && child.userData.isBillboard) _billboardMeshes.push(child);
+            });
+        }
+        _billboardsCollected = true;
+    }
+    for (let i = 0; i < _billboardMeshes.length; i++) {
+        _billboardMeshes[i].lookAt(camera.position);
     }
 }
 
@@ -2635,7 +2656,7 @@ const realmSpawns = [
 
 realmSpawns.forEach(spawn => {
     // 1-2 on mobile, 2-3 on desktop
-    const count = isMobile ? (1 + Math.floor(Math.random() * 2)) : (2 + Math.floor(Math.random() * 2));
+    const count = isLowPower ? 1 : (2 + Math.floor(Math.random() * 2));
     for (let i = 0; i < count; i++) {
         const offsetX = (Math.random() - 0.5) * 60;
         const offsetZ = (Math.random() - 0.5) * 60;
