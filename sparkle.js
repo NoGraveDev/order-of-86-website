@@ -14,12 +14,13 @@
 
     const particles = [];
     const colors = ['#ffd700','#ffb800','#ffe066','#fff5cc','#ffffff','#ff9500','#c55bb7','#7b54c9'];
+    let rawMouseX = -100, rawMouseY = -100;
     let mouseX = -100, mouseY = -100, lastX = -100, lastY = -100;
 
-    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+    document.addEventListener('mousemove', e => { rawMouseX = e.clientX; rawMouseY = e.clientY; });
     document.addEventListener('touchmove', e => {
-        mouseX = e.touches[0].clientX;
-        mouseY = e.touches[0].clientY;
+        rawMouseX = e.touches[0].clientX;
+        rawMouseY = e.touches[0].clientY;
     }, { passive: true });
 
     function spawn(x, y, burst) {
@@ -61,6 +62,10 @@
     function animate() {
         requestAnimationFrame(animate);
         ctx.clearRect(0, 0, W, H);
+
+        // Smooth follow to match orb cursor position
+        mouseX += (rawMouseX - mouseX) * 0.35;
+        mouseY += (rawMouseY - mouseY) * 0.35;
 
         const dx = mouseX - lastX, dy = mouseY - lastY;
         const dist = Math.sqrt(dx*dx + dy*dy);
