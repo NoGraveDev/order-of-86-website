@@ -828,8 +828,8 @@
 
 <div class="container">
     <div class="search-section">
-        <h1 class="hero-title" style="margin-bottom:8px;">The Order of 86</h1>
-        <p class="hero-subtitle" style="margin-bottom:20px;">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninsphere.</p>
+        <h1 class="hero-title" style="margin-bottom:8px;text-align:center;">The Order of 86</h1>
+        <p class="hero-subtitle" style="margin-bottom:20px;text-align:center;">The 86 most powerful Wizard Dogs in Pawtheon, ancient wielders of the six Orders of magic, guardians of the Caninsphere.</p>
         <div class="stats-bar" id="statsBar"></div>
         <input type="text" class="search-box" placeholder="Search by ID, name, breed, realm…" id="searchInput" autocomplete="off">
         <div class="filter-row" id="filterRow">
@@ -1200,7 +1200,7 @@ filterDogs();
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
-    camera.position.set(0, 2, 100);
+    camera.position.set(0, 2, 75);
 
     // Lighting
     const ambient = new THREE.AmbientLight(0xffffff, 0.5);
