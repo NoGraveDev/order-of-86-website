@@ -2455,8 +2455,17 @@ if (!isMobile) {
 }
 
 setProgress(100);
-setTimeout(() => document.getElementById('loading').classList.add('done'), 500);
-setTimeout(() => { const hint = document.getElementById('hint'); if(hint) setTimeout(()=>hint.classList.add('hidden'), 5000); }, 2000);
+
+// Wait for first actual frame to render before hiding loading screen
+function hideLoadingAfterRender() {
+    composer.render(); // force first frame
+    requestAnimationFrame(() => {
+        document.getElementById('loading').classList.add('done');
+        const hint = document.getElementById('hint');
+        if(hint) setTimeout(()=>hint.classList.add('hidden'), 5000);
+    });
+}
+hideLoadingAfterRender();
 
 // ── Billboard Update for Dog PFP Planes ──
 let _billboardFrame = 0;
@@ -2756,5 +2765,7 @@ window.addEventListener('resize', () => {
     if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});}
 })();
 </script>
+<script src="sparkle.js"></script>
+<script src="moon-cursor.js"></script>
 </body>
 </html>
