@@ -481,8 +481,8 @@ const clock = new THREE.Clock();
 
 const renderer = new THREE.WebGLRenderer({ antialias:!isMobile, alpha:false, powerPreference:'high-performance' });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
+renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = !isMobile;
 renderer.shadowMap.type = isMobile ? THREE.BasicShadowMap : THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.1;
@@ -1078,21 +1078,24 @@ for (let i = 0; i < 6; i++) {
 scene.add(loyaltyGroup);
 
 // Update loyalty lines to follow moving moons
+let _loyaltyFrame = 0;
+const _loyaltyMid = new THREE.Vector3();
 function updateLoyaltyLines() {
+    if (++_loyaltyFrame % 60 !== 0) return; // update once per ~60 frames
     for (let i = 0; i < 6; i++) {
         const towerPos = towerPositions[i];
         const moonPos = moons[i].position;
-        const mid = new THREE.Vector3(
+        _loyaltyMid.set(
             (towerPos.x + moonPos.x) * 0.5,
             (towerPos.y + moonPos.y) * 0.5 + 30,
             (towerPos.z + moonPos.z) * 0.5
         );
-        const curve = new THREE.QuadraticBezierCurve3(towerPos, mid, moonPos);
+        const curve = new THREE.QuadraticBezierCurve3(towerPos, _loyaltyMid, moonPos);
         const pts = curve.getPoints(24);
         loyaltyLines[i].geometry.setFromPoints(pts);
         loyaltyLines[i].computeLineDistances();
-        loyaltyPaths[i].to = moonPos.clone();
-        loyaltyPaths[i].mid = mid;
+        loyaltyPaths[i].to.copy(moonPos);
+        loyaltyPaths[i].mid.copy(_loyaltyMid);
     }
 }
 
@@ -2441,25 +2444,27 @@ function updateFireflyBlink(time) {
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
-const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
-    0.4,   // strength
-    0.6,   // radius
-    0.85   // threshold
-);
-composer.addPass(bloomPass);
+if (!isMobile) {
+    const bloomPass = new UnrealBloomPass(
+        new THREE.Vector2(window.innerWidth, window.innerHeight),
+        0.4,   // strength
+        0.6,   // radius
+        0.85   // threshold
+    );
+    composer.addPass(bloomPass);
+}
 
 setProgress(100);
 setTimeout(() => document.getElementById('loading').classList.add('done'), 500);
 setTimeout(() => { const hint = document.getElementById('hint'); if(hint) setTimeout(()=>hint.classList.add('hidden'), 5000); }, 2000);
 
 // ── Billboard Update for Dog PFP Planes ──
+let _billboardFrame = 0;
 function updateBillboards() {
+    if (++_billboardFrame % 3 !== 0) return; // every 3rd frame
     for (const g of dogGroups) {
         g.traverse(child => {
             if (child.isMesh && child.userData.isBillboard) {
-                const worldPos = new THREE.Vector3();
-                child.getWorldPosition(worldPos);
                 child.lookAt(camera.position);
             }
         });
@@ -2680,49 +2685,54 @@ function updateCrystalLizards(time, delta) {
     }
 }
 
+let _animFrame = 0;
 function animate() {
     requestAnimationFrame(animate);
     const delta = clock.getDelta();
     const time = clock.getElapsedTime();
+    _animFrame++;
 
     controls.update();
-    updateParticles(delta);
+
+    // Stagger updates across frames to spread load
+    if (_animFrame % 2 === 0) updateParticles(delta);
     updateMoons(time);
-    updateLoyaltyLines();
+    updateLoyaltyLines(); // internally throttled to every 60 frames
     updateLoyaltyDots(time);
-    updateFireflyBlink(time);
+    if (_animFrame % 4 === 0) updateFireflyBlink(time);
 
-    // Only update water every few frames for performance
-    if (Math.floor(time*30) % 2 === 0) updateWater(time);
+    // Water: every 4th frame
+    if (_animFrame % 4 === 0) updateWater(time);
 
-    // Update dogs
+    // Dogs: every frame (visible bob), lizards: every 2nd
     updateDogs(time);
+    if (_animFrame % 2 === 0) updateCrystalLizards(time, delta);
 
-    // Update crystal lizards
-    updateCrystalLizards(time, delta);
-
-    // Billboard PFP planes to face camera
+    // Billboards: internally throttled
     updateBillboards();
 
-    // Castle flag wave animation
-    for (const flag of castleFlags) {
-        const pos = flag.geometry.attributes.position;
-        const origPos = flag.geometry.userData.origPos || pos.array.slice();
-        if (!flag.geometry.userData.origPos) flag.geometry.userData.origPos = origPos;
-        for (let v = 0; v < pos.count; v++) {
-            const x = origPos[v * 3];
-            pos.array[v * 3 + 1] = origPos[v * 3 + 1] + Math.sin(time * 3 + x * 2) * 0.2;
+    // Castle flag wave: every 3rd frame
+    if (_animFrame % 3 === 0) {
+        for (const flag of castleFlags) {
+            const pos = flag.geometry.attributes.position;
+            const origPos = flag.geometry.userData.origPos || (flag.geometry.userData.origPos = pos.array.slice());
+            for (let v = 0; v < pos.count; v++) {
+                const x = origPos[v * 3];
+                pos.array[v * 3 + 1] = origPos[v * 3 + 1] + Math.sin(time * 3 + x * 2) * 0.2;
+            }
+            pos.needsUpdate = true;
         }
-        pos.needsUpdate = true;
     }
 
-    // Distance-based label fading
-    if (Math.floor(time*10) % 3 === 0) updateLabelFade();
+    // Label fading: every 10th frame
+    if (_animFrame % 10 === 0) updateLabelFade();
 
-    // Tower orb pulse
-    for (const t of towers) {
-        const orb = t.children[2];
-        if (orb) orb.material.emissiveIntensity = 1.2 + Math.sin(time*2 + t.position.x)*0.5;
+    // Tower orb pulse: every 3rd frame
+    if (_animFrame % 3 === 0) {
+        for (const t of towers) {
+            const orb = t.children[2];
+            if (orb) orb.material.emissiveIntensity = 1.2 + Math.sin(time*2 + t.position.x)*0.5;
+        }
     }
 
     composer.render();
