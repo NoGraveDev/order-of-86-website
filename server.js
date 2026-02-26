@@ -1,9 +1,21 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { generateOGCard } = require('./og-card');
+const { renderWizardPage } = require('./wizard-page');
+
+// Load wizard data
+let wizardDogs = {};
+try {
+    wizardDogs = require('./wizards-data');
+    console.log(`Loaded ${Object.keys(wizardDogs).length} wizards from data file`);
+} catch (e) {
+    console.error('Failed to load wizard data:', e.message);
+}
 
 const PORT = process.env.PORT || 3000;
 const ROOT = __dirname;
+const BASE_URL = process.env.BASE_URL || 'https://theorderof86.com';
 
 const MIME = {
   '.html':'text/html','.css':'text/css','.js':'application/javascript',
@@ -12,7 +24,7 @@ const MIME = {
   '.json':'application/json','.woff2':'font/woff2','.webp':'image/webp'
 };
 
-// Rate limiter: 60 requests/min per IP
+// Rate limiter
 const rateMap = new Map();
 const RATE_WINDOW = 60000;
 const RATE_LIMIT = 60;
@@ -36,7 +48,7 @@ setInterval(() => {
     }
 }, 300000);
 
-http.createServer((req, res) => {
+http.createServer(async (req, res) => {
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
 
     if (!rateLimit(ip)) {
@@ -46,10 +58,54 @@ http.createServer((req, res) => {
     }
 
     let url = req.url.split('?')[0];
+
+    // ── Wizard individual page: /wizard/:id ──
+    const wizardMatch = url.match(/^\/wizard\/(\d+)$/);
+    if (wizardMatch) {
+        const dog = wizardDogs[wizardMatch[1]];
+        if (!dog) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Wizard not found');
+            return;
+        }
+        const html = renderWizardPage(dog, BASE_URL);
+        res.writeHead(200, {
+            'Content-Type': 'text/html',
+            'Cache-Control': 'public, max-age=3600'
+        });
+        res.end(html);
+        return;
+    }
+
+    // ── OG share card image: /wizard/:id/og.png ──
+    const ogMatch = url.match(/^\/wizard\/(\d+)\/og\.png$/);
+    if (ogMatch) {
+        const dog = wizardDogs[ogMatch[1]];
+        if (!dog) {
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Wizard not found');
+            return;
+        }
+        try {
+            const buf = await generateOGCard(dog);
+            res.writeHead(200, {
+                'Content-Type': 'image/png',
+                'Cache-Control': 'public, max-age=86400',
+                'Content-Length': buf.length
+            });
+            res.end(buf);
+        } catch (e) {
+            console.error('OG card error:', e);
+            res.writeHead(500, { 'Content-Type': 'text/plain' });
+            res.end('Error generating card');
+        }
+        return;
+    }
+
+    // ── Static files ──
     if (url === '/') url = '/index.html';
     if (!path.extname(url)) url += '.html';
 
-    // Path traversal protection
     const filePath = path.join(ROOT, url);
     const resolved = path.resolve(filePath);
     if (!resolved.startsWith(ROOT + path.sep) && resolved !== ROOT) {
@@ -76,4 +132,4 @@ http.createServer((req, res) => {
         });
         res.end(data);
     });
-}).listen(PORT, () => console.log(`Order of 86 on port ${PORT}`));
+}).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
