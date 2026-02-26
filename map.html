@@ -1086,7 +1086,7 @@ for (let i = 0; i < 6; i++) {
     line.computeLineDistances();
     loyaltyGroup.add(line);
     loyaltyLines.push(line);
-    loyaltyPaths.push({ from: towerPos, moonIdx: i });
+    loyaltyPaths.push({ from: towerPos, to: moonPos.clone(), mid: mid.clone(), moonIdx: i });
 }
 scene.add(loyaltyGroup);
 
@@ -1094,7 +1094,7 @@ scene.add(loyaltyGroup);
 let _loyaltyFrame = 0;
 const _loyaltyMid = new THREE.Vector3();
 function updateLoyaltyLines() {
-    if (++_loyaltyFrame % 60 !== 0) return; // update once per ~60 frames
+    if (++_loyaltyFrame % 10 !== 0) return; // update every ~10 frames to track orbiting moons
     for (let i = 0; i < 6; i++) {
         const towerPos = towerPositions[i];
         const moonPos = moons[i].position;
@@ -2656,7 +2656,7 @@ const realmSpawns = [
 
 realmSpawns.forEach(spawn => {
     // 1-2 on mobile, 2-3 on desktop
-    const count = isLowPower ? 1 : (2 + Math.floor(Math.random() * 2));
+    const count = 1; // keep it lean — one lizard per realm
     for (let i = 0; i < count; i++) {
         const offsetX = (Math.random() - 0.5) * 60;
         const offsetZ = (Math.random() - 0.5) * 60;
