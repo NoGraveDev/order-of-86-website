@@ -2606,8 +2606,8 @@ const realmSpawns = [
 ];
 
 realmSpawns.forEach(spawn => {
-    // 2-3 lizards per realm
-    const count = 2 + Math.floor(Math.random() * 2);
+    // 1-2 on mobile, 2-3 on desktop
+    const count = isMobile ? (1 + Math.floor(Math.random() * 2)) : (2 + Math.floor(Math.random() * 2));
     for (let i = 0; i < count; i++) {
         const offsetX = (Math.random() - 0.5) * 60;
         const offsetZ = (Math.random() - 0.5) * 60;
@@ -2670,12 +2670,13 @@ function updateCrystalLizards(time, delta) {
         // Crystal glow pulse
         liz.glow.intensity = 0.6 + Math.sin(time * 2 + liz.homeX) * 0.2;
 
-        // Crystal spike shimmer
-        liz.group.children.forEach(child => {
-            if (child.geometry && child.geometry.type === 'ConeGeometry') {
-                child.material.emissiveIntensity = 0.6 + Math.sin(time * 3 + child.position.x * 5) * 0.3;
+        // Crystal spike shimmer (spikes are children with y > 0.9)
+        for (let ci = 0; ci < liz.group.children.length; ci++) {
+            const child = liz.group.children[ci];
+            if (child.isMesh && child.position.y > 0.9) {
+                child.material.emissiveIntensity = 0.6 + Math.sin(time * 3 + ci * 2) * 0.3;
             }
-        });
+        }
     }
 }
 
