@@ -1,8 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const { generateOGCard } = require('./og-card');
 const { renderWizardPage } = require('./wizard-page');
+
+// ── In-memory static file cache + pre-compressed ──
+const fileCache = new Map();
 
 // Load wizard data
 let wizardDogs = {};
@@ -48,6 +52,35 @@ setInterval(() => {
     }
 }, 300000);
 
+// Compressible MIME types
+const COMPRESSIBLE = new Set([
+    'text/html','text/css','application/javascript','application/json',
+    'image/svg+xml'
+]);
+
+function sendResponse(req, res, statusCode, headers, body) {
+    const mime = headers['Content-Type'] || '';
+    const acceptEncoding = req.headers['accept-encoding'] || '';
+
+    if (COMPRESSIBLE.has(mime) && acceptEncoding.includes('gzip') && body.length > 256) {
+        zlib.gzip(body, (err, compressed) => {
+            if (err) {
+                res.writeHead(statusCode, headers);
+                res.end(body);
+            } else {
+                headers['Content-Encoding'] = 'gzip';
+                headers['Content-Length'] = compressed.length;
+                res.writeHead(statusCode, headers);
+                res.end(compressed);
+            }
+        });
+    } else {
+        if (Buffer.isBuffer(body)) headers['Content-Length'] = body.length;
+        res.writeHead(statusCode, headers);
+        res.end(body);
+    }
+}
+
 http.createServer(async (req, res) => {
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
 
@@ -69,11 +102,10 @@ http.createServer(async (req, res) => {
             return;
         }
         const html = renderWizardPage(dog, BASE_URL);
-        res.writeHead(200, {
+        sendResponse(req, res, 200, {
             'Content-Type': 'text/html',
             'Cache-Control': 'public, max-age=3600'
-        });
-        res.end(html);
+        }, Buffer.from(html));
         return;
     }
 
@@ -115,21 +147,36 @@ http.createServer(async (req, res) => {
     }
 
     const ext = path.extname(resolved);
-    fs.readFile(resolved, (err, data) => {
-        if (err) {
-            fs.readFile(path.join(ROOT, 'index.html'), (e, d) => {
-                res.writeHead(e ? 404 : 200, { 'Content-Type': 'text/html' });
-                res.end(e ? 'Not Found' : d);
-            });
-            return;
-        }
-        res.writeHead(200, {
+
+    // Check in-memory cache first
+    const cached = fileCache.get(resolved);
+    if (cached) {
+        sendResponse(req, res, 200, {
             'Content-Type': MIME[ext] || 'application/octet-stream',
             'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400',
             'X-Content-Type-Options': 'nosniff',
             'X-Frame-Options': 'SAMEORIGIN',
             'Referrer-Policy': 'strict-origin-when-cross-origin'
-        });
-        res.end(data);
+        }, cached);
+        return;
+    }
+
+    fs.readFile(resolved, (err, data) => {
+        if (err) {
+            fs.readFile(path.join(ROOT, 'index.html'), (e, d) => {
+                if (e) { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Not Found'); }
+                else sendResponse(req, res, 200, { 'Content-Type': 'text/html' }, d);
+            });
+            return;
+        }
+        // Cache static files under 512KB
+        if (data.length < 512 * 1024) fileCache.set(resolved, data);
+        sendResponse(req, res, 200, {
+            'Content-Type': MIME[ext] || 'application/octet-stream',
+            'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400',
+            'X-Content-Type-Options': 'nosniff',
+            'X-Frame-Options': 'SAMEORIGIN',
+            'Referrer-Policy': 'strict-origin-when-cross-origin'
+        }, data);
     });
 }).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
