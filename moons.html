@@ -25,9 +25,16 @@
     <meta name="twitter:title" content="Moons of Pawtheon, Order of 86">
     <meta name="twitter:description" content="Explore the mystical moons orbiting Pawtheon. Each moon holds ancient power and cosmic secrets tied to the 86 wizard dogs.">
     <meta name="twitter:image" content="https://theorderof86.com/og-image.jpg">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.162.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.162.0/examples/jsm/"
+        }
+    }
+    </script>
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
         :root {
             --color-bg: #000000;
             --color-surface: #1C1C1E;
@@ -37,7 +44,6 @@
             --color-text-secondary: #98989D;
             --color-text-tertiary: #636366;
             --color-border: rgba(255,255,255,0.08);
-            --color-separator: rgba(84,84,88,0.65);
             --color-accent: #c9a86c;
             --color-accent-bright: #ffd700;
             --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -51,393 +57,187 @@
             --transition-fast: 150ms cubic-bezier(0.25,0.1,0.25,1);
             --transition-normal: 300ms cubic-bezier(0.25,0.1,0.25,1);
         }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 72px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            -webkit-text-size-adjust: 100%;
-        }
-
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
         body {
             font-family: var(--font-sans);
-            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            background: #000;
             color: var(--color-text);
             min-height: 100vh;
             line-height: 1.5;
             overflow-x: hidden;
-            transition: background 0.5s ease;
             font-size: clamp(14px, 3.5vw, 18px);
             overscroll-behavior: none;
         }
 
-        /* ── Nav Bar ──────────────────────────────────────── */
-
-        /* ── Starfield ────────────────────────────────────── */
-        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-
-        /* ── Container ────────────────────────────────────── */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; position: relative; z-index: 1; }
-
-        /* ── Hero ─────────────────────────────────────────── */
-        .hero {
-            text-align: center;
-            padding: 48px 16px 16px;
+        /* ── Nav Bar ── */
+        .nav-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 clamp(16px, 3vw, 48px); padding-top: env(safe-area-inset-top);
+            height: 64px;
+            background: rgba(10, 10, 12, 0.55);
+            backdrop-filter: saturate(180%) blur(24px);
+            -webkit-backdrop-filter: saturate(180%) blur(24px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+            box-shadow: 0 1px 12px rgba(255, 215, 0, 0.03);
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
-        .hero-title {
-            font-size: clamp(2rem, 4.5vw, 3rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-            background: linear-gradient(135deg, var(--color-accent-bright) 0%, var(--color-accent) 40%, #e8d5a3 70%, var(--color-accent-bright) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 4s ease-in-out infinite;
+        .nav-bar.scrolled { background: rgba(10, 10, 12, 0.92); border-bottom-color: rgba(255, 215, 0, 0.15); }
+        .nav-logo {
+            font-size: 20px; font-weight: 700; color: #ffd700; text-decoration: none;
+            letter-spacing: 0.5px; text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            white-space: nowrap; flex-shrink: 0;
         }
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% center; }
-            50% { background-position: 200% center; }
+        .nav-logo:hover { text-shadow: 0 0 24px rgba(255, 215, 0, 0.5), 0 0 48px rgba(255, 215, 0, 0.2); }
+        .nav-links { display: flex; align-items: center; gap: 4px; }
+        .nav-links a {
+            position: relative; color: rgba(245, 245, 247, 0.55); text-decoration: none;
+            font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+            padding: 8px 16px; transition: color 0.3s ease; -webkit-tap-highlight-color: transparent;
         }
-        .hero-subtitle {
-            font-size: clamp(0.95rem, 1.8vw, 1.15rem);
-            color: var(--color-text-secondary);
-            margin-top: 10px;
-            max-width: 540px;
-            margin-left: auto;
-            margin-right: auto;
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 16px; right: 16px; height: 2px;
+            background: #ffd700; border-radius: 1px; transform: scaleX(0); transform-origin: left;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
         }
-        .accent-bar {
-            height: 3px;
-            border-radius: 2px;
-            margin: 14px auto 24px;
-            width: 160px;
-            transition: background 0.5s ease;
+        .nav-links a:hover { color: rgba(245, 245, 247, 0.9); }
+        .nav-links a:hover::after { transform: scaleX(1); }
+        .nav-links a.active { color: #ffd700; }
+        .nav-links a.active::after { transform: scaleX(1); box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+        .nav-hamburger {
+            display: none; width: 44px; height: 44px; align-items: center; justify-content: center;
+            background: none; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; padding: 0; flex-shrink: 0;
         }
-
-        /* ── Orbit Layout ─────────────────────────────────── */
-        .orbit-wrapper { display: flex; justify-content: center; padding: 20px 0 50px; }
-        .orbit-ring { position: relative; width: 560px; height: 560px; }
-        .orbit-ring::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 420px; height: 420px;
-            transform: translate(-50%, -50%);
-            border: 1px dashed rgba(255,255,255,0.08);
-            border-radius: 50%;
+        .nav-hamburger-lines { width: 22px; height: 16px; position: relative; }
+        .nav-hamburger-lines span {
+            display: block; position: absolute; width: 100%; height: 2px; background: #F5F5F7;
+            border-radius: 1px; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .nav-hamburger-lines span:nth-child(1) { top: 0; }
+        .nav-hamburger-lines span:nth-child(2) { top: 7px; }
+        .nav-hamburger-lines span:nth-child(3) { top: 14px; }
+        .nav-hamburger.is-open .nav-hamburger-lines span:nth-child(1) { top: 7px; transform: rotate(45deg); }
+        .nav-hamburger.is-open .nav-hamburger-lines span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .nav-hamburger.is-open .nav-hamburger-lines span:nth-child(3) { top: 7px; transform: rotate(-45deg); }
+        .nav-mobile-overlay {
+            position: fixed; top: 64px; left: 0; right: 0; z-index: 99;
+            background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+            padding: 8px 0 16px; display: flex; flex-direction: column;
+            transform: translateY(-110%); opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
             pointer-events: none;
         }
-        .moon-slot {
-            position: absolute;
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            transform: translate(-50%, -50%);
+        .nav-mobile-overlay.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+        .nav-mobile-overlay a {
+            color: rgba(245, 245, 247, 0.6); text-decoration: none; font-size: 15px; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 32px;
+            transition: color 0.2s ease, background 0.2s ease; -webkit-tap-highlight-color: transparent;
         }
-        .moon-slot .moon-wrap { position: relative; }
-        .moon-slot .moon-glow {
-            position: absolute; inset: -14px; border-radius: 50%;
-            filter: blur(16px); opacity: 0; pointer-events: none;
-            transition: opacity 1s ease;
-        }
-        .moon-slot .moon-body {
-            width: 90px; height: 90px; border-radius: 50%;
-            position: relative; overflow: hidden;
-        }
-        .moon-slot .moon-body canvas { width: 100%; height: 100%; display: block; }
-        .moon-slot .moon-name {
-            font-weight: 700; font-size: 13px; text-align: center;
-            transition: color 1s ease, opacity 1s ease;
-        }
-        .moon-slot .moon-phase {
-            font-size: 11px; color: #777; text-align: center;
-            min-height: 1em; transition: color 1s ease;
-        }
-        .moon-slot.palehowl .moon-body { width: 52px; height: 52px; }
-        .moon-slot.palehowl .moon-glow { inset: -10px; filter: blur(12px); }
-        .moon-slot.palehowl .moon-body canvas { width: 52px; height: 52px; }
+        .nav-mobile-overlay a:hover, .nav-mobile-overlay a:active { color: #F5F5F7; background: rgba(255,255,255,0.04); }
+        .nav-mobile-overlay a.active { color: #ffd700; }
+        @media (max-width: 768px) { .nav-links { display: none; } .nav-hamburger { display: flex; } }
+        .nav-spacer { height: 64px; padding-top: env(safe-area-inset-top); }
 
-        /* ── Lore Sections (Glass Cards) ──────────────────── */
-        .lore-card {
-            background: rgba(28,28,30,0.72);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            padding: 32px;
-            margin: 24px 0;
-            box-shadow: var(--shadow-sm);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-            will-change: transform;
+        /* ── Three.js Canvas ── */
+        #orrery-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+
+        /* ── Scene Overlay Title ── */
+        .scene-title {
+            position: fixed; top: 80px; left: 0; right: 0; text-align: center; z-index: 10;
+            pointer-events: none; user-select: none;
         }
-        .lore-card.visible { opacity: 1; transform: translateY(0); }
-        .lore-card h2 {
-            font-size: 24px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            color: var(--color-accent-bright);
-            letter-spacing: -0.01em;
+        .scene-title h1 {
+            font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: 0.15em;
+            background: linear-gradient(135deg, #ffd700 0%, #c9a86c 40%, #e8d5a3 70%, #ffd700 100%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: shimmer 4s ease-in-out infinite;
+        }
+        .scene-title p {
+            font-size: clamp(0.85rem, 1.6vw, 1.1rem); color: rgba(245,245,247,0.5);
+            margin-top: 6px; letter-spacing: 0.05em;
+        }
+        @keyframes shimmer { 0%,100% { background-position: 0% center; } 50% { background-position: 200% center; } }
+
+        /* ── Info Panel ── */
+        .info-panel {
+            position: fixed; top: 0; right: 0; width: 400px; height: 100vh; z-index: 50;
+            background: rgba(20, 20, 24, 0.85); backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto; padding: 80px 32px 32px;
+            box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+        }
+        .info-panel.open { transform: translateX(0); }
+        .info-panel-close {
+            position: absolute; top: 20px; right: 20px; width: 36px; height: 36px;
+            border-radius: 50%; border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.06); color: #fff; font-size: 18px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s; z-index: 2;
+        }
+        .info-panel-close:hover { background: rgba(255,255,255,0.15); }
+        .info-panel .moon-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .info-panel .moon-icon { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; }
+        .info-panel .moon-title { font-size: 24px; font-weight: 800; }
+        .info-panel .moon-order { font-size: 13px; color: var(--color-text-secondary); letter-spacing: 0.05em; text-transform: uppercase; }
+        .info-panel .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .info-panel .info-label { color: var(--color-text-secondary); font-size: 13px; }
+        .info-panel .info-value { font-weight: 600; font-size: 14px; }
+        .phase-bar-wrap { margin: 16px 0; }
+        .phase-bar-bg { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; }
+        .phase-bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+        .info-panel .lore-text { margin-top: 20px; color: var(--color-text-secondary); font-size: 14px; line-height: 1.7; font-style: italic; }
+
+        @media (max-width: 768px) {
+            .info-panel {
+                top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 70vh;
+                border-left: none; border-top: 1px solid rgba(255,255,255,0.08);
+                border-radius: 20px 20px 0 0; transform: translateY(100%);
+                padding: 24px 20px 40px;
+            }
+            .info-panel.open { transform: translateY(0); }
+            .info-panel-close { top: 12px; right: 12px; }
         }
 
-        .mechanic {
-            margin-bottom: 20px;
-            padding: 16px;
-            background: var(--color-surface-2);
-            border-radius: var(--radius-md);
-            border-left: 3px solid rgba(255,255,255,0.12);
+        /* ── Moon Cards Grid (SEO) ── */
+        .moon-cards-section {
+            position: relative; z-index: 5; max-width: 1100px; margin: 0 auto;
+            padding: 40px 16px 80px;
         }
-        .mechanic h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--color-text);
+        .moon-cards-section h2 {
+            text-align: center; font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 800;
+            color: var(--color-accent-bright); margin-bottom: 32px;
         }
-        .mechanic p {
-            color: var(--color-text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .shard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        .moon-cards-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
-            margin-top: 20px;
         }
-        .shard-card {
-            background: var(--color-surface-2);
-            border-radius: var(--radius-md);
-            padding: 20px;
-            border: 1px solid var(--color-border);
+        .moon-card {
+            background: rgba(28,28,30,0.72); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border); padding: 24px;
             transition: transform var(--transition-normal), box-shadow var(--transition-normal);
         }
-        @media (hover: hover) {
-            .shard-card:hover {
-                transform: translateY(-3px);
-                box-shadow: var(--shadow-md);
-            }
-        }
-        .shard-card:active { transform: scale(0.98); }
-        .shard-card h4 { margin-bottom: 6px; font-size: 15px; font-weight: 700; }
-        .shard-card p { color: var(--color-text-secondary); font-size: 13px; line-height: 1.5; }
-        .shard-intro { margin-bottom: 20px; color: var(--color-text-secondary); font-size: 14px; line-height: 1.6; }
+        @media (hover: hover) { .moon-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); } }
+        .moon-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .moon-card .card-order { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+        .moon-card .card-stats { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px; }
+        .moon-card .card-lore { font-size: 13px; color: var(--color-text-tertiary); line-height: 1.6; }
 
-        /* ── Responsive ───────────────────────────────────── */
-        @media (max-width: 768px) {
-            .orbit-ring { width: 340px; height: 340px; }
-            .orbit-ring::before { width: 250px; height: 250px; }
-            .moon-slot .moon-body { width: 56px; height: 56px; }
-            .moon-slot .moon-glow { inset: -10px; filter: blur(10px); }
-            .moon-slot.palehowl .moon-body { width: 36px; height: 36px; }
-            .moon-slot .moon-name { font-size: 11px; }
-            .moon-slot .moon-phase { font-size: 10px; }
-            .lore-card { padding: 20px; }
-            .shard-grid { grid-template-columns: 1fr; }
-            .hero { padding: 32px 16px 12px; }
+        /* ── Scroll indicator ── */
+        .scroll-hint {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
+            color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+            pointer-events: none; animation: bob 2s ease-in-out infinite;
         }
-        @media (max-width: 480px) {
-            .orbit-ring { width: 280px; height: 280px; }
-            .orbit-ring::before { width: 200px; height: 200px; }
-            .moon-slot .moon-body { width: 44px; height: 44px; }
-            .moon-slot.palehowl .moon-body { width: 28px; height: 28px; }
-            .moon-slot .moon-name { font-size: 10px; }
-            .moon-slot .moon-phase { font-size: 9px; }
-            .lore-card { padding: 16px; }
-            .mechanic { padding: 12px; }
-        }
+        @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
 
         @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
         }
-
-        /* bottom spacing */
-        .page-bottom { height: 64px; }
-    
-/* ── Modern Glassmorphism Nav ─────────────────────── */
-.nav-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 clamp(16px, 3vw, 48px);
-    padding-top: env(safe-area-inset-top);
-    height: 64px;
-    background: rgba(10, 10, 12, 0.55);
-    backdrop-filter: saturate(180%) blur(24px);
-    -webkit-backdrop-filter: saturate(180%) blur(24px);
-    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-    box-shadow: 0 1px 12px rgba(255, 215, 0, 0.03);
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-}
-.nav-bar.scrolled {
-    background: rgba(10, 10, 12, 0.92);
-    border-bottom-color: rgba(255, 215, 0, 0.15);
-    box-shadow: 0 2px 20px rgba(255, 215, 0, 0.06);
-}
-.nav-logo {
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffd700;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.1);
-    transition: text-shadow 0.3s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-.nav-logo:hover {
-    text-shadow: 0 0 24px rgba(255, 215, 0, 0.5), 0 0 48px rgba(255, 215, 0, 0.2);
-}
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-.nav-links a {
-    position: relative;
-    color: rgba(245, 245, 247, 0.55);
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 8px 16px;
-    transition: color 0.3s ease;
-    -webkit-tap-highlight-color: transparent;
-}
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 16px;
-    right: 16px;
-    height: 2px;
-    background: #ffd700;
-    border-radius: 1px;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
-}
-.nav-links a:hover {
-    color: rgba(245, 245, 247, 0.9);
-}
-.nav-links a:hover::after {
-    transform: scaleX(1);
-}
-.nav-links a.active {
-    color: #ffd700;
-}
-.nav-links a.active::after {
-    transform: scaleX(1);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-}
-
-/* ── Hamburger ──────────────────────────────────────── */
-.nav-hamburger {
-    display: none;
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-    padding: 0;
-    flex-shrink: 0;
-}
-.nav-hamburger-lines {
-    width: 22px;
-    height: 16px;
-    position: relative;
-}
-.nav-hamburger-lines span {
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: #F5F5F7;
-    border-radius: 1px;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.nav-hamburger-lines span:nth-child(1) { top: 0; }
-.nav-hamburger-lines span:nth-child(2) { top: 7px; }
-.nav-hamburger-lines span:nth-child(3) { top: 14px; }
-.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(1) {
-    top: 7px; transform: rotate(45deg);
-}
-.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(2) {
-    opacity: 0; transform: scaleX(0);
-}
-.nav-hamburger.is-open .nav-hamburger-lines span:nth-child(3) {
-    top: 7px; transform: rotate(-45deg);
-}
-
-/* ── Mobile Menu ────────────────────────────────────── */
-.nav-mobile-overlay {
-    position: fixed;
-    top: 64px;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    background: rgba(10, 10, 12, 0.85);
-    backdrop-filter: blur(40px) saturate(180%);
-    -webkit-backdrop-filter: blur(40px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-    padding: 8px 0 16px;
-    display: flex;
-    flex-direction: column;
-    transform: translateY(-110%);
-    opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
-    pointer-events: none;
-}
-.nav-mobile-overlay.open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-}
-.nav-mobile-overlay a {
-    color: rgba(245, 245, 247, 0.6);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 14px 32px;
-    transition: color 0.2s ease, background 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-}
-.nav-mobile-overlay a:hover,
-.nav-mobile-overlay a:active {
-    color: #F5F5F7;
-    background: rgba(255, 255, 255, 0.04);
-}
-.nav-mobile-overlay a.active {
-    color: #ffd700;
-}
-
-/* ── Mobile Responsive ──────────────────────────────── */
-@media (max-width: 768px) {
-    .nav-links { display: none; }
-    .nav-hamburger { display: flex; }
-}
-
-/* ── Nav Spacer (push content below fixed nav) ──────── */
-.nav-spacer { height: 64px; padding-top: env(safe-area-inset-top); }
-
     </style>
 </head>
 <body>
@@ -462,413 +262,359 @@
     <a href="lore.html">Lore</a>
     <a href="content.html">Content</a>
 </div>
-<div class="nav-spacer"></div>
 
-<canvas id="starfield"></canvas>
+<canvas id="orrery-canvas"></canvas>
 
-<div class="container">
-    <section class="hero">
-        <h1 class="hero-title">Moons of Pawtheon</h1>
-        <div class="hero-subtitle">Seven celestial bodies govern the tides of magic across the Caninsphere</div>
-        <div class="accent-bar" id="accentBar"></div>
-    </section>
+<div class="scene-title">
+    <h1>THE CANINOSPHERE</h1>
+    <p>The Seven Moons of Pawtheon</p>
+</div>
 
-    <div class="orbit-wrapper">
-        <div class="orbit-ring" id="orbitRing"></div>
-    </div>
+<!-- Info Panel -->
+<div class="info-panel" id="infoPanel">
+    <button class="info-panel-close" id="infoPanelClose">✕</button>
+    <div id="infoPanelContent"></div>
+</div>
 
-    <div class="lore-card animate-on-scroll">
-        <h2>☽ Moon Mechanics</h2>
-        <div class="mechanic">
-            <h3>🌕 Full Moon, Peak Power</h3>
-            <p>When a moon reaches fullness, its aligned Order surges to maximum strength. Spells carry double resonance, and the Loyalty Network hums with amplified energy.</p>
-        </div>
-        <div class="mechanic">
-            <h3>🌑 New Moon, Lowest Ebb</h3>
-            <p>At new moon, the Order's magic dims to a whisper. Bonds stretch thin, spells fizzle, and the Loyalty Network transmits only the faintest signals.</p>
-        </div>
-        <div class="mechanic">
-            <h3>🌘 Eclipse, Destabilization</h3>
-            <p>When one moon passes before another, both Orders destabilize. Magic becomes unpredictable, spells may invert, bonds may sever. Feared and studied in equal measure.</p>
-        </div>
-        <div class="mechanic">
-            <h3>✨ Conjunction, Joint Magic</h3>
-            <p>Two moons full simultaneously unlock joint magic of extraordinary power. Flame-Wild conjunctions grow fire-resistant forests. Deep-Arcane conjunctions reveal truths hidden across time.</p>
-        </div>
-        <div class="mechanic">
-            <h3>🌟 Septenary Alignment, The Grand Convergence</h3>
-            <p>Once per century, all seven moons align at fullness. The Loyalty Network maxes out. Palehowl, the weakest moon, blazes brightest of all, channeling combined light through every common dog in Pawtheon.</p>
-        </div>
-    </div>
+<div class="scroll-hint" id="scrollHint">↓ Scroll for details ↓</div>
 
-    <div class="lore-card animate-on-scroll">
-        <h2>💎 Moon Shards</h2>
-        <p class="shard-intro">Crystallized moonlight fragments, the most valuable objects in the Caninsphere after the 86 Wizard Hats. Each shard carries a fraction of its moon's power and glows with its color forever.</p>
-        <div class="shard-grid">
-            <div class="shard-card" style="border-left:3px solid #FF6B00;"><h4 style="color:#FF6B00;">🟠 Emberhowl Shards</h4><p>Warm to the touch, never cool. Forge weapons that never lose their edge.</p></div>
-            <div class="shard-card" style="border-left:3px solid #FFD700;"><h4 style="color:#FFD700;">🟡 Solaris Shards</h4><p>Glow like trapped sunlight. Used in healing lamps and truth lanterns.</p></div>
-            <div class="shard-card" style="border-left:3px solid #1E90FF;"><h4 style="color:#1E90FF;">🔵 Deepwell Shards</h4><p>Cold and heavy. Used in scrying pools and prophecy mirrors. They hum when the future shifts.</p></div>
-            <div class="shard-card" style="border-left:3px solid #2ECC40;"><h4 style="color:#2ECC40;">🟢 Evergreen Shards</h4><p>Sprout tiny leaves when held. Buried ones create permanent groves.</p></div>
-            <div class="shard-card" style="border-left:3px solid #9B59B6;"><h4 style="color:#9B59B6;">🟣 Umbra Shards</h4><p>Shift between translucent and opaque. Whisper formulas when held to the ear.</p></div>
-            <div class="shard-card" style="border-left:3px solid #FF69B4;"><h4 style="color:#FF69B4;">🩷 Roseglow Shards</h4><p>Pulse like a heartbeat. Two dogs holding matching shards feel each other across any distance.</p></div>
-            <div class="shard-card" style="border-left:3px solid #C0C0C0;"><h4 style="color:#C0C0C0;">⚪ Palehowl Shards</h4><p>The rarest of all. A single shard can amplify any other shard's power tenfold.</p></div>
-        </div>
-    </div>
-
-    <div class="page-bottom"></div>
+<!-- SEO Moon Cards -->
+<div class="moon-cards-section" id="moonCardsSection">
+    <h2>☽ The Seven Moons</h2>
+    <div class="moon-cards-grid" id="moonCardsGrid"></div>
 </div>
 
 <script>
-// === Mobile Nav (handled by unified nav script) ===
+// Nav logic
+const hamburger = document.getElementById('navHamburger');
+const mobileMenu = document.getElementById('navMobileMenu');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('is-open');
+    mobileMenu.classList.toggle('open');
+});
+window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
+    const hint = document.getElementById('scrollHint');
+    if (hint && window.scrollY > 50) hint.style.opacity = '0';
+});
+</script>
 
-// === Scroll-triggered animations ===
-const scrollObserver = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            scrollObserver.unobserve(e.target);
-        }
-    });
-}, { threshold: 0.1 });
-document.querySelectorAll('.animate-on-scroll').forEach(el => scrollObserver.observe(el));
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// === MOON PHASE RENDERING ===
 const MOONS = [
-    { name: 'Emberhowl',  color: '#FF6B00', title: 'The Flame',   cycle: 18, wizards: 18, emoji: '🟠' },
-    { name: 'Solaris',     color: '#FFD700', title: 'The Radiant', cycle: 12, wizards: 12, emoji: '🟡' },
-    { name: 'Deepwell',    color: '#1E90FF', title: 'The Deep',    cycle: 13, wizards: 13, emoji: '🔵' },
-    { name: 'Evergreen',   color: '#2ECC40', title: 'The Wild',    cycle: 18, wizards: 18, emoji: '🟢' },
-    { name: 'Umbra',       color: '#9B59B6', title: 'The Arcane',  cycle: 14, wizards: 14, emoji: '🟣' },
-    { name: 'Roseglow',    color: '#FF69B4', title: 'The Heart',   cycle: 11, wizards: 11, emoji: '🩷' },
-    { name: 'Palehowl',    color: '#C0C0C0', title: 'The Wanderer',cycle: 30, wizards: 0,  emoji: '⚪', erratic: true },
+    { name: 'Emberhowl', order: 'Flame', color: '#FF6B00', cycle: 18, wizards: 18, radius: 4.5, inclination: 0.1, size: 0.35,
+      lore: "Tied to the Flame Order. Its 18-day cycle matches its 18 Wizards. When full, Flame magic surges through the Forge Spire and volcanic energy peaks across the Ember Wastes. When new, Flame Wizards rely on raw skill and pack bonds." },
+    { name: 'Solaris', order: 'Radiant', color: '#F1C40F', cycle: 12, wizards: 12, radius: 6.0, inclination: -0.15, size: 0.32,
+      lore: "Tied to the Radiant Order. Its 12-day cycle, the shortest of the Order moons, creates rapid power fluctuations. The Crystal Spires of Sunward Heights blaze brightest under a full Solaris. Radiant Wizards experience the most dramatic power swings." },
+    { name: 'Deepwell', order: 'Deep', color: '#3498DB', cycle: 13, wizards: 13, radius: 7.5, inclination: 0.2, size: 0.33,
+      lore: "Tied to the Deep Order. Its 13-day cycle governs prophecy and ocean magic. When full, Tidewatch Tower's waters rise and Deep Wizards see furthest into the future. When new, the Abyssal Reaches fall eerily silent." },
+    { name: 'Evergreen', order: 'Wild', color: '#2ECC71', cycle: 18, wizards: 18, radius: 9.0, inclination: -0.08, size: 0.34,
+      lore: "Tied to the Wild Order. Its 18-day cycle mirrors Emberhowl's, creating a fire-and-growth resonance. When full, the Heartwood tree grows visibly. When new, the forest conserves energy, drawing inward." },
+    { name: 'Umbra', order: 'Arcane', color: '#9B6EFF', cycle: 14, wizards: 14, radius: 10.5, inclination: 0.25, size: 0.3,
+      lore: "Tied to the Arcane Order. Its 14-day cycle governs theoretical magic and dimensional research. When full, the Violet Citadel's archives glow with autonomous magical energy. When new, Arcane Wizards must rely on studied technique." },
+    { name: 'Roseglow', order: 'Heart', color: '#FF69B4', cycle: 11, wizards: 11, radius: 12.0, inclination: -0.18, size: 0.31,
+      lore: "Tied to the Heart Order. Its 11-day cycle, the fastest Order moon, creates the most frequent power surges. The Heartstring Tower resonates constantly. Heart Wizards ride emotional waves that never fully calm." },
+    { name: 'Palehowl', order: 'Starter', color: '#dddddd', cycle: 30, wizards: 0, radius: 14.0, inclination: 0.12, size: 0.2,
+      lore: "The smallest, dimmest moon. The seventh tone of the First Howl, carrying not power but possibility. It provides baseline magic to all non-wizard dogs. Weak individually, but it touches EVERYONE. The Wanderer resonates with Palehowl." },
 ];
 
-const offsets = [0, 3.2, 6.1, 1.5, 8.7, 4.4, 12.0];
+const isMobile = window.innerWidth < 768;
+const canvas = document.getElementById('orrery-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: !isMobile, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = false;
 
-// === Realistic Starfield with Shooting Stars ===
-(function(){
-    const c = document.getElementById('starfield'), ctx = c.getContext('2d');
-    let W, H;
-    
-    // Multi-layer stars for depth
-    const layers = [
-        { count: 400, minR: 0.2, maxR: 0.6, minA: 0.15, maxA: 0.4, speed: 0.003 },  // distant dim
-        { count: 200, minR: 0.5, maxR: 1.2, minA: 0.3, maxA: 0.7, speed: 0.008 },    // mid
-        { count: 60,  minR: 1.0, maxR: 2.0, minA: 0.5, maxA: 1.0, speed: 0.015 },    // bright close
-    ];
-    let allStars = [];
-    
-    // Colored bright stars (realistic: blue, white, yellow, orange tints)
-    const starColors = [
-        [255,255,255], [200,220,255], [255,240,220], [255,200,150],
-        [180,200,255], [255,255,230], [255,220,180], [220,230,255]
-    ];
-    
-    // Shooting stars
-    let shootingStars = [];
-    const SHOOT_INTERVAL = 3000; // avg ms between shooting stars
-    let lastShoot = 0;
-    
-    function makeShootingStar() {
-        const startX = Math.random() * W * 0.8;
-        const startY = Math.random() * H * 0.4;
-        const angle = Math.PI * 0.15 + Math.random() * Math.PI * 0.2; // roughly diagonal
-        const speed = 8 + Math.random() * 12;
-        const len = 80 + Math.random() * 120;
-        return {
-            x: startX, y: startY, angle, speed, len,
-            life: 1.0, decay: 0.015 + Math.random() * 0.01,
-            brightness: 0.7 + Math.random() * 0.3,
-            width: 1 + Math.random() * 1.5
-        };
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+scene.fog = new THREE.FogExp2(0x000000, 0.012);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(12, 8, 18);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 6;
+controls.maxDistance = 50;
+controls.maxPolarAngle = Math.PI * 0.85;
+controls.target.set(0, 0, 0);
+
+// Ambient light
+scene.add(new THREE.AmbientLight(0x222233, 0.5));
+const sunLight = new THREE.DirectionalLight(0xffeedd, 1.2);
+sunLight.position.set(20, 15, 10);
+scene.add(sunLight);
+
+// ── Stars ──
+const starCount = isMobile ? 1000 : 2000;
+const starGeo = new THREE.BufferGeometry();
+const starPos = new Float32Array(starCount * 3);
+for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 160;
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15, sizeAttenuation: true })));
+
+// ── Pawtheon (central planet) ──
+const planetSegs = isMobile ? 32 : 48;
+const planetGeo = new THREE.SphereGeometry(2.2, planetSegs, planetSegs);
+// Vertex colors for land/ocean
+const colors = new Float32Array(planetGeo.attributes.position.count * 3);
+const posArr = planetGeo.attributes.position.array;
+for (let i = 0; i < planetGeo.attributes.position.count; i++) {
+    const y = posArr[i * 3 + 1];
+    const n = Math.sin(posArr[i * 3] * 3.1) * Math.cos(posArr[i * 3 + 2] * 2.7) * 0.5 + 0.5;
+    const landChance = n + y * 0.15;
+    if (landChance > 0.55) {
+        // Land: greens/browns
+        const t = Math.random();
+        colors[i*3] = 0.15 + t * 0.25; colors[i*3+1] = 0.35 + t * 0.3; colors[i*3+2] = 0.1 + t * 0.1;
+    } else {
+        // Ocean: blues
+        const t = Math.random() * 0.3;
+        colors[i*3] = 0.05 + t * 0.1; colors[i*3+1] = 0.15 + t * 0.2; colors[i*3+2] = 0.4 + t * 0.35;
     }
-    
-    function resize(){
-        W = c.width = innerWidth; H = c.height = innerHeight;
-        allStars = [];
-        for (const L of layers) {
-            for (let i = 0; i < L.count; i++) {
-                const col = starColors[Math.floor(Math.random() * starColors.length)];
-                allStars.push({
-                    x: Math.random() * W, y: Math.random() * H,
-                    r: L.minR + Math.random() * (L.maxR - L.minR),
-                    a: L.minA + Math.random() * (L.maxA - L.minA),
-                    baseA: L.minA + Math.random() * (L.maxA - L.minA),
-                    twinkleSpeed: L.speed * (0.5 + Math.random()),
-                    twinklePhase: Math.random() * Math.PI * 2,
-                    col
-                });
-            }
-        }
+}
+planetGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+const planet = new THREE.Mesh(planetGeo, new THREE.MeshStandardMaterial({
+    vertexColors: true, roughness: 0.8, metalness: 0.1
+}));
+scene.add(planet);
+
+// ── Orbit Rings (dashed) ──
+MOONS.forEach(m => {
+    const pts = [];
+    for (let i = 0; i <= 128; i++) {
+        const a = (i / 128) * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * m.radius, Math.sin(m.inclination) * Math.sin(a) * m.radius * 0.15, Math.sin(a) * m.radius));
     }
-    resize(); addEventListener('resize', resize);
-    
-    let time = 0;
-    (function draw(){
-        time += 0.016;
-        ctx.clearRect(0, 0, W, H);
-        
-        // Subtle nebula glow patches
-        const grd1 = ctx.createRadialGradient(W*0.2, H*0.3, 0, W*0.2, H*0.3, W*0.35);
-        grd1.addColorStop(0, 'rgba(30,20,60,0.08)');
-        grd1.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grd1; ctx.fillRect(0,0,W,H);
-        
-        const grd2 = ctx.createRadialGradient(W*0.75, H*0.6, 0, W*0.75, H*0.6, W*0.3);
-        grd2.addColorStop(0, 'rgba(20,30,50,0.06)');
-        grd2.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grd2; ctx.fillRect(0,0,W,H);
-        
-        // Draw stars
-        for (const s of allStars) {
-            const twinkle = Math.sin(time * s.twinkleSpeed + s.twinklePhase);
-            const a = Math.max(0.05, s.baseA + twinkle * s.baseA * 0.5);
-            
-            // Glow for brighter stars
-            if (s.r > 1.2) {
-                const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 4);
-                glow.addColorStop(0, `rgba(${s.col[0]},${s.col[1]},${s.col[2]},${(a*0.15).toFixed(3)})`);
-                glow.addColorStop(1, 'rgba(0,0,0,0)');
-                ctx.fillStyle = glow;
-                ctx.fillRect(s.x - s.r*4, s.y - s.r*4, s.r*8, s.r*8);
-            }
-            
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(${s.col[0]},${s.col[1]},${s.col[2]},${a.toFixed(3)})`;
-            ctx.fill();
-        }
-        
-        // Spawn shooting stars
-        if (time * 1000 - lastShoot > SHOOT_INTERVAL + Math.random() * 2000) {
-            shootingStars.push(makeShootingStar());
-            lastShoot = time * 1000;
-            // Occasionally spawn a double
-            if (Math.random() < 0.2) {
-                setTimeout(() => shootingStars.push(makeShootingStar()), 200 + Math.random() * 400);
-            }
-        }
-        
-        // Draw shooting stars
-        for (let i = shootingStars.length - 1; i >= 0; i--) {
-            const ss = shootingStars[i];
-            ss.x += Math.cos(ss.angle) * ss.speed;
-            ss.y += Math.sin(ss.angle) * ss.speed;
-            ss.life -= ss.decay;
-            
-            if (ss.life <= 0 || ss.x > W + 50 || ss.y > H + 50) {
-                shootingStars.splice(i, 1);
-                continue;
-            }
-            
-            const tailX = ss.x - Math.cos(ss.angle) * ss.len * ss.life;
-            const tailY = ss.y - Math.sin(ss.angle) * ss.len * ss.life;
-            
-            const grad = ctx.createLinearGradient(tailX, tailY, ss.x, ss.y);
-            grad.addColorStop(0, `rgba(255,255,255,0)`);
-            grad.addColorStop(0.6, `rgba(200,220,255,${(ss.life * ss.brightness * 0.3).toFixed(3)})`);
-            grad.addColorStop(1, `rgba(255,255,255,${(ss.life * ss.brightness).toFixed(3)})`);
-            
-            ctx.beginPath();
-            ctx.moveTo(tailX, tailY);
-            ctx.lineTo(ss.x, ss.y);
-            ctx.strokeStyle = grad;
-            ctx.lineWidth = ss.width * ss.life;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-            
-            // Bright head glow
-            const headGlow = ctx.createRadialGradient(ss.x, ss.y, 0, ss.x, ss.y, 6);
-            headGlow.addColorStop(0, `rgba(255,255,255,${(ss.life * ss.brightness * 0.6).toFixed(3)})`);
-            headGlow.addColorStop(1, 'rgba(255,255,255,0)');
-            ctx.fillStyle = headGlow;
-            ctx.fillRect(ss.x - 6, ss.y - 6, 12, 12);
-        }
-        
-        requestAnimationFrame(draw);
-    })();
-})();
-
-// === Build moon DOM ===
-const ring = document.getElementById('orbitRing');
-const ringW = () => ring.getBoundingClientRect().width;
-const ringH = () => ring.getBoundingClientRect().height;
-
-function hexToRgb(h){ return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
-
-const moonEls = MOONS.map((m, i) => {
-    const isPale = i === 6;
-    const size = isPale ? 52 : 90;
-    const res = size * 2;
-    const slot = document.createElement('div');
-    slot.className = 'moon-slot' + (isPale ? ' palehowl' : '');
-    slot.innerHTML = `
-        <div class="moon-wrap">
-            <div class="moon-glow" style="background:${m.color};"></div>
-            <div class="moon-body">
-                <canvas width="${res}" height="${res}"></canvas>
-            </div>
-        </div>
-        <div class="moon-name" style="color:${m.color};">${m.name}</div>
-        <div class="moon-phase"></div>
-    `;
-    ring.appendChild(slot);
-    const canvas = slot.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
-    return {
-        el: slot, canvas, ctx, size: res,
-        glow: slot.querySelector('.moon-glow'),
-        body: slot.querySelector('.moon-body'),
-        nameEl: slot.querySelector('.moon-name'),
-        phaseEl: slot.querySelector('.moon-phase'),
-        data: m, index: i
-    };
+    const geo = new THREE.BufferGeometry().setFromPoints(pts);
+    const mat = new THREE.LineDashedMaterial({ color: new THREE.Color(m.color), opacity: 0.15, transparent: true, dashSize: 0.5, gapSize: 0.3 });
+    const line = new THREE.Line(geo, mat);
+    line.computeLineDistances();
+    scene.add(line);
 });
 
-function positionMoons() {
-    const W = ringW(), H = ringH();
-    const cx = W/2, cy = H/2;
-    const orbitR = Math.min(W, H) * 0.375;
-    for (let i = 0; i < 6; i++) {
-        const angle = (i / 6) * Math.PI * 2 - Math.PI / 2;
-        moonEls[i].el.style.left = (cx + Math.cos(angle) * orbitR) + 'px';
-        moonEls[i].el.style.top = (cy + Math.sin(angle) * orbitR) + 'px';
-    }
-    moonEls[6].el.style.left = cx + 'px';
-    moonEls[6].el.style.top = cy + 'px';
-}
-positionMoons();
-addEventListener('resize', positionMoons);
+// ── Moon objects ──
+const moonSegs = isMobile ? 16 : 24;
+const baseSpeed = 0.3;
+const moonGroups = [];
+const moonMeshes = []; // for raycasting
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
 
-function getPhase(cycle, elapsed, erratic) {
-    let t = (elapsed % cycle) / cycle;
-    if (erratic) {
-        t += 0.05 * Math.sin(elapsed * 0.17) + 0.03 * Math.sin(elapsed * 0.31);
-        t = ((t % 1) + 1) % 1;
-    }
-    return t;
-}
+MOONS.forEach((m, idx) => {
+    const group = new THREE.Group();
 
-function phaseName(t) {
-    if (t < 0.05 || t > 0.95) return '🌑 New Moon';
-    if (t < 0.2) return '🌒 Waxing Crescent';
-    if (t < 0.3) return '🌓 First Quarter';
-    if (t < 0.45) return '🌔 Waxing Gibbous';
-    if (t < 0.55) return '🌕 Full Moon';
-    if (t < 0.7) return '🌖 Waning Gibbous';
-    if (t < 0.8) return '🌗 Last Quarter';
-    return '🌘 Waning Crescent';
-}
+    // Moon sphere
+    const col = new THREE.Color(m.color);
+    const moonGeo = new THREE.SphereGeometry(m.size, moonSegs, moonSegs);
+    const moonMat = new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.6, roughness: 0.5, metalness: 0.2 });
+    const moonMesh = new THREE.Mesh(moonGeo, moonMat);
+    moonMesh.userData = { moonIndex: idx };
+    group.add(moonMesh);
+    moonMeshes.push(moonMesh);
 
-function illumination(t) { return 1 - 2 * Math.abs(t - 0.5); }
+    // Shadow hemisphere for phase
+    const shadowGeo = new THREE.SphereGeometry(m.size + 0.005, moonSegs, moonSegs, 0, Math.PI);
+    const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.85, transparent: true, side: THREE.DoubleSide });
+    const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+    moonMesh.add(shadowMesh);
+    m._shadow = shadowMesh;
 
-function drawMoonCanvas(el, phase) {
-    const ctx = el.ctx;
-    const S = el.size;
-    const R = S / 2;
-    const cx = R, cy = R;
-    const [r, g, b] = hexToRgb(el.data.color);
-    const illum = illumination(phase);
-    const waxing = phase <= 0.5;
-
-    ctx.clearRect(0, 0, S, S);
-
-    const bright = Math.max(0.08, illum);
-    const br = Math.round(r * bright), bg2 = Math.round(g * bright), bb = Math.round(b * bright);
-    const hr = Math.min(255, r + Math.round(100 * bright));
-    const hg = Math.min(255, g + Math.round(100 * bright));
-    const hb = Math.min(255, b + Math.round(100 * bright));
-    const baseGrd = ctx.createRadialGradient(cx * 0.75, cy * 0.7, 0, cx, cy, R);
-    baseGrd.addColorStop(0, `rgba(${hr},${hg},${hb},1)`);
-    baseGrd.addColorStop(0.5, `rgba(${br},${bg2},${bb},1)`);
-    baseGrd.addColorStop(1, `rgba(${Math.round(br*0.25)},${Math.round(bg2*0.25)},${Math.round(bb*0.25)},1)`);
-    ctx.beginPath();
-    ctx.arc(cx, cy, R - 1, 0, Math.PI * 2);
-    ctx.fillStyle = baseGrd;
-    ctx.fill();
-
-    const phaseAngle = Math.PI * (1 - illum);
-    const terminatorXRadius = R * Math.cos(phaseAngle);
-
-    ctx.save();
-    ctx.beginPath();
-
-    if (illum < 0.04) {
-        ctx.arc(cx, cy, R + 1, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(6,6,18,0.96)';
-        ctx.fill();
-    } else if (illum > 0.995) {
-        // skip
-    } else {
-        if (waxing) {
-            ctx.arc(cx, cy, R, -Math.PI / 2, Math.PI / 2, true);
-            ctx.ellipse(cx, cy, Math.max(1, Math.abs(terminatorXRadius)), R, 0, Math.PI / 2, -Math.PI / 2, terminatorXRadius < 0);
-        } else {
-            ctx.arc(cx, cy, R, Math.PI / 2, -Math.PI / 2, true);
-            ctx.ellipse(cx, cy, Math.max(1, Math.abs(terminatorXRadius)), R, 0, -Math.PI / 2, Math.PI / 2, terminatorXRadius < 0);
-        }
-        ctx.closePath();
-        const shadowAlpha = 0.88 + (1 - illum) * 0.1;
-        ctx.fillStyle = `rgba(6,6,18,${shadowAlpha.toFixed(2)})`;
-        ctx.fill();
-    }
-    ctx.restore();
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, R - 1, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(${r},${g},${b},${(0.15 + illum * 0.35).toFixed(2)})`;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    el.glow.style.opacity = (illum * 0.55).toFixed(2);
-    const gs = Math.round(illum * 22);
-    el.body.style.boxShadow = `0 0 ${gs}px ${Math.round(gs*0.6)}px rgba(${r},${g},${b},${(illum*0.45).toFixed(2)})`;
-    el.nameEl.style.opacity = (0.2 + illum * 0.8).toFixed(2);
-    el.phaseEl.textContent = phaseName(phase);
-    el.phaseEl.style.color = `rgba(${r},${g},${b},${(0.35 + illum * 0.65).toFixed(2)})`;
-}
-
-const accentBar = document.getElementById('accentBar');
-function updateTheme(phases) {
-    let bestIdx = 0, bestDist = 1;
-    phases.forEach((t,i) => {
-        const dist = Math.abs(t - 0.5);
-        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+    // Glow sprite
+    const spriteMat = new THREE.SpriteMaterial({
+        map: createGlowTexture(m.color),
+        transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending
     });
-    const m = MOONS[bestIdx];
-    const [r,g,b] = hexToRgb(m.color);
-    const s = 0.08 * (1 - bestDist * 2);
-    document.body.style.background = `linear-gradient(135deg,
-        rgb(${26+Math.round(r*s)},${26+Math.round(g*s)},${46+Math.round(b*s)}),
-        rgb(${22+Math.round(r*s*0.5)},${33+Math.round(g*s*0.5)},${62+Math.round(b*s*0.5)}),
-        rgb(${15+Math.round(r*s*0.3)},${52+Math.round(g*s*0.3)},${96+Math.round(b*s*0.3)}))`;
-    accentBar.style.background = m.color;
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(m.size * 4, m.size * 4, 1);
+    moonMesh.add(sprite);
+    m._glowSprite = sprite;
+
+    // Label sprite
+    const labelSprite = createTextSprite(m.name, m.color);
+    labelSprite.position.set(0, m.size + 0.4, 0);
+    labelSprite.scale.set(1.6, 0.4, 1);
+    moonMesh.add(labelSprite);
+
+    group.userData = { moon: m, speed: baseSpeed / m.cycle, angle: (idx / MOONS.length) * Math.PI * 2 };
+    scene.add(group);
+    moonGroups.push(group);
+    m._mesh = moonMesh;
+    m._group = group;
+});
+
+function createGlowTexture(hexColor) {
+    const size = 128;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    const grad = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+    grad.addColorStop(0, hexColor + 'aa');
+    grad.addColorStop(0.4, hexColor + '44');
+    grad.addColorStop(1, hexColor + '00');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, size, size);
+    const tex = new THREE.CanvasTexture(c);
+    return tex;
 }
 
-const t0 = performance.now() / 1000;
-function tick() {
-    const now = performance.now() / 1000 - t0;
-    const phases = [];
-    moonEls.forEach((el, i) => {
-        const phase = getPhase(el.data.cycle, now + offsets[i], el.data.erratic);
-        phases.push(phase);
-        drawMoonCanvas(el, phase);
-    });
-    updateTheme(phases);
-    requestAnimationFrame(tick);
+function createTextSprite(text, color) {
+    const c = document.createElement('canvas');
+    c.width = 256; c.height = 64;
+    const ctx = c.getContext('2d');
+    ctx.font = 'bold 28px -apple-system, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = color;
+    ctx.fillText(text, 128, 32);
+    const tex = new THREE.CanvasTexture(c);
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+    return new THREE.Sprite(mat);
 }
-tick();
+
+// ── Phase helpers ──
+const PHASE_NAMES = ['New', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous', 'Full', 'Waning Gibbous', 'Third Quarter', 'Waning Crescent'];
+function getPhase(time, cycle) {
+    const p = ((time * 0.05) % cycle) / cycle; // 0-1
+    return p;
+}
+function getPhaseName(p) {
+    const idx = Math.floor(p * 8) % 8;
+    return PHASE_NAMES[idx];
+}
+function getMagicPower(p) {
+    // fullness peaks at 0.5
+    const fullness = 1 - Math.abs(p - 0.5) * 2; // 0 at new, 1 at full
+    if (fullness > 0.8) return 'Surging';
+    if (fullness > 0.5) return 'Strong';
+    if (fullness > 0.2) return 'Dim';
+    return 'Dormant';
+}
+
+// ── Info panel logic ──
+const infoPanel = document.getElementById('infoPanel');
+const infoPanelContent = document.getElementById('infoPanelContent');
+document.getElementById('infoPanelClose').addEventListener('click', () => infoPanel.classList.remove('open'));
+
+let hoveredMoon = null;
+let selectedMoon = null;
+
+function showMoonInfo(m, time) {
+    const p = getPhase(time, m.cycle);
+    const phaseName = getPhaseName(p);
+    const fullness = 1 - Math.abs(p - 0.5) * 2;
+    const power = getMagicPower(p);
+    const pct = Math.round(fullness * 100);
+    infoPanelContent.innerHTML = `
+        <div class="moon-header">
+            <div class="moon-icon" style="background:${m.color};box-shadow:0 0 20px ${m.color}88;"></div>
+            <div>
+                <div class="moon-title" style="color:${m.color}">${m.name}</div>
+                <div class="moon-order">${m.order} Order</div>
+            </div>
+        </div>
+        <div class="info-row"><span class="info-label">Phase</span><span class="info-value">${phaseName}</span></div>
+        <div class="phase-bar-wrap">
+            <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:${pct}%;background:${m.color};box-shadow:0 0 8px ${m.color}88;"></div></div>
+            <div style="text-align:right;font-size:11px;color:var(--color-text-secondary);margin-top:4px;">${pct}% illuminated</div>
+        </div>
+        <div class="info-row"><span class="info-label">Magic Power</span><span class="info-value" style="color:${m.color}">${power}</span></div>
+        <div class="info-row"><span class="info-label">Cycle Length</span><span class="info-value">${m.cycle} days</span></div>
+        <div class="info-row"><span class="info-label">Wizards</span><span class="info-value">${m.wizards}</span></div>
+        <div class="lore-text">"${m.lore}"</div>
+    `;
+    infoPanel.classList.add('open');
+}
+
+// ── Interaction ──
+function onPointerMove(e) {
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+}
+function onPointerDown(e) {
+    pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
+    pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(pointer, camera);
+    const hits = raycaster.intersectObjects(moonMeshes);
+    if (hits.length > 0) {
+        const idx = hits[0].object.userData.moonIndex;
+        selectedMoon = MOONS[idx];
+        showMoonInfo(selectedMoon, performance.now() * 0.001);
+    }
+}
+window.addEventListener('pointermove', onPointerMove);
+window.addEventListener('pointerdown', onPointerDown);
+
+// ── Build SEO cards ──
+const cardsGrid = document.getElementById('moonCardsGrid');
+MOONS.forEach(m => {
+    const card = document.createElement('div');
+    card.className = 'moon-card';
+    card.innerHTML = `
+        <h3 style="color:${m.color}">${m.name}</h3>
+        <div class="card-order" style="color:${m.color}">${m.order} Order</div>
+        <div class="card-stats">${m.cycle}-day cycle · ${m.wizards} wizard${m.wizards !== 1 ? 's' : ''}</div>
+        <div class="card-lore">${m.lore}</div>
+    `;
+    cardsGrid.appendChild(card);
+});
+
+// ── Animation ──
+function animate() {
+    requestAnimationFrame(animate);
+    const t = performance.now() * 0.001;
+
+    // Rotate planet
+    planet.rotation.y = t * 0.05;
+
+    // Update moons
+    raycaster.setFromCamera(pointer, camera);
+    const hits = raycaster.intersectObjects(moonMeshes);
+    const hitIdx = hits.length > 0 ? hits[0].object.userData.moonIndex : -1;
+
+    moonGroups.forEach((g, i) => {
+        const m = MOONS[i];
+        const d = g.userData;
+        d.angle += d.speed * 0.016;
+        const a = d.angle;
+
+        // Position on orbit
+        const x = Math.cos(a) * m.radius;
+        const z = Math.sin(a) * m.radius;
+        const y = Math.sin(m.inclination) * Math.sin(a) * m.radius * 0.15;
+        m._mesh.position.set(x, y, z);
+
+        // Phase shadow rotation
+        const phase = getPhase(t, m.cycle);
+        const shadowAngle = phase * Math.PI * 2;
+        m._shadow.rotation.y = shadowAngle;
+
+        // Hover effect
+        const isHovered = (hitIdx === i);
+        const targetScale = isHovered ? 1.25 : 1.0;
+        const cs = m._mesh.scale.x;
+        const ns = cs + (targetScale - cs) * 0.1;
+        m._mesh.scale.setScalar(ns);
+        m._glowSprite.material.opacity = isHovered ? 0.8 : 0.4;
+        canvas.style.cursor = isHovered ? 'pointer' : 'default';
+    });
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+animate();
+
+// ── Resize ──
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 </script>
-<script>
-(function(){
-    var h=document.getElementById('navHamburger'),m=document.getElementById('navMobileMenu');
-    if(h&&m){h.addEventListener('click',function(){var o=m.classList.toggle('open');h.classList.toggle('is-open',o);});}
-    var nav=document.getElementById('mainNav');
-    if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});}
-})();
-</script>
-<script src="sparkle.js?v=1772131297"></script>
-<script src="orb-cursor.js"></script>
-<script src="starfield.js"></script>
+
+<script src="sparkle.js" defer></script>
+<script src="orb-cursor.js" defer></script>
 </body>
 </html>
