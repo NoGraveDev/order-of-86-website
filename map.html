@@ -1154,8 +1154,8 @@ function createParticles(count, regionX, regionZ, spread, color, sizeRange, yRan
     return pts;
 }
 
-// Snow - Frosthollow
-const snow = createParticles(150, -350, -300, 250, 0xffffff, 2, [getHeight(-350,-300), getHeight(-350,-300)+100]);
+// Snow - Frosthollow (heavy, visible snowfall)
+const snow = createParticles(500, -350, -300, 300, 0xffffff, 3, [getHeight(-350,-300), getHeight(-350,-300)+150]);
 scene.add(snow);
 
 // Ash - Ember Wastes
@@ -1175,7 +1175,7 @@ const lava = createParticles(50, 400, 100, 180, 0xff4400, 2, [getHeight(400,100)
 scene.add(lava);
 
 const particleSystems = [
-    { pts:snow, dir:new THREE.Vector3(0,-0.3,0), respawnY:true },
+    { pts:snow, dir:new THREE.Vector3(0.05,-0.6,0.02), respawnY:true },
     { pts:ash, dir:new THREE.Vector3(0,0.4,0), respawnY:true },
     { pts:fireflies, dir:new THREE.Vector3(0,0,0), wander:true },
     { pts:fog, dir:new THREE.Vector3(0.1,0,0.05), respawnY:false },
