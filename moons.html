@@ -357,29 +357,75 @@ for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 160
 starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
 scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15, sizeAttenuation: true })));
 
-// ── Pawtheon (central planet) ──
+// ── Pawtheon (central planet with 7 realms) ──
 const planetSegs = isMobile ? 32 : 48;
 const planetGeo = new THREE.SphereGeometry(2.2, planetSegs, planetSegs);
-// Vertex colors for land/ocean
+
+// 7 realm regions mapped to spherical coordinates
+// Each realm has a center (theta, phi) on the sphere and a color palette
+const realmRegions = [
+    { name:'Frosthollow',      theta:-0.6, phi: 2.4,  r:0.85,g:0.92,b:1.0,  r2:0.6,g2:0.75,b2:0.95 },  // icy white-blue (northwest)
+    { name:'Abyssal Reaches',  theta: 0.0, phi: 2.8,  r:0.15,g:0.25,b:0.45, r2:0.1,g2:0.2,b2:0.4 },    // dark blue (north coast)
+    { name:'Sunward Heights',  theta: 0.6, phi: 2.4,  r:1.0,g:0.92,b:0.7,   r2:0.95,g2:0.85,b2:0.6 },  // golden (northeast)
+    { name:'Ember Wastes',     theta: 0.8, phi: 1.2,  r:0.5,g:0.18,b:0.05,  r2:0.3,g2:0.1,b2:0.02 },   // volcanic dark red-brown (east)
+    { name:'Deepwood',         theta: 0.4, phi: 0.6,  r:0.1,g:0.35,b:0.08,  r2:0.15,g2:0.45,b2:0.12 },  // deep green (southeast)
+    { name:'Violet Highlands', theta:-0.5, phi: 0.8,  r:0.4,g:0.22,b:0.5,   r2:0.3,g2:0.18,b2:0.4 },   // purple (southwest)
+    { name:'Shadowmire',       theta: 0.0, phi: 0.4,  r:0.12,g:0.15,b:0.08, r2:0.08,g2:0.1,b2:0.05 },   // dark swamp (south)
+    { name:'Starter Lands',    theta: 0.0, phi: 1.57, r:0.35,g:0.5,b:0.3,   r2:0.4,g2:0.55,b2:0.35 },   // gentle green (center)
+];
+
 const colors = new Float32Array(planetGeo.attributes.position.count * 3);
 const posArr = planetGeo.attributes.position.array;
+const _v = new THREE.Vector3();
+
 for (let i = 0; i < planetGeo.attributes.position.count; i++) {
-    const y = posArr[i * 3 + 1];
-    const n = Math.sin(posArr[i * 3] * 3.1) * Math.cos(posArr[i * 3 + 2] * 2.7) * 0.5 + 0.5;
-    const landChance = n + y * 0.15;
-    if (landChance > 0.55) {
-        // Land: greens/browns
-        const t = Math.random();
-        colors[i*3] = 0.15 + t * 0.25; colors[i*3+1] = 0.35 + t * 0.3; colors[i*3+2] = 0.1 + t * 0.1;
+    _v.set(posArr[i*3], posArr[i*3+1], posArr[i*3+2]).normalize();
+    const theta = Math.atan2(_v.x, _v.z); // -PI to PI
+    const phi = Math.acos(_v.y);           // 0 (north) to PI (south)
+
+    // Find closest realm with smooth blending
+    let totalW = 0;
+    let cr = 0, cg = 0, cb = 0;
+    for (const realm of realmRegions) {
+        // Angular distance on sphere
+        const dTheta = theta - realm.theta;
+        const dPhi = phi - realm.phi;
+        const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
+        const w = Math.pow(Math.max(0, 1 - dist / 1.8), 3);
+        if (w > 0) {
+            const t = Math.random() * 0.3;
+            const mr = realm.r * (1-t) + realm.r2 * t;
+            const mg = realm.g * (1-t) + realm.g2 * t;
+            const mb = realm.b * (1-t) + realm.b2 * t;
+            cr += mr * w; cg += mg * w; cb += mb * w;
+            totalW += w;
+        }
+    }
+
+    if (totalW > 0) {
+        colors[i*3] = cr / totalW;
+        colors[i*3+1] = cg / totalW;
+        colors[i*3+2] = cb / totalW;
     } else {
-        // Ocean: blues
-        const t = Math.random() * 0.3;
-        colors[i*3] = 0.05 + t * 0.1; colors[i*3+1] = 0.15 + t * 0.2; colors[i*3+2] = 0.4 + t * 0.35;
+        // Ocean fill for gaps
+        const t = Math.random() * 0.2;
+        colors[i*3] = 0.05 + t * 0.1;
+        colors[i*3+1] = 0.15 + t * 0.15;
+        colors[i*3+2] = 0.35 + t * 0.3;
+    }
+
+    // Add ocean between realms where influence is weak
+    if (totalW < 0.15) {
+        const oceanT = Math.max(0, 1 - totalW / 0.15);
+        colors[i*3] = colors[i*3] * (1-oceanT) + 0.06 * oceanT;
+        colors[i*3+1] = colors[i*3+1] * (1-oceanT) + 0.18 * oceanT;
+        colors[i*3+2] = colors[i*3+2] * (1-oceanT) + 0.45 * oceanT;
     }
 }
+
 planetGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const planet = new THREE.Mesh(planetGeo, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 0.8, metalness: 0.1
+    vertexColors: true, roughness: 0.75, metalness: 0.1
 }));
 scene.add(planet);
 
