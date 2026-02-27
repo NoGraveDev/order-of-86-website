@@ -202,31 +202,7 @@
             .info-panel-close { top: 12px; right: 12px; }
         }
 
-        /* ── Moon Cards Grid (SEO) ── */
-        .moon-cards-section {
-            position: relative; z-index: 5; max-width: 1100px; margin: 0 auto;
-            padding: 40px 16px 80px;
-            margin-top: 100vh;
-        }
-        .moon-cards-section h2 {
-            text-align: center; font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 800;
-            color: var(--color-accent-bright); margin-bottom: 32px;
-        }
-        .moon-cards-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .moon-card {
-            background: rgba(28,28,30,0.72); backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px); border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border); padding: 24px;
-            transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-        }
-        @media (hover: hover) { .moon-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); } }
-        .moon-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-        .moon-card .card-order { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-        .moon-card .card-stats { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px; }
-        .moon-card .card-lore { font-size: 13px; color: var(--color-text-tertiary); line-height: 1.6; }
+        /* Moon cards removed — details via click panel */
 
         /* ── Scroll indicator ── */
         .scroll-hint {
@@ -277,13 +253,9 @@
     <div id="infoPanelContent"></div>
 </div>
 
-<div class="scroll-hint" id="scrollHint">↓ Scroll for details ↓</div>
+<div class="scroll-hint" id="scrollHint">Click a moon to explore</div>
 
-<!-- SEO Moon Cards -->
-<div class="moon-cards-section" id="moonCardsSection">
-    <h2>☽ The Seven Moons</h2>
-    <div class="moon-cards-grid" id="moonCardsGrid"></div>
-</div>
+<!-- Moon details shown via click panel -->
 
 <script>
 // Nav logic
@@ -360,6 +332,18 @@ scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, 
 // ── Pawtheon (central planet with 7 realms) ──
 const planetSegs = isMobile ? 32 : 48;
 const planetGeo = new THREE.BoxGeometry(3.5, 3.5, 3.5, planetSegs, planetSegs, planetSegs);
+// Round edges slightly for a "rounded cube" feel
+{
+    const pos = planetGeo.attributes.position;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < pos.count; i++) {
+        v.set(pos.getX(i), pos.getY(i), pos.getZ(i));
+        const len = v.length();
+        v.normalize().multiplyScalar(len * 0.85 + 1.75 * 0.15); // blend toward sphere slightly
+        pos.setXYZ(i, v.x, v.y, v.z);
+    }
+    pos.needsUpdate = true;
+}
 
 // 7 realm regions mapped to spherical coordinates
 // Each realm has a center (theta, phi) on the sphere and a color palette
@@ -423,9 +407,53 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
     }
 }
 
+// Topography: displace vertices outward based on realm + noise
+const topoNormals = [];
+for (let i = 0; i < planetGeo.attributes.position.count; i++) {
+    const px = posArr[i*3], py = posArr[i*3+1], pz = posArr[i*3+2];
+    const n = _v.set(px, py, pz).normalize();
+    topoNormals.push(n.x, n.y, n.z);
+
+    // Noise-based height: combine multiple frequencies
+    const n1 = Math.sin(px * 4.3 + pz * 3.1) * Math.cos(py * 5.7) * 0.5;
+    const n2 = Math.sin(px * 8.7 + py * 6.2) * Math.cos(pz * 9.1) * 0.25;
+    const n3 = Math.sin(px * 15.3 + pz * 12.8) * 0.12;
+    let height = (n1 + n2 + n3);
+
+    // Realm-specific height multipliers
+    const theta = Math.atan2(n.x, n.z);
+    const phi = Math.acos(n.y);
+
+    // Frosthollow: tall peaks
+    const fhDist = Math.sqrt((theta+0.6)**2 + (phi-2.4)**2);
+    if (fhDist < 1.2) height += Math.abs(height) * 1.5 * Math.max(0, 1-fhDist/1.2);
+
+    // Ember Wastes: volcanic ridges
+    const ewDist = Math.sqrt((theta-0.8)**2 + (phi-1.2)**2);
+    if (ewDist < 1.0) height += Math.abs(Math.sin(px*12)*Math.cos(pz*10)) * 0.3 * Math.max(0, 1-ewDist/1.0);
+
+    // Violet Highlands: terraced steps
+    const vhDist = Math.sqrt((theta+0.5)**2 + (phi-0.8)**2);
+    if (vhDist < 1.0) height = Math.round(height * 4) / 4 * 1.3;
+
+    // Shadowmire/Deepwood: low and flat
+    const smDist = Math.sqrt(theta**2 + (phi-0.4)**2);
+    if (smDist < 0.8) height *= 0.3;
+
+    // Ocean areas: flatten
+    if (colors[i*3+2] > 0.35 && colors[i*3] < 0.1) height *= 0.15;
+
+    const displacement = height * 0.18;
+    posArr[i*3] += n.x * displacement;
+    posArr[i*3+1] += n.y * displacement;
+    posArr[i*3+2] += n.z * displacement;
+}
+planetGeo.attributes.position.needsUpdate = true;
+planetGeo.computeVertexNormals();
+
 planetGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const planet = new THREE.Mesh(planetGeo, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 0.75, metalness: 0.1
+    vertexColors: true, roughness: 0.7, metalness: 0.1, flatShading: true
 }));
 scene.add(planet);
 
@@ -601,19 +629,7 @@ window.addEventListener('pointermove', onPointerMove);
 window.addEventListener('pointerdown', onPointerDown);
 window.addEventListener('pointerup', onPointerUp);
 
-// ── Build SEO cards ──
-const cardsGrid = document.getElementById('moonCardsGrid');
-MOONS.forEach(m => {
-    const card = document.createElement('div');
-    card.className = 'moon-card';
-    card.innerHTML = `
-        <h3 style="color:${m.color}">${m.name}</h3>
-        <div class="card-order" style="color:${m.color}">${m.order} Order</div>
-        <div class="card-stats">${m.cycle}-day cycle · ${m.wizards} wizard${m.wizards !== 1 ? 's' : ''}</div>
-        <div class="card-lore">${m.lore}</div>
-    `;
-    cardsGrid.appendChild(card);
-});
+// SEO cards removed — moon details shown via click panel
 
 // ── Animation ──
 function animate() {
@@ -621,7 +637,8 @@ function animate() {
     const t = performance.now() * 0.001;
 
     // Rotate planet
-    planet.rotation.y = t * 0.05;
+    planet.rotation.y = t * 0.15;
+    planet.rotation.x = Math.sin(t * 0.03) * 0.1; // subtle axial tilt wobble
 
     // Update moons
     raycaster.setFromCamera(pointer, camera);
