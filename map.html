@@ -1751,24 +1751,14 @@ function createDogModel(dog) {
     pfpMesh.userData.isBillboard = true;
     group.add(pfpMesh);
 
-    // Create placeholder colored circle immediately (fast)
-    const placeholderCanvas = document.createElement('canvas');
-    placeholderCanvas.width = 128; placeholderCanvas.height = 128;
-    const pCtx = placeholderCanvas.getContext('2d');
-    pCtx.beginPath(); pCtx.arc(64, 64, 60, 0, Math.PI * 2);
-    pCtx.fillStyle = orderColor; pCtx.fill();
-    pCtx.strokeStyle = '#fff'; pCtx.lineWidth = 4; pCtx.stroke();
-    pCtx.font = 'bold 28px sans-serif'; pCtx.fillStyle = '#fff'; pCtx.textAlign = 'center';
-    pCtx.fillText('#' + id, 64, 72);
-    const placeholderTex = new THREE.CanvasTexture(placeholderCanvas);
-    placeholderTex.colorSpace = THREE.SRGBColorSpace;
-    planeMat.map = placeholderTex;
-    planeMat.needsUpdate = true;
-
-    // Queue real texture for lazy loading (loaded when camera is near)
-    group.userData._lazyImg = imgPath;
-    group.userData._lazyMat = planeMat;
-    group.userData._lazyLoaded = false;
+    // Load actual image immediately (no placeholder)
+    texLoader.load(imgPath, (tex) => {
+        tex.minFilter = THREE.LinearFilter;
+        tex.magFilter = THREE.LinearFilter;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        planeMat.map = tex;
+        planeMat.needsUpdate = true;
+    });
 
     // Order-colored glow ring beneath the sprite
     const ringGeo = new THREE.RingGeometry(10, 12, 24);
@@ -2652,39 +2642,7 @@ function updateCrystalLizards(time, delta) {
     }
 }
 
-// ── Lazy texture loader — loads 2 nearest dog textures per check ──
-let _lazyFrame = 0;
-const _lazyQueue = []; // filled after dogs load
-let _lazyInFlight = 0;
-const LAZY_MAX_INFLIGHT = 3;
-const LAZY_LOAD_DIST = 600; // load textures within this camera distance
-
-function lazyLoadTextures() {
-    if (++_lazyFrame % 30 !== 0) return; // check every ~30 frames
-    if (_lazyInFlight >= LAZY_MAX_INFLIGHT) return;
-
-    const camPos = camera.position;
-    for (let i = 0; i < dogGroups.length && _lazyInFlight < LAZY_MAX_INFLIGHT; i++) {
-        const g = dogGroups[i];
-        if (g.userData._lazyLoaded || !g.userData._lazyImg) continue;
-        const dx = g.position.x - camPos.x, dz = g.position.z - camPos.z;
-        const dist = Math.sqrt(dx*dx + dz*dz);
-        if (dist < LAZY_LOAD_DIST) {
-            g.userData._lazyLoaded = true;
-            _lazyInFlight++;
-            const mat = g.userData._lazyMat;
-            const imgPath = g.userData._lazyImg;
-            texLoader.load(imgPath, (tex) => {
-                tex.minFilter = THREE.LinearFilter;
-                tex.magFilter = THREE.LinearFilter;
-                tex.colorSpace = THREE.SRGBColorSpace;
-                mat.map = tex;
-                mat.needsUpdate = true;
-                _lazyInFlight--;
-            }, undefined, () => { _lazyInFlight--; });
-        }
-    }
-}
+// Lazy loader removed — textures load immediately in createDogModel
 
 let _animFrame = 0;
 let _fpsSum = 0, _fpsSamples = 0, _avgFps = 60, _lastFpsCheck = 0;
@@ -2740,7 +2698,7 @@ function animate() {
         }
     }
 
-    lazyLoadTextures();
+    // lazyLoadTextures removed — images load immediately
     renderer.render(scene, camera);
 }
 animate();
