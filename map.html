@@ -1808,7 +1808,7 @@ const castleFlagGeo = new THREE.PlaneGeometry(2.5, 1.5, 4, 3);
 const castlePathGeo = new THREE.BoxGeometry(2, 0.3, 15);
 
 // Castles use InstancedMesh — 2 draw calls instead of 258
-const castleMaxCount = dogEntries.length;
+const castleMaxCount = Object.keys(wizardDogs).length;
 const castleWallIM = new THREE.InstancedMesh(castleWallGeo, getCachedMat(0x8a8a7a, { roughness: 0.9, metalness: 0 }), castleMaxCount);
 const castleRoofIM = new THREE.InstancedMesh(getCachedGeo('simpleRoof', () => new THREE.ConeGeometry(6, 4, 4)), getCachedMat(0x888888, { roughness: 0.5 }), castleMaxCount);
 castleWallIM.castShadow = false; castleWallIM.receiveShadow = false;
