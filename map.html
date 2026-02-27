@@ -485,7 +485,7 @@ class SimplexNoise {
 // ── Setup ──
 const isMobile = window.innerWidth < 768;
 const isLowPower = isMobile || /iPad|iPhone/.test(navigator.userAgent) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
-const subdivisions = isLowPower ? 60 : 180;
+const subdivisions = isLowPower ? 60 : 120;
 const noise = new SimplexNoise(42);
 const noise2 = new SimplexNoise(137);
 const clock = new THREE.Clock();
@@ -953,10 +953,8 @@ for (const td of towerData) {
     orb.position.y = 46;
     group.add(orb);
 
-    // Point light
-    const light = new THREE.PointLight(td.color, 2, 150);
-    light.position.y = 40;
-    group.add(light);
+    // Point light removed — orb emissive handles glow. Keep only 1 shared light.
+    
 
     group.position.set(td.x, ty, td.z);
     group.userData = { type:'tower', name:td.name, order:td.order, desc:td.desc, color:td.color };
@@ -1154,8 +1152,8 @@ function createParticles(count, regionX, regionZ, spread, color, sizeRange, yRan
     return pts;
 }
 
-// Snow - Frosthollow (heavy, visible snowfall)
-const snow = createParticles(500, -350, -300, 300, 0xffffff, 3, [getHeight(-350,-300), getHeight(-350,-300)+150]);
+// Snow - Frosthollow (visible snowfall)
+const snow = createParticles(300, -350, -300, 300, 0xffffff, 3, [getHeight(-350,-300), getHeight(-350,-300)+150]);
 scene.add(snow);
 
 // Ash - Ember Wastes
@@ -1232,7 +1230,7 @@ for (let i=0;i<5;i++) {
     const ihY = getHeight(ihX,ihZ);
     const arch = new THREE.Mesh(new THREE.TorusGeometry(8,1.5,8,16,Math.PI), new THREE.MeshStandardMaterial({color:0x4488ff,emissive:0x2266cc,emissiveIntensity:0.8,roughness:0.2}));
     arch.position.set(ihX,ihY+8,ihZ); scene.add(arch);
-    const archLight = new THREE.PointLight(0x4488ff,1,60); archLight.position.set(ihX,ihY+8,ihZ); scene.add(archLight);
+    // archLight removed — arch already has emissive material
 }
 
 // --- EMBER WASTES ---
@@ -1243,7 +1241,7 @@ for (let i=0;i<5;i++) {
     const crucible = new THREE.Mesh(new THREE.TorusGeometry(18,3,8,24), new THREE.MeshStandardMaterial({color:0x8b4513,emissive:0xff6600,emissiveIntensity:0.7,roughness:0.6}));
     crucible.rotation.x = -Math.PI/2;
     crucible.position.set(crX,crY+3,crZ); scene.add(crucible);
-    const crucibleLight = new THREE.PointLight(0xff6600,2,100); crucibleLight.position.set(crX,crY+8,crZ); scene.add(crucibleLight);
+    // crucibleLight removed — crucible already has emissive material
 }
 
 // Ash Gardens, charred stumps with embers
@@ -1343,7 +1341,7 @@ if (!isLowPower) {
     tower.position.set(dpX,dpY+12.5,dpZ); tower.castShadow=true; scene.add(tower);
     const platform=new THREE.Mesh(new THREE.CylinderGeometry(3,3,1,8), new THREE.MeshStandardMaterial({color:0x4a3a2a}));
     platform.position.set(dpX,dpY+25.5,dpZ); scene.add(platform);
-    const flame=new THREE.PointLight(0xff6600,1.5,50); flame.position.set(dpX,dpY+27,dpZ); scene.add(flame);
+    // flame point light removed — flameOrb emissive is sufficient
     const flameOrb=new THREE.Mesh(new THREE.SphereGeometry(0.8,6,4), new THREE.MeshStandardMaterial({color:0xff6600,emissive:0xff4400,emissiveIntensity:2}));
     flameOrb.position.set(dpX,dpY+27,dpZ); scene.add(flameOrb);
 }
@@ -1393,7 +1391,7 @@ for(let i=0;i<5;i++){
 {
     const sbX=20, sbZ=420;
     const sbY=getHeight(sbX,sbZ);
-    const beacon=new THREE.PointLight(0xfff8e0,3,200); beacon.position.set(sbX,sbY+15,sbZ); scene.add(beacon);
+    // beacon point light removed — beaconOrb emissive is sufficient
     const beaconOrb=new THREE.Mesh(new THREE.SphereGeometry(2,12,8), new THREE.MeshStandardMaterial({color:0xfff8e0,emissive:0xffd700,emissiveIntensity:2.5}));
     beaconOrb.position.set(sbX,sbY+15,sbZ); scene.add(beaconOrb);
     const beaconPole=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.8,14,6), new THREE.MeshStandardMaterial({color:0x3a3a2a,roughness:0.9}));
@@ -1429,11 +1427,7 @@ if (!isLowPower) for(let i=0;i<8;i++){
 
 // Palehowl glow from above
 {
-    const paleLight = new THREE.SpotLight(0xeeeeff, 0.8, 300, Math.PI/6, 0.5, 1);
-    paleLight.position.set(0, 200, 0);
-    paleLight.target.position.set(0, 0, 0);
-    scene.add(paleLight);
-    scene.add(paleLight.target);
+    // Palehowl spotlight removed for performance — ambient light covers center
 }
 
 // ── Enhanced Text Label System ──
@@ -1813,41 +1807,40 @@ const castleWindowGeo = new THREE.BoxGeometry(1, 1, 0.5);
 const castleFlagGeo = new THREE.PlaneGeometry(2.5, 1.5, 4, 3);
 const castlePathGeo = new THREE.BoxGeometry(2, 0.3, 15);
 
-function createCastleHouse(dog, dogX, dogZ, dogRotY) {
-    const group = new THREE.Group();
-    const realm = realmAliases[dog.realm] || dog.realm;
-    const style = realmCastleStyle[realm] || realmCastleStyle['Starter Lands'];
-    const orderColor = parseInt((orderColorsHex[dog.order] || '#ffffff').replace('#',''), 16);
+// Castles use InstancedMesh — 2 draw calls instead of 258
+const castleMaxCount = dogEntries.length;
+const castleWallIM = new THREE.InstancedMesh(castleWallGeo, getCachedMat(0x8a8a7a, { roughness: 0.9, metalness: 0 }), castleMaxCount);
+const castleRoofIM = new THREE.InstancedMesh(getCachedGeo('simpleRoof', () => new THREE.ConeGeometry(6, 4, 4)), getCachedMat(0x888888, { roughness: 0.5 }), castleMaxCount);
+castleWallIM.castShadow = false; castleWallIM.receiveShadow = false;
+castleRoofIM.castShadow = false; castleRoofIM.receiveShadow = false;
+let castleInstanceIdx = 0;
+const _castleDummy = new THREE.Object3D();
 
-    const stoneMat = getCachedMat(style.stoneTint, { roughness: 0.9, metalness: 0 });
-
-    // Simplified castle: just wall + roof + one window glow (3 meshes instead of 15+)
-    const wall = new THREE.Mesh(castleWallGeo, stoneMat);
-    wall.position.y = 5;
-    group.add(wall);
-
-    // Colored roof
-    const roof = new THREE.Mesh(getCachedGeo('simpleRoof', () => new THREE.ConeGeometry(6, 4, 4)), getCachedMat(orderColor, { roughness: 0.5 }));
-    roof.position.y = 12;
-    roof.rotation.y = Math.PI / 4;
-    group.add(roof);
-
-    // Single window glow
-    const windowMat = getCachedMat(style.windowColor, { emissive: style.windowColor, emissiveIntensity: 0.8, roughness: 0.3 });
-    const win = new THREE.Mesh(castleWindowGeo, windowMat);
-    win.position.set(0, 6, 4.25);
-    group.add(win);
-
-    // Offset castle ~15 units to the side of the dog
+function addCastleInstance(dog, dogX, dogZ, dogRotY) {
+    const idx = castleInstanceIdx++;
     const offsetAngle = dogRotY + Math.PI / 2;
     const castleX = dogX + Math.cos(offsetAngle) * 15;
     const castleZ = dogZ + Math.sin(offsetAngle) * 15;
     const castleY = getHeight(castleX, castleZ);
-    group.position.set(castleX, castleY, castleZ);
-    group.rotation.y = dogRotY;
+    const orderColor = new THREE.Color(parseInt((orderColorsHex[dog.order] || '#ffffff').replace('#',''), 16));
 
-    return group;
+    // Wall
+    _castleDummy.position.set(castleX, castleY + 5, castleZ);
+    _castleDummy.rotation.set(0, dogRotY, 0);
+    _castleDummy.scale.set(1, 1, 1);
+    _castleDummy.updateMatrix();
+    castleWallIM.setMatrixAt(idx, _castleDummy.matrix);
+
+    // Roof
+    _castleDummy.position.set(castleX, castleY + 12, castleZ);
+    _castleDummy.rotation.set(0, dogRotY + Math.PI / 4, 0);
+    _castleDummy.updateMatrix();
+    castleRoofIM.setMatrixAt(idx, _castleDummy.matrix);
+    castleRoofIM.setColorAt(idx, orderColor);
 }
+
+scene.add(castleWallIM);
+scene.add(castleRoofIM);
 
 // ── Batch dog creation ──
 let dogIndex = 0;
@@ -1903,9 +1896,8 @@ function loadDogBatch() {
         group.traverse(c => { if (c.isMesh) { c.userData._dogGroup = group; dogMeshParts.push(c); } });
 
         // Castle house (not for The Wanderer, skip on mobile)
-        if (!isWanderer && !isMobile) {
-            const castle = createCastleHouse(dog, dx, dz, facingAngle);
-            scene.add(castle);
+        if (!isWanderer && !isLowPower) {
+            addCastleInstance(dog, dx, dz, facingAngle);
         }
 
         // Name label with traits (skip on mobile — barely readable, saves 86 sprites)
@@ -1932,6 +1924,13 @@ function loadDogBatch() {
     setProgress(Math.min(95 + pct, 99));
     if (dogIndex < dogEntries.length) {
         requestAnimationFrame(loadDogBatch);
+    } else {
+        // Finalize castle instanced meshes
+        castleWallIM.count = castleInstanceIdx;
+        castleRoofIM.count = castleInstanceIdx;
+        castleWallIM.instanceMatrix.needsUpdate = true;
+        castleRoofIM.instanceMatrix.needsUpdate = true;
+        if (castleRoofIM.instanceColor) castleRoofIM.instanceColor.needsUpdate = true;
     }
 }
 loadDogBatch();
@@ -2532,10 +2531,14 @@ function createCrystalLizard(moonColor, spawnX, spawnZ) {
         legs.push(leg);
     });
 
-    // Point light glow
-    const glow = new THREE.PointLight(moonColor.color, 0.6, 12);
-    glow.position.set(0, 1.2, 0);
-    group.add(glow);
+    // Glow — emissive sphere instead of point light (cheaper)
+    const glowSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.3, 4, 4),
+        new THREE.MeshBasicMaterial({ color: moonColor.color, transparent: true, opacity: 0.6 })
+    );
+    glowSphere.position.set(0, 1.2, 0);
+    group.add(glowSphere);
+    const glow = { intensity: 0.6 }; // dummy for animation references
 
     group.position.set(spawnX, 1, spawnZ);
     group.scale.setScalar(0.7 + Math.random() * 0.3);
