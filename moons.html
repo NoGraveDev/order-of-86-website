@@ -359,7 +359,7 @@ scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, 
 
 // ── Pawtheon (central planet with 7 realms) ──
 const planetSegs = isMobile ? 32 : 48;
-const planetGeo = new THREE.SphereGeometry(2.2, planetSegs, planetSegs);
+const planetGeo = new THREE.BoxGeometry(3.5, 3.5, 3.5, planetSegs, planetSegs, planetSegs);
 
 // 7 realm regions mapped to spherical coordinates
 // Each realm has a center (theta, phi) on the sphere and a color palette
@@ -580,7 +580,13 @@ function onPointerMove(e) {
     pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
 }
+let _downX = 0, _downY = 0;
 function onPointerDown(e) {
+    _downX = e.clientX; _downY = e.clientY;
+}
+function onPointerUp(e) {
+    const dx = e.clientX - _downX, dy = e.clientY - _downY;
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) return; // was a drag, not a click
     pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
@@ -593,6 +599,7 @@ function onPointerDown(e) {
 }
 window.addEventListener('pointermove', onPointerMove);
 window.addEventListener('pointerdown', onPointerDown);
+window.addEventListener('pointerup', onPointerUp);
 
 // ── Build SEO cards ──
 const cardsGrid = document.getElementById('moonCardsGrid');
