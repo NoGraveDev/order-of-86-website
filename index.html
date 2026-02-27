@@ -1205,74 +1205,237 @@ filterDogs();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* ── 3D Voxel Hat ──────────────────────────────── */
+/* ── 3D Realm Wizard Hat — Detailed & Realm-Accurate ──────────── */
 (function(){
     const canvas = document.getElementById('voxelCanvas');
     if (!canvas) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(1);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
-    camera.position.set(0, 2, 55);
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+    camera.position.set(0, 4, 38);
 
-    // Lighting
-    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffd700, 0.8);
-    dirLight.position.set(5, 10, 8);
-    scene.add(dirLight);
-    const backLight = new THREE.DirectionalLight(0x4488ff, 0.3);
-    backLight.position.set(-5, -3, -5);
-    scene.add(backLight);
+    // Rich lighting
+    scene.add(new THREE.AmbientLight(0x404060, 0.6));
+    const key = new THREE.DirectionalLight(0xffeedd, 1.0);
+    key.position.set(8, 12, 10);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0x4466aa, 0.4);
+    fill.position.set(-6, -2, -6);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 0.3);
+    rim.position.set(0, 0, -12);
+    scene.add(rim);
 
-    // Voxel data (generated from hat-flame.png)
-    const HAT_W=40, HAT_H=26;
-    const HAT_VOXELS=[[11,25,"#000000"],[12,25,"#000000"],[13,25,"#000000"],[14,25,"#000000"],[15,25,"#000000"],[16,25,"#000000"],[17,25,"#000000"],[18,25,"#000000"],[19,25,"#000000"],[20,25,"#000000"],[11,24,"#000000"],[12,24,"#000000"],[13,24,"#000000"],[14,24,"#000000"],[15,24,"#000000"],[16,24,"#000000"],[17,24,"#000000"],[18,24,"#000000"],[19,24,"#000000"],[20,24,"#000000"],[11,23,"#040207"],[12,23,"#020005"],[13,23,"#020005"],[14,23,"#020005"],[15,23,"#020005"],[16,23,"#020005"],[17,23,"#020005"],[18,23,"#020005"],[19,23,"#020005"],[20,23,"#020005"],[8,22,"#020001"],[9,22,"#000000"],[10,22,"#000002"],[11,22,"#f4762c"],[12,22,"#f4762c"],[13,22,"#f4762c"],[14,22,"#f4762c"],[15,22,"#f4762c"],[16,22,"#f4762c"],[17,22,"#f4762c"],[18,22,"#f4762c"],[19,22,"#f4762c"],[20,22,"#f4762c"],[21,22,"#040000"],[22,22,"#000000"],[23,22,"#010100"],[8,21,"#000000"],[9,21,"#000000"],[10,21,"#000002"],[11,21,"#f4762c"],[12,21,"#f4762c"],[13,21,"#f4762c"],[14,21,"#f4762c"],[15,21,"#f5752c"],[16,21,"#f4762c"],[17,21,"#f4762c"],[18,21,"#f4762c"],[19,21,"#f4762c"],[20,21,"#f4762c"],[21,21,"#040000"],[22,21,"#010000"],[23,21,"#000000"],[5,20,"#060000"],[6,20,"#020001"],[7,20,"#020001"],[8,20,"#c25502"],[9,20,"#c35604"],[10,20,"#c35604"],[11,20,"#c35604"],[12,20,"#c35604"],[13,20,"#000000"],[14,20,"#010101"],[15,20,"#000002"],[16,20,"#f4762c"],[17,20,"#f4762c"],[18,20,"#f4762c"],[19,20,"#f4762c"],[20,20,"#f4762c"],[21,20,"#f5752c"],[22,20,"#f4762c"],[23,20,"#f4752e"],[24,20,"#020001"],[25,20,"#020001"],[26,20,"#020001"],[5,19,"#010101"],[6,19,"#000000"],[7,19,"#000000"],[8,19,"#c45705"],[9,19,"#c35604"],[10,19,"#c35604"],[11,19,"#c35604"],[12,19,"#c35604"],[13,19,"#010101"],[14,19,"#000000"],[15,19,"#000000"],[16,19,"#f4762c"],[17,19,"#f4762c"],[18,19,"#f4762c"],[19,19,"#f4762c"],[20,19,"#f4762c"],[21,19,"#f4762c"],[22,19,"#f4762c"],[23,19,"#f4752e"],[24,19,"#000000"],[25,19,"#000000"],[26,19,"#000000"],[5,18,"#010101"],[6,18,"#020001"],[7,18,"#020001"],[8,18,"#c25502"],[9,18,"#c35604"],[10,18,"#c35604"],[11,18,"#c35604"],[12,18,"#c35604"],[13,18,"#000000"],[14,18,"#000000"],[15,18,"#000000"],[16,18,"#f4762c"],[17,18,"#f4762c"],[18,18,"#f4762c"],[19,18,"#f4762c"],[20,18,"#f4762c"],[21,18,"#f4762c"],[22,18,"#f4762c"],[23,18,"#f4752e"],[24,18,"#000000"],[25,18,"#000000"],[26,18,"#000000"],[8,17,"#000000"],[9,17,"#000000"],[10,17,"#000000"],[11,17,"#000000"],[12,17,"#000000"],[13,17,"#c05602"],[14,17,"#c35604"],[15,17,"#c35604"],[16,17,"#f5752c"],[17,17,"#f4762c"],[18,17,"#f4762c"],[19,17,"#f4762c"],[20,17,"#f4762c"],[21,17,"#f4762c"],[22,17,"#f4762c"],[23,17,"#f4752e"],[24,17,"#000000"],[25,17,"#000000"],[26,17,"#000000"],[8,16,"#000000"],[9,16,"#000000"],[10,16,"#000000"],[11,16,"#000000"],[12,16,"#000000"],[13,16,"#c35604"],[14,16,"#c35604"],[15,16,"#c35604"],[16,16,"#f5752c"],[17,16,"#f4762c"],[18,16,"#f4762c"],[19,16,"#f4762c"],[20,16,"#f4762c"],[21,16,"#f4762c"],[22,16,"#f4762c"],[23,16,"#f4752e"],[24,16,"#000000"],[25,16,"#000000"],[26,16,"#000000"],[11,15,"#010101"],[12,15,"#000000"],[13,15,"#c45705"],[14,15,"#c35604"],[15,15,"#c35604"],[16,15,"#f5752c"],[17,15,"#f4762c"],[18,15,"#f4762c"],[19,15,"#f4762c"],[20,15,"#f4762c"],[21,15,"#f4762c"],[22,15,"#f4762c"],[23,15,"#f4762c"],[24,15,"#f77738"],[25,15,"#f67637"],[26,15,"#f67637"],[27,15,"#000004"],[28,15,"#000205"],[11,14,"#000000"],[12,14,"#000000"],[13,14,"#c25502"],[14,14,"#c35604"],[15,14,"#c35604"],[16,14,"#f5752c"],[17,14,"#f4762c"],[18,14,"#f4762c"],[19,14,"#f4762c"],[20,14,"#f4762c"],[21,14,"#f4762c"],[22,14,"#f4762c"],[23,14,"#f4762c"],[24,14,"#f4762c"],[25,14,"#f4762c"],[26,14,"#f4762c"],[27,14,"#000000"],[28,14,"#000000"],[11,13,"#000000"],[12,13,"#000000"],[13,13,"#c45705"],[14,13,"#c35604"],[15,13,"#c35604"],[16,13,"#f5752c"],[17,13,"#f4762c"],[18,13,"#f4762c"],[19,13,"#f4762c"],[20,13,"#f4762c"],[21,13,"#f4762c"],[22,13,"#f4762c"],[23,13,"#f4762c"],[24,13,"#f4762c"],[25,13,"#f4762c"],[26,13,"#f4762c"],[27,13,"#000000"],[28,13,"#000000"],[11,12,"#000000"],[12,12,"#000000"],[13,12,"#000000"],[14,12,"#000000"],[15,12,"#000000"],[16,12,"#000000"],[17,12,"#000000"],[18,12,"#000000"],[19,12,"#000000"],[20,12,"#000000"],[21,12,"#fddd2a"],[22,12,"#ffdb2b"],[23,12,"#ffdc1e"],[24,12,"#000000"],[25,12,"#000000"],[26,12,"#000000"],[27,12,"#000000"],[28,12,"#000000"],[11,11,"#000000"],[12,11,"#000000"],[13,11,"#000000"],[14,11,"#000000"],[15,11,"#000000"],[16,11,"#000000"],[17,11,"#000000"],[18,11,"#000000"],[19,11,"#000000"],[20,11,"#000000"],[21,11,"#ffdb23"],[22,11,"#ffdc20"],[23,11,"#ffdc20"],[24,11,"#000000"],[25,11,"#000000"],[26,11,"#000000"],[27,11,"#000000"],[28,11,"#000000"],[11,10,"#0b0000"],[12,10,"#0b0000"],[13,10,"#070101"],[14,10,"#080000"],[15,10,"#080000"],[16,10,"#080000"],[17,10,"#080000"],[18,10,"#080000"],[19,10,"#010100"],[20,10,"#020100"],[21,10,"#ffd83f"],[22,10,"#fed73c"],[23,10,"#ffd63c"],[24,10,"#0b0102"],[25,10,"#090001"],[26,10,"#080000"],[27,10,"#090100"],[28,10,"#090100"],[8,9,"#000000"],[9,9,"#000000"],[10,9,"#000200"],[11,9,"#cc5251"],[12,9,"#cc5251"],[13,9,"#f77d7c"],[14,9,"#f77d7c"],[15,9,"#f77d7c"],[16,9,"#f77d7c"],[17,9,"#f77d7c"],[18,9,"#f87d7f"],[19,9,"#ffdd26"],[20,9,"#ffdc20"],[21,9,"#fa7a79"],[22,9,"#f77d7c"],[23,9,"#f77d7c"],[24,9,"#ffdc20"],[25,9,"#ffdc20"],[26,9,"#ffdc20"],[27,9,"#f77d7c"],[28,9,"#f77d7c"],[29,9,"#040000"],[30,9,"#000000"],[31,9,"#000000"],[8,8,"#000000"],[9,8,"#000000"],[10,8,"#000200"],[11,8,"#cc5251"],[12,8,"#cc5251"],[13,8,"#f77d7c"],[14,8,"#f77d7c"],[15,8,"#f77d7c"],[16,8,"#f77d7c"],[17,8,"#f77d7c"],[18,8,"#f87d7f"],[19,8,"#ffdc20"],[20,8,"#ffdc20"],[21,8,"#fa7a79"],[22,8,"#f77d7c"],[23,8,"#f77d7c"],[24,8,"#ffdc20"],[25,8,"#ffdc20"],[26,8,"#ffdc20"],[27,8,"#f77d7c"],[28,8,"#f77d7c"],[29,8,"#040000"],[30,8,"#000000"],[31,8,"#000000"],[3,7,"#010302"],[4,7,"#010302"],[5,7,"#010302"],[6,7,"#010302"],[7,7,"#010302"],[8,7,"#000000"],[9,7,"#000000"],[10,7,"#020001"],[11,7,"#020001"],[12,7,"#020001"],[13,7,"#020001"],[14,7,"#020001"],[15,7,"#020001"],[16,7,"#020001"],[17,7,"#020001"],[18,7,"#020001"],[19,7,"#000000"],[20,7,"#000000"],[21,7,"#000000"],[22,7,"#000000"],[23,7,"#000000"],[24,7,"#000000"],[25,7,"#000000"],[26,7,"#000000"],[27,7,"#000103"],[28,7,"#000103"],[29,7,"#010101"],[30,7,"#000000"],[31,7,"#000000"],[32,7,"#000103"],[33,7,"#000103"],[34,7,"#000103"],[35,7,"#000103"],[36,7,"#000103"],[3,6,"#000000"],[4,6,"#000000"],[5,6,"#000000"],[6,6,"#000000"],[7,6,"#000000"],[8,6,"#000000"],[9,6,"#000000"],[10,6,"#000000"],[11,6,"#000000"],[12,6,"#000000"],[13,6,"#000000"],[14,6,"#000000"],[15,6,"#000000"],[16,6,"#000000"],[17,6,"#000000"],[18,6,"#000000"],[19,6,"#000000"],[20,6,"#000000"],[21,6,"#000000"],[22,6,"#000000"],[23,6,"#000000"],[24,6,"#000000"],[25,6,"#000000"],[26,6,"#000000"],[27,6,"#000000"],[28,6,"#000000"],[29,6,"#000000"],[30,6,"#000000"],[31,6,"#000000"],[32,6,"#000000"],[33,6,"#000000"],[34,6,"#000000"],[35,6,"#000000"],[36,6,"#000000"],[3,5,"#000000"],[4,5,"#000000"],[5,5,"#010101"],[6,5,"#000000"],[7,5,"#010101"],[8,5,"#000000"],[9,5,"#010101"],[10,5,"#010101"],[11,5,"#000000"],[12,5,"#010101"],[13,5,"#000000"],[14,5,"#010101"],[15,5,"#000000"],[16,5,"#000000"],[17,5,"#000000"],[18,5,"#000000"],[19,5,"#000000"],[20,5,"#000000"],[21,5,"#000000"],[22,5,"#000000"],[23,5,"#000000"],[24,5,"#000000"],[25,5,"#000000"],[26,5,"#000000"],[27,5,"#000000"],[28,5,"#000000"],[29,5,"#000000"],[30,5,"#000000"],[31,5,"#000000"],[32,5,"#000000"],[33,5,"#000000"],[34,5,"#000000"],[35,5,"#000000"],[36,5,"#000000"],[0,4,"#000000"],[1,4,"#000000"],[2,4,"#000000"],[3,4,"#c15604"],[4,4,"#c35604"],[5,4,"#c15604"],[6,4,"#c15604"],[7,4,"#c15604"],[8,4,"#c15604"],[9,4,"#c15604"],[10,4,"#c15604"],[11,4,"#c15604"],[12,4,"#c15604"],[13,4,"#c15604"],[14,4,"#c15604"],[15,4,"#c35604"],[16,4,"#f4762c"],[17,4,"#f4762c"],[18,4,"#f4762c"],[19,4,"#f4762c"],[20,4,"#f4762c"],[21,4,"#f4762c"],[22,4,"#f4762c"],[23,4,"#f4762c"],[24,4,"#f4762c"],[25,4,"#f4762c"],[26,4,"#f4762c"],[27,4,"#f4762c"],[28,4,"#f4762c"],[29,4,"#f4762c"],[30,4,"#f4762c"],[31,4,"#f4762c"],[32,4,"#f4762c"],[33,4,"#f4762c"],[34,4,"#f4762c"],[35,4,"#f4762c"],[36,4,"#f4762c"],[37,4,"#020401"],[38,4,"#000000"],[39,4,"#000000"],[0,3,"#000000"],[1,3,"#000000"],[2,3,"#000000"],[3,3,"#c05704"],[4,3,"#c35604"],[5,3,"#c35604"],[6,3,"#c35604"],[7,3,"#c35604"],[8,3,"#c35604"],[9,3,"#c35604"],[10,3,"#c35604"],[11,3,"#c35604"],[12,3,"#c35604"],[13,3,"#c35604"],[14,3,"#c35604"],[15,3,"#c35604"],[16,3,"#f5752c"],[17,3,"#f4762c"],[18,3,"#f4762c"],[19,3,"#f4762c"],[20,3,"#f4762c"],[21,3,"#f4762c"],[22,3,"#f4762c"],[23,3,"#f4762c"],[24,3,"#f4762c"],[25,3,"#f4762c"],[26,3,"#f4762c"],[27,3,"#f4762c"],[28,3,"#f4762c"],[29,3,"#f4762c"],[30,3,"#f4762c"],[31,3,"#f4762c"],[32,3,"#f4762c"],[33,3,"#f4762c"],[34,3,"#f4762c"],[35,3,"#f4762c"],[36,3,"#f4762c"],[37,3,"#020401"],[38,3,"#000000"],[39,3,"#000000"],[3,2,"#080000"],[4,2,"#080000"],[5,2,"#080000"],[6,2,"#080000"],[7,2,"#080000"],[8,2,"#080000"],[9,2,"#080000"],[10,2,"#080000"],[11,2,"#080000"],[12,2,"#080000"],[13,2,"#080000"],[14,2,"#080000"],[15,2,"#080000"],[16,2,"#060000"],[17,2,"#070101"],[18,2,"#070101"],[19,2,"#070101"],[20,2,"#070101"],[21,2,"#070101"],[22,2,"#070101"],[23,2,"#070101"],[24,2,"#070101"],[25,2,"#070101"],[26,2,"#070101"],[27,2,"#070101"],[28,2,"#070101"],[29,2,"#070101"],[30,2,"#070101"],[31,2,"#070101"],[32,2,"#070101"],[33,2,"#070101"],[34,2,"#070101"],[35,2,"#070101"],[36,2,"#070101"],[3,1,"#000000"],[4,1,"#000000"],[5,1,"#000000"],[6,1,"#000000"],[7,1,"#000000"],[8,1,"#000000"],[9,1,"#000000"],[10,1,"#000000"],[11,1,"#000000"],[12,1,"#000000"],[13,1,"#000000"],[14,1,"#000000"],[15,1,"#000000"],[16,1,"#000000"],[17,1,"#000000"],[18,1,"#000000"],[19,1,"#000000"],[20,1,"#000000"],[21,1,"#000000"],[22,1,"#000000"],[23,1,"#000000"],[24,1,"#000000"],[25,1,"#000000"],[26,1,"#000000"],[27,1,"#000000"],[28,1,"#000000"],[29,1,"#000000"],[30,1,"#000000"],[31,1,"#000000"],[32,1,"#000000"],[33,1,"#000000"],[34,1,"#000000"],[35,1,"#000000"],[36,1,"#000000"],[3,0,"#000000"],[4,0,"#000000"],[5,0,"#000000"],[6,0,"#000000"],[7,0,"#000000"],[8,0,"#000000"],[9,0,"#000000"],[10,0,"#000000"],[11,0,"#000000"],[12,0,"#000000"],[13,0,"#000000"],[14,0,"#000000"],[15,0,"#000000"],[16,0,"#000000"],[17,0,"#000000"],[18,0,"#000000"],[19,0,"#000000"],[20,0,"#000000"],[21,0,"#000000"],[22,0,"#000000"],[23,0,"#000000"],[24,0,"#000000"],[25,0,"#000000"],[26,0,"#000000"],[27,0,"#000000"],[28,0,"#000000"],[29,0,"#000000"],[30,0,"#000000"],[31,0,"#000000"],[32,0,"#000000"],[33,0,"#000000"],[34,0,"#000000"],[35,0,"#000000"],[36,0,"#000000"]];
+    // ── 6 Order Realms ──
+    const REALMS = [
+        { name:'Flame',   primary:0xf4762c, secondary:0xc35604, accent:0xffdd2a, glow:0xff6600, dark:0x3a1500, emblem:'fire' },
+        { name:'Wild',    primary:0x2ea043, secondary:0x1a7a30, accent:0x8bef6a, glow:0x44ff44, dark:0x0a2a10, emblem:'leaf' },
+        { name:'Arcane',  primary:0x7b54c9, secondary:0x5a3a9a, accent:0xc8a0ff, glow:0xaa66ff, dark:0x1a0a3a, emblem:'star' },
+        { name:'Deep',    primary:0x2266cc, secondary:0x1a4a8a, accent:0x66ccff, glow:0x4488ff, dark:0x0a1a3a, emblem:'wave' },
+        { name:'Radiant', primary:0xffcc00, secondary:0xcc9900, accent:0xfff4aa, glow:0xffee44, dark:0x3a2a00, emblem:'sun' },
+        { name:'Heart',   primary:0xc55bb7, secondary:0x9a3a8a, accent:0xffaaee, glow:0xff66cc, dark:0x3a0a2a, emblem:'heart' }
+    ];
+    let realmIdx = 0, realmT = 0;
+    const REALM_DURATION = 6; // seconds per realm
+    const TRANSITION = 1.2;   // seconds crossfade
 
-    // Build voxels using InstancedMesh per color for performance
-    const colorMap = {};
-    HAT_VOXELS.forEach(v => {
-        if (!colorMap[v[2]]) colorMap[v[2]] = [];
-        colorMap[v[2]].push([v[0], v[1]]);
-    });
-
+    const boxGeo = new THREE.BoxGeometry(0.92, 0.92, 0.92);
     const hatGroup = new THREE.Group();
-    const boxGeo = new THREE.BoxGeometry(0.95, 0.95, 0.95);
+    scene.add(hatGroup);
 
-    Object.entries(colorMap).forEach(([hex, positions]) => {
-        const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color(hex) });
+    // ── Procedural Wizard Hat Shape (3D voxel, ~28 tall, wide brim) ──
+    function generateHatVoxels() {
+        const voxels = []; // {x,y,z, zone} — zone: 'tip','cone','band','brim','buckle','trim'
+        const R = 14; // half-width
+
+        // Pointy tip (y 24-27) — narrow, curved
+        for (let y = 24; y <= 27; y++) {
+            const w = Math.max(1, Math.round((27 - y) * 0.8 + 1));
+            const d = Math.max(1, w);
+            for (let x = -w; x <= w; x++) {
+                for (let z = -d; z <= d; z++) {
+                    if (x*x + z*z <= (w+0.5)*(w+0.5)) {
+                        voxels.push({x, y, z, zone:'tip'});
+                    }
+                }
+            }
+        }
+        // Tip curl — hat bends slightly to the right
+        for (let i = 0; i < 4; i++) {
+            voxels.push({x: 2+i, y: 27-i*0.3, z: 0, zone:'tip'});
+            voxels.push({x: 3+i, y: 26.5-i*0.5, z: 0, zone:'tip'});
+        }
+
+        // Cone body (y 8-23) — smooth taper
+        for (let y = 8; y <= 23; y++) {
+            const t = (y - 8) / 15;
+            const radius = R * (1 - t * 0.8);
+            const depthR = radius * 0.7;
+            for (let x = -Math.ceil(radius); x <= Math.ceil(radius); x++) {
+                for (let z = -Math.ceil(depthR); z <= Math.ceil(depthR); z++) {
+                    const nx = x / radius, nz = z / depthR;
+                    if (nx*nx + nz*nz <= 1.05) {
+                        // Hollow inside (shell only)
+                        const inner = radius - 1.5;
+                        const innerD = depthR - 1.5;
+                        const inx = inner > 0 ? x / inner : 2, inz = innerD > 0 ? z / innerD : 2;
+                        if (inner <= 0 || inx*inx + inz*inz > 1.0) {
+                            voxels.push({x, y, z, zone:'cone'});
+                        }
+                    }
+                }
+            }
+        }
+
+        // Hat band (y 7-8) — decorative band where brim meets cone
+        for (let y = 7; y <= 8; y++) {
+            const radius = R + 0.5;
+            const depthR = radius * 0.7;
+            for (let x = -Math.ceil(radius); x <= Math.ceil(radius); x++) {
+                for (let z = -Math.ceil(depthR); z <= Math.ceil(depthR); z++) {
+                    const nx = x / radius, nz = z / depthR;
+                    if (nx*nx + nz*nz <= 1.05) {
+                        voxels.push({x, y, z, zone:'band'});
+                    }
+                }
+            }
+        }
+
+        // Buckle / emblem (on band, front-facing)
+        for (let bx = -2; bx <= 2; bx++) {
+            for (let by = 7; by <= 8; by++) {
+                voxels.push({x: bx, y: by, z: Math.ceil(R*0.7) + 1, zone:'buckle'});
+            }
+        }
+
+        // Wide brim (y 5-6) — flat disc, wider than cone
+        const brimR = R + 5;
+        const brimD = brimR * 0.7;
+        for (let y = 5; y <= 6; y++) {
+            for (let x = -brimR; x <= brimR; x++) {
+                for (let z = -Math.ceil(brimD); z <= Math.ceil(brimD); z++) {
+                    const nx = x / brimR, nz = z / brimD;
+                    if (nx*nx + nz*nz <= 1.0) {
+                        voxels.push({x, y, z, zone:'brim'});
+                    }
+                }
+            }
+        }
+
+        // Brim trim (outer edge highlight)
+        for (let y = 5; y <= 6; y++) {
+            for (let x = -brimR; x <= brimR; x++) {
+                for (let z = -Math.ceil(brimD); z <= Math.ceil(brimD); z++) {
+                    const nx = x / brimR, nz = z / brimD;
+                    const d = nx*nx + nz*nz;
+                    if (d > 0.85 && d <= 1.0) {
+                        // Override zone to trim
+                        const idx = voxels.findIndex(v => v.x===x && v.y===y && v.z===z);
+                        if (idx >= 0) voxels[idx].zone = 'trim';
+                    }
+                }
+            }
+        }
+
+        return voxels;
+    }
+
+    const hatVoxels = generateHatVoxels();
+
+    // ── Build instanced meshes per zone ──
+    const zones = ['tip','cone','band','brim','buckle','trim'];
+    const zoneMeshes = {};
+    const zoneMats = {};
+
+    zones.forEach(zone => {
+        const positions = hatVoxels.filter(v => v.zone === zone);
+        if (positions.length === 0) return;
+        const mat = new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.1 });
         const mesh = new THREE.InstancedMesh(boxGeo, mat, positions.length);
         const dummy = new THREE.Object3D();
-        positions.forEach(([x, y], i) => {
-            dummy.position.set(x - HAT_W/2, y - HAT_H/2, 0);
+        positions.forEach((v, i) => {
+            dummy.position.set(v.x, v.y - 14, v.z);
             dummy.updateMatrix();
             mesh.setMatrixAt(i, dummy.matrix);
         });
+        mesh.instanceMatrix.needsUpdate = true;
         hatGroup.add(mesh);
+        zoneMeshes[zone] = mesh;
+        zoneMats[zone] = mat;
     });
 
-    // Add depth — extrude voxels 2-3 blocks deep for 3D feel
-    const depthLayers = [1, 2];
-    depthLayers.forEach(z => {
-        Object.entries(colorMap).forEach(([hex, positions]) => {
-            // Darken color for depth
-            const c = new THREE.Color(hex);
-            c.multiplyScalar(1 - z * 0.15);
-            const mat = new THREE.MeshLambertMaterial({ color: c });
-            const mesh = new THREE.InstancedMesh(boxGeo, mat, positions.length);
-            const dummy = new THREE.Object3D();
-            positions.forEach(([x, y], i) => {
-                dummy.position.set(x - HAT_W/2, y - HAT_H/2, -z);
-                dummy.updateMatrix();
-                mesh.setMatrixAt(i, dummy.matrix);
-            });
-            hatGroup.add(mesh);
+    // ── Floating particles around hat ──
+    const PARTICLE_COUNT = 120;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(PARTICLE_COUNT * 3);
+    const pSizes = new Float32Array(PARTICLE_COUNT);
+    const pPhase = new Float32Array(PARTICLE_COUNT);
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = 16 + Math.random() * 14;
+        pPos[i*3] = Math.cos(a) * r;
+        pPos[i*3+1] = (Math.random() - 0.3) * 30;
+        pPos[i*3+2] = Math.sin(a) * r;
+        pSizes[i] = 0.5 + Math.random() * 1.5;
+        pPhase[i] = Math.random() * Math.PI * 2;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({ size: 1.2, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    // ── Realm emblem glow ring ──
+    const ringGeo = new THREE.TorusGeometry(16, 0.3, 8, 48);
+    const ringMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -8;
+    scene.add(ring);
+
+    // ── Color lerp helper ──
+    function lerpColor(a, b, t) {
+        const ca = new THREE.Color(a), cb = new THREE.Color(b);
+        return ca.lerp(cb, t);
+    }
+
+    // ── Apply realm colors ──
+    function applyRealm(realm, t) {
+        // t is 0-1 blend factor during transitions
+        const zoneColors = {
+            tip:    realm.accent,
+            cone:   realm.primary,
+            band:   realm.dark,
+            brim:   realm.secondary,
+            buckle: realm.accent,
+            trim:   realm.accent
+        };
+        zones.forEach(zone => {
+            if (!zoneMats[zone]) return;
+            zoneMats[zone].color.set(zoneColors[zone]);
+            if (zone === 'buckle') {
+                zoneMats[zone].metalness = 0.6;
+                zoneMats[zone].roughness = 0.2;
+                zoneMats[zone].emissive.set(realm.accent);
+                zoneMats[zone].emissiveIntensity = 0.4;
+            } else if (zone === 'tip') {
+                zoneMats[zone].emissive.set(realm.glow);
+                zoneMats[zone].emissiveIntensity = 0.3 + Math.sin(realmT * 3) * 0.15;
+            } else if (zone === 'trim') {
+                zoneMats[zone].emissive.set(realm.accent);
+                zoneMats[zone].emissiveIntensity = 0.15;
+            } else {
+                zoneMats[zone].emissive.set(0x000000);
+                zoneMats[zone].emissiveIntensity = 0;
+            }
         });
-    });
-
-    scene.add(hatGroup);
+        pMat.color.set(realm.glow);
+        ringMat.color.set(realm.glow);
+    }
 
     // Mouse tracking
     let mouseX = 0, mouseY = 0;
@@ -1286,9 +1449,7 @@ filterDogs();
         mouseY = (t.clientY / window.innerHeight - 0.5) * 2;
     }, { passive: true });
 
-    // Float animation
     let time = 0;
-
     function resize() {
         const hero = canvas.parentElement;
         const w = hero.clientWidth;
@@ -1302,14 +1463,47 @@ filterDogs();
 
     function animate() {
         requestAnimationFrame(animate);
-        time += 0.01;
+        const dt = 0.016;
+        time += dt;
+        realmT += dt;
 
-        // Slow auto-rotation + mouse influence
-        hatGroup.rotation.y = Math.sin(time * 0.5) * 0.3 + mouseX * 0.4;
-        hatGroup.rotation.x = Math.sin(time * 0.3) * 0.05 - mouseY * 0.15;
+        // Realm cycling
+        if (realmT >= REALM_DURATION) {
+            realmT = 0;
+            realmIdx = (realmIdx + 1) % REALMS.length;
+        }
+        applyRealm(REALMS[realmIdx], 0);
 
-        // Gentle float
-        hatGroup.position.y = Math.sin(time) * 0.5;
+        // Smooth rotation + mouse
+        hatGroup.rotation.y = time * 0.15 + mouseX * 0.5;
+        hatGroup.rotation.x = Math.sin(time * 0.3) * 0.08 - mouseY * 0.2;
+        hatGroup.rotation.z = Math.sin(time * 0.2) * 0.03;
+
+        // Float
+        hatGroup.position.y = Math.sin(time * 0.8) * 0.8;
+
+        // Particle orbit
+        const posArr = particles.geometry.attributes.position.array;
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            const phase = pPhase[i];
+            const speed = 0.2 + (i % 5) * 0.05;
+            const a = time * speed + phase;
+            const r = 16 + Math.sin(time * 0.5 + phase) * 5;
+            posArr[i*3] = Math.cos(a) * r;
+            posArr[i*3+1] += Math.sin(time * 2 + phase) * 0.02;
+            posArr[i*3+2] = Math.sin(a) * r;
+            // Wrap Y
+            if (posArr[i*3+1] > 18) posArr[i*3+1] = -12;
+            if (posArr[i*3+1] < -12) posArr[i*3+1] = 18;
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+        pMat.opacity = 0.3 + Math.sin(time * 1.5) * 0.15;
+
+        // Ring pulse
+        const rScale = 1 + Math.sin(time * 2) * 0.05;
+        ring.scale.set(rScale, rScale, 1);
+        ring.rotation.z = time * 0.1;
+        ringMat.opacity = 0.15 + Math.sin(time * 3) * 0.08;
 
         renderer.render(scene, camera);
     }
