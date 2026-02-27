@@ -133,7 +133,7 @@
             overflow: hidden;
             text-align: center;
             padding: 0;
-            min-height: 420px;
+            min-height: 280px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -606,7 +606,7 @@
             .filter-row::-webkit-scrollbar { display: none; }
         }
         @media (max-width: 480px) {
-            .hero { min-height: 300px; padding-top: 0; }
+            .hero { min-height: 200px; padding-top: 0; }
             .hero-text { padding: 24px 16px 20px; }
             .hero-title { font-size: clamp(1.8rem, 7vw, 2.4rem); }
             .hero-subtitle { font-size: clamp(0.85rem, 3.5vw, 1rem); }
@@ -794,8 +794,19 @@
     .nav-hamburger { display: flex; }
 }
 
-/* ── Nav Spacer (push content below fixed nav) ──────── */
-.nav-spacer { height: 64px; padding-top: env(safe-area-inset-top); }
+
+/* ── GEO & FAQ Sections ─────────────────────────── */
+.geo-section { max-width: 900px; margin: 4rem auto; padding: 0 1.5rem; }
+.geo-heading { color: #ffd700; font-size: 1.8rem; margin-bottom: 1rem; }
+.geo-text { line-height: 1.8; color: #98989D; margin-bottom: 1.5rem; }
+.geo-text strong { color: #F5F5F7; }
+.geo-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.geo-stat { background: #1C1C1E; border-radius: 12px; padding: 1.2rem; text-align: center; }
+.geo-stat-num { font-size: 2rem; color: #ffd700; font-weight: bold; }
+.geo-stat-label { color: #98989D; }
+.faq-item { margin-bottom: 0.8rem; background: #1C1C1E; border-radius: 8px; padding: 1rem; }
+.faq-item summary { cursor: pointer; color: #F5F5F7; font-weight: 600; }
+.faq-item p { margin-top: 0.5rem; color: #98989D; line-height: 1.7; }
 
     </style>
 </head>
@@ -897,39 +908,39 @@
 </div>
 
 <!-- GEO: What is The Order of 86? -->
-<section style="max-width:900px;margin:4rem auto;padding:0 1.5rem;color:#F5F5F7;font-family:var(--font-sans, -apple-system, sans-serif);">
-    <h2 style="color:#ffd700;font-size:1.8rem;margin-bottom:1rem;">What is The Order of 86?</h2>
-    <p style="line-height:1.8;color:#98989D;margin-bottom:1.5rem;">The Order of 86 is a collection of <strong style="color:#F5F5F7;">86 unique wizard dog NFTs</strong> on the <strong style="color:#F5F5F7;">Doge blockchain</strong>. Each wizard dog is a one-of-a-kind digital collectible with hand-crafted lore, unique traits, and a backstory set in the fantasy world of <strong style="color:#F5F5F7;">Pawtheon</strong>.</p>
+<section class="geo-section">
+    <h2 class="geo-heading">What is The Order of 86?</h2>
+    <p class="geo-text">The Order of 86 is a collection of <strong>86 unique wizard dog NFTs</strong> on the <strong>Doge blockchain</strong>. Each wizard dog is a one-of-a-kind digital collectible with hand-crafted lore, unique traits, and a backstory set in the fantasy world of <strong>Pawtheon</strong>.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;">
-        <div style="background:#1C1C1E;border-radius:12px;padding:1.2rem;text-align:center;"><span style="font-size:2rem;color:#ffd700;font-weight:bold;">86</span><br><span style="color:#98989D;">Wizard Dogs</span></div>
-        <div style="background:#1C1C1E;border-radius:12px;padding:1.2rem;text-align:center;"><span style="font-size:2rem;color:#ffd700;font-weight:bold;">6</span><br><span style="color:#98989D;">Orders of Magic</span></div>
-        <div style="background:#1C1C1E;border-radius:12px;padding:1.2rem;text-align:center;"><span style="font-size:2rem;color:#ffd700;font-weight:bold;">7</span><br><span style="color:#98989D;">Moons</span></div>
-        <div style="background:#1C1C1E;border-radius:12px;padding:1.2rem;text-align:center;"><span style="font-size:2rem;color:#ffd700;font-weight:bold;">6</span><br><span style="color:#98989D;">Cities</span></div>
+    <div class="geo-stats">
+        <div class="geo-stat"><span class="geo-stat-num">86</span><br><span class="geo-stat-label">Wizard Dogs</span></div>
+        <div class="geo-stat"><span class="geo-stat-num">6</span><br><span class="geo-stat-label">Orders of Magic</span></div>
+        <div class="geo-stat"><span class="geo-stat-num">7</span><br><span class="geo-stat-label">Moons</span></div>
+        <div class="geo-stat"><span class="geo-stat-num">6</span><br><span class="geo-stat-label">Cities</span></div>
     </div>
 
-    <p style="line-height:1.8;color:#98989D;margin-bottom:2rem;">The six Orders of magic are <strong style="color:#FF6B00;">Flame</strong>, <strong style="color:#F1C40F;">Radiant</strong>, <strong style="color:#3498DB;">Deep</strong>, <strong style="color:#2ECC71;">Wild</strong>, <strong style="color:#9B6EFF;">Arcane</strong>, and <strong style="color:#FF69B4;">Heart</strong>. Explore the interactive 3D map, read the epic lore chapters, discover the seven celestial moons, or defend Pawtheon in the tower defense game.</p>
+    <p class="geo-text">The six Orders of magic are <strong style="color:#FF6B00;">Flame</strong>, <strong style="color:#F1C40F;">Radiant</strong>, <strong style="color:#3498DB;">Deep</strong>, <strong style="color:#2ECC71;">Wild</strong>, <strong style="color:#9B6EFF;">Arcane</strong>, and <strong style="color:#FF69B4;">Heart</strong>. Explore the interactive 3D map, read the epic lore chapters, discover the seven celestial moons, or defend Pawtheon in the tower defense game.</p>
 
-    <h2 style="color:#ffd700;font-size:1.8rem;margin-bottom:1rem;">Frequently Asked Questions</h2>
-    <details style="margin-bottom:0.8rem;background:#1C1C1E;border-radius:8px;padding:1rem;" open>
-        <summary style="cursor:pointer;color:#F5F5F7;font-weight:600;">What is The Order of 86?</summary>
-        <p style="margin-top:0.5rem;color:#98989D;line-height:1.7;">The Order of 86 is a collection of 86 unique wizard dog NFTs on the Doge blockchain. Each wizard dog belongs to one of six magical Orders and has hand-crafted lore set in the world of Pawtheon.</p>
+    <h2 class="geo-heading">Frequently Asked Questions</h2>
+    <details class="faq-item" open>
+        <summary>What is The Order of 86?</summary>
+        <p>The Order of 86 is a collection of 86 unique wizard dog NFTs on the Doge blockchain. Each wizard dog belongs to one of six magical Orders and has hand-crafted lore set in the world of Pawtheon.</p>
     </details>
-    <details style="margin-bottom:0.8rem;background:#1C1C1E;border-radius:8px;padding:1rem;">
-        <summary style="cursor:pointer;color:#F5F5F7;font-weight:600;">What blockchain is it on?</summary>
-        <p style="margin-top:0.5rem;color:#98989D;line-height:1.7;">The Order of 86 lives on the Doge blockchain, known for fast, low-cost, and community-driven transactions.</p>
+    <details class="faq-item">
+        <summary>What blockchain is it on?</summary>
+        <p>The Order of 86 lives on the Doge blockchain, known for fast, low-cost, and community-driven transactions.</p>
     </details>
-    <details style="margin-bottom:0.8rem;background:#1C1C1E;border-radius:8px;padding:1rem;">
-        <summary style="cursor:pointer;color:#F5F5F7;font-weight:600;">How many wizard dogs are there?</summary>
-        <p style="margin-top:0.5rem;color:#98989D;line-height:1.7;">There are exactly 86 wizard dogs — each one unique with individual traits, backstory, and magical abilities.</p>
+    <details class="faq-item">
+        <summary>How many wizard dogs are there?</summary>
+        <p>There are exactly 86 wizard dogs — each one unique with individual traits, backstory, and magical abilities.</p>
     </details>
-    <details style="margin-bottom:0.8rem;background:#1C1C1E;border-radius:8px;padding:1rem;">
-        <summary style="cursor:pointer;color:#F5F5F7;font-weight:600;">What are the six Orders?</summary>
-        <p style="margin-top:0.5rem;color:#98989D;line-height:1.7;">The six Orders are Flame, Radiant, Deep, Wild, Arcane, and Heart. Each represents a different school of magic in Pawtheon.</p>
+    <details class="faq-item">
+        <summary>What are the six Orders?</summary>
+        <p>The six Orders are Flame, Radiant, Deep, Wild, Arcane, and Heart. Each represents a different school of magic in Pawtheon.</p>
     </details>
-    <details style="margin-bottom:0.8rem;background:#1C1C1E;border-radius:8px;padding:1rem;">
-        <summary style="cursor:pointer;color:#F5F5F7;font-weight:600;">What is Pawtheon?</summary>
-        <p style="margin-top:0.5rem;color:#98989D;line-height:1.7;">Pawtheon is the fantasy world where the 86 wizard dogs live. It features 6 cities, 7 moons, and vast magical realms you can explore through the interactive 3D map.</p>
+    <details class="faq-item">
+        <summary>What is Pawtheon?</summary>
+        <p>Pawtheon is the fantasy world where the 86 wizard dogs live. It features 6 cities, 7 moons, and vast magical realms you can explore through the interactive 3D map.</p>
     </details>
 </section>
 
@@ -1200,7 +1211,7 @@ filterDogs();
     if (!canvas) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(1);
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
@@ -1262,44 +1273,6 @@ filterDogs();
     });
 
     scene.add(hatGroup);
-
-    // Stars as small white spheres in background
-    const starGeo = new THREE.BufferGeometry();
-    const starVerts = [];
-    for (let i = 0; i < 300; i++) {
-        starVerts.push(
-            (Math.random() - 0.5) * 100,
-            (Math.random() - 0.5) * 60,
-            -20 - Math.random() * 30
-        );
-    }
-    starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVerts, 3));
-    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.3, transparent: true, opacity: 0.7 });
-    scene.add(new THREE.Points(starGeo, starMat));
-
-    // 7 Moons as glowing spheres
-    const moons = [
-        { color: 0xff4500, x: -18, y: 10 },
-        { color: 0xffd700, x: 22, y: 12 },
-        { color: 0x1e90ff, x: -20, y: -4 },
-        { color: 0x228b22, x: 24, y: -2 },
-        { color: 0x7b54c9, x: 2, y: 14 },
-        { color: 0xc55bb7, x: 26, y: -10 },
-        { color: 0xd4c8a0, x: -16, y: -10 },
-    ];
-    moons.forEach(m => {
-        const sphere = new THREE.Mesh(
-            new THREE.SphereGeometry(0.6, 16, 16),
-            new THREE.MeshBasicMaterial({ color: m.color })
-        );
-        sphere.position.set(m.x, m.y, -15);
-        scene.add(sphere);
-    });
-
-    // Subtle point light glow behind hat
-    const pointGlow = new THREE.PointLight(0xffd700, 0.4, 40);
-    pointGlow.position.set(0, 0, -5);
-    scene.add(pointGlow);
 
     // Mouse tracking
     let mouseX = 0, mouseY = 0;
