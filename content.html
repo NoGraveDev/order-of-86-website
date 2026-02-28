@@ -388,6 +388,7 @@
                         <div class="magic-ball"></div>
                         <div class="ball-stand"></div>
                     </div>
+                    <div class="loading-text" style="color:#ffd700;font-size:0.85rem;margin-top:1rem;font-weight:600">Loading...</div>
                 </div>
                 <img class="bg-layer" id="bgLayer" src="" style="display:none">
                 <img class="dog-layer" id="dogLayer" src="" style="display:none">
@@ -821,13 +822,19 @@ function selectAnimatedBackground(file) {
     selectedBackground = {type: 'animated', file: file, name: ANIMATED_BACKGROUNDS.find(b => b.file === file).name};
     showLoading();
     
-    bgLayer.onload = () => {
-        updatePreview();
+    // Show thumbnail instantly as placeholder
+    bgLayer.src = `content-bg/thumbs/${file.replace('.gif','.jpg')}`;
+    bgLayer.style.display = 'block';
+    updatePreview();
+    
+    // Load full GIF in background
+    const fullImg = new Image();
+    fullImg.onload = () => {
+        bgLayer.src = fullImg.src;
         hideLoading();
         updateDownloadButtons();
     };
-    bgLayer.src = `content-bg/${file}`;
-    bgLayer.style.display = 'block';
+    fullImg.src = `content-bg/${file}`;
     
     updateBgSelection();
 }
@@ -874,12 +881,16 @@ function updatePreview() {
     document.getElementById('dogRotationValue').textContent = rotation + '°';
 }
 
-function showLoading() {
+function showLoading(msg) {
     previewLoading.classList.remove('hidden');
+    const label = previewLoading.querySelector('.loading-text');
+    if (label) label.textContent = msg || 'Loading...';
 }
 
 function hideLoading() {
     previewLoading.classList.add('hidden');
+    const label = previewLoading.querySelector('.loading-text');
+    if (label) label.textContent = 'Loading...';
 }
 
 // Download Management
@@ -998,6 +1009,7 @@ function downloadBackground() {
     
     dog.onload = () => {
         const gifUrl = `content-bg/${selectedBackground.file}`;
+        showLoading('Creating GIF...');
         
         compositeGif(gifUrl, dog).then(blob => {
             const blobUrl = URL.createObjectURL(blob);
@@ -1039,8 +1051,8 @@ async function compositeGif(gifUrl, dogImg) {
     const outW = 1000, outH = 1000;
     
     const encoder = new GIF({
-        workers: 2,
-        quality: 1,
+        workers: 4,
+        quality: 10,
         width: outW,
         height: outH,
         dither: false,
