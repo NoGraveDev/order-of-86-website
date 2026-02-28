@@ -46,7 +46,7 @@ const MIME = {
 // Rate limiter
 const rateMap = new Map();
 const RATE_WINDOW = 60000;
-const RATE_LIMIT = 60;
+const RATE_LIMIT = 300;
 
 function rateLimit(ip) {
     const now = Date.now();
