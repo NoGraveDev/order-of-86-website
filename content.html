@@ -388,7 +388,6 @@
                         <div class="magic-ball"></div>
                         <div class="ball-stand"></div>
                     </div>
-                    <div class="loading-text" style="color:#ffd700;font-size:0.85rem;margin-top:1rem;font-weight:600">Loading...</div>
                 </div>
                 <img class="bg-layer" id="bgLayer" src="" style="display:none">
                 <img class="dog-layer" id="dogLayer" src="" style="display:none">
@@ -881,16 +880,12 @@ function updatePreview() {
     document.getElementById('dogRotationValue').textContent = rotation + '°';
 }
 
-function showLoading(msg) {
+function showLoading() {
     previewLoading.classList.remove('hidden');
-    const label = previewLoading.querySelector('.loading-text');
-    if (label) label.textContent = msg || 'Loading...';
 }
 
 function hideLoading() {
     previewLoading.classList.add('hidden');
-    const label = previewLoading.querySelector('.loading-text');
-    if (label) label.textContent = 'Loading...';
 }
 
 // Download Management
@@ -1009,7 +1004,7 @@ function downloadBackground() {
     
     dog.onload = () => {
         const gifUrl = `content-bg/${selectedBackground.file}`;
-        showLoading('Creating GIF...');
+        showLoading();
         
         compositeGif(gifUrl, dog).then(blob => {
             const blobUrl = URL.createObjectURL(blob);
