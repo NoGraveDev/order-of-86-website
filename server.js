@@ -7,6 +7,7 @@ const { renderWizardPage } = require('./wizard-page');
 
 // ── In-memory static file cache + pre-compressed ──
 const fileCache = new Map();
+const gzipCache = new Map();
 
 // Load wizard data
 let wizardDogs = {};
@@ -15,6 +16,20 @@ try {
     console.log(`Loaded ${Object.keys(wizardDogs).length} wizards from data file`);
 } catch (e) {
     console.error('Failed to load wizard data:', e.message);
+}
+
+// Pre-compress heavy static files at startup
+const PRECOMPRESS = ['index.html', 'content.html', 'map.html', 'game.html', 'moons.html', 'lore.html', 'wizard-dogs-data.js', 'wizards-data.js', 'sparkle.js', 'orb-cursor.js', 'starfield.js', 'wizard-stories.json', 'marketplace-data.json'];
+for (const file of PRECOMPRESS) {
+    const fp = path.join(__dirname, file);
+    try {
+        const data = fs.readFileSync(fp);
+        fileCache.set(path.resolve(fp), data);
+        const compressed = zlib.gzipSync(data, { level: 6 });
+        const cacheKey = data.length + ':' + data.slice(0, 32).toString('hex');
+        gzipCache.set(cacheKey, compressed);
+        console.log(`Pre-compressed ${file}: ${(data.length/1024).toFixed(0)}KB → ${(compressed.length/1024).toFixed(0)}KB`);
+    } catch(e) {}
 }
 
 const PORT = process.env.PORT || 3000;
@@ -63,13 +78,27 @@ function sendResponse(req, res, statusCode, headers, body) {
     const acceptEncoding = req.headers['accept-encoding'] || '';
 
     if (COMPRESSIBLE.has(mime) && acceptEncoding.includes('gzip') && body.length > 256) {
-        zlib.gzip(body, (err, compressed) => {
+        // Check gzip cache first
+        const cacheKey = body.length + ':' + (body.slice(0, 32).toString('hex'));
+        const cachedGzip = gzipCache.get(cacheKey);
+        if (cachedGzip) {
+            headers['Content-Encoding'] = 'gzip';
+            headers['Content-Length'] = cachedGzip.length;
+            headers['Vary'] = 'Accept-Encoding';
+            res.writeHead(statusCode, headers);
+            res.end(cachedGzip);
+            return;
+        }
+        zlib.gzip(body, { level: 6 }, (err, compressed) => {
             if (err) {
                 res.writeHead(statusCode, headers);
                 res.end(body);
             } else {
+                // Cache compressed version for static files
+                if (compressed.length < 512 * 1024) gzipCache.set(cacheKey, compressed);
                 headers['Content-Encoding'] = 'gzip';
                 headers['Content-Length'] = compressed.length;
+                headers['Vary'] = 'Accept-Encoding';
                 res.writeHead(statusCode, headers);
                 res.end(compressed);
             }
@@ -148,16 +177,27 @@ http.createServer(async (req, res) => {
 
     const ext = path.extname(resolved);
 
+    // Cache policy by file type
+    function cachePolicy(ext) {
+        if (ext === '.html') return 'no-cache';
+        if (['.png','.jpg','.jpeg','.gif','.webp','.svg','.ico'].includes(ext)) return 'public, max-age=604800, immutable'; // 7 days
+        if (['.js','.css','.json'].includes(ext)) return 'public, max-age=86400'; // 1 day
+        if (['.woff2'].includes(ext)) return 'public, max-age=2592000, immutable'; // 30 days
+        return 'public, max-age=86400';
+    }
+
+    const headers = {
+        'Content-Type': MIME[ext] || 'application/octet-stream',
+        'Cache-Control': cachePolicy(ext),
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'Referrer-Policy': 'strict-origin-when-cross-origin'
+    };
+
     // Check in-memory cache first
     const cached = fileCache.get(resolved);
     if (cached) {
-        sendResponse(req, res, 200, {
-            'Content-Type': MIME[ext] || 'application/octet-stream',
-            'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400',
-            'X-Content-Type-Options': 'nosniff',
-            'X-Frame-Options': 'SAMEORIGIN',
-            'Referrer-Policy': 'strict-origin-when-cross-origin'
-        }, cached);
+        sendResponse(req, res, 200, headers, cached);
         return;
     }
 
@@ -171,12 +211,6 @@ http.createServer(async (req, res) => {
         }
         // Cache static files under 512KB
         if (data.length < 512 * 1024) fileCache.set(resolved, data);
-        sendResponse(req, res, 200, {
-            'Content-Type': MIME[ext] || 'application/octet-stream',
-            'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=86400',
-            'X-Content-Type-Options': 'nosniff',
-            'X-Frame-Options': 'SAMEORIGIN',
-            'Referrer-Policy': 'strict-origin-when-cross-origin'
-        }, data);
+        sendResponse(req, res, 200, headers, data);
     });
 }).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
