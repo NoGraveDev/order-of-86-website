@@ -738,6 +738,10 @@ function switchTab(tab) {
     document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
     document.getElementById(tab + 'Tab').classList.add('active');
     
+    // Lazy-build grids on first tab open
+    if (tab === 'animated') buildAnimatedBgGrid();
+    if (tab === 'still') buildStillBgGrid();
+    
     currentTab = tab;
 }
 
@@ -787,7 +791,7 @@ function buildAnimatedBgGrid() {
         <div class="bg-thumb" data-file="${bg.file}"
              onclick="selectAnimatedBackground('${bg.file}')">
             <div class="bg-type-badge">GIF</div>
-            <img src="content-bg/thumbs/${bg.file.replace('.gif','.jpg')}" alt="${bg.name}" loading="lazy">
+            <img src="content-bg/thumbs/${bg.file}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
         </div>
     `).join('');
@@ -1137,8 +1141,6 @@ document.getElementById('wizardSearch').addEventListener('input', filterWizards)
 
 // Initialize
 buildWizardGrid();
-buildAnimatedBgGrid();
-buildStillBgGrid();
 updateDownloadButtons();
 </script>
 <script>
