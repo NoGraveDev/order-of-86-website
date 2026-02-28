@@ -781,12 +781,13 @@ function selectWizard(id) {
 // Background Management
 function buildAnimatedBgGrid() {
     const grid = document.getElementById('animatedBgGrid');
-    let html = `<div class="bg-thumb none-bg ${!selectedBackground ? 'selected' : ''}" onclick="clearBackground()">None</div>`;
+    if (grid.children.length > 1) return; // already built
+    let html = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
     html += ANIMATED_BACKGROUNDS.map(bg => `
-        <div class="bg-thumb ${selectedBackground && selectedBackground.file === bg.file ? 'selected' : ''}" 
+        <div class="bg-thumb" data-file="${bg.file}"
              onclick="selectAnimatedBackground('${bg.file}')">
             <div class="bg-type-badge">GIF</div>
-            <img src="content-bg/${bg.file}" alt="${bg.name}" loading="lazy">
+            <img src="content-bg/thumbs/${bg.file.replace('.gif','.jpg')}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
         </div>
     `).join('');
@@ -795,16 +796,25 @@ function buildAnimatedBgGrid() {
 
 function buildStillBgGrid() {
     const grid = document.getElementById('stillBgGrid');
-    let html = `<div class="bg-thumb none-bg ${!selectedBackground ? 'selected' : ''}" onclick="clearBackground()">None</div>`;
+    if (grid.children.length > 1) return; // already built
+    let html = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
     html += STILL_BACKGROUNDS.map((bg, index) => `
-        <div class="bg-thumb ${selectedBackground && selectedBackground.file === bg.file ? 'selected' : ''}" 
+        <div class="bg-thumb" data-file="${bg.file}"
              onclick="selectStillBackground(${index})">
             <div class="bg-type-badge">PNG</div>
-            <img src="content-bg/still/${bg.file}?v=2" alt="${bg.name}" loading="lazy">
+            <img src="content-bg/still/${bg.file}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
         </div>
     `).join('');
     grid.innerHTML = html;
+}
+
+function updateBgSelection() {
+    document.querySelectorAll('.bg-thumb').forEach(el => {
+        const file = el.dataset.file;
+        if (!file) { el.classList.toggle('selected', !selectedBackground); return; }
+        el.classList.toggle('selected', selectedBackground && selectedBackground.file === file);
+    });
 }
 
 function selectAnimatedBackground(file) {
@@ -819,8 +829,7 @@ function selectAnimatedBackground(file) {
     bgLayer.src = `content-bg/${file}`;
     bgLayer.style.display = 'block';
     
-    buildAnimatedBgGrid();
-    buildStillBgGrid();
+    updateBgSelection();
 }
 
 function selectStillBackground(index) {
@@ -836,8 +845,7 @@ function selectStillBackground(index) {
     bgLayer.src = `content-bg/still/${bg.file}`;
     bgLayer.style.display = 'block';
     
-    buildAnimatedBgGrid();
-    buildStillBgGrid();
+    updateBgSelection();
 }
 
 function clearBackground() {
@@ -845,8 +853,7 @@ function clearBackground() {
     bgLayer.style.display = 'none';
     updatePreview();
     updateDownloadButtons();
-    buildAnimatedBgGrid();
-    buildStillBgGrid();
+    updateBgSelection();
 }
 
 // Preview Management

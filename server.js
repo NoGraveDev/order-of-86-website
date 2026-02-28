@@ -209,8 +209,8 @@ http.createServer(async (req, res) => {
             });
             return;
         }
-        // Cache static files under 512KB
-        if (data.length < 512 * 1024) fileCache.set(resolved, data);
+        // Cache static files under 100KB (skip large GIFs/images)
+        if (data.length < 100 * 1024) fileCache.set(resolved, data);
         sendResponse(req, res, 200, headers, data);
     });
 }).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
