@@ -60,6 +60,12 @@ function setPixel(ctx, x, y, color) {
   ctx.fillRect(x, y, 1, 1);
 }
 
+// BUG FIX 1: Add fillBackground utility to prevent black lines at horizon
+function fillBackground(ctx, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 200, 200);
+}
+
 function drawSprite(ctx, x, y, sprite, ramp = null) {
   for (let sy = 0; sy < sprite.length; sy++) {
     for (let sx = 0; sx < sprite[sy].length; sx++) {
@@ -109,7 +115,8 @@ function ditherFill(ctx, x, y, w, h, color1, color2, pattern = 'checkerboard') {
   }
 }
 
-function ditherGradient(ctx, x, y1, y2, w, ramp) {
+// BUG FIX 3: Improved dithering - less aggressive, more selective
+function ditherGradient(ctx, x, y1, y2, w, ramp, ditherStrength = 0.33) {
   const rampColors = Array.isArray(ramp) ? ramp : RAMPS[ramp];
   if (!rampColors) return;
   
@@ -123,9 +130,23 @@ function ditherGradient(ctx, x, y1, y2, w, ramp) {
     const color1 = rampColors[Math.min(rampIndex, rampColors.length - 1)];
     const color2 = rampColors[Math.min(rampIndex + 1, rampColors.length - 1)];
     
+    // Only use dithering in transition zones
+    const isTransitionZone = rampFrac > 0.2 && rampFrac < 0.8;
+    const colorDifference = Math.abs(rampIndex - (rampIndex + 1));
+    
     for (let dx = 0; dx < w; dx++) {
-      const useDither = (dx + dy) % 2 === 0;
-      const useColor1 = rampFrac < 0.5 || !useDither;
+      let useColor1 = rampFrac < 0.5;
+      
+      // Apply dithering only if in transition zone and colors differ significantly
+      if (isTransitionZone && colorDifference > 0 && color1 !== color2) {
+        const ditherPattern = (dx + dy) % 2 === 0;
+        const shouldDither = Math.random() < ditherStrength;
+        
+        if (shouldDither) {
+          useColor1 = ditherPattern ? (rampFrac < 0.67) : (rampFrac < 0.33);
+        }
+      }
+      
       setPixel(ctx, x + dx, y1 + dy, useColor1 ? color1 : color2);
     }
   }
@@ -363,6 +384,7 @@ function torch(frame = 0) {
   return sprite;
 }
 
+// BUG FIX 2: Improved bookshelf with randomized book heights, widths, gaps, and colors
 function bookshelf(height = 20) {
   const sprite = [];
   const width = 16;
@@ -372,7 +394,13 @@ function bookshelf(height = 20) {
   }
   
   const shelfHeight = Math.floor(height / 4);
-  const bookColors = ['#ff4444', '#4444ff', '#44ff44', '#ffff44', '#ff44ff', '#44ffff'];
+  // Expanded color palette with more variety
+  const bookColors = [
+    '#ff4444', '#4444ff', '#44ff44', '#ffff44', '#ff44ff', '#44ffff',
+    '#ff8800', '#8844ff', '#88ff44', '#ff4488', '#4488ff', '#88ff88',
+    '#cc4444', '#4444cc', '#44cc44', '#cccc44', '#cc44cc', '#44cccc',
+    '#aa2222', '#2222aa', '#22aa22', '#aaaa22', '#aa22aa', '#22aaaa'
+  ];
   
   for (let shelf = 0; shelf < 4; shelf++) {
     const shelfY = shelf * shelfHeight;
@@ -383,19 +411,50 @@ function bookshelf(height = 20) {
       if (shelfY + 1 < height) sprite[shelfY + 1][x] = '#5a4530';
     }
     
-    // Draw books
+    // Draw randomized books
     if (shelfY + 3 < height) {
       let bookX = 1;
-      for (let book = 0; book < 5 && bookX < width - 2; book++) {
-        const bookWidth = 2 + Math.floor(Math.random() * 2);
-        const bookColor = bookColors[book % bookColors.length];
+      const maxBooks = 3 + Math.floor(Math.random() * 4); // 3-6 books per shelf
+      
+      for (let book = 0; book < maxBooks && bookX < width - 2; book++) {
+        // Random book width (1-3 pixels)
+        const bookWidth = 1 + Math.floor(Math.random() * 3);
+        // Random book height variation
+        const baseHeight = shelfHeight - 3;
+        const heightVariation = Math.floor(Math.random() * (baseHeight / 2));
+        const bookHeight = Math.max(2, baseHeight - heightVariation);
+        const bookStartY = shelfY + shelfHeight - 1 - bookHeight;
         
+        // Random color from expanded palette
+        const bookColor = bookColors[Math.floor(Math.random() * bookColors.length)];
+        
+        // Draw the book
         for (let bw = 0; bw < bookWidth && bookX + bw < width - 1; bw++) {
-          for (let bh = 2; bh < shelfHeight - 1; bh++) {
-            sprite[shelfY + bh][bookX + bw] = bookColor;
+          for (let bh = 0; bh < bookHeight; bh++) {
+            const drawY = bookStartY + bh;
+            if (drawY >= shelfY + 2 && drawY < shelfY + shelfHeight) {
+              // Add some shading - left edge darker, right edge lighter
+              let pixelColor = bookColor;
+              if (bw === 0 && bookWidth > 1) {
+                // Darken left edge
+                pixelColor = bookColor.replace(/#(..)(..)(..)/, (match, r, g, b) => {
+                  return '#' + 
+                    Math.max(0, parseInt(r, 16) - 20).toString(16).padStart(2, '0') +
+                    Math.max(0, parseInt(g, 16) - 20).toString(16).padStart(2, '0') +
+                    Math.max(0, parseInt(b, 16) - 20).toString(16).padStart(2, '0');
+                });
+              }
+              sprite[drawY][bookX + bw] = pixelColor;
+            }
           }
         }
-        bookX += bookWidth + 1;
+        
+        bookX += bookWidth;
+        
+        // Occasional gaps between books
+        if (Math.random() < 0.4 && bookX < width - 2) {
+          bookX += 1; // Add gap
+        }
       }
     }
   }
@@ -632,18 +691,19 @@ function lantern(color = '#ffddaa') {
 // SCENE COMPOSITION FUNCTIONS
 // ============================================================================
 
-function drawSky(ctx, ramp = 'sky_night', starDensity = 20) {
+// BUG FIX 1: Updated drawSky to fill entire canvas height by default
+function drawSky(ctx, ramp = 'sky_night', starDensity = 20, groundStartY = 200) {
   const rampColors = Array.isArray(ramp) ? ramp : RAMPS[ramp];
   if (!rampColors) return;
   
-  // Draw sky gradient using dithering
-  ditherGradient(ctx, 0, 0, 100, 200, rampColors);
+  // Draw sky gradient using dithering - fill to ground start or canvas bottom
+  ditherGradient(ctx, 0, 0, groundStartY, 200, rampColors);
   
   // Add stars if it's a night sky
   if (ramp === 'sky_night' && starDensity > 0) {
     for (let i = 0; i < starDensity; i++) {
       const x = Math.floor(Math.random() * 200);
-      const y = Math.floor(Math.random() * 80); // Only in upper sky
+      const y = Math.floor(Math.random() * Math.min(80, groundStartY)); // Only in upper sky
       const brightness = Math.random();
       
       if (brightness > 0.7) {
@@ -877,6 +937,7 @@ module.exports = {
   // Utilities
   setPixel,
   drawSprite,
+  fillBackground,
   
   // Dithering
   ditherFill,
