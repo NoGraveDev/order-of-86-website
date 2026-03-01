@@ -377,7 +377,7 @@
     <div class="preview-section">
         <div class="preview-container">
             <div class="preview-frame" id="previewFrame">
-                <div class="preview-loading hidden" id="previewLoading">
+                <div class="preview-loading" id="previewLoading">
                     <div class="magic-ball-wrap">
                         <div class="sparkle"></div>
                         <div class="sparkle"></div>
@@ -867,34 +867,75 @@ function selectWizard(id) {
 }
 
 // Background Management
+const BG_PAGE_SIZE = 30;
+let animatedBgShown = 0;
+let stillBgShown = 0;
+
 function buildAnimatedBgGrid() {
     const grid = document.getElementById('animatedBgGrid');
     if (grid.children.length > 1) return; // already built
-    let html = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
-    html += ANIMATED_BACKGROUNDS.map(bg => `
-        <div class="bg-thumb" data-file="${bg.file}"
+    grid.innerHTML = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
+    animatedBgShown = 0;
+    loadMoreAnimatedBgs();
+}
+
+function loadMoreAnimatedBgs() {
+    const grid = document.getElementById('animatedBgGrid');
+    // Remove existing load-more button
+    const oldBtn = grid.querySelector('.load-more-btn');
+    if (oldBtn) oldBtn.remove();
+    
+    const end = Math.min(animatedBgShown + BG_PAGE_SIZE, ANIMATED_BACKGROUNDS.length);
+    let html = '';
+    for (let i = animatedBgShown; i < end; i++) {
+        const bg = ANIMATED_BACKGROUNDS[i];
+        html += `<div class="bg-thumb" data-file="${bg.file}"
              onclick="selectAnimatedBackground('${bg.file}')">
             <div class="bg-type-badge">GIF</div>
             <img src="content-bg/thumbs/${bg.file}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
-        </div>
-    `).join('');
-    grid.innerHTML = html;
+        </div>`;
+    }
+    animatedBgShown = end;
+    grid.insertAdjacentHTML('beforeend', html);
+    
+    if (animatedBgShown < ANIMATED_BACKGROUNDS.length) {
+        const remaining = ANIMATED_BACKGROUNDS.length - animatedBgShown;
+        grid.insertAdjacentHTML('beforeend', `<div class="bg-thumb load-more-btn" onclick="loadMoreAnimatedBgs()" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,#2a2a2e,#3a3a3e);color:#ffd700;font-size:0.85rem;font-weight:600;cursor:pointer">Load ${remaining} more...</div>`);
+    }
 }
 
 function buildStillBgGrid() {
     const grid = document.getElementById('stillBgGrid');
     if (grid.children.length > 1) return; // already built
-    let html = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
-    html += STILL_BACKGROUNDS.map((bg, index) => `
-        <div class="bg-thumb" data-file="${bg.file}"
-             onclick="selectStillBackground(${index})">
+    grid.innerHTML = `<div class="bg-thumb none-bg" data-file="" onclick="clearBackground()">None</div>`;
+    stillBgShown = 0;
+    loadMoreStillBgs();
+}
+
+function loadMoreStillBgs() {
+    const grid = document.getElementById('stillBgGrid');
+    const oldBtn = grid.querySelector('.load-more-btn');
+    if (oldBtn) oldBtn.remove();
+    
+    const end = Math.min(stillBgShown + BG_PAGE_SIZE, STILL_BACKGROUNDS.length);
+    let html = '';
+    for (let i = stillBgShown; i < end; i++) {
+        const bg = STILL_BACKGROUNDS[i];
+        html += `<div class="bg-thumb" data-file="${bg.file}"
+             onclick="selectStillBackground(${i})">
             <div class="bg-type-badge">PNG</div>
             <img src="content-bg/still/${bg.file}" alt="${bg.name}" loading="lazy">
             <div class="bg-label">${bg.name}</div>
-        </div>
-    `).join('');
-    grid.innerHTML = html;
+        </div>`;
+    }
+    stillBgShown = end;
+    grid.insertAdjacentHTML('beforeend', html);
+    
+    if (stillBgShown < STILL_BACKGROUNDS.length) {
+        const remaining = STILL_BACKGROUNDS.length - stillBgShown;
+        grid.insertAdjacentHTML('beforeend', `<div class="bg-thumb load-more-btn" onclick="loadMoreStillBgs()" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,#2a2a2e,#3a3a3e);color:#ffd700;font-size:0.85rem;font-weight:600;cursor:pointer">Load ${remaining} more...</div>`);
+    }
 }
 
 function updateBgSelection() {
@@ -910,16 +951,30 @@ function selectAnimatedBackground(file) {
     showLoading();
     
     // Show thumbnail instantly as placeholder
-    bgLayer.src = `content-bg/thumbs/${file}`;
-    bgLayer.style.display = 'block';
-    updatePreview();
+    const thumb = new Image();
+    thumb.onload = () => {
+        bgLayer.src = thumb.src;
+        bgLayer.style.display = 'block';
+        updatePreview();
+    };
+    thumb.onerror = () => {
+        // Thumbnail missing, go straight to full GIF
+        bgLayer.style.display = 'block';
+    };
+    thumb.src = `content-bg/thumbs/${file}`;
     
     // Load full GIF in background
     const fullImg = new Image();
     fullImg.onload = () => {
         bgLayer.src = fullImg.src;
+        bgLayer.style.display = 'block';
+        updatePreview();
         hideLoading();
         updateDownloadButtons();
+    };
+    fullImg.onerror = () => {
+        console.warn('Failed to load GIF:', file);
+        hideLoading();
     };
     fullImg.src = `content-bg/${file}`;
     
@@ -948,6 +1003,7 @@ function clearBackground() {
     updatePreview();
     updateDownloadButtons();
     updateBgSelection();
+    showMagicBall();
 }
 
 // Preview Management
@@ -973,7 +1029,17 @@ function showLoading() {
 }
 
 function hideLoading() {
-    previewLoading.classList.add('hidden');
+    // Only hide if we have content to show
+    if (selectedWizard || selectedBackground) {
+        previewLoading.classList.add('hidden');
+    }
+}
+
+function showMagicBall() {
+    // Show magic ball when nothing is selected
+    if (!selectedWizard && !selectedBackground) {
+        previewLoading.classList.remove('hidden');
+    }
 }
 
 // Download Management
