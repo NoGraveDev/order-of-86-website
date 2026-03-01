@@ -910,7 +910,7 @@ function selectAnimatedBackground(file) {
     showLoading();
     
     // Show thumbnail instantly as placeholder
-    bgLayer.src = `content-bg/thumbs/${file.replace('.gif','.jpg')}`;
+    bgLayer.src = `content-bg/thumbs/${file}`;
     bgLayer.style.display = 'block';
     updatePreview();
     
