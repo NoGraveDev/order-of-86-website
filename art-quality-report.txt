@@ -1,0 +1,592 @@
+ART QUALITY REPORT
+============================================================
+Generated: 2026-03-01T18:27:35.874Z
+Total files: 292
+
+FILES NEEDING REGENERATION (score < 40): 0
+============================================================
+
+⚠️  MEDIOCRE | Score:  41 | anim-meteor-shower.gif
+  Colors/frame: 43 | Pixel changes: 41651 | Size: 181KB
+⚠️  MEDIOCRE | Score:  41 | scene-sunny-meadow.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  42 | scene-flame-smoldering-sunset.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  43 | anim-heartbeat-tree.gif
+  Colors/frame: 80 | Pixel changes: 13937 | Size: 92KB
+⚠️  MEDIOCRE | Score:  43 | anim-ice-storm.gif
+  Colors/frame: 63 | Pixel changes: 21115 | Size: 92KB
+⚠️  MEDIOCRE | Score:  43 | scene-seven-moons.png
+  Unique colors: 10 | Size: 6KB
+⚠️  MEDIOCRE | Score:  44 | anim-rain-on-cobblestone.gif
+  Colors/frame: 57 | Pixel changes: 24345 | Size: 131KB
+⚠️  MEDIOCRE | Score:  44 | scene-umbra-void.png
+  Unique colors: 13 | Size: 11KB
+⚠️  MEDIOCRE | Score:  45 | anim-firefly-meadow.gif
+  Colors/frame: 52 | Pixel changes: 28584 | Size: 77KB
+⚠️  MEDIOCRE | Score:  45 | anim-torch-corridor.gif
+  Colors/frame: 49 | Pixel changes: 194909 | Size: 179KB
+⚠️  MEDIOCRE | Score:  45 | scene-deep-ocean-canyon.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  45 | scene-radiant-celestial-peak.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  46 | scene-flame-lava-flow.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  46 | scene-magic-garden.png
+  Unique colors: 10 | Size: 6KB
+⚠️  MEDIOCRE | Score:  47 | scene-forest-clearing.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  47 | scene-windmill-hill.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  48 | scene-flame-erupting-range.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  48 | scene-heart-blossom-hillside.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  49 | anim-lightning-storm.gif
+  Colors/frame: 40 | Pixel changes: 52099 | Size: 108KB
+⚠️  MEDIOCRE | Score:  49 | anim-spinning-portal.gif
+  Colors/frame: 105 | Pixel changes: 15135 | Size: 104KB
+⚠️  MEDIOCRE | Score:  49 | scene-flame-ash-plains.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  49 | scene-golden-fields.png
+  Unique colors: 5 | Size: 6KB
+⚠️  MEDIOCRE | Score:  49 | scene-radiant-sun-valley.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  49 | scene-wizard-tower-morning.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  50 | scene-aurora-night.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  50 | scene-deep-coastal-vista.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  51 | scene-arcane-floating-isles.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  51 | scene-crystal-lake-shore.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  51 | scene-deep-tidal-cliffs.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  51 | scene-owl-tree.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  52 | scene-arcane-ruins-mountain.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  52 | scene-crystal-cave-glow.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  53 | anim-dripping-cave.gif
+  Colors/frame: 65 | Pixel changes: 40170 | Size: 100KB
+⚠️  MEDIOCRE | Score:  53 | anim-ticking-clock.gif
+  Colors/frame: 61 | Pixel changes: 261091 | Size: 204KB
+⚠️  MEDIOCRE | Score:  53 | scene-arcane-crystal-spires.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  53 | scene-aurelius-skyline.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  53 | scene-crystal-throne.png
+  Unique colors: 6 | Size: 12KB
+⚠️  MEDIOCRE | Score:  53 | scene-flame-altar.png
+  Unique colors: 6 | Size: 7KB
+⚠️  MEDIOCRE | Score:  53 | scene-wild-endless-canopy.png
+  Unique colors: 6 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | anim-dancing-flames.gif
+  Colors/frame: 103 | Pixel changes: 27737 | Size: 97KB
+⚠️  MEDIOCRE | Score:  54 | scene-bone-crypt.png
+  Unique colors: 7 | Size: 9KB
+⚠️  MEDIOCRE | Score:  54 | scene-dock-sunrise.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-golden-forest.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-heart-dawn-valley.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-heart-rolling-flowers.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-radiant-golden-summit.png
+  Unique colors: 8 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-radiant-wheat-plains.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-roothold-gates.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-wild-jungle-river.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  54 | scene-wild-mossy-peaks.png
+  Unique colors: 7 | Size: 6KB
+⚠️  MEDIOCRE | Score:  55 | anim-library-rain.gif
+  Colors/frame: 63 | Pixel changes: 277236 | Size: 241KB
+⚠️  MEDIOCRE | Score:  56 | anim-smoke-signals.gif
+  Colors/frame: 60 | Pixel changes: 47633 | Size: 94KB
+⚠️  MEDIOCRE | Score:  56 | scene-lava-bridge.png
+  Unique colors: 12 | Size: 19KB
+⚠️  MEDIOCRE | Score:  56 | scene-witchs-market.png
+  Unique colors: 12 | Size: 8KB
+⚠️  MEDIOCRE | Score:  56 | scene-wizards-kitchen.png
+  Unique colors: 12 | Size: 8KB
+⚠️  MEDIOCRE | Score:  57 | anim-floating-books.gif
+  Colors/frame: 115 | Pixel changes: 28812 | Size: 122KB
+⚠️  MEDIOCRE | Score:  57 | anim-glowing-runes.gif
+  Colors/frame: 84 | Pixel changes: 40185 | Size: 114KB
+⚠️  MEDIOCRE | Score:  57 | anim-mushroom-rain.gif
+  Colors/frame: 75 | Pixel changes: 280000 | Size: 263KB
+⚠️  MEDIOCRE | Score:  57 | anim-spinning-wheel.gif
+  Colors/frame: 71 | Pixel changes: 282909 | Size: 239KB
+⚠️  MEDIOCRE | Score:  57 | anim-tidal-pool.gif
+  Colors/frame: 60 | Pixel changes: 50661 | Size: 86KB
+⚠️  MEDIOCRE | Score:  57 | scene-arcane-observatory.png
+  Unique colors: 13 | Size: 8KB
+⚠️  MEDIOCRE | Score:  57 | scene-heart-garden-pavilion.png
+  Unique colors: 13 | Size: 8KB
+⚠️  MEDIOCRE | Score:  57 | scene-potion-cellar.png
+  Unique colors: 14 | Size: 9KB
+⚠️  MEDIOCRE | Score:  57 | scene-radiant-sunrise-temple.png
+  Unique colors: 14 | Size: 11KB
+⚠️  MEDIOCRE | Score:  57 | scene-training-grounds.png
+  Unique colors: 14 | Size: 10KB
+⚠️  MEDIOCRE | Score:  58 | scene-ghost-ship-deck.png
+  Unique colors: 16 | Size: 15KB
+⚠️  MEDIOCRE | Score:  58 | scene-moonstone-mine.png
+  Unique colors: 15 | Size: 13KB
+⚠️  MEDIOCRE | Score:  58 | scene-solaris-beacon.png
+  Unique colors: 16 | Size: 9KB
+⚠️  MEDIOCRE | Score:  58 | scene-war-room.png
+  Unique colors: 16 | Size: 8KB
+⚠️  MEDIOCRE | Score:  59 | anim-magma-bubbles.gif
+  Colors/frame: 52 | Pixel changes: 57694 | Size: 151KB
+⚠️  MEDIOCRE | Score:  59 | scene-deepwell-depths.png
+  Unique colors: 17 | Size: 8KB
+⚠️  MEDIOCRE | Score:  59 | scene-frozen-library.png
+  Unique colors: 18 | Size: 13KB
+⚠️  MEDIOCRE | Score:  59 | scene-wanderer-camp.png
+  Unique colors: 18 | Size: 10KB
+⚠️  MEDIOCRE | Score:  59 | scene-wild-thicket.png
+  Unique colors: 18 | Size: 10KB
+✅ GOOD | Score:  60 | anim-bat-swarm.gif
+  Colors/frame: 76 | Pixel changes: 50345 | Size: 102KB
+✅ GOOD | Score:  60 | anim-campfire-night.gif
+  Colors/frame: 72 | Pixel changes: 319564 | Size: 232KB
+✅ GOOD | Score:  60 | scene-moonlit-dock.png
+  Unique colors: 19 | Size: 9KB
+✅ GOOD | Score:  60 | scene-mushroom-cavern.png
+  Unique colors: 19 | Size: 10KB
+✅ GOOD | Score:  60 | scene-shipwreck-cove.png
+  Unique colors: 19 | Size: 9KB
+✅ GOOD | Score:  61 | anim-spell-scroll-room.gif
+  Colors/frame: 74 | Pixel changes: 329455 | Size: 279KB
+✅ GOOD | Score:  62 | anim-clockwork-gears.gif
+  Colors/frame: 85 | Pixel changes: 339491 | Size: 711KB
+✅ GOOD | Score:  62 | scene-healing-springs.png
+  Unique colors: 23 | Size: 14KB
+✅ GOOD | Score:  62 | scene-roseglow-garden.png
+  Unique colors: 24 | Size: 12KB
+✅ GOOD | Score:  63 | anim-dragons-lair.gif
+  Colors/frame: 79 | Pixel changes: 336145 | Size: 257KB
+✅ GOOD | Score:  63 | anim-pollen-drift.gif
+  Colors/frame: 123 | Pixel changes: 35791 | Size: 125KB
+✅ GOOD | Score:  63 | anim-war-drums.gif
+  Colors/frame: 79 | Pixel changes: 334109 | Size: 287KB
+✅ GOOD | Score:  64 | anim-lava-falls.gif
+  Colors/frame: 118 | Pixel changes: 40344 | Size: 180KB
+✅ GOOD | Score:  64 | scene-deep-trench.png
+  Unique colors: 28 | Size: 16KB
+✅ GOOD | Score:  65 | anim-enchanted-hourglass.gif
+  Colors/frame: 80 | Pixel changes: 358109 | Size: 265KB
+✅ GOOD | Score:  65 | anim-fairy-ring.gif
+  Colors/frame: 88 | Pixel changes: 342691 | Size: 300KB
+✅ GOOD | Score:  65 | anim-haunted-mirror.gif
+  Colors/frame: 82 | Pixel changes: 354036 | Size: 291KB
+✅ GOOD | Score:  65 | scene-crystal-lizard-den.png
+  Unique colors: 29 | Size: 12KB
+✅ GOOD | Score:  65 | scene-owl-roost.png
+  Unique colors: 29 | Size: 14KB
+✅ GOOD | Score:  66 | anim-bubbling-cauldron.gif
+  Colors/frame: 106 | Pixel changes: 49095 | Size: 99KB
+✅ GOOD | Score:  66 | anim-flame-tornado.gif
+  Colors/frame: 161 | Pixel changes: 27730 | Size: 218KB
+✅ GOOD | Score:  66 | anim-wishing-well.gif
+  Colors/frame: 83 | Pixel changes: 360727 | Size: 270KB
+✅ GOOD | Score:  67 | anim-clocktower.gif
+  Colors/frame: 98 | Pixel changes: 347345 | Size: 313KB
+✅ GOOD | Score:  67 | scene-canopy-village.png
+  Unique colors: 34 | Size: 21KB
+✅ GOOD | Score:  69 | anim-shooting-gallery.gif
+  Colors/frame: 90 | Pixel changes: 389091 | Size: 310KB
+✅ GOOD | Score:  71 | anim-crystal-cavern-pulse.gif
+  Colors/frame: 80 | Pixel changes: 433309 | Size: 246KB
+✅ GOOD | Score:  71 | anim-rising-tide.gif
+  Colors/frame: 88 | Pixel changes: 66937 | Size: 96KB
+✅ GOOD | Score:  71 | anim-snowdrift.gif
+  Colors/frame: 111 | Pixel changes: 57936 | Size: 103KB
+✅ GOOD | Score:  71 | scene-emberhowl-sunrise.png
+  Unique colors: 42 | Size: 16KB
+✅ GOOD | Score:  72 | anim-coral-sway.gif
+  Colors/frame: 94 | Pixel changes: 419491 | Size: 301KB
+✅ GOOD | Score:  72 | anim-magma-forge.gif
+  Colors/frame: 98 | Pixel changes: 407564 | Size: 354KB
+✅ GOOD | Score:  72 | anim-swaying-lanterns.gif
+  Colors/frame: 90 | Pixel changes: 68132 | Size: 126KB
+✅ GOOD | Score:  73 | anim-candle-tunnel.gif
+  Colors/frame: 96 | Pixel changes: 418764 | Size: 354KB
+✅ GOOD | Score:  73 | anim-wizards-study.gif
+  Colors/frame: 96 | Pixel changes: 427491 | Size: 325KB
+✅ GOOD | Score:  76 | anim-sandstorm.gif
+  Colors/frame: 80 | Pixel changes: 95268 | Size: 230KB
+✅ GOOD | Score:  77 | anim-seven-moons-rising.gif
+  Colors/frame: 95 | Pixel changes: 833891 | Size: 588KB
+✅ GOOD | Score:  78 | anim-spirit-wisps.gif
+  Colors/frame: 92 | Pixel changes: 919418 | Size: 624KB
+✅ GOOD | Score:  80 | anim-falling-stars.gif
+  Colors/frame: 104 | Pixel changes: 486545 | Size: 327KB
+✅ GOOD | Score:  80 | anim-haunted-ballroom.gif
+  Colors/frame: 110 | Pixel changes: 478545 | Size: 378KB
+✅ GOOD | Score:  82 | anim-vine-growth.gif
+  Colors/frame: 118 | Pixel changes: 478560 | Size: 333KB
+✅ GOOD | Score:  82 | anim-waterwheel.gif
+  Colors/frame: 111 | Pixel changes: 97213 | Size: 156KB
+✅ GOOD | Score:  83 | anim-alchemist-lab.gif
+  Colors/frame: 122 | Pixel changes: 489164 | Size: 399KB
+✅ GOOD | Score:  84 | anim-arcane-floating-peaks.gif
+  Colors/frame: 120 | Pixel changes: 961455 | Size: 631KB
+✅ GOOD | Score:  84 | anim-bright-aurora-moons.gif
+  Colors/frame: 122 | Pixel changes: 535564 | Size: 593KB
+✅ GOOD | Score:  84 | anim-enchanted-well.gif
+  Colors/frame: 121 | Pixel changes: 512727 | Size: 373KB
+✅ GOOD | Score:  84 | anim-sunny-dock-morning.gif
+  Colors/frame: 120 | Pixel changes: 952291 | Size: 603KB
+✅ GOOD | Score:  85 | anim-enchanted-pond.gif
+  Colors/frame: 125 | Pixel changes: 593018 | Size: 402KB
+✅ GOOD | Score:  85 | anim-magic-library.gif
+  Colors/frame: 127 | Pixel changes: 596945 | Size: 445KB
+✅ GOOD | Score:  85 | anim-northern-lights.gif
+  Colors/frame: 125 | Pixel changes: 552145 | Size: 609KB
+✅ GOOD | Score:  85 | anim-witchs-garden.gif
+  Colors/frame: 124 | Pixel changes: 544582 | Size: 411KB
+✅ GOOD | Score:  86 | anim-bone-graveyard.gif
+  Colors/frame: 132 | Pixel changes: 538036 | Size: 421KB
+✅ GOOD | Score:  86 | anim-cheerful-windmill.gif
+  Colors/frame: 128 | Pixel changes: 743855 | Size: 478KB
+✅ GOOD | Score:  86 | anim-crystal-lizard-sunbathing.gif
+  Colors/frame: 129 | Pixel changes: 724364 | Size: 614KB
+✅ GOOD | Score:  86 | anim-ice-cavern-drip.gif
+  Colors/frame: 131 | Pixel changes: 558691 | Size: 429KB
+✅ GOOD | Score:  86 | anim-spirit-forest.gif
+  Colors/frame: 132 | Pixel changes: 533236 | Size: 410KB
+✅ GOOD | Score:  86 | anim-volcanic-eruption.gif
+  Colors/frame: 131 | Pixel changes: 584873 | Size: 440KB
+✅ GOOD | Score:  87 | anim-crystal-bridge.gif
+  Colors/frame: 135 | Pixel changes: 585018 | Size: 411KB
+✅ GOOD | Score:  87 | anim-crystal-pulse.gif
+  Colors/frame: 133 | Pixel changes: 987055 | Size: 608KB
+✅ GOOD | Score:  87 | anim-ember-storm.gif
+  Colors/frame: 134 | Pixel changes: 562182 | Size: 444KB
+✅ GOOD | Score:  87 | anim-sunlit-forest-clearing.gif
+  Colors/frame: 136 | Pixel changes: 861964 | Size: 648KB
+✅ GOOD | Score:  87 | anim-sunny-wizard-tower.gif
+  Colors/frame: 136 | Pixel changes: 629382 | Size: 508KB
+✅ GOOD | Score:  88 | anim-arcane-crystal-mountains.gif
+  Colors/frame: 140 | Pixel changes: 983709 | Size: 625KB
+✅ GOOD | Score:  88 | anim-deep-coastal-cliffs.gif
+  Colors/frame: 142 | Pixel changes: 933236 | Size: 562KB
+✅ GOOD | Score:  88 | anim-happy-crystal-cave.gif
+  Colors/frame: 139 | Pixel changes: 985309 | Size: 635KB
+✅ GOOD | Score:  88 | anim-owls-in-sunny-tree.gif
+  Colors/frame: 142 | Pixel changes: 937455 | Size: 567KB
+✅ GOOD | Score:  88 | anim-sparkling-river.gif
+  Colors/frame: 139 | Pixel changes: 933527 | Size: 585KB
+✅ GOOD | Score:  88 | anim-waterfall-cave.gif
+  Colors/frame: 139 | Pixel changes: 620800 | Size: 503KB
+✅ GOOD | Score:  88 | anim-wild-jungle-valley.gif
+  Colors/frame: 142 | Pixel changes: 857745 | Size: 657KB
+✅ GOOD | Score:  89 | anim-arcane-ruins-peaks.gif
+  Colors/frame: 146 | Pixel changes: 984873 | Size: 620KB
+✅ GOOD | Score:  89 | anim-avalanche.gif
+  Colors/frame: 145 | Pixel changes: 589818 | Size: 450KB
+✅ GOOD | Score:  89 | anim-crystal-clear-lake.gif
+  Colors/frame: 144 | Pixel changes: 937309 | Size: 567KB
+✅ GOOD | Score:  89 | anim-deep-underwater-ridge.gif
+  Colors/frame: 147 | Pixel changes: 919127 | Size: 585KB
+✅ GOOD | Score:  89 | anim-enchanted-meadow-dawn.gif
+  Colors/frame: 144 | Pixel changes: 969018 | Size: 645KB
+✅ GOOD | Score:  89 | anim-golden-hour-forest.gif
+  Colors/frame: 144 | Pixel changes: 883345 | Size: 660KB
+✅ GOOD | Score:  89 | anim-heart-flower-mountains.gif
+  Colors/frame: 145 | Pixel changes: 984727 | Size: 614KB
+✅ GOOD | Score:  89 | anim-magic-garden-butterflies.gif
+  Colors/frame: 146 | Pixel changes: 966400 | Size: 659KB
+✅ GOOD | Score:  89 | anim-springtime-bondsheart.gif
+  Colors/frame: 143 | Pixel changes: 964218 | Size: 642KB
+✅ GOOD | Score:  89 | anim-sunny-meadow-fireflies.gif
+  Colors/frame: 146 | Pixel changes: 965091 | Size: 642KB
+✅ GOOD | Score:  89 | anim-wild-forest-canopy.gif
+  Colors/frame: 144 | Pixel changes: 835491 | Size: 660KB
+✅ GOOD | Score:  89 | anim-wizard-duel.gif
+  Colors/frame: 146 | Pixel changes: 605382 | Size: 475KB
+✅ GOOD | Score:  90 | anim-bioluminescent-grove.gif
+  Colors/frame: 152 | Pixel changes: 629382 | Size: 493KB
+✅ GOOD | Score:  90 | anim-heart-cherry-blossom-hills.gif
+  Colors/frame: 148 | Pixel changes: 969745 | Size: 655KB
+✅ GOOD | Score:  90 | anim-heart-peaceful-valley.gif
+  Colors/frame: 150 | Pixel changes: 968582 | Size: 649KB
+✅ GOOD | Score:  90 | anim-jellyfish-deep.gif
+  Colors/frame: 151 | Pixel changes: 704000 | Size: 470KB
+✅ GOOD | Score:  90 | anim-sandstorm-desert.gif
+  Colors/frame: 152 | Pixel changes: 668800 | Size: 523KB
+✅ GOOD | Score:  90 | anim-starfall-sky.gif
+  Colors/frame: 152 | Pixel changes: 647127 | Size: 450KB
+✅ GOOD | Score:  90 | anim-wizard-dog-park.gif
+  Colors/frame: 150 | Pixel changes: 969600 | Size: 653KB
+✅ GOOD | Score:  91 | anim-cauldron-brew.gif
+  Colors/frame: 154 | Pixel changes: 634764 | Size: 510KB
+✅ GOOD | Score:  91 | anim-cherry-blossom.gif
+  Colors/frame: 154 | Pixel changes: 699345 | Size: 461KB
+✅ GOOD | Score:  91 | anim-radiant-golden-peaks.gif
+  Colors/frame: 156 | Pixel changes: 988945 | Size: 628KB
+✅ GOOD | Score:  91 | anim-sunrise-over-aurelius.gif
+  Colors/frame: 155 | Pixel changes: 985745 | Size: 639KB
+✅ GOOD | Score:  91 | anim-wild-mossy-range.gif
+  Colors/frame: 156 | Pixel changes: 986036 | Size: 627KB
+✅ GOOD | Score:  92 | anim-deep-tidal-waves.gif
+  Colors/frame: 158 | Pixel changes: 991418 | Size: 685KB
+✅ GOOD | Score:  92 | anim-firefly-forest.gif
+  Colors/frame: 160 | Pixel changes: 679127 | Size: 529KB
+✅ GOOD | Score:  92 | anim-flame-lava-valley.gif
+  Colors/frame: 161 | Pixel changes: 988364 | Size: 703KB
+✅ GOOD | Score:  92 | anim-flame-volcano-range.gif
+  Colors/frame: 162 | Pixel changes: 988655 | Size: 703KB
+✅ GOOD | Score:  92 | anim-radiant-sun-ridges.gif
+  Colors/frame: 158 | Pixel changes: 987345 | Size: 635KB
+✅ GOOD | Score:  92 | anim-sacred-grove.gif
+  Colors/frame: 158 | Pixel changes: 690327 | Size: 523KB
+✅ GOOD | Score:  92 | anim-whirlpool.gif
+  Colors/frame: 162 | Pixel changes: 999273 | Size: 799KB
+✅ GOOD | Score:  92 | anim-windmill.gif
+  Colors/frame: 161 | Pixel changes: 714327 | Size: 478KB
+✅ GOOD | Score:  93 | anim-crystal-cavern-waterfall.gif
+  Colors/frame: 166 | Pixel changes: 731200 | Size: 549KB
+✅ GOOD | Score:  93 | anim-flame-smoldering-peaks.gif
+  Colors/frame: 163 | Pixel changes: 984582 | Size: 703KB
+✅ GOOD | Score:  93 | anim-golden-wheat-fields.gif
+  Colors/frame: 166 | Pixel changes: 992873 | Size: 648KB
+✅ GOOD | Score:  93 | anim-moonlit-ruins.gif
+  Colors/frame: 166 | Pixel changes: 810182 | Size: 500KB
+✅ GOOD | Score:  93 | anim-radiant-wheat-mountains.gif
+  Colors/frame: 167 | Pixel changes: 870255 | Size: 664KB
+✅ GOOD | Score:  93 | anim-rainbow-over-roothold.gif
+  Colors/frame: 167 | Pixel changes: 966109 | Size: 641KB
+✅ GOOD | Score:  93 | anim-will-o-wisps.gif
+  Colors/frame: 163 | Pixel changes: 680436 | Size: 521KB
+✅ GOOD | Score:  94 | anim-clockwork-city.gif
+  Colors/frame: 171 | Pixel changes: 688582 | Size: 542KB
+✅ GOOD | Score:  94 | anim-deep-ocean-trench.gif
+  Colors/frame: 170 | Pixel changes: 996218 | Size: 670KB
+✅ GOOD | Score:  94 | anim-runic-circle.gif
+  Colors/frame: 256 | Pixel changes: 419636 | Size: 814KB
+✅ GOOD | Score:  94 | anim-tidal-cave.gif
+  Colors/frame: 170 | Pixel changes: 673018 | Size: 529KB
+✅ GOOD | Score:  94 | anim-tornado.gif
+  Colors/frame: 170 | Pixel changes: 708800 | Size: 516KB
+✅ GOOD | Score:  96 | anim-blizzard-siege.gif
+  Colors/frame: 182 | Pixel changes: 789818 | Size: 637KB
+✅ GOOD | Score:  96 | anim-frozen-throne.gif
+  Colors/frame: 181 | Pixel changes: 747491 | Size: 593KB
+✅ GOOD | Score:  96 | anim-lava-river.gif
+  Colors/frame: 181 | Pixel changes: 800145 | Size: 570KB
+✅ GOOD | Score:  96 | anim-magma-chamber.gif
+  Colors/frame: 180 | Pixel changes: 655418 | Size: 546KB
+✅ GOOD | Score:  97 | anim-aurora-tundra.gif
+  Colors/frame: 184 | Pixel changes: 843345 | Size: 557KB
+✅ GOOD | Score:  97 | anim-flame-ash-clouds.gif
+  Colors/frame: 183 | Pixel changes: 997818 | Size: 751KB
+✅ GOOD | Score:  97 | anim-moonrise-lake.gif
+  Colors/frame: 185 | Pixel changes: 803055 | Size: 555KB
+✅ GOOD | Score:  97 | anim-rain-on-rooftops.gif
+  Colors/frame: 186 | Pixel changes: 767418 | Size: 586KB
+✅ GOOD | Score:  98 | anim-blood-moon.gif
+  Colors/frame: 192 | Pixel changes: 801018 | Size: 605KB
+✅ GOOD | Score:  98 | anim-pulse-crystals.gif
+  Colors/frame: 192 | Pixel changes: 789964 | Size: 577KB
+✅ GOOD | Score:  98 | anim-snowfall-realm.gif
+  Colors/frame: 189 | Pixel changes: 852509 | Size: 591KB
+✅ GOOD | Score:  99 | anim-haunted-tower.gif
+  Colors/frame: 197 | Pixel changes: 834473 | Size: 614KB
+✅ GOOD | Score:  99 | anim-meteor-crater.gif
+  Colors/frame: 195 | Pixel changes: 789673 | Size: 612KB
+✅ GOOD | Score:  99 | anim-portal-vortex.gif
+  Colors/frame: 196 | Pixel changes: 684218 | Size: 558KB
+✅ GOOD | Score:  99 | anim-volcanic-lightning.gif
+  Colors/frame: 194 | Pixel changes: 804655 | Size: 568KB
+✅ GOOD | Score:  99 | anim-volcanic-smoke.gif
+  Colors/frame: 193 | Pixel changes: 89905 | Size: 651KB
+✅ GOOD | Score: 100 | anim-arcane-storm.gif
+  Colors/frame: 248 | Pixel changes: 1000000 | Size: 752KB
+✅ GOOD | Score: 100 | anim-bubbling-swamp.gif
+  Colors/frame: 203 | Pixel changes: 858764 | Size: 653KB
+✅ GOOD | Score: 100 | anim-deepwell-tides.gif
+  Colors/frame: 246 | Pixel changes: 988509 | Size: 650KB
+✅ GOOD | Score: 100 | anim-emberhowl-eruption.gif
+  Colors/frame: 246 | Pixel changes: 907636 | Size: 683KB
+✅ GOOD | Score: 100 | anim-enchanted-waterfall.gif
+  Colors/frame: 218 | Pixel changes: 939345 | Size: 722KB
+✅ GOOD | Score: 100 | anim-evergreen-rainfall.gif
+  Colors/frame: 245 | Pixel changes: 807418 | Size: 630KB
+✅ GOOD | Score: 100 | anim-floating-candles.gif
+  Colors/frame: 227 | Pixel changes: 944291 | Size: 746KB
+✅ GOOD | Score: 100 | anim-forge-flames.gif
+  Colors/frame: 242 | Pixel changes: 1000000 | Size: 738KB
+✅ GOOD | Score: 100 | anim-frozen-waterfall.gif
+  Colors/frame: 204 | Pixel changes: 871418 | Size: 657KB
+✅ GOOD | Score: 100 | anim-ghost-ship.gif
+  Colors/frame: 208 | Pixel changes: 846982 | Size: 637KB
+✅ GOOD | Score: 100 | anim-haunted-swamp.gif
+  Colors/frame: 200 | Pixel changes: 824145 | Size: 618KB
+✅ GOOD | Score: 100 | anim-lava-lake-crossing.gif
+  Colors/frame: 220 | Pixel changes: 829673 | Size: 693KB
+✅ GOOD | Score: 100 | anim-moonlit-docks.gif
+  Colors/frame: 199 | Pixel changes: 853091 | Size: 606KB
+✅ GOOD | Score: 100 | anim-moonlit-graveyard.gif
+  Colors/frame: 207 | Pixel changes: 865018 | Size: 641KB
+✅ GOOD | Score: 100 | anim-northern-lights-sea.gif
+  Colors/frame: 234 | Pixel changes: 947055 | Size: 737KB
+✅ GOOD | Score: 100 | anim-roseglow-lanterns.gif
+  Colors/frame: 242 | Pixel changes: 1000000 | Size: 668KB
+✅ GOOD | Score: 100 | anim-sinking-ship.gif
+  Colors/frame: 216 | Pixel changes: 917382 | Size: 672KB
+✅ GOOD | Score: 100 | anim-solar-eclipse.gif
+  Colors/frame: 231 | Pixel changes: 962036 | Size: 699KB
+✅ GOOD | Score: 100 | anim-storm-at-sea.gif
+  Colors/frame: 221 | Pixel changes: 914909 | Size: 706KB
+✅ GOOD | Score: 100 | anim-swamp-mist.gif
+  Colors/frame: 223 | Pixel changes: 908655 | Size: 731KB
+✅ GOOD | Score: 100 | anim-thunderstorm-coast.gif
+  Colors/frame: 232 | Pixel changes: 931927 | Size: 692KB
+✅ GOOD | Score: 100 | anim-thunderstorm-field.gif
+  Colors/frame: 229 | Pixel changes: 933527 | Size: 701KB
+✅ GOOD | Score: 100 | scene-abandoned-mine.png
+  Unique colors: 319 | Size: 8KB
+✅ GOOD | Score: 100 | scene-ancient-ruins.png
+  Unique colors: 594 | Size: 8KB
+✅ GOOD | Score: 100 | scene-archivum-city.png
+  Unique colors: 578 | Size: 8KB
+✅ GOOD | Score: 100 | scene-aurelius-city.png
+  Unique colors: 455 | Size: 8KB
+✅ GOOD | Score: 100 | scene-aurora-peaks.png
+  Unique colors: 562 | Size: 8KB
+✅ GOOD | Score: 100 | scene-autumn-clearing.png
+  Unique colors: 589 | Size: 8KB
+✅ GOOD | Score: 100 | scene-bondsheart-city.png
+  Unique colors: 613 | Size: 8KB
+✅ GOOD | Score: 100 | scene-bondsheart-spring.png
+  Unique colors: 403 | Size: 9KB
+✅ GOOD | Score: 100 | scene-bridge-over-chasm.png
+  Unique colors: 559 | Size: 8KB
+✅ GOOD | Score: 100 | scene-coral-reef.png
+  Unique colors: 611 | Size: 8KB
+✅ GOOD | Score: 100 | scene-crucible-city.png
+  Unique colors: 545 | Size: 8KB
+✅ GOOD | Score: 100 | scene-crystal-garden.png
+  Unique colors: 416 | Size: 8KB
+✅ GOOD | Score: 100 | scene-crystal-lake-night.png
+  Unique colors: 603 | Size: 8KB
+✅ GOOD | Score: 100 | scene-crystal-lizard-cave.png
+  Unique colors: 456 | Size: 8KB
+✅ GOOD | Score: 100 | scene-crystal-lizard-rock.png
+  Unique colors: 255 | Size: 9KB
+✅ GOOD | Score: 100 | scene-crystal-throne-room.png
+  Unique colors: 533 | Size: 8KB
+✅ GOOD | Score: 100 | scene-deepwell-abyss.png
+  Unique colors: 532 | Size: 8KB
+✅ GOOD | Score: 100 | scene-dock-at-dawn.png
+  Unique colors: 590 | Size: 8KB
+✅ GOOD | Score: 100 | scene-dragon-graveyard.png
+  Unique colors: 543 | Size: 8KB
+✅ GOOD | Score: 100 | scene-dragon-nest.png
+  Unique colors: 406 | Size: 8KB
+✅ GOOD | Score: 100 | scene-dragons-hoard.png
+  Unique colors: 586 | Size: 8KB
+✅ GOOD | Score: 100 | scene-dungeon-cell.png
+  Unique colors: 452 | Size: 8KB
+✅ GOOD | Score: 100 | scene-emberhowl-eclipse.png
+  Unique colors: 585 | Size: 8KB
+✅ GOOD | Score: 100 | scene-enchanted-forge.png
+  Unique colors: 562 | Size: 8KB
+✅ GOOD | Score: 100 | scene-enchanted-library.png
+  Unique colors: 592 | Size: 8KB
+✅ GOOD | Score: 100 | scene-enchanted-meadow.png
+  Unique colors: 398 | Size: 9KB
+✅ GOOD | Score: 100 | scene-evergreen-canopy.png
+  Unique colors: 601 | Size: 8KB
+✅ GOOD | Score: 100 | scene-first-howl.png
+  Unique colors: 560 | Size: 8KB
+✅ GOOD | Score: 100 | scene-floating-islands.png
+  Unique colors: 570 | Size: 8KB
+✅ GOOD | Score: 100 | scene-frozen-lake.png
+  Unique colors: 528 | Size: 8KB
+✅ GOOD | Score: 100 | scene-frozen-tundra-storm.png
+  Unique colors: 501 | Size: 8KB
+✅ GOOD | Score: 100 | scene-goblin-camp.png
+  Unique colors: 548 | Size: 8KB
+✅ GOOD | Score: 100 | scene-graveyard-dawn.png
+  Unique colors: 586 | Size: 8KB
+✅ GOOD | Score: 100 | scene-great-rot.png
+  Unique colors: 609 | Size: 8KB
+✅ GOOD | Score: 100 | scene-howling-gate.png
+  Unique colors: 604 | Size: 8KB
+✅ GOOD | Score: 100 | scene-icy-mountain.png
+  Unique colors: 439 | Size: 8KB
+✅ GOOD | Score: 100 | scene-market-street.png
+  Unique colors: 585 | Size: 8KB
+✅ GOOD | Score: 100 | scene-misty-waterfall-cliff.png
+  Unique colors: 441 | Size: 7KB
+✅ GOOD | Score: 100 | scene-moon-bridge.png
+  Unique colors: 571 | Size: 8KB
+✅ GOOD | Score: 100 | scene-moonlit-harbor.png
+  Unique colors: 577 | Size: 8KB
+✅ GOOD | Score: 100 | scene-mushroom-glade.png
+  Unique colors: 605 | Size: 8KB
+✅ GOOD | Score: 100 | scene-observatory.png
+  Unique colors: 500 | Size: 8KB
+✅ GOOD | Score: 100 | scene-pack-magic-ritual.png
+  Unique colors: 581 | Size: 8KB
+✅ GOOD | Score: 100 | scene-palehowl-rising.png
+  Unique colors: 590 | Size: 8KB
+✅ GOOD | Score: 100 | scene-potion-workshop.png
+  Unique colors: 590 | Size: 8KB
+✅ GOOD | Score: 100 | scene-roothold-city.png
+  Unique colors: 599 | Size: 8KB
+✅ GOOD | Score: 100 | scene-roseglow-festival.png
+  Unique colors: 600 | Size: 8KB
+✅ GOOD | Score: 100 | scene-septenary-alignment.png
+  Unique colors: 596 | Size: 8KB
+✅ GOOD | Score: 100 | scene-shipwreck-beach.png
+  Unique colors: 597 | Size: 8KB
+✅ GOOD | Score: 100 | scene-solaris-dawn.png
+  Unique colors: 465 | Size: 8KB
+✅ GOOD | Score: 100 | scene-sorting-ceremony.png
+  Unique colors: 590 | Size: 8KB
+✅ GOOD | Score: 100 | scene-sparkling-river.png
+  Unique colors: 387 | Size: 9KB
+✅ GOOD | Score: 100 | scene-spider-hollow.png
+  Unique colors: 397 | Size: 8KB
+✅ GOOD | Score: 100 | scene-starfall-meadow.png
+  Unique colors: 611 | Size: 8KB
+✅ GOOD | Score: 100 | scene-stillwater-city.png
+  Unique colors: 612 | Size: 8KB
+✅ GOOD | Score: 100 | scene-sunken-ship.png
+  Unique colors: 600 | Size: 8KB
+✅ GOOD | Score: 100 | scene-throne-room.png
+  Unique colors: 480 | Size: 8KB
+✅ GOOD | Score: 100 | scene-underwater-temple.png
+  Unique colors: 576 | Size: 8KB
+✅ GOOD | Score: 100 | scene-volcano.png
+  Unique colors: 461 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wanderer-path.png
+  Unique colors: 611 | Size: 8KB
+✅ GOOD | Score: 100 | scene-witchs-cottage.png
+  Unique colors: 520 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wizard-castle.png
+  Unique colors: 585 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wizard-dog-park.png
+  Unique colors: 399 | Size: 9KB
+✅ GOOD | Score: 100 | scene-wizard-laboratory.png
+  Unique colors: 552 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wizard-round-table.png
+  Unique colors: 563 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wizard-tower-interior.png
+  Unique colors: 577 | Size: 8KB
+✅ GOOD | Score: 100 | scene-wizards-dorm.png
+  Unique colors: 442 | Size: 8KB
+✅ GOOD | Score: 100 | scene-zen-garden.png
+  Unique colors: 583 | Size: 8KB
