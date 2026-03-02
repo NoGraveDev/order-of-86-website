@@ -1427,11 +1427,17 @@ filterDogs();
 <script>
 (function(){
   const btn = document.getElementById('navHamburger');
-  const links = document.querySelector('.nav-links');
-  if(btn && links){
+  const overlay = document.getElementById('navMobileMenu');
+  if(btn && overlay){
     btn.addEventListener('click', function(){
       btn.classList.toggle('is-open');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      overlay.classList.toggle('open');
+    });
+    overlay.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', function(){
+        btn.classList.remove('is-open');
+        overlay.classList.remove('open');
+      });
     });
   }
 })();
