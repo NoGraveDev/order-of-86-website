@@ -1424,6 +1424,18 @@ filterDogs();
     animate();
 })();
 </script>
+<script>
+(function(){
+  const btn = document.getElementById('navHamburger');
+  const links = document.querySelector('.nav-links');
+  if(btn && links){
+    btn.addEventListener('click', function(){
+      btn.classList.toggle('is-open');
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    });
+  }
+})();
+</script>
 <script src="sparkle.js?v=1772131297" defer></script>
 <script src="orb-cursor.js" defer></script>
 <script src="starfield.js" defer></script>
