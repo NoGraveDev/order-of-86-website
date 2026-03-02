@@ -203,10 +203,8 @@ http.createServer(async (req, res) => {
 
     fs.readFile(resolved, (err, data) => {
         if (err) {
-            fs.readFile(path.join(ROOT, 'index.html'), (e, d) => {
-                if (e) { res.writeHead(404, { 'Content-Type': 'text/plain' }); res.end('Not Found'); }
-                else sendResponse(req, res, 200, { 'Content-Type': 'text/html' }, d);
-            });
+            res.writeHead(404, { 'Content-Type': 'text/plain' });
+            res.end('Not Found');
             return;
         }
         // Cache static files under 100KB (skip large GIFs/images)

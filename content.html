@@ -24,7 +24,6 @@
 
         /* Navigation */
         .nav-close-mobile{background:none;border:none;color:#ffd700;font-size:2rem;cursor:pointer;align-self:flex-end}
-        @media(max-width:768px){.nav-bar a:not(.nav-logo-mobile){display:none}.nav-logo-mobile,}
 
         /* Layout */
         .main-container{display:flex;max-width:1400px;margin:0 auto;padding:2rem;gap:2rem;min-height:calc(100vh - 80px)}
@@ -611,7 +610,6 @@ const ANIMATED_BACKGROUNDS = [
   {file:'anim-campfire-night.gif',name:'Campfire Night'},
   {file:'anim-vine-growth.gif',name:'Vine Growth'},
   {file:'anim-bubbling-swamp.gif',name:'Bubbling Swamp'},
-  {file:'anim-enchanted-pond.gif',name:'Enchanted Pond'},
   {file:'anim-windmill.gif',name:'Windmill'},
   // Interiors & Mechanical
   {file:'anim-floating-candles.gif',name:'Floating Candles'},
@@ -947,7 +945,9 @@ function updateBgSelection() {
 }
 
 function selectAnimatedBackground(file) {
-    selectedBackground = {type: 'animated', file: file, name: ANIMATED_BACKGROUNDS.find(b => b.file === file).name};
+    const bg = ANIMATED_BACKGROUNDS.find(b => b.file === file);
+    if (!bg) return;
+    selectedBackground = {type: 'animated', file: file, name: bg.name};
     showLoading();
     
     // Show thumbnail instantly as placeholder
@@ -958,8 +958,7 @@ function selectAnimatedBackground(file) {
         updatePreview();
     };
     thumb.onerror = () => {
-        // Thumbnail missing, go straight to full GIF
-        bgLayer.style.display = 'block';
+        // Thumbnail missing, full GIF will load below
     };
     thumb.src = `content-bg/thumbs/${file}`;
     
@@ -983,6 +982,7 @@ function selectAnimatedBackground(file) {
 
 function selectStillBackground(index) {
     const bg = STILL_BACKGROUNDS[index];
+    if (!bg) return;
     selectedBackground = {type: 'still', file: bg.file, name: bg.name};
     showLoading();
     
@@ -1102,6 +1102,7 @@ function downloadStill() {
     dog.crossOrigin = 'anonymous';
     dog.src = selectedWizard.id.startsWith('starter-') ? `images/starters/${selectedWizard.id}.png` : `wizard-images-transparent/${selectedWizard.id}.png`;
     
+    dog.onerror = () => { alert('Failed to load wizard image'); hideLoading(); };
     dog.onload = () => {
         ctx.clearRect(0, 0, 1000, 1000);
         
@@ -1115,6 +1116,7 @@ function downloadStill() {
                 bg.src = `content-bg/still/${selectedBackground.file}`;
             }
             
+            bg.onerror = () => { alert('Failed to load background image'); hideLoading(); };
             bg.onload = () => {
                 ctx.drawImage(bg, 0, 0, 1000, 1000);
                 drawDogOnCanvas(ctx, dog, 1000);
@@ -1156,6 +1158,7 @@ function downloadBackground() {
     dog.crossOrigin = 'anonymous';
     dog.src = selectedWizard.id.startsWith('starter-') ? `images/starters/${selectedWizard.id}.png` : `wizard-images-transparent/${selectedWizard.id}.png`;
     
+    dog.onerror = () => { alert('Failed to load wizard image'); hideLoading(); };
     dog.onload = () => {
         const gifUrl = `content-bg/${selectedBackground.file}`;
         showLoading();

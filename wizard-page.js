@@ -3,15 +3,20 @@ const ORDER_COLORS = {
     Wild: '#228b22', Arcane: '#7b54c9', Heart: '#c55bb7', Wanderer: '#7b54c9'
 };
 
+function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 function renderWizardPage(dog, baseUrl) {
     const col = ORDER_COLORS[dog.order] || '#ffd700';
-    const name = dog.suggestedName || `Wizard #${dog.id}`;
+    const name = esc(dog.suggestedName) || `Wizard #${esc(dog.id)}`;
     const desc = dog.suggestedStory
         ? dog.suggestedStory.replace(/\*[^*]*\*/g, '').trim().substring(0, 200) + '…'
         : `${name} — a ${dog.fur} ${dog.pattern} of the ${dog.order} Order from ${dog.realm}.`;
     const ogImage = `${baseUrl}/wizard/${dog.id}/og.png`;
     const canonicalUrl = `${baseUrl}/wizard/${dog.id}`;
-    const storyHtml = (dog.suggestedStory || '').replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    const storyHtml = esc(dog.suggestedStory || '').replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
     const links = [];
     if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="pill pill-gold">🐕 View on Marketplace</a>`);
@@ -89,12 +94,12 @@ function renderWizardPage(dog, baseUrl) {
                 <div class="id-rank">#${dog.id} · Rank ${dog.rank.toLocaleString()}</div>
                 <div class="order-badge">${dog.order} Order</div>
                 <div class="traits">
-                    <div class="trait"><div class="trait-label">Fur</div><div class="trait-value">${dog.fur}</div></div>
-                    <div class="trait"><div class="trait-label">Pattern</div><div class="trait-value">${dog.pattern}</div></div>
-                    <div class="trait"><div class="trait-label">Eyes</div><div class="trait-value">${dog.eyes}</div></div>
-                    <div class="trait"><div class="trait-label">Clothes</div><div class="trait-value">${dog.clothes}</div></div>
-                    ${dog.mouth ? `<div class="trait"><div class="trait-label">Mouth</div><div class="trait-value">${dog.mouth}</div></div>` : ''}
-                    <div class="trait"><div class="trait-label">Realm</div><div class="trait-value">${dog.realm}</div></div>
+                    <div class="trait"><div class="trait-label">Fur</div><div class="trait-value">${esc(dog.fur)}</div></div>
+                    <div class="trait"><div class="trait-label">Pattern</div><div class="trait-value">${esc(dog.pattern)}</div></div>
+                    <div class="trait"><div class="trait-label">Eyes</div><div class="trait-value">${esc(dog.eyes)}</div></div>
+                    <div class="trait"><div class="trait-label">Clothes</div><div class="trait-value">${esc(dog.clothes)}</div></div>
+                    ${dog.mouth ? `<div class="trait"><div class="trait-label">Mouth</div><div class="trait-value">${esc(dog.mouth)}</div></div>` : ''}
+                    <div class="trait"><div class="trait-label">Realm</div><div class="trait-value">${esc(dog.realm)}</div></div>
                 </div>
                 ${links.length ? `<div class="links">${links.join('')}</div>` : ''}
             </div>

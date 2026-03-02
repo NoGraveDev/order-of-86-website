@@ -55,14 +55,13 @@
             const alpha = s.brightness * twinkle;
 
             ctx.globalAlpha = alpha;
-            ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(((s.x % W) + W) % W, ((s.y % H) + H) % H, s.r, 0, Math.PI * 2);
-            ctx.fill();
-
             // Some stars have a subtle color
             if (i % 7 === 0) ctx.fillStyle = '#ffd700';
             else if (i % 11 === 0) ctx.fillStyle = '#aaccff';
+            else ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(((s.x % W) + W) % W, ((s.y % H) + H) % H, s.r, 0, Math.PI * 2);
+            ctx.fill();
         }
 
         // Shooting stars
