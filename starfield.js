@@ -1,18 +1,18 @@
-/* ── Animated Starfield + Shooting Stars ──────── */
+/* ── Animated Starfield + Shooting Stars (Optimized) ──────── */
 (function(){
     const canvas = document.createElement('canvas');
     canvas.id = 'starfieldCanvas';
     canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;';
     document.body.prepend(canvas);
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     let W, H;
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
 
-    // Stars
-    const STAR_COUNT = 300;
+    // Reduced star count
+    const STAR_COUNT = 150; // Was 300
     const stars = [];
     for (let i = 0; i < STAR_COUNT; i++) {
         stars.push({
@@ -21,11 +21,11 @@
             r: Math.random() * 1.8 + 0.3,
             twinkleSpeed: 0.5 + Math.random() * 2,
             twinkleOffset: Math.random() * Math.PI * 2,
-            brightness: 0.4 + Math.random() * 0.6
+            brightness: 0.4 + Math.random() * 0.6,
+            color: i % 7 === 0 ? '#ffd700' : i % 11 === 0 ? '#aaccff' : '#ffffff'
         });
     }
 
-    // Shooting stars
     const shooters = [];
     function spawnShooter() {
         shooters.push({
@@ -42,31 +42,51 @@
 
     let time = 0;
     let shootTimer = 0;
+    let frameSkip = 0;
+
+    // Pre-render static stars to offscreen canvas (they barely change)
+    let staticCanvas = null;
+    let lastStaticTime = -1;
+
+    function renderStaticStars(t) {
+        if (!staticCanvas) {
+            staticCanvas = document.createElement('canvas');
+        }
+        staticCanvas.width = W;
+        staticCanvas.height = H;
+        const sCtx = staticCanvas.getContext('2d');
+
+        for (let i = 0; i < stars.length; i++) {
+            const s = stars[i];
+            const twinkle = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed + s.twinkleOffset);
+            const alpha = s.brightness * twinkle;
+
+            sCtx.globalAlpha = alpha;
+            sCtx.fillStyle = s.color;
+            sCtx.beginPath();
+            sCtx.arc(((s.x % W) + W) % W, ((s.y % H) + H) % H, s.r, 0, Math.PI * 2);
+            sCtx.fill();
+        }
+        sCtx.globalAlpha = 1;
+    }
 
     function animate() {
         requestAnimationFrame(animate);
         time += 0.016;
-        ctx.clearRect(0, 0, W, H);
 
-        // Draw stars
-        for (let i = 0; i < stars.length; i++) {
-            const s = stars[i];
-            const twinkle = 0.5 + 0.5 * Math.sin(time * s.twinkleSpeed + s.twinkleOffset);
-            const alpha = s.brightness * twinkle;
-
-            ctx.globalAlpha = alpha;
-            // Some stars have a subtle color
-            if (i % 7 === 0) ctx.fillStyle = '#ffd700';
-            else if (i % 11 === 0) ctx.fillStyle = '#aaccff';
-            else ctx.fillStyle = '#ffffff';
-            ctx.beginPath();
-            ctx.arc(((s.x % W) + W) % W, ((s.y % H) + H) % H, s.r, 0, Math.PI * 2);
-            ctx.fill();
+        // Only re-render stars every 6th frame (~10fps for twinkle is fine)
+        frameSkip++;
+        if (frameSkip >= 6 || !staticCanvas) {
+            frameSkip = 0;
+            renderStaticStars(time);
         }
 
-        // Shooting stars
+        ctx.clearRect(0, 0, W, H);
+        if (staticCanvas) ctx.drawImage(staticCanvas, 0, 0);
+
+        // Shooting stars (these need smooth animation)
         shootTimer += 0.016;
-        if (shootTimer > 2 + Math.random() * 5) {
+        if (shootTimer > 3 + Math.random() * 6) { // Less frequent
             spawnShooter();
             shootTimer = 0;
         }
@@ -81,8 +101,9 @@
 
             const progress = s.age / s.life;
             const alpha = Math.sin(progress * Math.PI);
-            const tailX = s.x - (s.vx / Math.sqrt(s.vx*s.vx + s.vy*s.vy)) * s.length;
-            const tailY = s.y - (s.vy / Math.sqrt(s.vx*s.vx + s.vy*s.vy)) * s.length;
+            const mag = Math.sqrt(s.vx*s.vx + s.vy*s.vy);
+            const tailX = s.x - (s.vx / mag) * s.length;
+            const tailY = s.y - (s.vy / mag) * s.length;
 
             const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
             grad.addColorStop(0, 'rgba(255,255,255,0)');
@@ -98,7 +119,6 @@
             ctx.lineTo(s.x, s.y);
             ctx.stroke();
 
-            // Bright head
             ctx.globalAlpha = alpha;
             ctx.fillStyle = '#ffffff';
             ctx.beginPath();

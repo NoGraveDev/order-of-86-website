@@ -1125,7 +1125,7 @@ filterDogs();
     if (!canvas) return;
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Cap pixel ratio for performance
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
 
@@ -1284,7 +1284,7 @@ filterDogs();
     });
 
     // ── Floating particles around hat ──
-    const PARTICLE_COUNT = 120;
+    const PARTICLE_COUNT = 50; // Reduced from 120
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(PARTICLE_COUNT * 3);
     const pSizes = new Float32Array(PARTICLE_COUNT);
@@ -1364,6 +1364,7 @@ filterDogs();
     }, { passive: true });
 
     let time = 0;
+    let heroVisible = true;
     function resize() {
         const hero = canvas.parentElement;
         const w = hero.clientWidth;
@@ -1375,8 +1376,15 @@ filterDogs();
     resize();
     window.addEventListener('resize', resize);
 
+    // Stop rendering when hero is off-screen
+    const heroObs = new IntersectionObserver(entries => {
+        heroVisible = entries[0].isIntersecting;
+    }, { threshold: 0 });
+    heroObs.observe(canvas.parentElement);
+
     function animate() {
         requestAnimationFrame(animate);
+        if (!heroVisible) return; // Skip all GPU work when scrolled past
         const dt = 0.016;
         time += dt;
         realmT += dt;
