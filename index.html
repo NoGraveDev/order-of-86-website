@@ -442,17 +442,12 @@
             overflow: hidden;
             cursor: pointer;
             transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-            opacity: 0;
-            transform: translateY(20px);
+            opacity: 1;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
-            contain: layout style paint;
-            will-change: transform;
         }
         .dog-card.visible {
             opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow var(--transition-normal);
         }
         @media (hover: hover) {
             .dog-card:hover {
