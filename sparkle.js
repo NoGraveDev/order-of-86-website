@@ -22,6 +22,8 @@
     let isActive = false;
     let idleFrames = 0;
     let rafId = null;
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
 
     document.addEventListener('mousemove', e => {
         rawMouseX = e.clientX;
@@ -52,7 +54,12 @@
 
     document.addEventListener('click', e => { spawn(e.clientX, e.clientY, true); });
 
-    function animate() {
+    function animate(timestamp) {
+        if (timestamp - lastFrameTime < FRAME_INTERVAL) {
+            rafId = requestAnimationFrame(animate);
+            return;
+        }
+        lastFrameTime = timestamp;
         ctx.clearRect(0, 0, W, H);
 
         mouseX += (rawMouseX - mouseX) * 0.35;

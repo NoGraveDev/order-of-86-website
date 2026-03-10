@@ -43,6 +43,13 @@
     let time = 0;
     let shootTimer = 0;
     let frameSkip = 0;
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
+    let tabVisible = true;
+
+    document.addEventListener('visibilitychange', () => {
+        tabVisible = !document.hidden;
+    });
 
     // Pre-render static stars to offscreen canvas (they barely change)
     let staticCanvas = null;
@@ -70,9 +77,12 @@
         sCtx.globalAlpha = 1;
     }
 
-    function animate() {
+    function animate(timestamp) {
         requestAnimationFrame(animate);
-        time += 0.016;
+        if (!tabVisible) return; // Skip all work when tab hidden
+        if (timestamp - lastFrameTime < FRAME_INTERVAL) return; // Throttle to 30fps
+        lastFrameTime = timestamp;
+        time += 0.033; // ~30fps delta
 
         // Only re-render stars every 6th frame (~10fps for twinkle is fine)
         frameSkip++;

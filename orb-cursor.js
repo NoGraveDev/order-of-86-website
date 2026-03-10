@@ -46,6 +46,8 @@
     let rafId = null;
     let lastColor = '';
     let frameSkip = 0;
+    let tabVisible = true;
+    document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
 
     document.addEventListener('mousemove', e => {
         mouseX = e.clientX;
@@ -58,6 +60,7 @@
     });
 
     function animate() {
+        if (!tabVisible) { rafId = requestAnimationFrame(animate); return; }
         // Smooth follow using transform (GPU-accelerated, no layout thrash)
         curX += (mouseX - curX) * 0.35;
         curY += (mouseY - curY) * 0.35;

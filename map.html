@@ -2650,9 +2650,16 @@ function updateCrystalLizards(time, delta) {
 let _animFrame = 0;
 let _fpsSum = 0, _fpsSamples = 0, _avgFps = 60, _lastFpsCheck = 0;
 let _skipFactor = 1; // 1 = normal, 2 = half updates, 4 = quarter
+let _lastFrameTime = 0;
+const _FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
+let _tabVisible = true;
+document.addEventListener('visibilitychange', () => { _tabVisible = !document.hidden; });
 
-function animate() {
+function animate(timestamp) {
     requestAnimationFrame(animate);
+    if (!_tabVisible) return; // Skip all work when tab hidden
+    if (timestamp - _lastFrameTime < _FRAME_INTERVAL) return; // Throttle to 30fps
+    _lastFrameTime = timestamp;
     const delta = clock.getDelta();
     const time = clock.getElapsedTime();
     _animFrame++;
@@ -2722,7 +2729,7 @@ window.addEventListener('resize', () => {
     if(nav){window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>10);},{passive:true});}
 })();
 </script>
-<script src="sparkle.js?v=1772131297"></script>
-<script src="orb-cursor.js"></script>
+<script src="sparkle.js?v=1772131297" defer></script>
+<script src="orb-cursor.js" defer></script>
 </body>
 </html>

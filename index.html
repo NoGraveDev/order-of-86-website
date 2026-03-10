@@ -1365,6 +1365,10 @@ filterDogs();
 
     let time = 0;
     let heroVisible = true;
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
+    let tabVisible = true;
+    document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
     function resize() {
         const hero = canvas.parentElement;
         const w = hero.clientWidth;
@@ -1382,10 +1386,12 @@ filterDogs();
     }, { threshold: 0 });
     heroObs.observe(canvas.parentElement);
 
-    function animate() {
+    function animate(timestamp) {
         requestAnimationFrame(animate);
-        if (!heroVisible) return; // Skip all GPU work when scrolled past
-        const dt = 0.016;
+        if (!heroVisible || !tabVisible) return; // Skip all GPU work when scrolled past or tab hidden
+        if (timestamp - lastFrameTime < FRAME_INTERVAL) return; // Throttle to 30fps
+        lastFrameTime = timestamp;
+        const dt = 0.033; // ~30fps delta
         time += dt;
         realmT += dt;
 
