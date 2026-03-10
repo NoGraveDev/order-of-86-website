@@ -140,7 +140,7 @@
             justify-content: center;
         }
         /* Voxel canvas */
-        #voxelCanvas { pointer-events: auto; }
+        #miniMapCanvas { pointer-events: none; }
         /* Text layer */
         .hero-text {
             position: relative;
@@ -1120,12 +1120,12 @@ sheet.querySelector('.modal-handle').addEventListener('click', closeDetail);
 // ── Init ─────────────────────────────────────────────────
 filterDogs();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ── 3D Mini-Map Hero — Pawtheon Terrain Preview ──────────── */
 (function(){
     const canvas = document.getElementById('miniMapCanvas');
-    if (!canvas) return;
+    if (!canvas || typeof THREE === 'undefined') return;
 
     const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
