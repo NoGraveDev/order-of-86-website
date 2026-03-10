@@ -833,11 +833,14 @@
     <a href="content.html">Content</a>
 </div>
 
+<a href="map.html" class="hero-map-link" style="display:block;text-decoration:none;color:inherit;">
 <section class="hero" id="heroSection">
-    <!-- 3D Voxel Hat -->
-    <canvas id="voxelCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;"></canvas>
-
+    <canvas id="miniMapCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:1;"></canvas>
+    <div style="position:absolute;bottom:16px;left:0;right:0;text-align:center;z-index:2;pointer-events:none;">
+        <span style="background:rgba(0,0,0,0.55);color:#e0d6c8;padding:8px 20px;border-radius:20px;font-size:0.95rem;letter-spacing:0.03em;font-family:'Cinzel',serif;">Click to explore the map →</span>
+    </div>
 </section>
+</a>
 
 <div class="container">
     <div class="search-section">
@@ -1119,258 +1122,183 @@ filterDogs();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 <script>
-/* ── 3D Realm Wizard Hat — Detailed & Realm-Accurate ──────────── */
+/* ── 3D Mini-Map Hero — Pawtheon Terrain Preview ──────────── */
 (function(){
-    const canvas = document.getElementById('voxelCanvas');
+    const canvas = document.getElementById('miniMapCanvas');
     if (!canvas) return;
 
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Cap pixel ratio for performance
+    const isMobile = window.innerWidth < 768;
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !isMobile });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.1;
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
-    camera.position.set(0, 4, 38);
+    scene.fog = new THREE.FogExp2(0x0a0a12, 0.012);
 
-    // Rich lighting
-    scene.add(new THREE.AmbientLight(0x404060, 0.6));
-    const key = new THREE.DirectionalLight(0xffeedd, 1.0);
-    key.position.set(8, 12, 10);
-    scene.add(key);
-    const fill = new THREE.DirectionalLight(0x4466aa, 0.4);
-    fill.position.set(-6, -2, -6);
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 200);
+    camera.position.set(0, 28, 35);
+    camera.lookAt(0, 0, 0);
+
+    // Lighting
+    scene.add(new THREE.AmbientLight(0x8899bb, 0.5));
+    const sun = new THREE.DirectionalLight(0xffeedd, 0.9);
+    sun.position.set(10, 20, 8);
+    scene.add(sun);
+    const fill = new THREE.DirectionalLight(0x4466aa, 0.3);
+    fill.position.set(-8, 5, -10);
     scene.add(fill);
-    const rim = new THREE.DirectionalLight(0xffffff, 0.3);
-    rim.position.set(0, 0, -12);
-    scene.add(rim);
 
-    // ── 6 Order Realms ──
+    // ── Simplex Noise (compact 2D) ──
+    const F2 = 0.5*(Math.sqrt(3)-1), G2 = (3-Math.sqrt(3))/6;
+    const perm = new Uint8Array(512);
+    const grad = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+    (function(){const p=[];for(let i=0;i<256;i++)p[i]=i;for(let i=255;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}for(let i=0;i<512;i++)perm[i]=p[i&255];})();
+    function simplex2(x,y){
+        let s=(x+y)*F2,i=Math.floor(x+s),j=Math.floor(y+s);
+        let t=(i+j)*G2,X0=i-t,Y0=j-t,x0=x-X0,y0=y-Y0;
+        let i1=x0>y0?1:0,j1=x0>y0?0:1;
+        let x1=x0-i1+G2,y1=y0-j1+G2,x2=x0-1+2*G2,y2=y0-1+2*G2;
+        i&=255;j&=255;
+        let n0=0,n1=0,n2=0;
+        let t0=0.5-x0*x0-y0*y0;if(t0>0){t0*=t0;const g=grad[perm[i+perm[j]]%8];n0=t0*t0*(g[0]*x0+g[1]*y0);}
+        let t1=0.5-x1*x1-y1*y1;if(t1>0){t1*=t1;const g=grad[perm[i+i1+perm[j+j1]]%8];n1=t1*t1*(g[0]*x1+g[1]*y1);}
+        let t2=0.5-x2*x2-y2*y2;if(t2>0){t2*=t2;const g=grad[perm[i+1+perm[j+1]]%8];n2=t2*t2*(g[0]*x2+g[1]*y2);}
+        return 70*(n0+n1+n2);
+    }
+
+    // ── Realm definitions with positions (normalized -1 to 1) ──
     const REALMS = [
-        { name:'Flame',   primary:0xf4762c, secondary:0xc35604, accent:0xffdd2a, glow:0xff6600, dark:0x3a1500, emblem:'fire' },
-        { name:'Wild',    primary:0x2ea043, secondary:0x1a7a30, accent:0x8bef6a, glow:0x44ff44, dark:0x0a2a10, emblem:'leaf' },
-        { name:'Arcane',  primary:0x7b54c9, secondary:0x5a3a9a, accent:0xc8a0ff, glow:0xaa66ff, dark:0x1a0a3a, emblem:'star' },
-        { name:'Deep',    primary:0x2266cc, secondary:0x1a4a8a, accent:0x66ccff, glow:0x4488ff, dark:0x0a1a3a, emblem:'wave' },
-        { name:'Radiant', primary:0xffcc00, secondary:0xcc9900, accent:0xfff4aa, glow:0xffee44, dark:0x3a2a00, emblem:'sun' },
-        { name:'Heart',   primary:0xc55bb7, secondary:0x9a3a8a, accent:0xffaaee, glow:0xff66cc, dark:0x3a0a2a, emblem:'heart' }
+        { name:'Frosthollow',     color:0xd9ebff, cx:-0.6, cz:-0.6, elevBase:0.6 },
+        { name:'Abyssal Reaches', color:0x3d4d66, cx: 0.0, cz:-0.7, elevBase:0.2 },
+        { name:'Sunward Heights', color:0xffe6a3, cx: 0.6, cz:-0.6, elevBase:0.9 },
+        { name:'Ember Wastes',    color:0x804020, cx: 0.7, cz: 0.2, elevBase:0.5 },
+        { name:'Deepwood',        color:0x2d6b1f, cx: 0.5, cz: 0.6, elevBase:0.35 },
+        { name:'Violet Highlands',color:0x6b3d80, cx:-0.6, cz: 0.5, elevBase:0.75 },
+        { name:'Shadowmire',      color:0x2d3318, cx: 0.0, cz: 0.6, elevBase:0.1 },
+        { name:'Starter Lands',   color:0x7a9959, cx: 0.0, cz: 0.0, elevBase:0.4 }
     ];
-    let realmIdx = 0, realmT = 0;
-    const REALM_DURATION = 6; // seconds per realm
-    const TRANSITION = 1.2;   // seconds crossfade
 
-    const boxGeo = new THREE.BoxGeometry(0.92, 0.92, 0.92);
-    const hatGroup = new THREE.Group();
-    scene.add(hatGroup);
+    // ── Build terrain ──
+    const SEG = isMobile ? 64 : 100;
+    const SIZE = 30;
+    const geo = new THREE.PlaneGeometry(SIZE, SIZE, SEG, SEG);
+    geo.rotateX(-Math.PI / 2);
+    const posAttr = geo.attributes.position;
+    const colors = new Float32Array(posAttr.count * 3);
 
-    // ── Procedural Wizard Hat Shape (3D voxel, ~28 tall, wide brim) ──
-    function generateHatVoxels() {
-        const voxels = []; // {x,y,z, zone} — zone: 'tip','cone','band','brim','buckle','trim'
-        const R = 14; // half-width
+    for (let i = 0; i < posAttr.count; i++) {
+        const x = posAttr.getX(i);
+        const z = posAttr.getZ(i);
+        const nx = x / (SIZE/2); // -1 to 1
+        const nz = z / (SIZE/2);
 
-        // Pointy tip (y 24-27) — narrow, curved
-        for (let y = 24; y <= 27; y++) {
-            const w = Math.max(1, Math.round((27 - y) * 0.8 + 1));
-            const d = Math.max(1, w);
-            for (let x = -w; x <= w; x++) {
-                for (let z = -d; z <= d; z++) {
-                    if (x*x + z*z <= (w+0.5)*(w+0.5)) {
-                        voxels.push({x, y, z, zone:'tip'});
-                    }
-                }
-            }
+        // Find closest realm and blend colors
+        let totalW = 0;
+        let r = 0, g = 0, b = 0;
+        let elevBlend = 0;
+        const tmpColor = new THREE.Color();
+
+        for (const realm of REALMS) {
+            const dx = nx - realm.cx;
+            const dz = nz - realm.cz;
+            const dist = Math.sqrt(dx*dx + dz*dz) + 0.001;
+            const w = 1 / Math.pow(dist, 3);
+            tmpColor.set(realm.color);
+            r += tmpColor.r * w;
+            g += tmpColor.g * w;
+            b += tmpColor.b * w;
+            elevBlend += realm.elevBase * w;
+            totalW += w;
         }
-        // Tip curl — hat bends slightly to the right
-        for (let i = 0; i < 4; i++) {
-            voxels.push({x: 2+i, y: 27-i*0.3, z: 0, zone:'tip'});
-            voxels.push({x: 3+i, y: 26.5-i*0.5, z: 0, zone:'tip'});
-        }
+        r /= totalW; g /= totalW; b /= totalW;
+        elevBlend /= totalW;
 
-        // Cone body (y 8-23) — smooth taper
-        for (let y = 8; y <= 23; y++) {
-            const t = (y - 8) / 15;
-            const radius = R * (1 - t * 0.8);
-            const depthR = radius * 0.7;
-            for (let x = -Math.ceil(radius); x <= Math.ceil(radius); x++) {
-                for (let z = -Math.ceil(depthR); z <= Math.ceil(depthR); z++) {
-                    const nx = x / radius, nz = z / depthR;
-                    if (nx*nx + nz*nz <= 1.05) {
-                        // Hollow inside (shell only)
-                        const inner = radius - 1.5;
-                        const innerD = depthR - 1.5;
-                        const inx = inner > 0 ? x / inner : 2, inz = innerD > 0 ? z / innerD : 2;
-                        if (inner <= 0 || inx*inx + inz*inz > 1.0) {
-                            voxels.push({x, y, z, zone:'cone'});
-                        }
-                    }
-                }
-            }
-        }
+        // Terrain height: blend of realm base elevation + noise
+        const noise1 = simplex2(x * 0.08, z * 0.08) * 2.0;
+        const noise2 = simplex2(x * 0.2, z * 0.2) * 0.5;
+        const edgeFade = 1 - Math.pow(Math.max(Math.abs(nx), Math.abs(nz)), 2);
+        const y = (elevBlend * 3 + noise1 + noise2) * edgeFade;
+        posAttr.setY(i, y);
 
-        // Hat band (y 7-8) — decorative band where brim meets cone
-        for (let y = 7; y <= 8; y++) {
-            const radius = R + 0.5;
-            const depthR = radius * 0.7;
-            for (let x = -Math.ceil(radius); x <= Math.ceil(radius); x++) {
-                for (let z = -Math.ceil(depthR); z <= Math.ceil(depthR); z++) {
-                    const nx = x / radius, nz = z / depthR;
-                    if (nx*nx + nz*nz <= 1.05) {
-                        voxels.push({x, y, z, zone:'band'});
-                    }
-                }
-            }
-        }
-
-        // Buckle / emblem (on band, front-facing)
-        for (let bx = -2; bx <= 2; bx++) {
-            for (let by = 7; by <= 8; by++) {
-                voxels.push({x: bx, y: by, z: Math.ceil(R*0.7) + 1, zone:'buckle'});
-            }
-        }
-
-        // Wide brim (y 5-6) — flat disc, wider than cone
-        const brimR = R + 5;
-        const brimD = brimR * 0.7;
-        for (let y = 5; y <= 6; y++) {
-            for (let x = -brimR; x <= brimR; x++) {
-                for (let z = -Math.ceil(brimD); z <= Math.ceil(brimD); z++) {
-                    const nx = x / brimR, nz = z / brimD;
-                    if (nx*nx + nz*nz <= 1.0) {
-                        voxels.push({x, y, z, zone:'brim'});
-                    }
-                }
-            }
-        }
-
-        // Brim trim (outer edge highlight)
-        for (let y = 5; y <= 6; y++) {
-            for (let x = -brimR; x <= brimR; x++) {
-                for (let z = -Math.ceil(brimD); z <= Math.ceil(brimD); z++) {
-                    const nx = x / brimR, nz = z / brimD;
-                    const d = nx*nx + nz*nz;
-                    if (d > 0.85 && d <= 1.0) {
-                        // Override zone to trim
-                        const idx = voxels.findIndex(v => v.x===x && v.y===y && v.z===z);
-                        if (idx >= 0) voxels[idx].zone = 'trim';
-                    }
-                }
-            }
-        }
-
-        return voxels;
+        colors[i*3] = r;
+        colors[i*3+1] = g;
+        colors[i*3+2] = b;
     }
 
-    const hatVoxels = generateHatVoxels();
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
 
-    // ── Build instanced meshes per zone ──
-    const zones = ['tip','cone','band','brim','buckle','trim'];
-    const zoneMeshes = {};
-    const zoneMats = {};
+    const terrainMat = new THREE.MeshStandardMaterial({
+        vertexColors: true,
+        roughness: 0.85,
+        metalness: 0.05,
+        flatShading: true
+    });
+    const terrain = new THREE.Mesh(geo, terrainMat);
+    scene.add(terrain);
 
-    zones.forEach(zone => {
-        const positions = hatVoxels.filter(v => v.zone === zone);
-        if (positions.length === 0) return;
-        const mat = new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 0.1 });
-        const mesh = new THREE.InstancedMesh(boxGeo, mat, positions.length);
-        const dummy = new THREE.Object3D();
-        positions.forEach((v, i) => {
-            dummy.position.set(v.x, v.y - 14, v.z);
-            dummy.updateMatrix();
-            mesh.setMatrixAt(i, dummy.matrix);
-        });
-        mesh.instanceMatrix.needsUpdate = true;
-        hatGroup.add(mesh);
-        zoneMeshes[zone] = mesh;
-        zoneMats[zone] = mat;
+    // ── Water plane ──
+    const waterGeo = new THREE.PlaneGeometry(SIZE * 1.5, SIZE * 1.5);
+    waterGeo.rotateX(-Math.PI / 2);
+    const waterMat = new THREE.MeshStandardMaterial({
+        color: 0x1a3355,
+        transparent: true,
+        opacity: 0.5,
+        roughness: 0.2,
+        metalness: 0.3
+    });
+    const water = new THREE.Mesh(waterGeo, waterMat);
+    water.position.y = -0.3;
+    scene.add(water);
+
+    // ── Realm labels (CSS2D-like via sprite) ──
+    function makeLabel(text, color) {
+        const c = document.createElement('canvas');
+        const ctx = c.getContext('2d');
+        const fontSize = isMobile ? 28 : 22;
+        ctx.font = `bold ${fontSize}px "Cinzel", serif`;
+        const m = ctx.measureText(text);
+        c.width = Math.ceil(m.width) + 16;
+        c.height = fontSize + 12;
+        ctx.font = `bold ${fontSize}px "Cinzel", serif`;
+        ctx.fillStyle = 'rgba(0,0,0,0.45)';
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.fillStyle = color || '#e0d6c8';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(text, c.width/2, c.height/2);
+        const tex = new THREE.CanvasTexture(c);
+        tex.minFilter = THREE.LinearFilter;
+        const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.85, depthTest: false });
+        const sprite = new THREE.Sprite(mat);
+        sprite.scale.set(c.width / 40, c.height / 40, 1);
+        return sprite;
+    }
+
+    REALMS.forEach(realm => {
+        const label = makeLabel(realm.name);
+        const px = realm.cx * (SIZE/2);
+        const pz = realm.cz * (SIZE/2);
+        // Sample terrain height at realm center
+        const noise1 = simplex2(px * 0.08, pz * 0.08) * 2.0;
+        const edgeFade = 1 - Math.pow(Math.max(Math.abs(realm.cx), Math.abs(realm.cz)), 2);
+        const baseY = (realm.elevBase * 3 + noise1) * edgeFade;
+        label.position.set(px, baseY + 2.5, pz);
+        scene.add(label);
     });
 
-    // ── Floating particles around hat ──
-    const PARTICLE_COUNT = 50; // Reduced from 120
-    const pGeo = new THREE.BufferGeometry();
-    const pPos = new Float32Array(PARTICLE_COUNT * 3);
-    const pSizes = new Float32Array(PARTICLE_COUNT);
-    const pPhase = new Float32Array(PARTICLE_COUNT);
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = 16 + Math.random() * 14;
-        pPos[i*3] = Math.cos(a) * r;
-        pPos[i*3+1] = (Math.random() - 0.3) * 30;
-        pPos[i*3+2] = Math.sin(a) * r;
-        pSizes[i] = 0.5 + Math.random() * 1.5;
-        pPhase[i] = Math.random() * Math.PI * 2;
-    }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({ size: 1.2, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false });
-    const particles = new THREE.Points(pGeo, pMat);
-    scene.add(particles);
-
-    // ── Realm emblem glow ring ──
-    const ringGeo = new THREE.TorusGeometry(16, 0.3, 8, 48);
-    const ringMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending });
-    const ring = new THREE.Mesh(ringGeo, ringMat);
-    ring.rotation.x = Math.PI / 2;
-    ring.position.y = -8;
-    scene.add(ring);
-
-    // ── Color lerp helper ──
-    function lerpColor(a, b, t) {
-        const ca = new THREE.Color(a), cb = new THREE.Color(b);
-        return ca.lerp(cb, t);
-    }
-
-    // ── Apply realm colors ──
-    function applyRealm(realm, t) {
-        // t is 0-1 blend factor during transitions
-        const zoneColors = {
-            tip:    realm.accent,
-            cone:   realm.primary,
-            band:   realm.dark,
-            brim:   realm.secondary,
-            buckle: realm.accent,
-            trim:   realm.accent
-        };
-        zones.forEach(zone => {
-            if (!zoneMats[zone]) return;
-            zoneMats[zone].color.set(zoneColors[zone]);
-            if (zone === 'buckle') {
-                zoneMats[zone].metalness = 0.6;
-                zoneMats[zone].roughness = 0.2;
-                zoneMats[zone].emissive.set(realm.accent);
-                zoneMats[zone].emissiveIntensity = 0.4;
-            } else if (zone === 'tip') {
-                zoneMats[zone].emissive.set(realm.glow);
-                zoneMats[zone].emissiveIntensity = 0.3 + Math.sin(realmT * 3) * 0.15;
-            } else if (zone === 'trim') {
-                zoneMats[zone].emissive.set(realm.accent);
-                zoneMats[zone].emissiveIntensity = 0.15;
-            } else {
-                zoneMats[zone].emissive.set(0x000000);
-                zoneMats[zone].emissiveIntensity = 0;
-            }
-        });
-        pMat.color.set(realm.glow);
-        ringMat.color.set(realm.glow);
-    }
-
-    // Mouse tracking
-    let mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', e => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    });
-    canvas.addEventListener('touchmove', e => {
-        const t = e.touches[0];
-        mouseX = (t.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (t.clientY / window.innerHeight - 0.5) * 2;
-    }, { passive: true });
-
+    // ── Animation ──
     let time = 0;
     let heroVisible = true;
     let lastFrameTime = 0;
-    const FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
+    const FRAME_INTERVAL = 1000 / 30;
     let tabVisible = true;
     document.addEventListener('visibilitychange', () => { tabVisible = !document.hidden; });
+
     function resize() {
-        const hero = canvas.parentElement;
+        const hero = document.getElementById('heroSection');
+        if (!hero) return;
         const w = hero.clientWidth;
         const h = hero.clientHeight;
         renderer.setSize(w, h);
@@ -1380,58 +1308,28 @@ filterDogs();
     resize();
     window.addEventListener('resize', resize);
 
-    // Stop rendering when hero is off-screen
     const heroObs = new IntersectionObserver(entries => {
         heroVisible = entries[0].isIntersecting;
     }, { threshold: 0 });
-    heroObs.observe(canvas.parentElement);
+    heroObs.observe(document.getElementById('heroSection'));
 
     function animate(timestamp) {
         requestAnimationFrame(animate);
-        if (!heroVisible || !tabVisible) return; // Skip all GPU work when scrolled past or tab hidden
-        if (timestamp - lastFrameTime < FRAME_INTERVAL) return; // Throttle to 30fps
+        if (!heroVisible || !tabVisible) return;
+        if (timestamp - lastFrameTime < FRAME_INTERVAL) return;
         lastFrameTime = timestamp;
-        const dt = 0.033; // ~30fps delta
-        time += dt;
-        realmT += dt;
+        time += 0.033;
 
-        // Realm cycling
-        if (realmT >= REALM_DURATION) {
-            realmT = 0;
-            realmIdx = (realmIdx + 1) % REALMS.length;
-        }
-        applyRealm(REALMS[realmIdx], 0);
+        // Slow orbit
+        const orbitR = 38;
+        const orbitSpeed = 0.06;
+        camera.position.x = Math.sin(time * orbitSpeed) * orbitR;
+        camera.position.z = Math.cos(time * orbitSpeed) * orbitR;
+        camera.position.y = 22 + Math.sin(time * 0.1) * 3;
+        camera.lookAt(0, 1, 0);
 
-        // Smooth rotation + mouse
-        hatGroup.rotation.y = time * 0.15 + mouseX * 0.5;
-        hatGroup.rotation.x = Math.sin(time * 0.3) * 0.08 - mouseY * 0.2;
-        hatGroup.rotation.z = Math.sin(time * 0.2) * 0.03;
-
-        // Float
-        hatGroup.position.y = Math.sin(time * 0.8) * 0.8;
-
-        // Particle orbit
-        const posArr = particles.geometry.attributes.position.array;
-        for (let i = 0; i < PARTICLE_COUNT; i++) {
-            const phase = pPhase[i];
-            const speed = 0.2 + (i % 5) * 0.05;
-            const a = time * speed + phase;
-            const r = 16 + Math.sin(time * 0.5 + phase) * 5;
-            posArr[i*3] = Math.cos(a) * r;
-            posArr[i*3+1] += Math.sin(time * 2 + phase) * 0.02;
-            posArr[i*3+2] = Math.sin(a) * r;
-            // Wrap Y
-            if (posArr[i*3+1] > 18) posArr[i*3+1] = -12;
-            if (posArr[i*3+1] < -12) posArr[i*3+1] = 18;
-        }
-        particles.geometry.attributes.position.needsUpdate = true;
-        pMat.opacity = 0.3 + Math.sin(time * 1.5) * 0.15;
-
-        // Ring pulse
-        const rScale = 1 + Math.sin(time * 2) * 0.05;
-        ring.scale.set(rScale, rScale, 1);
-        ring.rotation.z = time * 0.1;
-        ringMat.opacity = 0.15 + Math.sin(time * 3) * 0.08;
+        // Subtle water shimmer
+        water.material.opacity = 0.45 + Math.sin(time * 2) * 0.05;
 
         renderer.render(scene, camera);
     }
