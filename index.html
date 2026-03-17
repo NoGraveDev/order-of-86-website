@@ -93,18 +93,13 @@ body {
 .atmosphere::before {
     content: '';
     position: absolute;
-    width: 140vmax;
-    height: 140vmax;
-    top: -40%;
-    left: -20%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     background: radial-gradient(ellipse at 30% 20%, var(--active-glow) 0%, transparent 50%),
                 radial-gradient(ellipse at 70% 60%, var(--active-glow) 0%, transparent 40%);
     transition: background 1.2s ease;
-    animation: atmosphereDrift 25s ease-in-out infinite alternate;
-}
-@keyframes atmosphereDrift {
-    0% { transform: translate(0, 0) rotate(0deg); }
-    100% { transform: translate(3%, 5%) rotate(8deg); }
 }
 .atmosphere::after {
     content: '';
@@ -125,9 +120,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 0 clamp(16px, 4vw, 48px);
-    background: rgba(6,6,10,0.6);
-    backdrop-filter: blur(24px) saturate(1.5);
-    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+    background: rgba(6,6,10,0.92);
     border-bottom: 1px solid var(--border);
     transition: border-color 0.4s;
 }
@@ -183,9 +176,7 @@ body {
 .mobile-menu {
     position: fixed; top: 56px; left: 0; right: 0;
     z-index: 99;
-    background: rgba(6,6,10,0.95);
-    backdrop-filter: blur(40px);
-    -webkit-backdrop-filter: blur(40px);
+    background: rgba(6,6,10,0.97);
     padding: 8px 0 20px;
     transform: translateY(-120%);
     opacity: 0;
@@ -588,8 +579,7 @@ body {
     font-weight: 600;
     padding: 3px 8px;
     border-radius: 6px;
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.8);
     color: var(--text-dim);
     letter-spacing: 0.02em;
 }
@@ -674,9 +664,7 @@ body {
 .panel-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.75);
     z-index: 300;
     opacity: 0;
     pointer-events: none;
@@ -705,9 +693,7 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 16px 24px;
-    background: rgba(6,6,10,0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(6,6,10,0.95);
     border-bottom: 1px solid var(--border);
 }
 .panel-close-btn {
@@ -1289,7 +1275,6 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     render();
 })();
 </script>
-<script src="sparkle.js?v=1772131297" defer></script>
 <script src="orb-cursor.js" defer></script>
 </body>
 </html>
