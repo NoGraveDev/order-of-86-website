@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2306060a' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <title>The Order of 86 — Wizard Dogs of Pawtheon</title>
     <meta name="description" content="The Order of 86: 86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon — 6 Orders, 7 Moons, 6 Cities.">
     <meta name="robots" content="index, follow">
@@ -138,10 +138,11 @@ body {
 .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-family: var(--font-body);
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
     text-transform: uppercase;
     padding: 6px 14px;
     border-radius: 6px;
@@ -187,7 +188,7 @@ body {
 .mobile-menu a {
     display: block; padding: 14px 32px;
     color: var(--text-dim); text-decoration: none;
-    font-family: var(--font-mono); font-size: 13px;
+    font-family: var(--font-body); font-size: 15px; text-transform: uppercase; letter-spacing: 0.1em;
     font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
     transition: color 0.2s;
 }
@@ -270,7 +271,7 @@ body {
     animation: fadeUp 0.8s var(--ease-out) 0.45s forwards;
 }
 .hero-link {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.06em;
@@ -410,7 +411,7 @@ body {
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 48px;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     color: var(--text-faint);
     opacity: 0;
@@ -478,7 +479,7 @@ body {
     min-width: 0;
 }
 .wanderer-badge {
-    font-family: var(--font-mono);
+    font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.08em;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -625,7 +626,7 @@ body {
     margin-top: 10px;
 }
 .portrait-tag {
-    font-family: var(--font-mono);
+    font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.05em;
     font-size: 10px;
     font-weight: 600;
     padding: 3px 8px;
@@ -635,7 +636,7 @@ body {
     letter-spacing: 0.02em;
 }
 .portrait-order-tag {
-    font-family: var(--font-mono);
+    font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.05em;
     font-size: 10px;
     font-weight: 600;
     padding: 3px 8px;
@@ -707,7 +708,7 @@ body {
 }
 .panel-close-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
 .panel-fullpage {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
     color: var(--gold);
@@ -774,7 +775,7 @@ body {
     padding: 12px 14px;
 }
 .panel-trait-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.06em;
     font-size: 9px;
     font-weight: 600;
     color: var(--text-faint);
@@ -804,7 +805,7 @@ body {
     background: var(--bg-elevated);
     color: var(--text-dim);
     text-decoration: none;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 600;
     transition: all 0.2s;
@@ -875,7 +876,7 @@ body {
     color: var(--gold-bright);
 }
 .geo-stat-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-body); text-transform: uppercase; letter-spacing: 0.06em;
     font-size: 10px;
     font-weight: 600;
     color: var(--text-faint);
@@ -906,7 +907,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
 .footer {
     text-align: center;
     padding: 40px 24px;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     color: var(--text-faint);
     border-top: 1px solid var(--border);
@@ -1275,6 +1276,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     render();
 })();
 </script>
+<script src="sparkle.js" defer></script>
 <script src="orb-cursor.js" defer></script>
 </body>
 </html>

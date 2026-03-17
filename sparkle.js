@@ -1,105 +1,84 @@
-/* ── Magic Sparkle Trail (Optimized) ──────────────────────── */
+/* ── Sparkle Trail (Ultra-Light) ──────────────────────── */
 (function(){
-    // Skip on mobile — saves significant GPU
     if ('ontouchstart' in window && !window.matchMedia('(pointer:fine)').matches) return;
 
     const canvas = document.createElement('canvas');
-    canvas.id = 'sparkleCanvas';
     canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
     document.body.appendChild(canvas);
-
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d');
     let W, H;
     function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
     resize();
     window.addEventListener('resize', resize);
 
-    const MAX_PARTICLES = 80; // Reduced from 200
-    const particles = [];
-    const colors = ['#ffd700','#ffb800','#ffe066','#fff5cc','#ffffff','#ff9500','#c55bb7','#7b54c9'];
-    let rawMouseX = -100, rawMouseY = -100;
-    let mouseX = -100, mouseY = -100, lastX = -100, lastY = -100;
-    let isActive = false;
-    let idleFrames = 0;
-    let rafId = null;
-    let lastFrameTime = 0;
-    const FRAME_INTERVAL = 1000 / 30; // Cap at 30fps
+    const MAX = 40;
+    const pool = new Float32Array(MAX * 7); // x,y,vx,vy,size,life,age per particle
+    const colors = ['#ffd700','#ffe066','#ffffff','#c9a86c','#7b54c9'];
+    const colorArr = new Array(MAX);
+    let count = 0;
+    let mx = -100, my = -100, lx = -100, ly = -100;
+    let active = false, idle = 0, raf = null;
 
     document.addEventListener('mousemove', e => {
-        rawMouseX = e.clientX;
-        rawMouseY = e.clientY;
-        isActive = true;
-        idleFrames = 0;
-        if (!rafId) rafId = requestAnimationFrame(animate);
+        mx = e.clientX; my = e.clientY;
+        active = true; idle = 0;
+        if (!raf) raf = requestAnimationFrame(tick);
     });
 
-    function spawn(x, y, burst) {
-        const count = burst ? 6 : 1; // Reduced counts
-        for (let i = 0; i < count; i++) {
-            if (particles.length >= MAX_PARTICLES) return;
-            const angle = Math.random() * Math.PI * 2;
-            const speed = burst ? Math.random() * 3 + 1 : Math.random() * 1.5 + 0.3;
-            particles.push({
-                x, y,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed - (burst ? 1 : 0.5),
-                size: Math.random() * (burst ? 4 : 2.5) + 1,
-                life: burst ? 30 + Math.random() * 20 : 15 + Math.random() * 15,
-                age: 0,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                isCircle: Math.random() > 0.7 // Simplified — skip star drawing mostly
-            });
+    function spawn(x, y, n) {
+        for (let i = 0; i < n && count < MAX; i++) {
+            const a = Math.random() * 6.28;
+            const s = Math.random() * 1.5 + 0.3;
+            const o = count * 7;
+            pool[o] = x; pool[o+1] = y;
+            pool[o+2] = Math.cos(a)*s; pool[o+3] = Math.sin(a)*s - 0.5;
+            pool[o+4] = Math.random() * 2 + 0.8;
+            pool[o+5] = 12 + Math.random() * 10;
+            pool[o+6] = 0;
+            colorArr[count] = colors[(Math.random()*colors.length)|0];
+            count++;
         }
     }
 
-    document.addEventListener('click', e => { spawn(e.clientX, e.clientY, true); });
+    document.addEventListener('click', e => { spawn(e.clientX, e.clientY, 5); });
 
-    function animate(timestamp) {
-        if (timestamp - lastFrameTime < FRAME_INTERVAL) {
-            rafId = requestAnimationFrame(animate);
-            return;
-        }
-        lastFrameTime = timestamp;
+    function tick() {
         ctx.clearRect(0, 0, W, H);
 
-        mouseX += (rawMouseX - mouseX) * 0.35;
-        mouseY += (rawMouseY - mouseY) * 0.35;
+        const dx = mx - lx, dy = my - ly;
+        if (dx*dx + dy*dy > 16) { spawn(mx, my, 1); lx = mx; ly = my; }
 
-        const dx = mouseX - lastX, dy = mouseY - lastY;
-        const dist = dx*dx + dy*dy; // Skip sqrt
-        if (dist > 9) { // was > 3 (now squared)
-            spawn(mouseX, mouseY, false);
-            lastX = mouseX; lastY = mouseY;
-        }
+        for (let i = count - 1; i >= 0; i--) {
+            const o = i * 7;
+            pool[o] += pool[o+2];
+            pool[o+1] += pool[o+3];
+            pool[o+3] += 0.04;
+            pool[o+6]++;
 
-        for (let i = particles.length - 1; i >= 0; i--) {
-            const p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.04;
-            p.vx *= 0.98;
-            p.age++;
+            if (pool[o+6] >= pool[o+5]) {
+                // Swap-remove
+                const last = (count-1)*7;
+                if (i < count-1) {
+                    for (let j=0;j<7;j++) pool[o+j] = pool[last+j];
+                    colorArr[i] = colorArr[count-1];
+                }
+                count--;
+                continue;
+            }
 
-            if (p.age >= p.life) { particles.splice(i, 1); continue; }
-
-            const progress = p.age / p.life;
-            const alpha = 1 - progress;
-            const size = p.size * (1 - progress * 0.5);
-
+            const p = pool[o+6] / pool[o+5];
+            const alpha = 1 - p;
+            const sz = pool[o+4] * (1 - p * 0.5);
             ctx.globalAlpha = alpha;
-            ctx.fillStyle = p.color;
+            ctx.fillStyle = colorArr[i];
             ctx.beginPath();
-            ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+            ctx.arc(pool[o], pool[o+1], sz, 0, 6.28);
             ctx.fill();
         }
         ctx.globalAlpha = 1;
 
-        // Stop animation loop when idle and no particles
-        idleFrames++;
-        if (particles.length === 0 && idleFrames > 60) {
-            rafId = null;
-            return;
-        }
-        rafId = requestAnimationFrame(animate);
+        idle++;
+        if (count === 0 && idle > 60) { raf = null; return; }
+        raf = requestAnimationFrame(tick);
     }
 })();
