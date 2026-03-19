@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
     <title>The Order of 86 — Wizard Dogs of Pawtheon</title>
     <meta name="description" content="The Order of 86: 86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon — 6 Orders, 7 Moons, 6 Cities.">
     <meta name="robots" content="index, follow">
@@ -1245,37 +1246,11 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     panelBackdrop.addEventListener('click', closePanel);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
-    // ── Nav scroll effect ─────────────────────────────
-    const nav = document.getElementById('nav');
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                nav.classList.toggle('scrolled', window.scrollY > 40);
-                ticking = false;
-            });
-            ticking = true;
-        }
-    });
-
-    // ── Mobile nav ────────────────────────────────────
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('open');
-        mobileMenu.classList.toggle('open');
-    });
-    mobileMenu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-            hamburger.classList.remove('open');
-            mobileMenu.classList.remove('open');
-        });
-    });
-
     // ── Init ──────────────────────────────────────────
     render();
 })();
 </script>
+<script src="nav.js" defer></script>
 <script src="sparkle.js" defer></script>
 <script src="orb-cursor.js" defer></script>
 </body>

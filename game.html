@@ -25,6 +25,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"VideoGame","name":"The Order of 86: Tower Defense","description":"A tower defense game where players deploy wizard dogs from six magical Orders to defend the world of Pawtheon from the Great Rot.","genre":"Tower Defense","gamePlatform":"Web Browser","applicationCategory":"Game","url":"https://theorderof86.com/game","playMode":"SinglePlayer","operatingSystem":"Any"}
 </script>
+<link rel="stylesheet" href="shared.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -833,12 +834,14 @@ drawProjectiles();
 drawParticles();
 }
 
+let _gameTabVisible = true;
+document.addEventListener('visibilitychange', () => { _gameTabVisible = !document.hidden; });
 function loop(){
+requestAnimationFrame(loop);
+if (!_gameTabVisible) return;
 update();
 draw();
-// Update flavor text
 document.getElementById('bottomBar').textContent=flavorText;
-requestAnimationFrame(loop);
 }
 loop();
 
@@ -851,7 +854,8 @@ document.getElementById('info').textContent='Click a tower type to place.';updat
 if(e.key===' '||e.key==='Enter'){e.preventDefault();startWave();}
 });
 </script>
-<script src="sparkle.js?v=1772131297" defer></script>
+<script src="nav.js" defer></script>
+<script src="sparkle.js" defer></script>
 <script src="orb-cursor.js" defer></script>
 <script src="starfield.js" defer></script>
 </body>

@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
     <title>The Seven Moons of Pawtheon — Order of 86 Lore</title>
     <meta name="description" content="Explore the mystical moons orbiting Pawtheon. Each moon holds ancient power and cosmic secrets tied to the 86 wizard dogs of the Order.">
     <meta name="robots" content="index, follow">
@@ -327,28 +328,7 @@
     </div>
 </footer>
 
-<script>
-// Nav toggle
-const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-const nav = document.getElementById('nav');
-
-if (navToggle && mobileMenu) {
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        mobileMenu.classList.toggle('open');
-    });
-}
-
-// Scroll effect
-if (nav) {
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 20);
-        const hint = document.getElementById('scrollHint');
-        if (hint && window.scrollY > 50) hint.style.opacity = '0';
-    }, { passive: true });
-}
-</script>
+<script src="nav.js" defer></script>
 
 <script type="module">
 import * as THREE from 'three';
@@ -717,8 +697,11 @@ window.addEventListener('pointerup', onPointerUp);
 // SEO cards removed — moon details shown via click panel
 
 // ── Animation ──
+let _moonsTabVisible = true;
+document.addEventListener('visibilitychange', () => { _moonsTabVisible = !document.hidden; });
 function animate() {
     requestAnimationFrame(animate);
+    if (!_moonsTabVisible) return;
     const t = performance.now() * 0.001;
 
     // Rotate planet

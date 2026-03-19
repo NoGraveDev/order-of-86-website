@@ -21,6 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         
@@ -1193,26 +1194,7 @@ document.getElementById('wizardSearch').addEventListener('input', filterWizards)
 buildWizardGrid();
 updateDownloadButtons();
 </script>
-<script>
-// Nav toggle
-const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-const nav = document.getElementById('nav');
-
-if (navToggle && mobileMenu) {
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        mobileMenu.classList.toggle('open');
-    });
-}
-
-// Scroll effect
-if (nav) {
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-}
-</script>
+<script src="nav.js" defer></script>
 <footer class="footer">
     <div class="footer-content">
         <div class="footer-logo">The Order of 86</div>

@@ -3,7 +3,7 @@
     if ('ontouchstart' in window && !window.matchMedia('(pointer:fine)').matches) return;
 
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9998;';
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
     let W, H;
@@ -12,24 +12,31 @@
     window.addEventListener('resize', resize);
 
     const MAX = 40;
-    const pool = new Float32Array(MAX * 7); // x,y,vx,vy,size,life,age per particle
+    const pool = new Float32Array(MAX * 7);
     const colors = ['#ffd700','#ffe066','#ffffff','#c9a86c','#7b54c9'];
     const colorArr = new Array(MAX);
     let count = 0;
     let mx = -100, my = -100, lx = -100, ly = -100;
     let active = false, idle = 0, raf = null;
+    let tabVisible = true;
 
-    document.addEventListener('mousemove', e => {
+    document.addEventListener('visibilitychange', function() {
+        tabVisible = !document.hidden;
+        if (!tabVisible) { raf = null; }
+        else if (active && !raf) { raf = requestAnimationFrame(tick); }
+    });
+
+    document.addEventListener('mousemove', function(e) {
         mx = e.clientX; my = e.clientY;
         active = true; idle = 0;
-        if (!raf) raf = requestAnimationFrame(tick);
+        if (!raf && tabVisible) raf = requestAnimationFrame(tick);
     });
 
     function spawn(x, y, n) {
-        for (let i = 0; i < n && count < MAX; i++) {
-            const a = Math.random() * 6.28;
-            const s = Math.random() * 1.5 + 0.3;
-            const o = count * 7;
+        for (var i = 0; i < n && count < MAX; i++) {
+            var a = Math.random() * 6.28;
+            var s = Math.random() * 1.5 + 0.3;
+            var o = count * 7;
             pool[o] = x; pool[o+1] = y;
             pool[o+2] = Math.cos(a)*s; pool[o+3] = Math.sin(a)*s - 0.5;
             pool[o+4] = Math.random() * 2 + 0.8;
@@ -40,35 +47,35 @@
         }
     }
 
-    document.addEventListener('click', e => { spawn(e.clientX, e.clientY, 5); });
+    document.addEventListener('click', function(e) { spawn(e.clientX, e.clientY, 5); });
 
     function tick() {
+        if (!tabVisible) { raf = null; return; }
         ctx.clearRect(0, 0, W, H);
 
-        const dx = mx - lx, dy = my - ly;
+        var dx = mx - lx, dy = my - ly;
         if (dx*dx + dy*dy > 16) { spawn(mx, my, 1); lx = mx; ly = my; }
 
-        for (let i = count - 1; i >= 0; i--) {
-            const o = i * 7;
+        for (var i = count - 1; i >= 0; i--) {
+            var o = i * 7;
             pool[o] += pool[o+2];
             pool[o+1] += pool[o+3];
             pool[o+3] += 0.04;
             pool[o+6]++;
 
             if (pool[o+6] >= pool[o+5]) {
-                // Swap-remove
-                const last = (count-1)*7;
+                var last = (count-1)*7;
                 if (i < count-1) {
-                    for (let j=0;j<7;j++) pool[o+j] = pool[last+j];
+                    for (var j=0;j<7;j++) pool[o+j] = pool[last+j];
                     colorArr[i] = colorArr[count-1];
                 }
                 count--;
                 continue;
             }
 
-            const p = pool[o+6] / pool[o+5];
-            const alpha = 1 - p;
-            const sz = pool[o+4] * (1 - p * 0.5);
+            var p = pool[o+6] / pool[o+5];
+            var alpha = 1 - p;
+            var sz = pool[o+4] * (1 - p * 0.5);
             ctx.globalAlpha = alpha;
             ctx.fillStyle = colorArr[i];
             ctx.beginPath();

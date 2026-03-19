@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
     <title>The Lore of Pawtheon — Order of 86 Story & World</title>
     <meta name="description" content="Read the epic lore of the Order of 86. Dive into chapters of wizard dog mythology, ancient battles, and the legendary history of Pawtheon.">
     <meta name="robots" content="index, follow">
@@ -511,9 +512,6 @@
 </footer>
 
 <script>
-// Nav mobile toggle
-/* nav handled by unified nav script */
-
 // Floating particles
 const container = document.getElementById('particles');
 for (let i = 0; i < 30; i++) {
@@ -527,26 +525,7 @@ for (let i = 0; i < 30; i++) {
 }
 </script>
 
-<script>
-// Nav toggle
-const navToggle = document.getElementById('navToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-const nav = document.getElementById('nav');
-
-if (navToggle && mobileMenu) {
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('open');
-        mobileMenu.classList.toggle('open');
-    });
-}
-
-// Scroll effect
-if (nav) {
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
-}
-</script>
+<script src="nav.js" defer></script>
 <script src="sparkle.js" defer></script>
 <script src="orb-cursor.js" defer></script>
 </body>
