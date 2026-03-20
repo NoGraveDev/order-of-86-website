@@ -980,7 +980,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     </div>
 
     <!-- Stats -->
-    <div class="stats" id="statsBar"></div>
+    <!-- stats bar removed -->
 
     <!-- Grid -->
     <div class="grid" id="grid"></div>
@@ -1041,11 +1041,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     // ── Build Stats ───────────────────────────────────
     const orderCounts = {};
     dogs.forEach(d => { orderCounts[d.order] = (orderCounts[d.order]||0)+1; });
-    const statsBar = document.getElementById('statsBar');
-    statsBar.innerHTML = `<span class="stat-item"><span class="stat-count">${dogs.length}</span> wizards</span>` +
-        Object.entries(orderCounts).map(([o,c]) =>
-            `<span class="stat-item"><span class="stat-dot" style="background:${ORDER_HEX[o]}"></span>${o} <span class="stat-count">${c}</span></span>`
-        ).join('');
+    // stats bar removed
 
     // ── Wanderer (no spotlight — shows as first card) ──
 
