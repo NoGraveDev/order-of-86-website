@@ -111,15 +111,15 @@ canvas{border:2px solid #3a2a1a;cursor:crosshair;image-rendering:pixelated}
 </head>
 <body>
 <nav>
-<span class="logo">🐕‍🦺 Order of 86</span>
-<a href="../order-of-86-website/index.html">Main Site</a>
-<a href="../order-of-86-website/moons.html">Moons</a>
-<a href="#" style="color:#ffd700">Tower Defense</a>
+<a href="index.html" class="logo">The Order of 86</a>
+<a href="index.html">Wizards</a>
+<a href="moons.html">Moons</a> <a href="map.html">Map</a> <a href="lore.html">Lore</a>
+<a href="game.html" style="color:#ffd700">Game</a>
 </nav>
 
 <div id="topBar">
-<span>🌊 Wave: <b id="waveNum">0</b>/15</span>
-<span>🌙 <b id="shards">100</b> Shards</span>
+<span>Wave: <b id="waveNum">0</b>/15</span>
+<span><b id="shards">100</b> Shards</span>
 <span>❤️ <b id="lives">20</b> Lives</span>
 <button id="waveBtn" onclick="startWave()">Start Wave 1</button>
 </div>
@@ -142,7 +142,7 @@ canvas{border:2px solid #3a2a1a;cursor:crosshair;image-rendering:pixelated}
 </div>
 </div>
 <div id="overlay">
-<h1>🐕‍🦺 Order of 86</h1>
+<h1>The Order of 86</h1>
 <h2>Tower Defense</h2>
 <p>The Great Rot seeps into Pawtheon. Only the six Wizard Orders can hold the line. Place your towers, defend the realm!</p>
 <button onclick="startGame()">⚔️ Play</button>
@@ -283,7 +283,7 @@ selectedType=(selectedType===i)?-1:i;
 document.querySelectorAll('.tower-btn').forEach((b,j)=>b.classList.toggle('selected',j===selectedType));
 if(selectedType>=0){
 const t=TOWERS[selectedType];
-document.getElementById('info').innerHTML=`<div class="name">${t.name}</div>${t.desc}<br>Cost: ${t.cost} 🌙<br>${t.type==='heart'?'Boosts adjacent +50%':`DMG: ${t.damage} | Range: ${t.range/TW|0} tiles`}`;
+document.getElementById('info').innerHTML=`<div class="name">${t.name}</div>${t.desc}<br>Cost: ${t.cost} <br>${t.type==='heart'?'Boosts adjacent +50%':`DMG: ${t.damage} | Range: ${t.range/TW|0} tiles`}`;
 }else{
 document.getElementById('info').textContent='Click a tower type to place.';
 }
@@ -302,7 +302,7 @@ document.querySelectorAll('.tower-btn').forEach(b=>b.classList.remove('selected'
 const def=TOWERS[t.typeIdx];
 const boosted=getBoost(t);
 const dmg=Math.round(def.damage*(1+.5*t.level)*(boosted?1.5:1));
-document.getElementById('info').innerHTML=`<div class="name">${def.name} Lv.${t.level+1}</div>${def.desc}<br>${def.type==='heart'?'Boosting adjacent towers':`DMG: ${dmg} | Range: ${(def.range+t.level*20)/TW|0}`}<br>${t.level<2?`Upgrade: ${UPGRADE_COSTS[t.level]} 🌙`:'MAX LEVEL'}${boosted?' | 💗 Boosted':''}`;
+document.getElementById('info').innerHTML=`<div class="name">${def.name} Lv.${t.level+1}</div>${def.desc}<br>${def.type==='heart'?'Boosting adjacent towers':`DMG: ${dmg} | Range: ${(def.range+t.level*20)/TW|0}`}<br>${t.level<2?`Upgrade: ${UPGRADE_COSTS[t.level]} `:'MAX LEVEL'}${boosted?' | Boosted':''}`;
 updateInfoButtons();
 }
 
