@@ -9,7 +9,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2306060a' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Anybody:wght@400;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="shared.css">
     <title>The Order of 86 — Wizard Dogs of Pawtheon</title>
     <meta name="description" content="The Order of 86: 86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon — 6 Orders, 7 Moons, 6 Cities.">
@@ -64,9 +64,9 @@
     --active-color: var(--gold);
     --active-glow: var(--gold-dim);
 
-    --font-display: 'Anybody', 'Arial Black', sans-serif;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
     --font-body: 'Cormorant Garamond', Georgia, serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: 'Cormorant Garamond', Georgia, serif;
 
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -127,9 +127,9 @@ body {
 }
 .nav.scrolled { border-color: var(--border-hover); }
 .nav-logo {
-    font-family: var(--font-display);
+    font-family: var(--font-body);
     font-size: 15px;
-    font-weight: 900;
+    font-weight: 700;
     color: var(--gold);
     text-decoration: none;
     letter-spacing: 0.04em;
@@ -217,8 +217,8 @@ body {
     position: relative;
 }
 .hero-eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
+    font-family: var(--font-body);
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
@@ -250,7 +250,7 @@ body {
     font-size: clamp(1.05rem, 2vw, 1.35rem);
     color: var(--text-dim);
     max-width: 520px;
-    margin: 0 auto 32px;
+    margin: 0 auto 40px;
     font-weight: 400;
     font-style: italic;
     opacity: 0;
@@ -298,73 +298,53 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 36px;
+    gap: 8px;
+    margin-bottom: 28px;
     flex-wrap: wrap;
     opacity: 0;
-    animation: fadeUp 0.8s var(--ease-out) 0.55s forwards;
+    animation: fadeUp 0.8s var(--ease-out) 0.45s forwards;
 }
 .sigil {
     position: relative;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    border: 2px solid var(--border);
+    border-radius: 100px;
+    border: 1px solid var(--border);
     background: var(--bg-elevated);
     cursor: pointer;
-    transition: all 0.4s var(--ease-out);
-    display: flex;
+    transition: all 0.3s var(--ease-out);
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 7px;
+    padding: 8px 16px;
     -webkit-tap-highlight-color: transparent;
 }
-.sigil::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
+.sigil-dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    border: 2px solid transparent;
-    transition: border-color 0.4s;
-}
-.sigil .sigil-icon {
-    font-size: 20px;
-    transition: transform 0.3s var(--ease-spring);
-    filter: grayscale(0.3);
+    flex-shrink: 0;
 }
 .sigil .sigil-label {
-    position: absolute;
-    bottom: -22px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-mono);
-    font-size: 9px;
+    font-family: var(--font-body);
+    font-size: 12px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--text-faint);
+    color: var(--text-dim);
     white-space: nowrap;
     transition: color 0.3s;
 }
-.sigil:hover .sigil-icon { transform: scale(1.15); filter: grayscale(0); }
-.sigil:hover .sigil-label { color: var(--text-dim); }
+.sigil:hover { border-color: var(--border-hover); }
+.sigil:hover .sigil-label { color: var(--text); }
 .sigil.active {
     border-color: var(--active-color);
     background: var(--active-glow);
-    box-shadow: 0 0 24px var(--active-glow), 0 0 48px var(--active-glow);
 }
-.sigil.active::before { border-color: var(--active-color); opacity: 0.3; }
-.sigil.active .sigil-icon { transform: scale(1.1); filter: grayscale(0); }
 .sigil.active .sigil-label { color: var(--active-color); }
 
-.sigil[data-order="all"] { width: auto; border-radius: 26px; padding: 0 20px; gap: 6px; }
-.sigil[data-order="all"] .sigil-icon { font-size: 14px; }
-.sigil[data-order="all"] .sigil-label { position: static; transform: none; }
-.sigil[data-order="all"].active .sigil-label { color: var(--gold); }
-
 @media (max-width: 480px) {
-    .sigil { width: 44px; height: 44px; }
-    .sigil .sigil-icon { font-size: 17px; }
-    .sigil .sigil-label { font-size: 8px; bottom: -18px; }
+    .sigil { padding: 6px 12px; }
+    .sigil .sigil-label { font-size: 11px; }
+    .sigil-dot { width: 7px; height: 7px; }
 }
 
 /* ── Search ───────────────────────────────────── */
@@ -373,7 +353,7 @@ body {
     margin: 0 auto 24px;
     position: relative;
     opacity: 0;
-    animation: fadeUp 0.8s var(--ease-out) 0.6s forwards;
+    animation: fadeUp 0.8s var(--ease-out) 0.5s forwards;
 }
 .search-input {
     width: 100%;
@@ -411,12 +391,12 @@ body {
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
-    margin-bottom: 48px;
+    margin-bottom: 36px;
     font-family: var(--font-body);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--text-faint);
     opacity: 0;
-    animation: fadeUp 0.8s var(--ease-out) 0.65s forwards;
+    animation: fadeUp 0.8s var(--ease-out) 0.55s forwards;
 }
 .stats .stat-item {
     display: flex;
@@ -544,16 +524,6 @@ body {
 }
 .portrait:active { transform: scale(0.97); }
 
-/* Top accent line */
-.portrait-accent {
-    height: 3px;
-    width: 100%;
-    transition: box-shadow 0.4s;
-}
-.portrait:hover .portrait-accent {
-    box-shadow: 0 2px 12px currentColor;
-}
-
 /* Image area */
 .portrait-frame {
     aspect-ratio: 1;
@@ -576,7 +546,7 @@ body {
 .portrait-rank {
     position: absolute;
     top: 8px; right: 8px;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 10px;
     font-weight: 600;
     padding: 3px 8px;
@@ -602,7 +572,7 @@ body {
     padding: 14px 16px 16px;
 }
 .portrait-id {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 10px;
     font-weight: 600;
     color: var(--text-faint);
@@ -644,6 +614,17 @@ body {
     border-radius: 5px;
     color: #fff;
     letter-spacing: 0.02em;
+}
+.portrait-order {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+}
+.portrait.wanderer-card {
+    border-width: 1.5px;
 }
 
 /* ── Empty state ──────────────────────────────── */
@@ -747,7 +728,7 @@ body {
     margin-bottom: 4px;
 }
 .panel-id {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 12px;
     color: var(--text-dim);
     margin-bottom: 12px;
@@ -756,7 +737,7 @@ body {
     display: inline-block;
     padding: 5px 14px;
     border-radius: 8px;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 700;
     color: #fff;
@@ -957,62 +938,53 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
         <div class="hero-eyebrow">86 Wizard Dogs · Doge Blockchain</div>
         <h1 class="hero-title">The Order<br>of <em>86</em></h1>
         <p class="hero-sub">Ancient wielders of the six Orders of magic, guardians of the Caninsphere in the world of Pawtheon.</p>
-        <div class="hero-links">
-            <a href="map.html" class="hero-link">🗺 Map</a>
-            <a href="moons.html" class="hero-link">🌙 Moons</a>
-            <a href="lore.html" class="hero-link">📜 Lore</a>
-            <a href="https://market.doginaldogs.com" target="_blank" class="hero-link">🐕 Marketplace</a>
-        </div>
+
     </section>
 
     <!-- Order Sigil Selector -->
     <div class="order-selector" id="orderSelector">
         <button class="sigil active" data-order="all" data-color="var(--gold)" data-glow="var(--gold-dim)">
-            <span class="sigil-icon">✦</span>
+            <span class="sigil-dot" style="background:var(--gold)"></span>
             <span class="sigil-label">All</span>
         </button>
         <button class="sigil" data-order="Flame" data-color="var(--flame)" data-glow="var(--flame-glow)">
-            <span class="sigil-icon">🔥</span>
+            <span class="sigil-dot" style="background:var(--flame)"></span>
             <span class="sigil-label">Flame</span>
         </button>
         <button class="sigil" data-order="Radiant" data-color="var(--radiant)" data-glow="var(--radiant-glow)">
-            <span class="sigil-icon">☀️</span>
+            <span class="sigil-dot" style="background:var(--radiant)"></span>
             <span class="sigil-label">Radiant</span>
         </button>
         <button class="sigil" data-order="Deep" data-color="var(--deep)" data-glow="var(--deep-glow)">
-            <span class="sigil-icon">🌊</span>
+            <span class="sigil-dot" style="background:var(--deep)"></span>
             <span class="sigil-label">Deep</span>
         </button>
         <button class="sigil" data-order="Wild" data-color="var(--wild)" data-glow="var(--wild-glow)">
-            <span class="sigil-icon">🌿</span>
+            <span class="sigil-dot" style="background:var(--wild)"></span>
             <span class="sigil-label">Wild</span>
         </button>
         <button class="sigil" data-order="Arcane" data-color="var(--arcane)" data-glow="var(--arcane-glow)">
-            <span class="sigil-icon">🔮</span>
+            <span class="sigil-dot" style="background:var(--arcane)"></span>
             <span class="sigil-label">Arcane</span>
         </button>
         <button class="sigil" data-order="Heart" data-color="var(--heart)" data-glow="var(--heart-glow)">
-            <span class="sigil-icon">💗</span>
+            <span class="sigil-dot" style="background:var(--heart)"></span>
             <span class="sigil-label">Heart</span>
         </button>
     </div>
 
     <!-- Search -->
     <div class="search-area">
-        <span class="search-icon">🔮</span>
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="text" class="search-input" id="searchInput" placeholder="Scry by name, ID, realm, breed…" autocomplete="off">
     </div>
 
     <!-- Stats -->
     <div class="stats" id="statsBar"></div>
 
-    <!-- Wanderer Spotlight -->
-    <div class="wanderer-spotlight" id="wandererSpot"></div>
-
     <!-- Grid -->
     <div class="grid" id="grid"></div>
     <div class="empty" id="emptyState">
-        <div class="empty-icon">🔮</div>
         <div class="empty-title">No wizards found</div>
         <div class="empty-desc">Try a different search or filter.</div>
     </div>
@@ -1075,19 +1047,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
             `<span class="stat-item"><span class="stat-dot" style="background:${ORDER_HEX[o]}"></span>${o} <span class="stat-count">${c}</span></span>`
         ).join('');
 
-    // ── Wanderer Spotlight ────────────────────────────
-    const wanderer = wizardDogs['6164'];
-    const wandererSpot = document.getElementById('wandererSpot');
-    if (wanderer) {
-        wandererSpot.innerHTML = `
-            <img class="wanderer-img" src="${wanderer.image}" alt="${wanderer.suggestedName}" loading="lazy">
-            <div class="wanderer-info">
-                <div class="wanderer-badge">✦ The Wanderer · 1 of 1</div>
-                <div class="wanderer-name">${wanderer.suggestedName}</div>
-                <div class="wanderer-desc">The only wizard who belongs to no Order. Purple-hatted, solitary, and carrying secrets older than the moons themselves.</div>
-            </div>`;
-        wandererSpot.addEventListener('click', () => openPanel(wanderer));
-    }
+    // ── Wanderer (no spotlight — shows as first card) ──
 
     // ── Filter/Search ─────────────────────────────────
     const grid = document.getElementById('grid');
@@ -1110,37 +1070,25 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     function render() {
         const filtered = getFiltered();
 
-        // Wanderer spotlight
-        const showWanderer = activeOrder === 'all' && !searchQuery;
-        wandererSpot.classList.toggle('visible', showWanderer);
-
-        // Filter out wanderer from grid if spotlight is showing
-        const gridDogs = showWanderer ? filtered.filter(d => d.id !== '6164') : filtered;
-
-        if (gridDogs.length === 0 && !showWanderer) {
+        if (filtered.length === 0) {
             grid.innerHTML = '';
             emptyState.classList.add('visible');
             return;
         }
         emptyState.classList.remove('visible');
 
-        grid.innerHTML = gridDogs.map(dog => {
+        grid.innerHTML = filtered.map(dog => {
             const col = ORDER_HEX[dog.order] || '#7b54c9';
+            const isWanderer = dog.id === '6164';
+            const wandererStyle = isWanderer ? `border-color: rgba(123,84,201,0.35);` : '';
             return `
-            <div class="portrait" data-id="${dog.id}">
-                <div class="portrait-accent" style="background:${col}; color:${col}"></div>
+            <div class="portrait${isWanderer ? ' wanderer-card' : ''}" data-id="${dog.id}" style="${wandererStyle}">
                 <div class="portrait-frame">
                     <img src="${dog.image}" alt="${dog.suggestedName}" loading="lazy">
-                    <div class="portrait-rank">#${dog.rank}</div>
                 </div>
                 <div class="portrait-body">
-                    <div class="portrait-id">#${dog.id}</div>
                     <div class="portrait-name">${dog.suggestedName}</div>
-                    <div class="portrait-tags">
-                        <span class="portrait-order-tag" style="background:${col}">${dog.order}</span>
-                        <span class="portrait-tag">${dog.pattern}</span>
-                        <span class="portrait-tag">${dog.fur}</span>
-                    </div>
+                    <div class="portrait-order" style="color:${col}">${isWanderer ? '✦ The Wanderer' : dog.order}</div>
                 </div>
             </div>`;
         }).join('');
@@ -1211,7 +1159,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
         if (dog.mouth) traits.push(['Mouth', dog.mouth]);
 
         const links = [];
-        if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="panel-link">🐕 Marketplace</a>`);
+        if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="panel-link">Marketplace</a>`);
         if (dog.twitter) links.push(`<a href="https://x.com/${dog.twitter.replace('@','')}" target="_blank" class="panel-link twitter">𝕏 ${dog.twitter}</a>`);
 
         panelContent.innerHTML = `
