@@ -118,6 +118,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:h
 }
 .seg-btn:hover{color:var(--text2)}
 .seg-btn.on{background:var(--surface2);color:var(--text);box-shadow:0 0.5px 2px rgba(0,0,0,0.4)}
+.seg-btn[data-order="Flame"].on{background:rgba(232,93,21,0.15);color:#e85d15}
+.seg-btn[data-order="Radiant"].on{background:rgba(212,168,33,0.15);color:#d4a821}
+.seg-btn[data-order="Deep"].on{background:rgba(45,126,196,0.15);color:#2d7ec4}
+.seg-btn[data-order="Wild"].on{background:rgba(61,163,77,0.15);color:#3da34d}
+.seg-btn[data-order="Arcane"].on{background:rgba(123,84,201,0.15);color:#7b54c9}
+.seg-btn[data-order="Heart"].on{background:rgba(197,91,183,0.15);color:#c55bb7}
 
 .search-wrap{
     flex:1;max-width:240px;margin-left:auto;position:relative;
@@ -333,14 +339,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:h
     <div class="hero-label">Doge Blockchain</div>
     <h1>The Order of 86</h1>
     <p>A collection of 86 wizard dogs, each wielding one of six ancient orders of magic in the world of Pawtheon.</p>
-    <div class="hero-orders">
-        <div class="hero-order"><div class="hero-dot" style="background:#e85d15"></div>Flame</div>
-        <div class="hero-order"><div class="hero-dot" style="background:#d4a821"></div>Radiant</div>
-        <div class="hero-order"><div class="hero-dot" style="background:#2d7ec4"></div>Deep</div>
-        <div class="hero-order"><div class="hero-dot" style="background:#3da34d"></div>Wild</div>
-        <div class="hero-order"><div class="hero-dot" style="background:#7b54c9"></div>Arcane</div>
-        <div class="hero-order"><div class="hero-dot" style="background:#c55bb7"></div>Heart</div>
-    </div>
+
 </section>
 
 <!-- ═══ STICKY TOOLBAR ═══ -->
