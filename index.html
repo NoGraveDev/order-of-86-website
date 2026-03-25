@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#06060a">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2306060a' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="shared.css">
     <title>The Order of 86 — Wizard Dogs of Pawtheon</title>
     <meta name="description" content="The Order of 86: 86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon — 6 Orders, 7 Moons, 6 Cities.">
@@ -26,259 +25,314 @@
     [{"@context":"https://schema.org","@type":"Organization","name":"The Order of 86","url":"https://theorderof86.com","logo":"https://theorderof86.com/og-image.jpg"},{"@context":"https://schema.org","@type":"CollectionPage","name":"The Order of 86","description":"86 unique wizard dog NFTs on the Doge blockchain","url":"https://theorderof86.com","numberOfItems":86}]
     </script>
     <style>
-/* ── Page Styles ─────────────────────────────── */
-.atmosphere {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+    --bg:#06060a;--bg2:#0c0c14;--bg3:#111118;
+    --text:#e8e6e1;--dim:#7a7872;--faint:#44433e;
+    --gold:#c9a86c;--gold-bright:#e8c97a;
+    --border:rgba(201,168,108,0.06);
+    --serif:'Cormorant Garamond',Georgia,serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --flame:#e85d15;--radiant:#d4a821;--deep:#2d7ec4;
+    --wild:#3da34d;--arcane:#7b54c9;--heart:#c55bb7;
 }
-.atmosphere::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,108,0.04) 0%, transparent 70%);
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);overflow-x:hidden}
+
+/* ═══ CINEMATIC ENTRANCE ═══ */
+.entrance{
+    min-height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    position:relative;padding:24px;
+}
+.entrance::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 40%,rgba(201,168,108,0.06) 0%,transparent 60%);
+    pointer-events:none;
+}
+.mark{
+    font-family:var(--serif);font-size:clamp(100px,20vw,200px);
+    font-weight:300;color:rgba(201,168,108,0.08);
+    line-height:1;margin-bottom:-30px;
+    animation:fadeIn 2s ease;
+}
+.entrance h1{
+    font-family:var(--serif);font-size:clamp(28px,5vw,52px);
+    font-weight:300;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--text);margin-bottom:16px;
+    animation:slideUp 1s ease 0.3s both;
+}
+.entrance h1 strong{font-weight:700;color:var(--gold)}
+.tagline{
+    font-family:var(--serif);font-size:clamp(15px,2.5vw,19px);
+    font-weight:300;font-style:italic;color:var(--dim);
+    max-width:500px;line-height:1.6;
+    animation:slideUp 1s ease 0.6s both;
+}
+.scroll-cue{
+    position:absolute;bottom:32px;
+    width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);
+    animation:pulse 2s ease-in-out infinite;
+}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* ═══ ORDER SPECTRUM ═══ */
+.spectrum{
+    display:flex;justify-content:center;gap:0;
+    margin:0 auto;padding:0 24px;max-width:600px;
+    animation:slideUp 1s ease 0.9s both;
+}
+.spectrum-bar{
+    flex:1;height:2px;transition:height 0.4s ease,filter 0.4s;cursor:pointer;
+}
+.spectrum-bar:hover{height:6px;filter:brightness(1.5)}
+
+/* ═══ NAVIGATION ═══ */
+.nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 clamp(16px,4vw,48px);
+    background:rgba(6,6,10,0.92);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+}
+.nav-logo{
+    font-family:var(--serif);font-size:16px;font-weight:600;
+    color:var(--text);text-decoration:none;letter-spacing:0.04em;
 }
 
-.main {
-    position: relative; z-index: 1;
-    max-width: 1200px; margin: 0 auto;
-    padding: 120px 24px 40px;
+/* ═══ COLLECTION SECTION ═══ */
+.collection{
+    position:relative;z-index:1;
+    max-width:1400px;margin:0 auto;padding:0 24px 60px;
 }
 
-/* ── Hero ──────────────────────────────────────── */
-.hero { text-align: center; margin-bottom: 64px; }
-.hero-eyebrow {
-    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--text-faint); margin-bottom: 16px;
+/* Section header */
+.sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    flex-wrap:wrap;gap:16px;
+    padding:80px 0 40px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:40px;
 }
-.hero h1 {
-    font-family: var(--font-display); font-size: clamp(48px, 8vw, 80px);
-    font-weight: 700; line-height: 1; color: var(--text); margin-bottom: 16px;
+.sec-title{
+    font-family:var(--serif);font-size:14px;font-weight:400;
+    letter-spacing:0.15em;text-transform:uppercase;color:var(--dim);
 }
-.hero h1 em { font-style: normal; color: var(--gold); }
-.hero p {
-    font-size: 17px; color: var(--text-dim); max-width: 420px;
-    margin: 0 auto; line-height: 1.6;
-}
-
-/* ── Filters ───────────────────────────────────── */
-.filters {
-    display: flex; align-items: center; justify-content: center;
-    gap: 4px; flex-wrap: wrap; margin-bottom: 24px;
-}
-.filter-btn {
-    background: none; border: 1px solid transparent; cursor: pointer;
-    font-family: var(--font-body); font-size: 14px; font-weight: 600;
-    color: var(--text-dim); padding: 6px 16px; border-radius: 100px;
-    transition: color 0.3s, border-color 0.3s, background 0.3s;
-    letter-spacing: 0.02em;
-}
-.filter-btn:hover { color: var(--text); }
-.filter-btn.active {
-    color: var(--gold); border-color: rgba(201,168,108,0.25);
-    background: rgba(201,168,108,0.06);
+.sec-count{
+    font-family:var(--sans);font-size:12px;color:var(--faint);
+    letter-spacing:0.05em;
 }
 
-/* ── Search ─────────────────────────────────────── */
-.search {
-    max-width: 360px; margin: 0 auto 48px; position: relative;
+/* Toolbar: filters + search */
+.toolbar{
+    display:flex;align-items:center;gap:12px;
+    margin-bottom:40px;flex-wrap:wrap;
 }
-.search svg {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    color: var(--text-faint); pointer-events: none;
+.order-tabs{
+    display:flex;gap:2px;background:var(--bg2);
+    border-radius:8px;padding:3px;flex-shrink:0;
 }
-.search input {
-    width: 100%; background: var(--bg-elevated); border: 1px solid var(--border);
-    border-radius: 100px; padding: 10px 16px 10px 40px;
-    font-family: var(--font-body); font-size: 15px; color: var(--text);
-    outline: none; transition: border-color 0.3s;
+.otab{
+    background:none;border:none;cursor:pointer;
+    font-family:var(--sans);font-size:12px;font-weight:500;
+    color:var(--faint);padding:7px 14px;border-radius:6px;
+    transition:all 0.25s;letter-spacing:0.02em;
 }
-.search input::placeholder { color: var(--text-faint); }
-.search input:focus { border-color: var(--border-hover); }
+.otab:hover{color:var(--dim)}
+.otab.on{background:var(--bg3);color:var(--text)}
+.otab[data-c]:not([data-c=""]).on{color:var(--text);box-shadow:inset 0 -2px 0 0 attr(data-c)}
 
-/* ── Grid ──────────────────────────────────────── */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 20px;
+.search-box{
+    flex:1;min-width:160px;max-width:280px;margin-left:auto;position:relative;
 }
-.card {
-    cursor: pointer; border-radius: 12px; overflow: hidden;
-    background: var(--bg-elevated); border: 1px solid var(--border);
-    transition: transform 0.35s var(--ease-out), border-color 0.35s, box-shadow 0.35s;
-    opacity: 0; transform: translateY(16px);
+.search-box input{
+    width:100%;background:var(--bg2);border:1px solid var(--border);
+    border-radius:8px;padding:8px 12px 8px 34px;
+    font-family:var(--sans);font-size:13px;color:var(--text);outline:none;
+    transition:border-color 0.3s;
 }
-.card.show { opacity: 1; transform: translateY(0); }
-.card:hover {
-    transform: translateY(-4px);
-    border-color: var(--border-hover);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
-.card-img {
-    aspect-ratio: 1; width: 100%; display: block; object-fit: cover;
-    image-rendering: pixelated; background: var(--bg-card);
-}
-.card-body { padding: 12px 14px 14px; }
-.card-name {
-    font-family: var(--font-display); font-size: 15px; font-weight: 600;
-    color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.card-order {
-    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
-    margin-top: 4px; text-transform: uppercase;
+.search-box input::placeholder{color:var(--faint)}
+.search-box input:focus{border-color:rgba(201,168,108,0.2)}
+.search-box svg{
+    position:absolute;left:10px;top:50%;transform:translateY(-50%);
+    color:var(--faint);pointer-events:none;
 }
 
-/* ── Empty ─────────────────────────────────────── */
-.empty {
-    display: none; text-align: center; padding: 80px 20px; color: var(--text-faint);
+/* ═══ WIZARD GRID ═══ */
+.wgrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:2px;
 }
-.empty.visible { display: block; }
-.empty-title { font-size: 20px; color: var(--text-dim); margin-bottom: 8px; }
-
-/* ── Modal ─────────────────────────────────────── */
-.modal-bg {
-    position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    opacity: 0; pointer-events: none; transition: opacity 0.35s;
+.wcard{
+    position:relative;cursor:pointer;overflow:hidden;
+    background:var(--bg2);aspect-ratio:1;
+    transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
 }
-.modal-bg.open { opacity: 1; pointer-events: auto; }
-.modal {
-    position: fixed; z-index: 201;
-    top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.96);
-    width: min(640px, calc(100vw - 32px)); max-height: calc(100vh - 48px);
-    background: var(--bg-elevated); border: 1px solid var(--border-hover);
-    border-radius: 16px; overflow-y: auto; overflow-x: hidden;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.35s, transform 0.35s var(--ease-out);
+.wcard:hover{transform:scale(1.02);z-index:2}
+.wcard img{
+    width:100%;height:100%;object-fit:cover;
+    image-rendering:pixelated;display:block;
+    transition:filter 0.4s;
 }
-.modal.open { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-.modal-close {
-    position: sticky; top: 0; z-index: 2; display: flex;
-    justify-content: space-between; align-items: center;
-    padding: 14px 20px; background: rgba(14,14,20,0.85);
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+.wcard:hover img{filter:brightness(1.1)}
+.wcard-info{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:32px 12px 10px;
+    background:linear-gradient(to top,rgba(6,6,10,0.9) 0%,transparent 100%);
+    opacity:0;transform:translateY(4px);
+    transition:opacity 0.3s,transform 0.3s;
 }
-.modal-close-btn {
-    background: none; border: none; color: var(--text-dim); cursor: pointer;
-    font-size: 20px; width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: color 0.2s, background 0.2s;
+.wcard:hover .wcard-info{opacity:1;transform:none}
+.wcard-name{
+    font-family:var(--serif);font-size:14px;font-weight:600;
+    color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.modal-close-btn:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-.modal-fullpage {
-    font-size: 13px; color: var(--gold); text-decoration: none;
-    opacity: 0.7; transition: opacity 0.2s;
+.wcard-order{
+    font-size:10px;font-weight:500;letter-spacing:0.08em;
+    text-transform:uppercase;margin-top:2px;
 }
-.modal-fullpage:hover { opacity: 1; }
-
-.modal-hero { display: flex; gap: 24px; padding: 0 24px 24px; align-items: flex-start; }
-.modal-img {
-    width: 160px; height: 160px; border-radius: 12px; flex-shrink: 0;
-    image-rendering: pixelated; object-fit: cover; background: var(--bg-card);
-}
-.modal-info { flex: 1; min-width: 0; padding-top: 4px; }
-.modal-name {
-    font-family: var(--font-display); font-size: 26px; font-weight: 700;
-    color: var(--text); line-height: 1.15; margin-bottom: 6px;
-}
-.modal-id { font-size: 13px; color: var(--text-faint); margin-bottom: 10px; }
-.modal-badge {
-    display: inline-block; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
-    padding: 4px 12px; border-radius: 100px;
+.wcard-dot{
+    position:absolute;top:8px;right:8px;width:8px;height:8px;
+    border-radius:50%;border:1px solid rgba(0,0,0,0.3);
 }
 
-.modal-traits {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    margin: 0 24px 24px; background: var(--border); border-radius: 10px; overflow: hidden;
-}
-.modal-trait {
-    background: var(--bg-card); padding: 12px 14px; text-align: center;
-}
-.modal-trait-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); margin-bottom: 2px; }
-.modal-trait-value { font-size: 14px; color: var(--text); font-weight: 600; }
+/* Empty */
+.empty{display:none;text-align:center;padding:80px 20px;color:var(--faint)}
+.empty.on{display:block}
 
-.modal-links { display: flex; gap: 10px; padding: 0 24px 24px; flex-wrap: wrap; }
-.modal-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 13px; font-weight: 600; color: var(--gold); text-decoration: none;
-    padding: 8px 16px; border: 1px solid rgba(201,168,108,0.2);
-    border-radius: 100px; transition: background 0.2s, border-color 0.2s;
+/* ═══ DETAIL OVERLAY ═══ */
+.overlay-bg{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(6,6,10,0.85);backdrop-filter:blur(16px);
+    opacity:0;pointer-events:none;transition:opacity 0.4s;
 }
-.modal-link:hover { background: rgba(201,168,108,0.08); border-color: rgba(201,168,108,0.35); }
+.overlay-bg.open{opacity:1;pointer-events:auto}
+.detail{
+    position:fixed;z-index:201;
+    top:0;right:0;width:min(520px,100vw);height:100vh;
+    background:var(--bg);border-left:1px solid var(--border);
+    overflow-y:auto;
+    transform:translateX(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.detail.open{transform:none}
 
-.modal-story { padding: 0 24px 32px; }
-.modal-story-title {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em;
-    color: var(--text-faint); margin-bottom: 12px;
+.detail-head{
+    position:sticky;top:0;z-index:2;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:16px 24px;background:rgba(6,6,10,0.9);backdrop-filter:blur(12px);
 }
-.modal-story-text { font-size: 15px; color: var(--text-dim); line-height: 1.7; }
-.modal-story-text em { color: var(--gold); font-style: italic; }
+.detail-x{
+    background:none;border:none;color:var(--dim);cursor:pointer;
+    font-size:18px;width:36px;height:36px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    transition:color 0.2s,background 0.2s;
+}
+.detail-x:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.detail-fp{font-size:12px;color:var(--gold);text-decoration:none;opacity:0.6;transition:opacity 0.2s}
+.detail-fp:hover{opacity:1}
 
-/* ── SEO / Geo ─────────────────────────────────── */
-.geo {
-    max-width: 720px; margin: 80px auto 0; padding: 0 24px 60px;
-    position: relative; z-index: 1;
+.detail-img-wrap{
+    padding:0 24px;margin-bottom:24px;
 }
-.geo h2 {
-    font-family: var(--font-display); font-size: 28px; font-weight: 700;
-    color: var(--text); margin: 40px 0 12px;
+.detail-img{
+    width:100%;aspect-ratio:1;border-radius:12px;
+    image-rendering:pixelated;object-fit:cover;display:block;
+    background:var(--bg2);
 }
-.geo h2:first-child { margin-top: 0; }
-.geo p { font-size: 16px; color: var(--text-dim); line-height: 1.7; margin-bottom: 16px; }
-.geo-stats {
-    display: flex; gap: 32px; justify-content: center; margin: 32px 0;
-    flex-wrap: wrap;
+.detail-meta{padding:0 24px;margin-bottom:24px}
+.detail-name{
+    font-family:var(--serif);font-size:clamp(24px,4vw,32px);
+    font-weight:700;line-height:1.15;margin-bottom:4px;
 }
-.geo-stat { text-align: center; }
-.geo-stat-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--gold); }
-.geo-stat-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); }
-.faq {
-    border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px;
-    overflow: hidden; transition: border-color 0.3s;
-}
-.faq:hover { border-color: var(--border-hover); }
-.faq summary {
-    padding: 14px 18px; cursor: pointer; font-size: 15px; font-weight: 600;
-    color: var(--text); list-style: none;
-}
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::before {
-    content: '+'; float: right; font-size: 18px; color: var(--text-faint);
-    transition: transform 0.3s;
-}
-.faq[open] summary::before { content: '−'; }
-.faq p { padding: 0 18px 14px; margin: 0; font-size: 14px; color: var(--text-dim); line-height: 1.6; }
-
-/* ── Footer ────────────────────────────────────── */
-.footer {
-    text-align: center; padding: 24px; font-size: 13px; color: var(--text-faint);
-    border-top: 1px solid var(--border); position: relative; z-index: 1;
-}
-.footer a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
-.footer a:hover { color: var(--gold); }
-
-/* ── Responsive ────────────────────────────────── */
-@media (max-width: 600px) {
-    .main { padding: 88px 16px 32px; }
-    .hero { margin-bottom: 40px; }
-    .hero p { font-size: 15px; }
-    .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .card-body { padding: 8px 10px 10px; }
-    .card-name { font-size: 13px; }
-    .modal-hero { flex-direction: column; align-items: center; text-align: center; }
-    .modal-img { width: 140px; height: 140px; }
-    .modal-traits { grid-template-columns: repeat(2, 1fr); }
+.detail-sub{font-size:13px;color:var(--faint);margin-bottom:12px}
+.detail-badge{
+    display:inline-block;font-family:var(--sans);
+    font-size:10px;font-weight:600;letter-spacing:0.1em;
+    text-transform:uppercase;color:#fff;
+    padding:4px 12px;border-radius:4px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.15s !important;
-    }
-    .card { opacity: 1; transform: none; }
+.detail-traits{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    margin:0 24px 24px;background:var(--border);border-radius:8px;overflow:hidden;
+}
+.dt{background:var(--bg2);padding:14px 12px;text-align:center}
+.dt-label{font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--faint);margin-bottom:2px}
+.dt-value{font-size:13px;font-weight:500;color:var(--text)}
+
+.detail-links{display:flex;gap:8px;padding:0 24px 24px;flex-wrap:wrap}
+.dlink{
+    font-size:12px;font-weight:500;color:var(--gold);text-decoration:none;
+    padding:7px 14px;border:1px solid rgba(201,168,108,0.15);border-radius:6px;
+    transition:background 0.2s,border-color 0.2s;
+    display:inline-flex;align-items:center;gap:5px;
+}
+.dlink:hover{background:rgba(201,168,108,0.06);border-color:rgba(201,168,108,0.3)}
+
+.detail-story{padding:0 24px 40px}
+.detail-story h3{
+    font-family:var(--sans);font-size:10px;font-weight:500;
+    letter-spacing:0.15em;text-transform:uppercase;color:var(--faint);
+    margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);
+}
+.detail-story p{
+    font-family:var(--serif);font-size:16px;color:var(--dim);
+    line-height:1.8;
+}
+.detail-story em{color:var(--gold);font-style:italic}
+
+/* ═══ SEO / GEO ═══ */
+.geo{max-width:640px;margin:0 auto;padding:80px 24px 60px;position:relative;z-index:1}
+.geo h2{
+    font-family:var(--serif);font-size:24px;font-weight:600;
+    color:var(--text);margin:48px 0 12px;
+}
+.geo h2:first-child{margin-top:0}
+.geo p{font-family:var(--serif);font-size:16px;color:var(--dim);line-height:1.7;margin-bottom:16px}
+.geo-stats{display:flex;gap:40px;justify-content:center;margin:40px 0;flex-wrap:wrap}
+.geo-stat{text-align:center}
+.geo-stat-num{font-family:var(--serif);font-size:40px;font-weight:300;color:var(--gold)}
+.geo-stat-label{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint)}
+.faq{border:1px solid var(--border);border-radius:8px;margin-bottom:6px;overflow:hidden}
+.faq:hover{border-color:rgba(201,168,108,0.12)}
+.faq summary{
+    padding:14px 18px;cursor:pointer;font-family:var(--sans);
+    font-size:14px;font-weight:500;color:var(--text);list-style:none;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';float:right;color:var(--faint);font-size:16px}
+.faq[open] summary::after{content:'−'}
+.faq p{padding:0 18px 14px;margin:0;font-size:14px;color:var(--dim);line-height:1.6}
+
+.footer{
+    text-align:center;padding:24px;font-size:12px;color:var(--faint);
+    border-top:1px solid var(--border);position:relative;z-index:1;
+}
+.footer a{color:var(--dim);text-decoration:none}
+.footer a:hover{color:var(--gold)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:768px){
+    .wgrid{grid-template-columns:repeat(3,1fr)}
+    .toolbar{flex-direction:column;align-items:stretch}
+    .order-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .search-box{max-width:none;margin-left:0}
+    .detail{width:100vw}
+    .detail-traits{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+    .wgrid{grid-template-columns:repeat(2,1fr)}
+    .entrance h1{letter-spacing:0.04em}
+}
+@media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.1s!important}
 }
     </style>
 </head>
 <body>
-
-<div class="atmosphere"></div>
 
 <!-- Navigation -->
 <nav class="nav" id="nav">
@@ -300,50 +354,53 @@
     <a href="content.html">Content</a>
 </div>
 
-<div class="main">
-    <!-- Hero -->
-    <section class="hero">
-        <div class="hero-eyebrow">86 Wizard Dogs · Doge Blockchain</div>
-        <h1>The Order<br>of <em>86</em></h1>
-        <p>Ancient wielders of the six Orders of magic, guardians of the Caninsphere in the world of Pawtheon.</p>
-    </section>
+<!-- ═══ CINEMATIC ENTRANCE ═══ -->
+<section class="entrance">
+    <div class="mark">86</div>
+    <h1>The <strong>Order</strong></h1>
+    <p class="tagline">Eighty-six wizard dogs. Six ancient orders of magic.<br>One chain. One world. Pawtheon.</p>
+    <div class="spectrum" id="spectrum"></div>
+    <div class="scroll-cue"></div>
+</section>
 
-    <!-- Order Filter -->
-    <div class="filters" id="filters">
-        <button class="filter-btn active" data-order="all">All</button>
-        <button class="filter-btn" data-order="Flame" data-color="#e85d15">Flame</button>
-        <button class="filter-btn" data-order="Radiant" data-color="#d4a821">Radiant</button>
-        <button class="filter-btn" data-order="Deep" data-color="#2d7ec4">Deep</button>
-        <button class="filter-btn" data-order="Wild" data-color="#3da34d">Wild</button>
-        <button class="filter-btn" data-order="Arcane" data-color="#7b54c9">Arcane</button>
-        <button class="filter-btn" data-order="Heart" data-color="#c55bb7">Heart</button>
+<!-- ═══ COLLECTION ═══ -->
+<section class="collection">
+    <div class="sec-head">
+        <div class="sec-title">The Collection</div>
+        <div class="sec-count" id="countLabel">86 wizards</div>
     </div>
 
-    <!-- Search -->
-    <div class="search">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" placeholder="Search by name, realm, breed…" autocomplete="off">
+    <div class="toolbar">
+        <div class="order-tabs" id="orderTabs">
+            <button class="otab on" data-order="all">All</button>
+            <button class="otab" data-order="Flame" data-c="#e85d15">Flame</button>
+            <button class="otab" data-order="Radiant" data-c="#d4a821">Radiant</button>
+            <button class="otab" data-order="Deep" data-c="#2d7ec4">Deep</button>
+            <button class="otab" data-order="Wild" data-c="#3da34d">Wild</button>
+            <button class="otab" data-order="Arcane" data-c="#7b54c9">Arcane</button>
+            <button class="otab" data-order="Heart" data-c="#c55bb7">Heart</button>
+        </div>
+        <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search…" autocomplete="off">
+        </div>
     </div>
 
-    <!-- Grid -->
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="emptyState">
-        <div class="empty-title">No wizards found</div>
-        <p>Try a different search or filter.</p>
+    <div class="wgrid" id="grid"></div>
+    <div class="empty" id="empty"><p>No wizards match your search.</p></div>
+</section>
+
+<!-- ═══ DETAIL PANEL ═══ -->
+<div class="overlay-bg" id="overlayBg"></div>
+<div class="detail" id="detail">
+    <div class="detail-head">
+        <button class="detail-x" id="detailClose">✕</button>
+        <a class="detail-fp" id="detailFP" href="#">Full Page →</a>
     </div>
+    <div id="detailBody"></div>
 </div>
 
-<!-- Modal -->
-<div class="modal-bg" id="modalBg"></div>
-<div class="modal" id="modal">
-    <div class="modal-close">
-        <button class="modal-close-btn" id="modalClose" aria-label="Close">✕</button>
-        <a class="modal-fullpage" id="modalFullpage" href="#">View Full Page →</a>
-    </div>
-    <div id="modalContent"></div>
-</div>
-
-<!-- SEO Content -->
+<!-- ═══ SEO ═══ -->
 <section class="geo">
     <h2>What is The Order of 86?</h2>
     <p>The Order of 86 is a collection of <strong>86 unique wizard dog NFTs</strong> on the <strong>Doge blockchain</strong>. Each wizard dog is a one-of-a-kind digital collectible with hand-crafted lore, unique traits, and a backstory set in the fantasy world of <strong>Pawtheon</strong>.</p>
@@ -353,168 +410,128 @@
         <div class="geo-stat"><div class="geo-stat-num">7</div><div class="geo-stat-label">Moons</div></div>
         <div class="geo-stat"><div class="geo-stat-num">6</div><div class="geo-stat-label">Cities</div></div>
     </div>
-    <p>The six Orders of magic are <strong style="color:#e85d15">Flame</strong>, <strong style="color:#d4a821">Radiant</strong>, <strong style="color:#2d7ec4">Deep</strong>, <strong style="color:#3da34d">Wild</strong>, <strong style="color:#7b54c9">Arcane</strong>, and <strong style="color:#c55bb7">Heart</strong>. Explore the interactive 3D map, read the epic lore chapters, discover the seven celestial moons, or defend Pawtheon in the tower defense game.</p>
-
-    <h2>Frequently Asked Questions</h2>
-    <details class="faq" open><summary>What is The Order of 86?</summary><p>The Order of 86 is a collection of 86 unique wizard dog NFTs on the Doge blockchain. Each wizard dog belongs to one of six magical Orders and has hand-crafted lore set in the world of Pawtheon.</p></details>
-    <details class="faq"><summary>What blockchain is it on?</summary><p>The Order of 86 lives on the Doge blockchain, known for fast, low-cost, and community-driven transactions.</p></details>
-    <details class="faq"><summary>How many wizard dogs are there?</summary><p>There are exactly 86 wizard dogs — each one unique with individual traits, backstory, and magical abilities.</p></details>
-    <details class="faq"><summary>What are the six Orders?</summary><p>The six Orders are Flame, Radiant, Deep, Wild, Arcane, and Heart. Each represents a different school of magic in Pawtheon.</p></details>
-    <details class="faq"><summary>What is Pawtheon?</summary><p>Pawtheon is the fantasy world where the 86 wizard dogs live. It features 6 cities, 7 moons, and vast magical realms you can explore through the interactive 3D map.</p></details>
+    <p>The six Orders are <strong style="color:#e85d15">Flame</strong>, <strong style="color:#d4a821">Radiant</strong>, <strong style="color:#2d7ec4">Deep</strong>, <strong style="color:#3da34d">Wild</strong>, <strong style="color:#7b54c9">Arcane</strong>, and <strong style="color:#c55bb7">Heart</strong>. Explore the interactive 3D map, read the epic lore chapters, discover the seven celestial moons, or defend Pawtheon in the tower defense game.</p>
+    <h2>FAQ</h2>
+    <details class="faq" open><summary>What is The Order of 86?</summary><p>86 unique wizard dog NFTs on the Doge blockchain. Each belongs to one of six Orders and has hand-crafted lore set in Pawtheon.</p></details>
+    <details class="faq"><summary>What blockchain?</summary><p>Doge blockchain — fast, low-cost, community-driven.</p></details>
+    <details class="faq"><summary>What are the six Orders?</summary><p>Flame, Radiant, Deep, Wild, Arcane, and Heart. Each represents a school of magic in Pawtheon.</p></details>
+    <details class="faq"><summary>What is Pawtheon?</summary><p>The fantasy world of the 86 wizard dogs — 6 cities, 7 moons, and vast magical realms explorable through the interactive 3D map.</p></details>
 </section>
 
 <footer class="footer">
-    <p>© 2026 The Order of 86 · <a href="https://doginaldogs.com" target="_blank">Doginal Dogs</a> · <a href="https://x.com/hBUDS_" target="_blank">X / Twitter</a></p>
+    <p>© 2026 The Order of 86 · <a href="https://doginaldogs.com" target="_blank">Doginal Dogs</a> · <a href="https://x.com/hBUDS_" target="_blank">𝕏</a></p>
 </footer>
 
 <script src="wizard-dogs-data.js"></script>
 <script>
-(function() {
-    'use strict';
-
+(function(){
     const dogs = Object.values(wizardDogs);
-    const ORDER_HEX = {
-        Flame:'#e85d15', Radiant:'#d4a821', Deep:'#2d7ec4',
-        Wild:'#3da34d', Arcane:'#7b54c9', Heart:'#c55bb7', Wanderer:'#7b54c9'
-    };
+    const C = {Flame:'#e85d15',Radiant:'#d4a821',Deep:'#2d7ec4',Wild:'#3da34d',Arcane:'#7b54c9',Heart:'#c55bb7',Wanderer:'#7b54c9'};
+    const orders = ['Flame','Radiant','Deep','Wild','Arcane','Heart'];
 
-    let activeOrder = 'all';
-    let searchQuery = '';
+    // Spectrum bars
+    const spec = document.getElementById('spectrum');
+    orders.forEach(o => {
+        const b = document.createElement('div');
+        b.className = 'spectrum-bar';
+        b.style.background = C[o];
+        b.title = o;
+        b.addEventListener('click', () => setOrder(o));
+        spec.appendChild(b);
+    });
+
+    let order = 'all', query = '';
     const grid = document.getElementById('grid');
-    const emptyState = document.getElementById('emptyState');
+    const empty = document.getElementById('empty');
+    const countLabel = document.getElementById('countLabel');
 
-    function getFiltered() {
-        const q = searchQuery.toLowerCase();
+    function filtered(){
+        const q = query.toLowerCase();
         return dogs.filter(d => {
-            if (activeOrder !== 'all' && d.order !== activeOrder) return false;
-            if (!q) return true;
-            return [d.id, d.suggestedName, d.fur, d.pattern, d.eyes, d.realm, d.order, d.clothes]
+            if(order !== 'all' && d.order !== order) return false;
+            if(!q) return true;
+            return [d.id,d.suggestedName,d.fur,d.pattern,d.eyes,d.realm,d.order,d.clothes]
                 .some(v => v && v.toLowerCase().includes(q));
-        }).sort((a, b) => {
-            if (a.id === '6164') return -1;
-            if (b.id === '6164') return 1;
-            return a.rank - b.rank;
-        });
+        }).sort((a,b) => a.rank - b.rank);
     }
 
-    function render() {
-        const filtered = getFiltered();
-        if (!filtered.length) {
-            grid.innerHTML = '';
-            emptyState.classList.add('visible');
-            return;
-        }
-        emptyState.classList.remove('visible');
-
-        grid.innerHTML = filtered.map(dog => {
-            const col = ORDER_HEX[dog.order] || '#7b54c9';
-            return `<div class="card" data-id="${dog.id}">
-                <img class="card-img" src="${dog.image}" alt="${dog.suggestedName}" loading="lazy">
-                <div class="card-body">
-                    <div class="card-name">${dog.suggestedName}</div>
-                    <div class="card-order" style="color:${col}">${dog.id === '6164' ? '✦ Wanderer' : dog.order}</div>
+    function render(){
+        const f = filtered();
+        empty.classList.toggle('on', !f.length);
+        countLabel.textContent = f.length + ' wizard' + (f.length !== 1 ? 's' : '');
+        grid.innerHTML = f.map(d => {
+            const col = C[d.order] || C.Arcane;
+            return `<div class="wcard" data-id="${d.id}">
+                <img src="${d.image}" alt="${d.suggestedName}" loading="lazy">
+                <div class="wcard-dot" style="background:${col}"></div>
+                <div class="wcard-info">
+                    <div class="wcard-name">${d.suggestedName}</div>
+                    <div class="wcard-order" style="color:${col}">${d.order}</div>
                 </div>
             </div>`;
         }).join('');
-
-        // Staggered reveal
-        requestAnimationFrame(() => {
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach((e, i) => {
-                    if (e.isIntersecting) {
-                        setTimeout(() => e.target.classList.add('show'), i * 25);
-                        observer.unobserve(e.target);
-                    }
-                });
-            }, { threshold: 0.05, rootMargin: '40px' });
-            grid.querySelectorAll('.card').forEach(c => observer.observe(c));
-        });
-
-        // Click handlers
-        grid.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', () => {
-                const dog = wizardDogs[card.dataset.id];
-                if (dog) openModal(dog);
-            });
-        });
+        grid.querySelectorAll('.wcard').forEach(c => c.addEventListener('click', () => openDetail(wizardDogs[c.dataset.id])));
     }
 
-    // ── Filters ───────────────────────────────────
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeOrder = btn.dataset.order;
-            render();
+    function setOrder(o){
+        order = o;
+        document.querySelectorAll('.otab').forEach(t => {
+            t.classList.toggle('on', t.dataset.order === o);
+            if(t.classList.contains('on') && t.dataset.c){
+                t.style.color = t.dataset.c;
+            } else {
+                t.style.color = '';
+            }
         });
-    });
-
-    // ── Search ────────────────────────────────────
-    document.getElementById('searchInput').addEventListener('input', e => {
-        searchQuery = e.target.value.trim();
         render();
-    });
-
-    // ── Modal ─────────────────────────────────────
-    const modalBg = document.getElementById('modalBg');
-    const modal = document.getElementById('modal');
-    const modalContent = document.getElementById('modalContent');
-    const modalFullpage = document.getElementById('modalFullpage');
-
-    function esc(s) {
-        if (!s) return '';
-        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
-    function openModal(dog) {
-        const col = ORDER_HEX[dog.order] || '#7b54c9';
-        const storyHtml = esc(dog.suggestedStory || '')
-            .replace(/\n/g, '<br>')
-            .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    document.querySelectorAll('.otab').forEach(t => t.addEventListener('click', () => setOrder(t.dataset.order)));
+    document.getElementById('searchInput').addEventListener('input', e => { query = e.target.value.trim(); render(); });
 
-        const traits = [
-            ['Fur', dog.fur], ['Pattern', dog.pattern], ['Eyes', dog.eyes],
-            ['Clothes', dog.clothes || 'None'], ['Realm', dog.realm], ['Rank', '#' + dog.rank.toLocaleString()]
-        ];
-        if (dog.mouth) traits.push(['Mouth', dog.mouth]);
+    // Detail panel
+    const overlayBg = document.getElementById('overlayBg');
+    const detail = document.getElementById('detail');
+    const detailBody = document.getElementById('detailBody');
+    const detailFP = document.getElementById('detailFP');
 
+    function esc(s){ return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '' }
+
+    function openDetail(d){
+        const col = C[d.order] || C.Arcane;
+        const story = esc(d.suggestedStory||'').replace(/\n/g,'<br>').replace(/\*([^*]+)\*/g,'<em>$1</em>');
+        const traits = [['Fur',d.fur],['Pattern',d.pattern],['Eyes',d.eyes],['Clothes',d.clothes||'None'],['Realm',d.realm],['Rank','#'+d.rank.toLocaleString()]];
+        if(d.mouth) traits.push(['Mouth',d.mouth]);
         const links = [];
-        if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="modal-link">🐕 Marketplace</a>`);
-        if (dog.twitter) links.push(`<a href="https://x.com/${dog.twitter.replace('@','')}" target="_blank" class="modal-link">𝕏 ${dog.twitter}</a>`);
+        if(d.marketplace) links.push(`<a href="${d.marketplace}" target="_blank" class="dlink">Marketplace ↗</a>`);
+        if(d.twitter) links.push(`<a href="https://x.com/${d.twitter.replace('@','')}" target="_blank" class="dlink">${d.twitter}</a>`);
 
-        modalContent.innerHTML = `
-            <div class="modal-hero">
-                <img class="modal-img" src="${dog.image}" alt="${esc(dog.suggestedName)}" style="border: 2px solid ${col}">
-                <div class="modal-info">
-                    <div class="modal-name">${esc(dog.suggestedName)}</div>
-                    <div class="modal-id">#${dog.id} · Rank ${dog.rank.toLocaleString()}</div>
-                    <span class="modal-badge" style="background:${col}">${dog.order} Order</span>
-                </div>
+        detailBody.innerHTML = `
+            <div class="detail-img-wrap"><img class="detail-img" src="${d.image}" alt="${esc(d.suggestedName)}" style="border:2px solid ${col}"></div>
+            <div class="detail-meta">
+                <div class="detail-name">${esc(d.suggestedName)}</div>
+                <div class="detail-sub">#${d.id} · Rank ${d.rank.toLocaleString()}</div>
+                <span class="detail-badge" style="background:${col}">${d.order}</span>
             </div>
-            <div class="modal-traits">
-                ${traits.map(([l, v]) => `<div class="modal-trait"><div class="modal-trait-label">${l}</div><div class="modal-trait-value">${v}</div></div>`).join('')}
-            </div>
-            ${links.length ? `<div class="modal-links">${links.join('')}</div>` : ''}
-            ${storyHtml ? `<div class="modal-story"><div class="modal-story-title">Origin Lore</div><div class="modal-story-text">${storyHtml}</div></div>` : ''}
+            <div class="detail-traits">${traits.map(([l,v])=>`<div class="dt"><div class="dt-label">${l}</div><div class="dt-value">${v}</div></div>`).join('')}</div>
+            ${links.length ? `<div class="detail-links">${links.join('')}</div>` : ''}
+            ${story ? `<div class="detail-story"><h3>Origin Lore</h3><p>${story}</p></div>` : ''}
         `;
-
-        modalFullpage.href = '/wizard/' + dog.id;
-        modalBg.classList.add('open');
-        modal.classList.add('open');
+        detailFP.href = '/wizard/' + d.id;
+        overlayBg.classList.add('open');
+        detail.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
-        modalBg.classList.remove('open');
-        modal.classList.remove('open');
+    function closeDetail(){
+        overlayBg.classList.remove('open');
+        detail.classList.remove('open');
         document.body.style.overflow = '';
     }
+    document.getElementById('detailClose').addEventListener('click', closeDetail);
+    overlayBg.addEventListener('click', closeDetail);
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDetail() });
 
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    modalBg.addEventListener('click', closeModal);
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    // ── Init ──────────────────────────────────────
     render();
 })();
 </script>
