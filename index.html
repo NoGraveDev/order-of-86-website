@@ -2,694 +2,610 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%23000' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Order of 86 - Magical Wizard Dogs</title>
+    <meta name="description" content="Discover 86 unique wizard dogs across 6 mystical orders. Each wizard possesses magical powers tied to their realm, pattern, and destiny.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="The Order of 86 - Magical Wizard Dogs">
+    <meta property="og:description" content="Discover 86 unique wizard dogs across 6 mystical orders. Each wizard possesses magical powers tied to their realm, pattern, and destiny.">
+    <meta property="og:image" content="https://theorderof86.com/og-image.jpg">
+    <meta property="og:url" content="https://theorderof86.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="shared.css?v=3">
-    <title>The Order of 86 — Wizard Dogs of Pawtheon</title>
-    <meta name="description" content="The Order of 86: 86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon — 6 Orders, 7 Moons, 6 Cities.">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="The Order of 86 — Wizard Dogs of Pawtheon">
-    <meta property="og:description" content="86 wizard dog NFTs on the Doge blockchain. Explore the lore of Pawtheon.">
-    <meta property="og:image" content="https://theorderof86.com/og-image.jpg">
-    <meta property="og:url" content="https://theorderof86.com/">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Order of 86 — Wizard Dogs of Pawtheon">
-    <meta name="twitter:image" content="https://theorderof86.com/og-image.jpg">
-    <script type="application/ld+json">
-    [{"@context":"https://schema.org","@type":"Organization","name":"The Order of 86","url":"https://theorderof86.com","logo":"https://theorderof86.com/og-image.jpg"},{"@context":"https://schema.org","@type":"CollectionPage","name":"The Order of 86","description":"86 unique wizard dog NFTs on the Doge blockchain","url":"https://theorderof86.com","numberOfItems":86}]
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Syne', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        'flame': '#ff6b2b',
+                        'radiant': '#f0c030', 
+                        'deep': '#3b9eff',
+                        'wild': '#45d95a',
+                        'arcane': '#9b6ff0',
+                        'heart': '#e06bc0'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(255, 255, 255, 0.1)' },
+                            '100%': { boxShadow: '0 0 30px rgba(255, 255, 255, 0.2)' }
+                        }
+                    }
+                }
+            }
+        }
     </script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="shared.css?v=4">
     <style>
-/* ═══ RESET & VARS ═══ */
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-    --black:#000;--bg:#050508;
-    --s1:#0a0a10;--s2:#101018;--s3:#18182a;
-    --white:#f0eee8;--t2:rgba(240,238,232,0.7);--t3:rgba(240,238,232,0.4);--t4:rgba(240,238,232,0.15);
-    --gold:#c9a86c;--gold-hi:#e8c97a;
-    --flame:#ff6b2b;--radiant:#f0c030;--deep:#3b9eff;
-    --wild:#45d95a;--arcane:#9b6ff0;--heart:#e06bc0;
-    --display:'Outfit',sans-serif;
-    --body:'Space Grotesk',sans-serif;
-    --mono:'JetBrains Mono',monospace;
-}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{font-family:var(--body);background:var(--black);color:var(--white);overflow-x:hidden}
-
-/* ═══ GRAIN OVERLAY ═══ */
-body::after{
-    content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
-    opacity:0.025;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size:128px;
-}
-
-/* ═══ AMBIENT ORB ═══ */
-#orb{
-    position:fixed;top:0;left:0;width:600px;height:600px;
-    border-radius:50%;pointer-events:none;z-index:0;
-    filter:blur(120px);opacity:0.12;
-    background:var(--gold);
-    transition:background 1.5s ease,transform 0.08s linear;
-    will-change:transform;
-}
-
-/* ═══ NAV ═══ */
-.nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;height:56px;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 clamp(20px,4vw,48px);
-    background:rgba(5,5,8,0.8);backdrop-filter:saturate(180%) blur(20px);
-    -webkit-backdrop-filter:saturate(180%) blur(20px);
-    border-bottom:1px solid rgba(240,238,232,0.04);
-}
-.nav-logo{
-    font-family:var(--mono);font-size:13px;font-weight:500;
-    color:var(--gold);text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;
-}
-
-/* ═══ HERO — FULL VIEWPORT IMMERSIVE ═══ */
-.hero{
-    position:relative;min-height:100vh;
-    display:grid;grid-template-columns:1fr 1fr;align-items:center;
-    padding:80px clamp(24px,6vw,80px);gap:40px;
-    overflow:hidden;
-}
-.hero-content{position:relative;z-index:2}
-.hero-tag{
-    font-family:var(--mono);font-size:11px;font-weight:500;
-    letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);
-    margin-bottom:20px;
-    opacity:0;animation:fadeUp 1s ease 0.3s forwards;
-}
-.hero h1{
-    font-family:var(--display);font-size:clamp(48px,7vw,88px);
-    font-weight:900;line-height:0.95;letter-spacing:-0.04em;
-    margin-bottom:24px;
-    opacity:0;animation:fadeUp 1s ease 0.5s forwards;
-}
-.hero h1 span{
-    display:block;
-    background:linear-gradient(135deg,var(--gold) 0%,var(--gold-hi) 50%,var(--flame) 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero-sub{
-    font-size:17px;color:var(--t3);line-height:1.6;max-width:440px;margin-bottom:40px;
-    opacity:0;animation:fadeUp 1s ease 0.7s forwards;
-}
-.hero-stats{
-    display:flex;gap:32px;
-    opacity:0;animation:fadeUp 1s ease 0.9s forwards;
-}
-.hs{text-align:left}
-.hs-num{font-family:var(--display);font-size:36px;font-weight:800;letter-spacing:-0.03em;color:var(--white)}
-.hs-label{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t4);margin-top:2px}
-
-/* Hero image stack */
-.hero-visual{
-    position:relative;z-index:2;
-    display:flex;justify-content:center;align-items:center;
-    opacity:0;animation:fadeUp 1.2s ease 0.6s forwards;
-}
-.hero-card{
-    position:relative;
-    width:clamp(240px,22vw,360px);aspect-ratio:1;
-    border-radius:24px;overflow:hidden;cursor:pointer;
-    box-shadow:0 40px 80px rgba(0,0,0,0.6),0 0 120px var(--gold-glow,rgba(201,168,108,0.15));
-    transition:transform 0.6s cubic-bezier(0.25,1,0.5,1),box-shadow 0.6s;
-}
-.hero-card:hover{transform:scale(1.04) rotate(-1deg);box-shadow:0 50px 100px rgba(0,0,0,0.7),0 0 160px var(--gold-glow,rgba(201,168,108,0.2))}
-.hero-card img{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated}
-.hero-card-info{
-    position:absolute;bottom:0;left:0;right:0;
-    padding:48px 20px 16px;
-    background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,transparent 100%);
-}
-.hero-card-name{font-family:var(--display);font-size:20px;font-weight:700}
-.hero-card-order{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
-
-/* Floating secondary cards */
-.float-card{
-    position:absolute;border-radius:16px;overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,0.5);cursor:pointer;
-    transition:transform 0.5s cubic-bezier(0.25,1,0.5,1);z-index:1;
-    opacity:0;animation:floatIn 1s ease forwards;
-}
-.float-card:hover{transform:scale(1.08)!important}
-.float-card img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;display:block}
-.fc1{width:clamp(80px,8vw,120px);top:5%;right:0;animation-delay:1.2s}
-.fc2{width:clamp(90px,9vw,140px);bottom:10%;left:-5%;animation-delay:1.4s}
-.fc3{width:clamp(70px,7vw,100px);top:60%;right:-8%;animation-delay:1.6s}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
-@keyframes floatIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
-
-/* ═══ ORDER RIBBON ═══ */
-.ribbon{
-    display:flex;height:3px;overflow:hidden;position:relative;z-index:2;
-}
-.ribbon-seg{flex:1;transition:flex 0.6s cubic-bezier(0.25,1,0.5,1),filter 0.4s}
-.ribbon-seg.active{flex:3;filter:brightness(1.6)}
-
-/* ═══ BROWSE SECTION ═══ */
-.browse{
-    position:relative;z-index:2;
-    max-width:1400px;margin:0 auto;padding:80px clamp(20px,4vw,48px) 60px;
-}
-.browse-head{
-    display:flex;align-items:flex-end;justify-content:space-between;
-    margin-bottom:48px;flex-wrap:wrap;gap:20px;
-}
-.browse-title{
-    font-family:var(--display);font-size:clamp(32px,4vw,48px);
-    font-weight:800;letter-spacing:-0.03em;line-height:1;
-}
-.browse-count{
-    font-family:var(--mono);font-size:12px;color:var(--t4);
-    letter-spacing:0.06em;
-}
-
-/* Filter pills */
-.pills{
-    display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;
-}
-.pill{
-    font-family:var(--body);font-size:13px;font-weight:500;
-    color:var(--t3);background:var(--s1);border:1px solid rgba(240,238,232,0.04);
-    padding:8px 18px;border-radius:100px;cursor:pointer;
-    transition:all 0.3s;white-space:nowrap;
-}
-.pill:hover{color:var(--t2);border-color:rgba(240,238,232,0.08)}
-.pill.on{color:var(--white);background:var(--s3);border-color:rgba(240,238,232,0.12)}
-.pill[data-c].on{border-color:currentColor}
-
-/* Search */
-.search-row{display:flex;align-items:center;gap:16px;margin-bottom:40px}
-.search-field{
-    flex:1;max-width:320px;position:relative;
-}
-.search-field svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--t4);pointer-events:none}
-.search-field input{
-    width:100%;background:var(--s1);border:1px solid rgba(240,238,232,0.04);
-    border-radius:100px;padding:10px 16px 10px 40px;
-    font-family:var(--body);font-size:14px;color:var(--white);outline:none;
-    transition:border-color 0.3s,background 0.3s;
-}
-.search-field input::placeholder{color:var(--t4)}
-.search-field input:focus{border-color:rgba(240,238,232,0.1);background:var(--s2)}
-
-/* ═══ BENTO GRID ═══ */
-.bento{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:8px;
-}
-.bcard{
-    position:relative;border-radius:16px;overflow:hidden;
-    background:var(--s1);cursor:pointer;
-    opacity:0;transform:translateY(24px) scale(0.97);
-    transition:opacity 0.5s ease,transform 0.5s cubic-bezier(0.25,1,0.5,1);
-}
-.bcard.in{opacity:1;transform:none}
-.bcard::before{
-    content:'';position:absolute;inset:0;z-index:3;
-    border:1px solid rgba(240,238,232,0.04);border-radius:16px;
-    transition:border-color 0.4s;pointer-events:none;
-}
-.bcard:hover::before{border-color:rgba(240,238,232,0.1)}
-.bcard:hover{transform:translateY(-4px) scale(1.01)}
-.bcard:active{transform:scale(0.98);transition:transform 0.1s}
-
-/* Card glow */
-.bcard::after{
-    content:'';position:absolute;inset:-1px;z-index:0;border-radius:16px;
-    opacity:0;transition:opacity 0.4s;pointer-events:none;
-}
-.bcard:hover::after{opacity:1}
-
-.bcard-img{
-    width:100%;aspect-ratio:1;object-fit:cover;display:block;
-    image-rendering:pixelated;background:var(--s2);
-    position:relative;z-index:1;
-}
-.bcard-body{
-    padding:14px 16px 16px;position:relative;z-index:1;
-    display:flex;align-items:center;justify-content:space-between;
-}
-.bcard-name{
-    font-family:var(--display);font-size:15px;font-weight:600;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    flex:1;min-width:0;
-}
-.bcard-badge{
-    font-family:var(--mono);font-size:9px;font-weight:500;
-    letter-spacing:0.08em;text-transform:uppercase;
-    padding:4px 10px;border-radius:100px;flex-shrink:0;margin-left:8px;
-    border:1px solid currentColor;opacity:0.7;
-}
-
-.empty{display:none;text-align:center;padding:100px 20px}
-.empty.on{display:block}
-.empty p{color:var(--t4);font-size:17px}
-
-/* ═══ DETAIL TAKEOVER ═══ */
-.takeover-bg{
-    position:fixed;inset:0;z-index:200;
-    background:rgba(0,0,0,0.7);backdrop-filter:blur(32px);
-    -webkit-backdrop-filter:blur(32px);
-    opacity:0;pointer-events:none;transition:opacity 0.4s;
-}
-.takeover-bg.open{opacity:1;pointer-events:auto}
-
-.takeover{
-    position:fixed;z-index:201;
-    top:50%;left:50%;transform:translate(-50%,-50%) scale(0.92);
-    width:min(860px,calc(100vw - 32px));
-    max-height:calc(100vh - 48px);
-    background:var(--s1);border:1px solid rgba(240,238,232,0.06);
-    border-radius:24px;overflow:hidden;
-    opacity:0;pointer-events:none;
-    transition:opacity 0.4s,transform 0.5s cubic-bezier(0.25,1,0.5,1);
-}
-.takeover.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-
-.takeover-inner{
-    display:grid;grid-template-columns:1fr 1fr;
-    max-height:calc(100vh - 48px);
-}
-.takeover-left{
-    position:relative;overflow:hidden;background:var(--s2);
-}
-.takeover-img{
-    width:100%;height:100%;min-height:400px;object-fit:cover;display:block;
-    image-rendering:pixelated;
-}
-.takeover-right{
-    padding:32px;overflow-y:auto;
-    display:flex;flex-direction:column;
-}
-.takeover-close{
-    position:absolute;top:16px;right:16px;z-index:10;
-    background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);border:none;
-    color:var(--white);cursor:pointer;
-    width:40px;height:40px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:18px;transition:background 0.2s,transform 0.15s;
-}
-.takeover-close:hover{background:rgba(0,0,0,0.7)}
-.takeover-close:active{transform:scale(0.9)}
-
-.tk-badge{
-    display:inline-block;font-family:var(--mono);
-    font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
-    color:#fff;padding:5px 14px;border-radius:100px;margin-bottom:16px;
-    align-self:flex-start;
-}
-.tk-name{font-family:var(--display);font-size:28px;font-weight:800;letter-spacing:-0.02em;margin-bottom:4px}
-.tk-sub{font-family:var(--mono);font-size:12px;color:var(--t4);letter-spacing:0.04em;margin-bottom:24px}
-
-.tk-traits{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-    background:rgba(240,238,232,0.04);border-radius:12px;overflow:hidden;
-    margin-bottom:24px;
-}
-.tkt{background:var(--s2);padding:14px 10px;text-align:center}
-.tkt-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--t4);margin-bottom:3px}
-.tkt-val{font-family:var(--body);font-size:13px;font-weight:500;color:var(--white)}
-
-.tk-actions{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
-.tk-btn{
-    flex:1;min-width:120px;font-family:var(--body);font-size:13px;font-weight:600;
-    color:var(--white);text-decoration:none;text-align:center;
-    padding:12px 16px;border-radius:12px;cursor:pointer;border:none;
-    transition:background 0.2s,transform 0.15s;
-}
-.tk-btn:active{transform:scale(0.97)}
-.tk-btn.primary{background:var(--gold);color:var(--black)}
-.tk-btn.primary:hover{background:var(--gold-hi)}
-.tk-btn.secondary{background:var(--s3);border:1px solid rgba(240,238,232,0.06)}
-.tk-btn.secondary:hover{background:rgba(240,238,232,0.08)}
-
-.tk-story{flex:1}
-.tk-story h3{
-    font-family:var(--mono);font-size:10px;font-weight:500;
-    letter-spacing:0.12em;text-transform:uppercase;color:var(--t4);
-    margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(240,238,232,0.04);
-}
-.tk-story p{font-size:15px;color:var(--t2);line-height:1.7}
-.tk-story em{color:var(--gold);font-style:italic}
-
-.tk-fp{margin-top:20px}
-.tk-fp a{font-family:var(--mono);font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.04em}
-.tk-fp a:hover{text-decoration:underline}
-
-/* ═══ SEO ═══ */
-.geo{
-    max-width:680px;margin:0 auto;padding:80px 24px 60px;position:relative;z-index:2;
-    border-top:1px solid rgba(240,238,232,0.04);
-}
-.geo h2{
-    font-family:var(--display);font-size:28px;font-weight:700;
-    letter-spacing:-0.02em;margin:48px 0 12px;
-}
-.geo h2:first-child{margin-top:0}
-.geo>p{font-size:16px;color:var(--t2);line-height:1.7;margin-bottom:16px}
-.geo-stats{
-    display:flex;gap:0;margin:32px 0;border-radius:14px;overflow:hidden;
-    background:var(--s1);border:1px solid rgba(240,238,232,0.04);
-}
-.gs{flex:1;text-align:center;padding:24px 8px;border-right:1px solid rgba(240,238,232,0.04)}
-.gs:last-child{border-right:none}
-.gs-num{font-family:var(--display);font-size:32px;font-weight:800;letter-spacing:-0.02em;color:var(--gold)}
-.gs-label{font-family:var(--mono);font-size:10px;color:var(--t4);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px}
-
-.faq{background:var(--s1);border:1px solid rgba(240,238,232,0.04);border-radius:12px;margin-bottom:6px;overflow:hidden;transition:border-color 0.3s}
-.faq:hover{border-color:rgba(240,238,232,0.08)}
-.faq summary{
-    padding:16px 20px;cursor:pointer;font-size:14px;font-weight:500;
-    color:var(--white);list-style:none;display:flex;justify-content:space-between;align-items:center;
-}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:'+';font-size:18px;color:var(--t4)}
-.faq[open] summary::after{content:'−'}
-.faq p{padding:0 20px 16px;font-size:14px;color:var(--t3);line-height:1.6}
-
-.footer{
-    text-align:center;padding:32px 24px;
-    font-family:var(--mono);font-size:11px;color:var(--t4);letter-spacing:0.04em;
-    border-top:1px solid rgba(240,238,232,0.04);position:relative;z-index:2;
-}
-.footer a{color:var(--t3);text-decoration:none}
-.footer a:hover{color:var(--gold)}
-
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:900px){
-    .hero{grid-template-columns:1fr;text-align:center;min-height:auto;padding-bottom:40px}
-    .hero-sub{margin:0 auto 40px}
-    .hero-stats{justify-content:center}
-    .hero-visual{margin-top:20px}
-    .float-card{display:none}
-    .takeover-inner{grid-template-columns:1fr}
-    .takeover-left{max-height:300px}
-    .takeover{width:calc(100vw - 16px);max-height:calc(100vh - 16px)}
-}
-@media(max-width:640px){
-    .bento{grid-template-columns:repeat(2,1fr);gap:6px}
-    .bcard{border-radius:12px}
-    .bcard-body{padding:10px 12px 12px}
-    .bcard-badge{display:none}
-    .hero h1{font-size:42px}
-    .hero-card{width:200px}
-    .tk-traits{grid-template-columns:repeat(2,1fr)}
-    .geo-stats{flex-wrap:wrap}
-    .gs{min-width:50%;border-bottom:1px solid rgba(240,238,232,0.04)}
-}
-@media(prefers-reduced-motion:reduce){
-    *{animation-duration:0.01ms!important;transition-duration:0.1s!important}
-    .bcard{opacity:1;transform:none}
-}
+        .wizard-image { image-rendering: pixelated; }
+        .order-glow-flame { box-shadow: 0 0 30px rgba(255, 107, 43, 0.3); }
+        .order-glow-radiant { box-shadow: 0 0 30px rgba(240, 192, 48, 0.3); }
+        .order-glow-deep { box-shadow: 0 0 30px rgba(59, 158, 255, 0.3); }
+        .order-glow-wild { box-shadow: 0 0 30px rgba(69, 217, 90, 0.3); }
+        .order-glow-arcane { box-shadow: 0 0 30px rgba(155, 111, 240, 0.3); }
+        .order-glow-heart { box-shadow: 0 0 30px rgba(224, 107, 192, 0.3); }
+        .hero-gradient {
+            background: linear-gradient(135deg, #fff 0%, #f0c030 25%, #ff6b2b 50%, #9b6ff0 75%, #3b9eff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
+    
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 </head>
-<body>
-
-<!-- Ambient orb that follows cursor -->
-<div id="orb"></div>
-
-<!-- Navigation -->
-<nav class="nav" id="nav">
-    <a href="index.html" class="nav-logo">Order of 86</a>
-    <div class="nav-links">
-        <a href="index.html" class="active">Wizards</a>
+<body class="bg-black text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav id="nav" class="nav">
+        <a href="#" class="nav-logo">Order of 86</a>
+        <div class="nav-links">
+            <a href="#" class="active">Wizards</a>
+            <a href="moons.html">Moons</a>
+            <a href="map.html">Map</a>
+            <a href="lore.html">Lore</a>
+            <a href="content.html">Content</a>
+        </div>
+        <button id="hamburger" class="nav-hamburger">
+            <span></span>
+        </button>
+    </nav>
+    
+    <div id="mobileMenu" class="mobile-menu">
+        <a href="#" class="active">Wizards</a>
         <a href="moons.html">Moons</a>
         <a href="map.html">Map</a>
         <a href="lore.html">Lore</a>
         <a href="content.html">Content</a>
     </div>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span></button>
-</nav>
-<div class="mobile-menu" id="mobileMenu">
-    <a href="index.html" class="active">Wizards</a>
-    <a href="moons.html">Moons</a>
-    <a href="map.html">Map</a>
-    <a href="lore.html">Lore</a>
-    <a href="content.html">Content</a>
-</div>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero" id="hero"></section>
-
-<!-- ═══ ORDER RIBBON ═══ -->
-<div class="ribbon" id="ribbon"></div>
-
-<!-- ═══ BROWSE ═══ -->
-<section class="browse">
-    <div class="browse-head">
-        <div class="browse-title">Browse the Order</div>
-        <div class="browse-count" id="countLabel">86 wizards</div>
-    </div>
-
-    <div class="pills" id="pills"></div>
-
-    <div class="search-row">
-        <div class="search-field">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="searchInput" placeholder="Search wizards…" autocomplete="off">
-        </div>
-    </div>
-
-    <div class="bento" id="grid"></div>
-    <div class="empty" id="empty"><p>No wizards found.</p></div>
-</section>
-
-<!-- ═══ DETAIL TAKEOVER ═══ -->
-<div class="takeover-bg" id="tkBg"></div>
-<div class="takeover" id="tk">
-    <button class="takeover-close" id="tkClose">✕</button>
-    <div class="takeover-inner" id="tkInner"></div>
-</div>
-
-<!-- ═══ SEO ═══ -->
-<section class="geo">
-    <h2>What is The Order of 86?</h2>
-    <p>The Order of 86 is a collection of <strong>86 unique wizard dog NFTs</strong> on the <strong>Doge blockchain</strong>. Each wizard dog is a one-of-a-kind digital collectible with hand-crafted lore, unique traits, and a backstory set in the fantasy world of <strong>Pawtheon</strong>.</p>
-    <div class="geo-stats">
-        <div class="gs"><div class="gs-num">86</div><div class="gs-label">Wizards</div></div>
-        <div class="gs"><div class="gs-num">6</div><div class="gs-label">Orders</div></div>
-        <div class="gs"><div class="gs-num">7</div><div class="gs-label">Moons</div></div>
-        <div class="gs"><div class="gs-num">6</div><div class="gs-label">Cities</div></div>
-    </div>
-    <p>The six Orders are <strong style="color:var(--flame)">Flame</strong>, <strong style="color:var(--radiant)">Radiant</strong>, <strong style="color:var(--deep)">Deep</strong>, <strong style="color:var(--wild)">Wild</strong>, <strong style="color:var(--arcane)">Arcane</strong>, and <strong style="color:var(--heart)">Heart</strong>.</p>
-    <h2>FAQ</h2>
-    <details class="faq"><summary>What is The Order of 86?</summary><p>86 unique wizard dog NFTs on the Doge blockchain. Each belongs to one of six Orders and has hand-crafted lore set in Pawtheon.</p></details>
-    <details class="faq"><summary>What blockchain?</summary><p>Doge blockchain — fast, low-cost, community-driven.</p></details>
-    <details class="faq"><summary>What are the six Orders?</summary><p>Flame, Radiant, Deep, Wild, Arcane, and Heart. Each represents a school of magic.</p></details>
-    <details class="faq"><summary>What is Pawtheon?</summary><p>The fantasy world of the 86 wizard dogs — 6 cities, 7 moons, vast magical realms explorable via the 3D map.</p></details>
-</section>
-
-<footer class="footer">
-    © 2026 The Order of 86 · <a href="https://doginaldogs.com" target="_blank">Doginal Dogs</a> · <a href="https://x.com/hBUDS_" target="_blank">𝕏</a>
-</footer>
-
-<script src="wizard-dogs-data.js"></script>
-<script>
-(()=>{
-'use strict';
-const dogs = Object.values(wizardDogs);
-const C = {Flame:'#ff6b2b',Radiant:'#f0c030',Deep:'#3b9eff',Wild:'#45d95a',Arcane:'#9b6ff0',Heart:'#e06bc0',Wanderer:'#9b6ff0'};
-const ORDERS = ['Flame','Radiant','Deep','Wild','Arcane','Heart'];
-
-// ── Ambient orb follows cursor ──
-const orb = document.getElementById('orb');
-let orbColor = C[ORDERS[Math.floor(Math.random()*6)]];
-orb.style.background = orbColor;
-document.addEventListener('mousemove', e => {
-    orb.style.transform = `translate(${e.clientX - 300}px, ${e.clientY - 300}px)`;
-});
-
-// ── Hero ──
-const shuffled = [...dogs].sort(() => Math.random() - 0.5);
-const main = shuffled[0], floats = shuffled.slice(1, 4);
-const mc = C[main.order] || C.Arcane;
-
-document.getElementById('hero').innerHTML = `
-    <div class="hero-content">
-        <div class="hero-tag">86 Wizard Dogs — Doge Blockchain</div>
-        <h1>The Order<br><span>of Eighty-Six</span></h1>
-        <p class="hero-sub">An ancient order of wizard dogs, each wielding one of six schools of magic in the world of Pawtheon. Every wizard is unique. Every story is hand-crafted.</p>
-        <div class="hero-stats">
-            <div class="hs"><div class="hs-num">86</div><div class="hs-label">Wizards</div></div>
-            <div class="hs"><div class="hs-num">6</div><div class="hs-label">Orders</div></div>
-            <div class="hs"><div class="hs-num">7</div><div class="hs-label">Realms</div></div>
-        </div>
-    </div>
-    <div class="hero-visual">
-        <div class="hero-card" onclick="openTK(wizardDogs['${main.id}'])"
-             style="--gold-glow:${mc}30">
-            <img src="${main.image}" alt="${main.suggestedName}">
-            <div class="hero-card-info">
-                <div class="hero-card-name">${main.suggestedName}</div>
-                <div class="hero-card-order" style="color:${mc}">${main.order} Order</div>
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black"></div>
+        
+        <div class="relative z-10 text-center max-w-6xl mx-auto px-6">
+            <h1 class="hero-title font-display font-bold text-6xl md:text-8xl lg:text-9xl mb-6 hero-gradient leading-tight">
+                The Order of 86
+            </h1>
+            <p class="hero-subtitle text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto">
+                Discover the mystical world of 86 unique wizard dogs, each wielding ancient magic across six powerful orders
+            </p>
+            
+            <!-- Featured Heroes -->
+            <div class="hero-images relative">
+                <div class="hero-img-main absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 md:w-64 md:h-64">
+                    <img src="images/8728.png" alt="Frostforge the Scarf Bearer" 
+                         class="wizard-image w-full h-full object-contain animate-float" style="animation-delay: 0s;">
+                </div>
+                <div class="hero-img-left absolute left-1/4 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40">
+                    <img src="images/3449.png" alt="Stripeheart the Bridge Walker" 
+                         class="wizard-image w-full h-full object-contain animate-float" style="animation-delay: 2s;">
+                </div>
+                <div class="hero-img-right absolute right-1/4 top-1/2 translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-40 md:h-40">
+                    <img src="images/4165.png" alt="Pearlgaze the Emotional Seer" 
+                         class="wizard-image w-full h-full object-contain animate-float" style="animation-delay: 4s;">
+                </div>
             </div>
         </div>
-        ${floats.map((d,i)=>{
-            const fc = C[d.order]||C.Arcane;
-            return `<div class="float-card fc${i+1}" onclick="openTK(wizardDogs['${d.id}'])"
-                         style="border:2px solid ${fc}40">
-                <img src="${d.image}" alt="${d.suggestedName}">
-            </div>`;
-        }).join('')}
-    </div>
-`;
+    </section>
 
-// ── Ribbon ──
-document.getElementById('ribbon').innerHTML = ORDERS.map(o =>
-    `<div class="ribbon-seg" style="background:${C[o]}" data-order="${o}"></div>`
-).join('');
+    <!-- Order Showcase -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-display font-bold text-center mb-16 text-white">
+                Six Orders of Power
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 order-cards">
+                <!-- Flame Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Flame">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-flame flex items-center justify-center">
+                            <span class="text-2xl">🔥</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-flame mb-2">Flame</h3>
+                        <p class="text-gray-400 mb-4">Masters of forge magic and controlled destruction</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/8728.png" alt="Flame Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/5035.png" alt="Flame Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="flame-count">19</span> wizards</p>
+                    </div>
+                </div>
 
-// ── Filter pills ──
-const pillsEl = document.getElementById('pills');
-pillsEl.innerHTML = `<div class="pill on" data-order="all">All Orders</div>`
-    + ORDERS.map(o => `<div class="pill" data-order="${o}" data-c="${C[o]}">${o}</div>`).join('');
+                <!-- Radiant Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Radiant">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-radiant flex items-center justify-center">
+                            <span class="text-2xl">☀️</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-radiant mb-2">Radiant</h3>
+                        <p class="text-gray-400 mb-4">Wielders of light magic and healing energy</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/4711.png" alt="Radiant Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/7093.png" alt="Radiant Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="radiant-count">14</span> wizards</p>
+                    </div>
+                </div>
 
-let order = 'all', query = '';
-const grid = document.getElementById('grid');
-const empty = document.getElementById('empty');
-const countLabel = document.getElementById('countLabel');
+                <!-- Deep Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Deep">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-deep flex items-center justify-center">
+                            <span class="text-2xl">🌊</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-deep mb-2">Deep</h3>
+                        <p class="text-gray-400 mb-4">Prophets who see truth beneath the surface</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/4165.png" alt="Deep Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/9530.png" alt="Deep Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="deep-count">10</span> wizards</p>
+                    </div>
+                </div>
 
-function filtered(){
-    const q = query.toLowerCase();
-    return dogs.filter(d => {
-        if(order !== 'all' && d.order !== order) return false;
-        if(!q) return true;
-        return [d.id,d.suggestedName,d.fur,d.pattern,d.eyes,d.realm,d.order,d.clothes]
-            .some(v => v && v.toLowerCase().includes(q));
-    }).sort((a,b) => a.rank - b.rank);
-}
+                <!-- Wild Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Wild">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-wild flex items-center justify-center">
+                            <span class="text-2xl">🌿</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-wild mb-2">Wild</h3>
+                        <p class="text-gray-400 mb-4">Guardians of nature and growth magic</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/3449.png" alt="Wild Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/8272.png" alt="Wild Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="wild-count">18</span> wizards</p>
+                    </div>
+                </div>
 
-let obs;
-function render(){
-    const f = filtered();
-    empty.classList.toggle('on', !f.length);
-    grid.style.display = f.length ? '' : 'none';
-    countLabel.textContent = f.length + ' wizard' + (f.length !== 1 ? 's' : '');
+                <!-- Arcane Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Arcane">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-arcane flex items-center justify-center">
+                            <span class="text-2xl">🔮</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-arcane mb-2">Arcane</h3>
+                        <p class="text-gray-400 mb-4">Scholars of pure magical theory and research</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/9234.png" alt="Arcane Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/5056.png" alt="Arcane Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="arcane-count">13</span> wizards</p>
+                    </div>
+                </div>
 
-    grid.innerHTML = f.map(d => {
-        const col = C[d.order] || C.Arcane;
-        return `<div class="bcard" data-id="${d.id}" style="--c:${col}">
-            <img class="bcard-img" src="${d.image}" alt="${d.suggestedName}" loading="lazy">
-            <div class="bcard-body">
-                <div class="bcard-name">${d.suggestedName}</div>
-                <div class="bcard-badge" style="color:${col}">${d.order}</div>
+                <!-- Heart Order -->
+                <div class="order-card group cursor-pointer rounded-2xl bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-8 hover:scale-105 transition-all duration-300" data-order="Heart">
+                    <div class="text-center">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-heart flex items-center justify-center">
+                            <span class="text-2xl">💗</span>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-heart mb-2">Heart</h3>
+                        <p class="text-gray-400 mb-4">Weavers of emotional bonds and connection</p>
+                        <div class="flex justify-center gap-4">
+                            <img src="images/8311.png" alt="Heart Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                            <img src="images/9301.png" alt="Heart Wizard" class="wizard-image w-16 h-16 rounded-xl">
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4"><span class="heart-count">12</span> wizards</p>
+                    </div>
+                </div>
             </div>
-        </div>`;
-    }).join('');
+        </div>
+    </section>
 
-    // Add glow style
-    grid.querySelectorAll('.bcard').forEach(c => {
-        const col = c.style.getPropertyValue('--c');
-        c.style.cssText += `--c:${col}`;
-        c.querySelector('::after')
-    });
+    <!-- Collection -->
+    <section class="py-20">
+        <!-- Filter Bar -->
+        <div class="sticky top-16 z-40 bg-black/90 backdrop-blur-md border-b border-gray-800 mb-12">
+            <div class="max-w-7xl mx-auto px-6 py-6">
+                <div class="flex flex-wrap items-center gap-4 mb-4">
+                    <button class="filter-btn active px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="all">
+                        All <span class="ml-1 text-sm">86</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Flame">
+                        Flame <span class="ml-1 text-sm">19</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Wild">
+                        Wild <span class="ml-1 text-sm">18</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Radiant">
+                        Radiant <span class="ml-1 text-sm">14</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Arcane">
+                        Arcane <span class="ml-1 text-sm">13</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Heart">
+                        Heart <span class="ml-1 text-sm">12</span>
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all" data-filter="Deep">
+                        Deep <span class="ml-1 text-sm">10</span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search by name, realm, or traits..." 
+                           class="w-full md:w-96 px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white placeholder-gray-400 focus:border-gray-500 focus:outline-none">
+                    <span class="absolute right-4 top-3 text-gray-400">🔍</span>
+                </div>
+            </div>
+        </div>
 
-    // Staggered reveal
-    if(obs) obs.disconnect();
-    obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if(e.isIntersecting){
-                const cards = [...grid.children];
-                const idx = cards.indexOf(e.target);
-                e.target.style.transitionDelay = (idx % 6) * 0.06 + 's';
-                e.target.classList.add('in');
-                obs.unobserve(e.target);
+        <!-- Wizard Grid -->
+        <div class="max-w-7xl mx-auto px-6">
+            <div id="wizardGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                <!-- Wizard cards will be populated by JavaScript -->
+            </div>
+            
+            <div id="noResults" class="hidden text-center py-20">
+                <p class="text-xl text-gray-400">No wizards found matching your search</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEO Section -->
+    <section class="py-20 px-6 bg-gray-900/30">
+        <div class="max-w-6xl mx-auto">
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-white mb-2">86</div>
+                    <div class="text-gray-400">Unique Wizards</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-2">6</div>
+                    <div class="text-gray-400">Mystical Orders</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-2">7</div>
+                    <div class="text-gray-400">Ancient Moons</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-white mb-2">6</div>
+                    <div class="text-gray-400">Magical Realms</div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="max-w-3xl mx-auto">
+                <h2 class="text-3xl font-display font-bold text-center mb-12">Frequently Asked Questions</h2>
+                
+                <div class="space-y-4">
+                    <details class="group bg-gray-800/50 rounded-xl p-6">
+                        <summary class="cursor-pointer font-semibold text-lg list-none flex items-center justify-between">
+                            What is the Order of 86?
+                            <span class="group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p class="mt-4 text-gray-300">The Order of 86 is a collection of unique wizard dogs, each with their own magical abilities, personality, and backstory across six different mystical orders.</p>
+                    </details>
+                    
+                    <details class="group bg-gray-800/50 rounded-xl p-6">
+                        <summary class="cursor-pointer font-semibold text-lg list-none flex items-center justify-between">
+                            How many orders are there?
+                            <span class="group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p class="mt-4 text-gray-300">There are six mystical orders: Flame (fire/forge), Radiant (light/healing), Deep (prophecy/truth), Wild (nature/growth), Arcane (knowledge/theory), and Heart (bonds/emotion).</p>
+                    </details>
+                    
+                    <details class="group bg-gray-800/50 rounded-xl p-6">
+                        <summary class="cursor-pointer font-semibold text-lg list-none flex items-center justify-between">
+                            What makes each wizard unique?
+                            <span class="group-open:rotate-180 transition-transform">▼</span>
+                        </summary>
+                        <p class="mt-4 text-gray-300">Each wizard has unique traits including fur color, pattern, eyes, clothing, realm origin, magical order, and a detailed backstory with suggested name and lore.</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detail Modal -->
+    <div id="wizardModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="modal-content relative z-10 min-h-screen flex items-center justify-center p-4">
+            <div class="bg-gray-900 rounded-3xl max-w-6xl w-full max-h-[90vh] overflow-hidden">
+                <div class="flex flex-col md:flex-row">
+                    <!-- Image Side -->
+                    <div class="md:w-1/2 p-8 bg-gray-800/50 flex items-center justify-center">
+                        <img id="modalImage" src="" alt="" class="wizard-image max-w-full max-h-96 object-contain">
+                    </div>
+                    
+                    <!-- Info Side -->
+                    <div class="md:w-1/2 p-8 overflow-y-auto">
+                        <button id="modalClose" class="float-right text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+                        
+                        <div id="modalContent">
+                            <!-- Content populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="wizard-dogs-data.js"></script>
+    <script src="nav.js" defer></script>
+    
+    <script>
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Hero animations
+        gsap.timeline()
+            .from('.hero-title', { duration: 1, y: 50, opacity: 0, ease: 'power2.out' })
+            .from('.hero-subtitle', { duration: 0.8, y: 30, opacity: 0, ease: 'power2.out' }, '-=0.5')
+            .from('.hero-img-main', { duration: 1, scale: 0, rotation: 15, ease: 'back.out(1.7)' }, '-=0.5')
+            .from('.hero-img-left', { duration: 0.8, scale: 0, rotation: -10, ease: 'back.out(1.7)' }, '-=0.3')
+            .from('.hero-img-right', { duration: 0.8, scale: 0, rotation: 10, ease: 'back.out(1.7)' }, '-=0.6');
+
+        // Parallax effect
+        gsap.to('.hero-img-main', {
+            y: -30,
+            scrollTrigger: {
+                trigger: '.hero-images',
+                start: 'top center',
+                end: 'bottom top',
+                scrub: true
             }
         });
-    }, {threshold:0.05, rootMargin:'80px'});
-    grid.querySelectorAll('.bcard').forEach(c => obs.observe(c));
 
-    grid.querySelectorAll('.bcard').forEach(c =>
-        c.addEventListener('click', () => openTK(wizardDogs[c.dataset.id]))
-    );
-}
-
-// ── Filters ──
-document.querySelectorAll('.pill').forEach(p => {
-    p.addEventListener('click', () => {
-        document.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
-        p.classList.add('on');
-        order = p.dataset.order;
-
-        // Update ribbon
-        document.querySelectorAll('.ribbon-seg').forEach(s => {
-            s.classList.toggle('active', order === 'all' || s.dataset.order === order);
+        gsap.to('.hero-img-left', {
+            y: -20,
+            x: -15,
+            scrollTrigger: {
+                trigger: '.hero-images',
+                start: 'top center',
+                end: 'bottom top',
+                scrub: true
+            }
         });
 
-        // Update orb color
-        if(order !== 'all' && C[order]){
-            orb.style.background = C[order];
+        gsap.to('.hero-img-right', {
+            y: -25,
+            x: 15,
+            scrollTrigger: {
+                trigger: '.hero-images',
+                start: 'top center',
+                end: 'bottom top',
+                scrub: true
+            }
+        });
+
+        // Order cards animation
+        gsap.from('.order-card', {
+            duration: 0.8,
+            x: -50,
+            opacity: 0,
+            stagger: 0.1,
+            ease: 'power2.out',
+            scrollTrigger: {
+                trigger: '.order-cards',
+                start: 'top 80%'
+            }
+        });
+
+        // Wizard grid initialization and animations
+        let allWizards = Object.values(wizardDogs);
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function getOrderColor(order) {
+            const colors = {
+                'Flame': 'flame',
+                'Radiant': 'radiant', 
+                'Deep': 'deep',
+                'Wild': 'wild',
+                'Arcane': 'arcane',
+                'Heart': 'heart'
+            };
+            return colors[order] || 'gray-500';
         }
-        render();
-    });
-});
 
-document.getElementById('searchInput').addEventListener('input', e => {
-    query = e.target.value.trim(); render();
-});
+        function createWizardCard(wizard) {
+            const orderColor = getOrderColor(wizard.order);
+            return `
+                <div class="wizard-card group cursor-pointer" data-order="${wizard.order}" data-wizard='${JSON.stringify(wizard)}'>
+                    <div class="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-4 border border-gray-800 hover:border-${orderColor} transition-all duration-300 hover:scale-105">
+                        <div class="relative mb-4">
+                            <img src="${wizard.image}" alt="${wizard.suggestedName}" 
+                                 class="wizard-image w-full aspect-square object-contain rounded-xl">
+                            <div class="absolute top-2 right-2">
+                                <span class="px-2 py-1 text-xs font-bold rounded-full bg-${orderColor} text-black">
+                                    ${wizard.order}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="font-semibold text-white mb-1 text-sm leading-tight">${wizard.suggestedName}</h3>
+                            <p class="text-xs text-gray-400">${wizard.realm}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
-// ── Takeover detail ──
-const tkBg = document.getElementById('tkBg');
-const tk = document.getElementById('tk');
-const tkInner = document.getElementById('tkInner');
+        function renderWizards() {
+            const grid = document.getElementById('wizardGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filteredWizards = allWizards;
+            
+            // Apply order filter
+            if (currentFilter !== 'all') {
+                filteredWizards = filteredWizards.filter(w => w.order === currentFilter);
+            }
+            
+            // Apply search filter
+            if (currentSearch) {
+                filteredWizards = filteredWizards.filter(w => 
+                    w.suggestedName.toLowerCase().includes(currentSearch) ||
+                    w.realm.toLowerCase().includes(currentSearch) ||
+                    w.fur.toLowerCase().includes(currentSearch) ||
+                    w.pattern.toLowerCase().includes(currentSearch) ||
+                    w.eyes.toLowerCase().includes(currentSearch) ||
+                    (w.clothes && w.clothes.toLowerCase().includes(currentSearch))
+                );
+            }
+            
+            if (filteredWizards.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                grid.innerHTML = filteredWizards.map(createWizardCard).join('');
+                
+                // Animate new cards
+                gsap.from('.wizard-card', {
+                    duration: 0.6,
+                    y: 30,
+                    opacity: 0,
+                    stagger: 0.05,
+                    ease: 'power2.out'
+                });
+            }
+        }
 
-function esc(s){ return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : '' }
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderWizards();
+            });
+        });
 
-window.openTK = function(d){
-    const col = C[d.order] || C.Arcane;
-    const story = esc(d.suggestedStory||'').replace(/\n/g,'<br>').replace(/\*([^*]+)\*/g,'<em>$1</em>');
-    const traits = [['Fur',d.fur],['Pattern',d.pattern],['Eyes',d.eyes],['Clothes',d.clothes||'None'],['Realm',d.realm],['Rank','#'+d.rank.toLocaleString()]];
-    if(d.mouth) traits.push(['Mouth',d.mouth]);
+        // Order card filtering
+        document.querySelectorAll('.order-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const order = card.dataset.order;
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector(`[data-filter="${order}"]`).classList.add('active');
+                currentFilter = order;
+                renderWizards();
+                document.getElementById('wizardGrid').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
-    const actions = [];
-    if(d.marketplace) actions.push(`<a href="${d.marketplace}" target="_blank" class="tk-btn primary">View on Market</a>`);
-    if(d.twitter) actions.push(`<a href="https://x.com/${d.twitter.replace('@','')}" target="_blank" class="tk-btn secondary">${d.twitter}</a>`);
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            renderWizards();
+        });
 
-    tkInner.innerHTML = `
-        <div class="takeover-left">
-            <img class="takeover-img" src="${d.image}" alt="${esc(d.suggestedName)}">
-        </div>
-        <div class="takeover-right">
-            <span class="tk-badge" style="background:${col}">${d.order} Order</span>
-            <div class="tk-name">${esc(d.suggestedName)}</div>
-            <div class="tk-sub">#${d.id} · RANK ${d.rank.toLocaleString()}</div>
-            <div class="tk-traits">${traits.map(([l,v])=>`<div class="tkt"><div class="tkt-label">${l}</div><div class="tkt-val">${v}</div></div>`).join('')}</div>
-            ${actions.length ? `<div class="tk-actions">${actions.join('')}</div>` : ''}
-            ${story ? `<div class="tk-story"><h3>Origin Lore</h3><p>${story}</p></div>` : ''}
-            <div class="tk-fp"><a href="/wizard/${d.id}">View Full Page →</a></div>
-        </div>
-    `;
-    tkBg.classList.add('open');
-    tk.classList.add('open');
-    document.body.style.overflow = 'hidden';
-};
+        // Modal functionality
+        function openModal(wizard) {
+            const modal = document.getElementById('wizardModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalImage.src = wizard.image;
+            modalImage.alt = wizard.suggestedName;
+            
+            modalContent.innerHTML = `
+                <h2 class="text-3xl font-display font-bold text-${getOrderColor(wizard.order)} mb-2">
+                    ${wizard.suggestedName}
+                </h2>
+                <p class="text-lg text-gray-300 mb-6">${wizard.realm} • ${wizard.order} Order</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <h4 class="font-semibold text-white mb-2">Traits</h4>
+                        <div class="space-y-1 text-sm text-gray-300">
+                            <p><span class="text-gray-400">Fur:</span> ${wizard.fur} ${wizard.pattern}</p>
+                            <p><span class="text-gray-400">Eyes:</span> ${wizard.eyes}</p>
+                            <p><span class="text-gray-400">Clothes:</span> ${wizard.clothes || 'None'}</p>
+                            <p><span class="text-gray-400">Rank:</span> ${wizard.rank}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-white mb-2">Links</h4>
+                        <div class="space-y-2">
+                            ${wizard.marketplace ? `<a href="${wizard.marketplace}" target="_blank" class="block text-${getOrderColor(wizard.order)} hover:underline text-sm">View on Marketplace</a>` : ''}
+                            ${wizard.twitter ? `<a href="https://twitter.com/${wizard.twitter}" target="_blank" class="block text-${getOrderColor(wizard.order)} hover:underline text-sm">Follow on Twitter</a>` : ''}
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Origin Story</h4>
+                    <div class="text-sm text-gray-300 leading-relaxed max-h-64 overflow-y-auto">
+                        ${wizard.suggestedStory.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            gsap.from('.modal-content > div', {
+                duration: 0.4,
+                scale: 0.9,
+                opacity: 0,
+                ease: 'power2.out'
+            });
+        }
 
-function closeTK(){
-    tkBg.classList.remove('open');
-    tk.classList.remove('open');
-    document.body.style.overflow = '';
-}
-document.getElementById('tkClose').addEventListener('click', closeTK);
-tkBg.addEventListener('click', closeTK);
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeTK() });
+        function closeModal() {
+            document.getElementById('wizardModal').classList.add('hidden');
+        }
 
-// Init ribbon
-document.querySelectorAll('.ribbon-seg').forEach(s => s.classList.add('active'));
-render();
-})();
-</script>
-<script src="nav.js" defer></script>
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
+
+        // Event delegation for wizard cards
+        document.getElementById('wizardGrid').addEventListener('click', (e) => {
+            const card = e.target.closest('.wizard-card');
+            if (card) {
+                const wizard = JSON.parse(card.dataset.wizard);
+                openModal(wizard);
+            }
+        });
+
+        // Initialize
+        renderWizards();
+    </script>
 </body>
 </html>
