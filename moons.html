@@ -193,20 +193,18 @@
         .scene-title {
             position: fixed; top: 80px; left: 0; right: 0; text-align: center; z-index: 10;
             pointer-events: none; user-select: none;
-            opacity: 0; transition: opacity 0.6s ease;
         }
-        .scene-title.visible { opacity: 1; }
         .scene-title h1 {
-            font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: 0.15em;
-            background: linear-gradient(135deg, #ffd700 0%, #c9a86c 40%, #e8d5a3 70%, #ffd700 100%);
-            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; animation: shimmer 4s ease-in-out infinite;
+            font-family: 'UnifrakturMaguntia', 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; letter-spacing: 0.08em;
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(201,168,108,0.4);
         }
         .scene-title p {
+            font-family: var(--font-body);
             font-size: clamp(0.85rem, 1.6vw, 1.1rem); color: rgba(245,245,247,0.5);
             margin-top: 6px; letter-spacing: 0.05em;
         }
-        @keyframes shimmer { 0%,100% { background-position: 0% center; } 50% { background-position: 200% center; } }
 
         /* ── Info Panel ── */
         .info-panel {
@@ -315,6 +313,8 @@
     <p>The Seven Moons of Pawtheon</p>
 </div>
 
+<!-- Info Panel Backdrop -->
+<div id="panelBackdrop" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:40;opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
 <!-- Info Panel -->
 <div class="info-panel" id="infoPanel">
     <button class="info-panel-close" id="infoPanelClose">✕</button>
@@ -640,15 +640,26 @@ function getMagicPower(p) {
 // ── Info panel logic ──
 const infoPanel = document.getElementById('infoPanel');
 const infoPanelContent = document.getElementById('infoPanelContent');
-document.getElementById('infoPanelClose').addEventListener('click', (e) => {
-    e.stopPropagation();
+const panelBackdrop = document.getElementById('panelBackdrop');
+
+function closePanel() {
     infoPanel.classList.remove('open');
+    panelBackdrop.style.opacity = '0';
+    panelBackdrop.style.pointerEvents = 'none';
     selectedMoon = null;
-});
-// Stop clicks on the panel from reaching the canvas
+}
+
+function openPanel() {
+    infoPanel.classList.add('open');
+    panelBackdrop.style.opacity = '1';
+    panelBackdrop.style.pointerEvents = 'auto';
+}
+
+document.getElementById('infoPanelClose').addEventListener('click', (e) => { e.stopPropagation(); closePanel(); });
+panelBackdrop.addEventListener('click', (e) => { e.stopPropagation(); closePanel(); });
+// Stop clicks on panel from reaching canvas
 infoPanel.addEventListener('pointerdown', (e) => e.stopPropagation());
 infoPanel.addEventListener('pointerup', (e) => e.stopPropagation());
-infoPanel.addEventListener('click', (e) => e.stopPropagation());
 
 let hoveredMoon = null;
 let selectedMoon = null;
@@ -677,7 +688,7 @@ function showMoonInfo(m, time) {
         <div class="info-row"><span class="info-label">Wizards</span><span class="info-value">${m.wizards}</span></div>
         <div class="lore-text">"${m.lore}"</div>
     `;
-    infoPanel.classList.add('open');
+    openPanel();
 }
 
 // ── Interaction ──
@@ -764,18 +775,9 @@ window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// ── Font load → fade in title (prevents FOUT glitch) ──
-if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
-        document.querySelector('.scene-title').classList.add('visible');
-    });
-} else {
-    // Fallback: show after short delay
-    setTimeout(() => document.querySelector('.scene-title').classList.add('visible'), 300);
-}
+
 </script>
 
-<script src="sparkle.js" defer></script>
-<script src="orb-cursor.js" defer></script>
+<!-- sparkle.js and orb-cursor.js removed: conflict with Three.js cursor/canvas -->
 </body>
 </html>
