@@ -36,9 +36,9 @@
     --active-color: var(--gold);
     --active-glow: var(--gold-dim);
 
-    --font-display: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
-    --font-body: 'Cormorant Garamond', Georgia, serif;
-    --font-mono: 'Cormorant Garamond', Georgia, serif;
+    --font-display: 'Cinzel', Georgia, serif;
+    --font-body: 'Cinzel', Georgia, serif;
+    --font-mono: 'Cinzel', Georgia, serif;
 
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
