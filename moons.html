@@ -233,35 +233,8 @@
 
         /* Moon cards removed — details via click panel */
 
-        /* ── Scroll indicator ── */
-        .scroll-hint {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10;
-            color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
-            pointer-events: none; animation: bob 2s ease-in-out infinite;
-        }
-        @keyframes bob { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
-
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-        }
-        
-        /* ── Footer ────────────────────────────────── */
-        .footer {
-            margin-top: 5rem;
-            padding: 2.5rem clamp(16px, 4vw, 48px) 3rem;
-            background: var(--bg-elevated);
-            border-top: 1px solid var(--border);
-        }
-        .footer-content { text-align: center; }
-        .footer-logo {
-            font-family: var(--font-display);
-            font-size: 18px; font-weight: 900;
-            color: var(--gold); margin-bottom: 8px;
-            letter-spacing: 0.04em; text-transform: uppercase;
-        }
-        .footer-text {
-            font-size: 13px; color: var(--text-dim);
-            font-family: var(--font-body); letter-spacing: 0.08em; text-transform: uppercase;
         }
     </style>
 </head>
@@ -301,16 +274,7 @@
     <div id="infoPanelContent"></div>
 </div>
 
-<div class="scroll-hint" id="scrollHint">Click a moon to explore</div>
-
 <!-- Moon details shown via click panel -->
-
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">The Order of 86</div>
-        <div class="footer-text">86 Doginal Wizard Dogs on Dogecoin</div>
-    </div>
-</footer>
 
 <script src="nav.js" defer></script>
 
