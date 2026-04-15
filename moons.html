@@ -379,43 +379,60 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
     const theta = Math.atan2(_v.x, _v.z); // -PI to PI
     const phi = Math.acos(_v.y);           // 0 (north) to PI (south)
 
-    // Find closest realm with smooth blending
-    let totalW = 0;
-    let cr = 0, cg = 0, cb = 0;
+    // Find closest realm - sharper boundaries
+    let closestRealm = null;
+    let minDist = Infinity;
+    let secondMinDist = Infinity;
+    
     for (const realm of realmRegions) {
-        // Angular distance on sphere
         const dTheta = theta - realm.theta;
         const dPhi = phi - realm.phi;
         const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
-        const w = Math.pow(Math.max(0, 1 - dist / 1.8), 3);
-        if (w > 0) {
-            const t = Math.random() * 0.3;
-            const mr = realm.r * (1-t) + realm.r2 * t;
-            const mg = realm.g * (1-t) + realm.g2 * t;
-            const mb = realm.b * (1-t) + realm.b2 * t;
-            cr += mr * w; cg += mg * w; cb += mb * w;
-            totalW += w;
+        if (dist < minDist) {
+            secondMinDist = minDist;
+            minDist = dist;
+            closestRealm = realm;
+        } else if (dist < secondMinDist) {
+            secondMinDist = dist;
         }
     }
 
-    if (totalW > 0) {
-        colors[i*3] = cr / totalW;
-        colors[i*3+1] = cg / totalW;
-        colors[i*3+2] = cb / totalW;
+    // Calculate blend factor - sharper transition between realms
+    const blendWidth = 0.25;
+    const edgeFactor = Math.max(0, Math.min(1, (secondMinDist - minDist) / blendWidth));
+    
+    // Noise for texture variation within realms
+    const noiseVal = fbm(_v.x * 3, _v.y * 3, _v.z * 3, 2);
+    
+    if (closestRealm && minDist < 1.4) {
+        // Mix between primary and secondary color based on noise
+        const t = 0.3 + noiseVal * 0.4; // 0.1 to 0.7 range
+        let r = closestRealm.r * (1-t) + closestRealm.r2 * t;
+        let g = closestRealm.g * (1-t) + closestRealm.g2 * t;
+        let b = closestRealm.b * (1-t) + closestRealm.b2 * t;
+        
+        // Add subtle variation
+        r += noiseVal * 0.08;
+        g += noiseVal * 0.08;
+        b += noiseVal * 0.08;
+        
+        // At realm boundaries, blend to ocean
+        if (edgeFactor < 0.3) {
+            const oceanBlend = 1 - edgeFactor / 0.3;
+            r = r * (1-oceanBlend) + 0.08 * oceanBlend;
+            g = g * (1-oceanBlend) + 0.25 * oceanBlend;
+            b = b * (1-oceanBlend) + 0.55 * oceanBlend;
+        }
+        
+        colors[i*3] = Math.max(0, Math.min(1, r));
+        colors[i*3+1] = Math.max(0, Math.min(1, g));
+        colors[i*3+2] = Math.max(0, Math.min(1, b));
     } else {
-        // Ocean fill for gaps
-        const t = Math.random() * 0.2;
-        colors[i*3] = 0.05 + t * 0.1;
-        colors[i*3+1] = 0.15 + t * 0.15;
-        colors[i*3+2] = 0.35 + t * 0.3;
-    }
-
-    // Add ocean between realms where influence is weak
-    if (totalW < 0.15) {
-        const oceanT = Math.max(0, 1 - totalW / 0.15);
-        colors[i*3] = colors[i*3] * (1-oceanT) + 0.06 * oceanT;
-        colors[i*3+1] = colors[i*3+1] * (1-oceanT) + 0.18 * oceanT;
-        colors[i*3+2] = colors[i*3+2] * (1-oceanT) + 0.45 * oceanT;
+        // Deep ocean
+        const t = Math.random() * 0.15 + noiseVal * 0.1;
+        colors[i*3] = 0.03 + t * 0.08;
+        colors[i*3+1] = 0.12 + t * 0.15;
+        colors[i*3+2] = 0.35 + t * 0.25;
     }
 }
 
@@ -478,8 +495,8 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
         height = height * 0.1 - 0.08;
     }
 
-    // Apply displacement along normal
-    const displacement = height * 0.4;
+    // Apply displacement along normal - AMPLIFIED for visibility
+    const displacement = height * 0.6;
     posArr[i*3] += n.x * displacement;
     posArr[i*3+1] += n.y * displacement;
     posArr[i*3+2] += n.z * displacement;
@@ -489,7 +506,7 @@ planetGeo.computeVertexNormals();
 
 planetGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const planet = new THREE.Mesh(planetGeo, new THREE.MeshStandardMaterial({
-    vertexColors: true, roughness: 0.8, metalness: 0.05, flatShading: false
+    vertexColors: true, roughness: 0.9, metalness: 0.02, flatShading: true
 }));
 scene.add(planet);
 
@@ -506,31 +523,45 @@ const atmoMat = new THREE.MeshBasicMaterial({
 const atmosphere = new THREE.Mesh(atmoGeo, atmoMat);
 scene.add(atmosphere);
 
-// ── Cloud Layer ──
-const cloudGeo = new THREE.IcosahedronGeometry(2.45, 2);
+// ── Cloud Layer (sparse, only over oceans) ──
+const cloudGeo = new THREE.IcosahedronGeometry(2.42, 2);
 const cloudPos = cloudGeo.attributes.position.array;
 const cloudColors = new Float32Array(cloudGeo.attributes.position.count * 3);
 for (let i = 0; i < cloudGeo.attributes.position.count; i++) {
     const x = cloudPos[i*3], y = cloudPos[i*3+1], z = cloudPos[i*3+2];
     const n = _v.set(x, y, z).normalize();
-    // Only show clouds in certain areas
-    const cloudNoise = fbm(x*2, y*2, z*2, 3);
-    const alpha = cloudNoise > 0.2 ? 0.3 + cloudNoise * 0.3 : 0;
-    cloudColors[i*3] = 0.9;
-    cloudColors[i*3+1] = 0.95;
+    const theta = Math.atan2(n.x, n.z);
+    const phi = Math.acos(n.y);
+    
+    // Only show clouds over ocean areas (between realms)
+    let minRealmDist = Infinity;
+    for (const realm of realmRegions) {
+        const dTheta = theta - realm.theta;
+        const dPhi = phi - realm.phi;
+        const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
+        minRealmDist = Math.min(minRealmDist, dist);
+    }
+    
+    // Clouds only in ocean gaps
+    const cloudNoise = fbm(x*2, y*2, z*2, 2);
+    const isOcean = minRealmDist > 0.6;
+    const alpha = (isOcean && cloudNoise > 0.3) ? 0.2 + cloudNoise * 0.2 : 0;
+    
+    cloudColors[i*3] = 0.95;
+    cloudColors[i*3+1] = 0.98;
     cloudColors[i*3+2] = 1.0;
-    // Displace clouds outward
-    const d = 1 + alpha * 0.1;
-    cloudPos[i*3] = n.x * 2.45 * d;
-    cloudPos[i*3+1] = n.y * 2.45 * d;
-    cloudPos[i*3+2] = n.z * 2.45 * d;
+    
+    const d = 1 + alpha * 0.05;
+    cloudPos[i*3] = n.x * 2.42 * d;
+    cloudPos[i*3+1] = n.y * 2.42 * d;
+    cloudPos[i*3+2] = n.z * 2.42 * d;
 }
 cloudGeo.attributes.position.needsUpdate = true;
 cloudGeo.setAttribute('color', new THREE.BufferAttribute(cloudColors, 3));
 const cloudMat = new THREE.MeshBasicMaterial({
     vertexColors: true,
     transparent: true,
-    opacity: 0.4,
+    opacity: 0.25,
     blending: THREE.NormalBlending,
     depthWrite: false
 });
