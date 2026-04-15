@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost in the Void — The Order of 86</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="shared.css">
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .error-code {
+            font-size: clamp(120px, 25vw, 280px);
+            font-weight: 900;
+            color: var(--gold);
+            opacity: 0.15;
+            line-height: 1;
+            margin-bottom: -60px;
+            pointer-events: none;
+        }
+        
+        .error-title {
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            font-size: 18px;
+            color: var(--text-dim);
+            max-width: 500px;
+            margin-bottom: 2rem;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 32px;
+            background: var(--gold);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s var(--ease-out);
+        }
+        
+        .btn:hover {
+            background: var(--gold-bright);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+        }
+        
+        .btn-outline:hover {
+            background: var(--gold-dim);
+        }
+        
+        .void-animation {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .void-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(123,84,201,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(232,93,21,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(45,126,196,0.04) 0%, transparent 70%);
+            animation: voidDrift 20s ease-in-out infinite;
+        }
+        
+        @keyframes voidDrift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="void-animation"></div>
+    
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Lost in the Void</h1>
+        <p class="error-message">
+            The path you seek has been erased by the Great Silence. 
+            Perhaps the archives hold what you seek, or perhaps it was never meant to be found.
+        </p>
+        <div class="error-actions">
+            <a href="/" class="btn">Return to the Order</a>
+            <a href="/lore" class="btn btn-outline">Consult the Archives</a>
+        </div>
+    </div>
+    
+    <script src="orb-cursor.js"></script>
+</body>
+</html>

@@ -19,7 +19,7 @@ try {
 }
 
 // Pre-compress heavy static files at startup
-const PRECOMPRESS = ['index.html', 'content.html', 'map.html', 'game.html', 'moons.html', 'lore.html', 'wizard-dogs-data.js', 'wizards-data.js', 'sparkle.js', 'orb-cursor.js', 'starfield.js', 'wizard-stories.json', 'marketplace-data.json'];
+const PRECOMPRESS = ['index.html', 'content.html', 'map.html', 'game.html', 'moons.html', 'lore.html', 'wizard-dogs-data.js', 'wizards-data.js', 'orb-cursor.js', 'starfield.js'];
 for (const file of PRECOMPRESS) {
     const fp = path.join(__dirname, file);
     try {
@@ -191,7 +191,8 @@ http.createServer(async (req, res) => {
         'Cache-Control': cachePolicy(ext),
         'X-Content-Type-Options': 'nosniff',
         'X-Frame-Options': 'SAMEORIGIN',
-        'Referrer-Policy': 'strict-origin-when-cross-origin'
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains'
     };
 
     // Check in-memory cache first
@@ -203,8 +204,19 @@ http.createServer(async (req, res) => {
 
     fs.readFile(resolved, (err, data) => {
         if (err) {
-            res.writeHead(404, { 'Content-Type': 'text/plain' });
-            res.end('Not Found');
+            // Check for custom 404 page
+        const notFoundPath = path.join(ROOT, '404.html');
+        fs.readFile(notFoundPath, (err404, notFoundData) => {
+            if (err404) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.end('Not Found');
+            } else {
+                sendResponse(req, res, 404, {
+                    'Content-Type': 'text/html',
+                    'Cache-Control': 'no-cache'
+                }, notFoundData);
+            }
+        });
             return;
         }
         // Cache static files under 100KB (skip large GIFs/images)
