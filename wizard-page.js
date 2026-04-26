@@ -19,7 +19,7 @@ function renderWizardPage(dog, baseUrl) {
     const storyHtml = esc(dog.suggestedStory || '').replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
 
     const links = [];
-    if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="pill pill-gold">🐕 View on Marketplace</a>`);
+    if (dog.marketplace) links.push(`<a href="${dog.marketplace}" target="_blank" class="pill pill-gold">View on Marketplace</a>`);
     if (dog.twitter) links.push(`<a href="https://x.com/${dog.twitter.replace('@','')}" target="_blank" class="pill pill-blue">𝕏 ${dog.twitter}</a>`);
 
     return `<!DOCTYPE html>
@@ -106,15 +106,15 @@ function renderWizardPage(dog, baseUrl) {
         </div>
 
         ${storyHtml ? `<div class="story-section">
-            <div class="story-title">📜 Lore</div>
+            <div class="story-title">Lore</div>
             <div class="story">${storyHtml}</div>
         </div>` : ''}
 
         <div class="share-section">
             <div class="share-title">Share this wizard</div>
             <div class="share-btns">
-                <a class="share-btn" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Meet ${name} — ${dog.order} Order wizard from ${dog.realm} 🧙‍♂️\n\n`)}&url=${encodeURIComponent(canonicalUrl)}" target="_blank">𝕏 Share on X</a>
-                <button class="share-btn" onclick="navigator.clipboard.writeText('${canonicalUrl}');this.textContent='✓ Copied!'">📋 Copy Link</button>
+                <a class="share-btn" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Meet ${name} — ${dog.order} Order wizard from ${dog.realm}\n\n`)}&url=${encodeURIComponent(canonicalUrl)}" target="_blank">𝕏 Share on X</a>
+                <button class="share-btn" onclick="navigator.clipboard.writeText('${canonicalUrl}');this.textContent='✓ Copied!'">Copy Link</button>
             </div>
         </div>
     </div>
