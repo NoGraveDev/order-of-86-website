@@ -8,7 +8,7 @@
         { name: 'Deep',    rgb: '30,144,255' },
         { name: 'Wild',    rgb: '34,139,34' },
         { name: 'Arcane',  rgb: '123,84,201' },
-        { name: 'Heart',   rgb: '197,91,183' },
+        { name: 'Dream',   rgb: '197,91,183' },
     ];
 
     var colorIndex = 0;

@@ -303,7 +303,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // ── Dog Data loaded from wizard-dogs-map.js (as global) ──
 
-const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep:'#3498DB', Radiant:'#F1C40F', Heart:'#FF69B4', Wanderer:'#9966ff' };
+const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep:'#3498DB', Radiant:'#F1C40F', Dream:'#FF69B4', Wanderer:'#9966ff' };
 
 // ── Realm Data ──
 const realms = {
@@ -789,7 +789,7 @@ const towerData = [
     { name:'Tidewatch', order:'Deep', color:0x3498DB, x:-50, z:-380, desc:'Blue sentinel partially submerged where waves meet stone.' },
     { name:'Heartwood Spire', order:'Wild', color:0x2ECC71, x:250, z:350, desc:'Living tower grown from the roots of the great Heartwood.' },
     { name:'Violet Citadel', order:'Arcane', color:0x9B6EFF, x:-50, z:340, desc:'Ancient purple fortress housing arcane archives.' },
-    { name:'Heartstring Tower', order:'Heart', color:0xFF69B4, x:0, z:200, desc:'Pink crystalline tower resonating with emotional bonds.' }
+    { name:'Dream Spire', order:'Dream', color:0xFF69B4, x:0, z:200, desc:'Pink crystalline tower resonating with dream-threads.' }
 ];
 
 for (const td of towerData) {
@@ -843,7 +843,7 @@ const moonData = [
     { name:'Deepwell',   color:0x3498DB, order:'Deep',    cycle:13, wizards:13 },
     { name:'Evergreen',  color:0x2ECC71, order:'Wild',    cycle:18, wizards:18 },
     { name:'Umbra',      color:0x9B6EFF, order:'Arcane',  cycle:14, wizards:14 },
-    { name:'Roseglow',   color:0xFF69B4, order:'Heart',   cycle:11, wizards:11 },
+    { name:'Roseglow',   color:0xFF69B4, order:'Dream',   cycle:11, wizards:11 },
     { name:'Palehowl',   color:0xdddddd, order:'Starter', cycle:30, wizards:0  }
 ];
 const moonGroup = new THREE.Group();

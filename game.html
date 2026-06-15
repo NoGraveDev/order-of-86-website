@@ -133,7 +133,7 @@ canvas{border:2px solid #3a2a1a;cursor:crosshair;image-rendering:pixelated}
 <button class="tower-btn" onclick="selectTower(2)"><span class="dot" style="background:#2080e0"></span>Deep<span class="cost">25</span></button>
 <button class="tower-btn" onclick="selectTower(3)"><span class="dot" style="background:#30a030"></span>Wild<span class="cost">25</span></button>
 <button class="tower-btn" onclick="selectTower(4)"><span class="dot" style="background:#9040d0"></span>Arcane<span class="cost">40</span></button>
-<button class="tower-btn" onclick="selectTower(5)"><span class="dot" style="background:#e060a0"></span>Heart<span class="cost">30</span></button>
+<button class="tower-btn" onclick="selectTower(5)"><span class="dot" style="background:#e060a0"></span>Dream<span class="cost">30</span></button>
 <h3>📋 Info</h3>
 <div id="info">Click a tower type to place it, or click a placed tower for details.</div>
 <div style="display:flex;gap:4px">
@@ -186,7 +186,7 @@ const TOWERS=[
 {name:'Deep Tower',order:'Deep',color:'#2080e0',cost:25,range:110,damage:8,rate:30,splash:0,type:'deep',desc:'Ice bolt, slows enemies'},
 {name:'Wild Tower',order:'Wild',color:'#30a030',cost:25,range:100,damage:10,rate:50,splash:60,type:'wild',desc:'Vine whip, poison DOT'},
 {name:'Arcane Tower',order:'Arcane',color:'#9040d0',cost:40,range:200,damage:35,rate:80,splash:0,type:'arcane',desc:'Long range arcane bolt'},
-{name:'Heart Tower',order:'Heart',color:'#e060a0',cost:30,range:0,damage:0,rate:0,splash:0,type:'heart',desc:'Boosts adjacent towers +50%'}
+{name:'Dream Tower',order:'Dream',color:'#e060a0',cost:30,range:0,damage:0,rate:0,splash:0,type:'dream',desc:'Boosts adjacent towers +50%'}
 ];
 
 const UPGRADE_COSTS=[20,35];
@@ -226,7 +226,7 @@ const FLAVOR=[
 "The Deep wizards call upon frozen tides.",
 "Wildgrowth vines entangle the darkness.",
 "Arcane bolts pierce the veil of shadow!",
-"The Heart amplifies the pack's resolve.",
+"The Dream amplifies the pack's resolve.",
 "Crystal Lizards scurry through the gloom...",
 "Shadow Owls darken the Pawtheon skies!",
 "A Rot Titan shakes the earth!",

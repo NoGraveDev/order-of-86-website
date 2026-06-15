@@ -4,12 +4,12 @@ const fs = require('fs');
 
 const ORDER_COLORS = {
     Flame: '#ff4500', Radiant: '#ffd700', Deep: '#1e90ff',
-    Wild: '#228b22', Arcane: '#7b54c9', Heart: '#c55bb7', Wanderer: '#7b54c9'
+    Wild: '#228b22', Arcane: '#7b54c9', Dream: '#c55bb7', Wanderer: '#7b54c9'
 };
 
 const ORDER_EMOJI = {
     Flame: '🔥', Radiant: '☀️', Deep: '🌊',
-    Wild: '🌿', Arcane: '🔮', Heart: '💗', Wanderer: '🌀'
+    Wild: '🌿', Arcane: '🔮', Dream: '💗', Wanderer: '🌀'
 };
 
 const cardCache = new Map();
