@@ -60,7 +60,7 @@ The howl struck the seven moons. And the moons, silent since the beginning, bega
 
 **Umbra** whispered purple: *What connects everything?*
 
-**Roseglow** hummed pink, making the invisible bonds between dogs visible to the heart.
+**Roseglow** hummed pink, opening the sleeping mind to worlds that exist only behind closed eyes.
 
 And finally, smallest and faintest, **Palehowl** whispered. The moon of possibility. The moon of every dog who would ever live but had not yet been born.
 
