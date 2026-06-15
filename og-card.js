@@ -13,6 +13,7 @@ const ORDER_EMOJI = {
 };
 
 const cardCache = new Map();
+const CACHE_VERSION = 2; // bump to invalidate cached OG cards
 
 function roundRect(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -29,7 +30,8 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 async function generateOGCard(dog) {
-    if (cardCache.has(dog.id)) return cardCache.get(dog.id);
+    const cacheKey = `${dog.id}_v${CACHE_VERSION}`;
+    if (cardCache.has(cacheKey)) return cardCache.get(cacheKey);
 
     const W = 1200, H = 630;
     const canvas = createCanvas(W, H);
@@ -233,7 +235,7 @@ async function generateOGCard(dog) {
     }
 
     const buf = canvas.toBuffer('image/png');
-    cardCache.set(dog.id, buf);
+    cardCache.set(cacheKey, buf);
     return buf;
 }
 
