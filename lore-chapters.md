@@ -12,27 +12,27 @@
 
 ### The Silence Before
 
-In the time before time, the world was young and wild. There were no Wizards, no towers, no Orders. There were only dogs, ordinary and natural, running in packs across open plains and tracking prey through ancient forests, howling at a sky that never howled back.
+In the time before time, the world was primal and vast. There were no Wizards, no Towers, no Orders. There were only dogs, ordinary and natural, running in packs across open plains, howling at a sky that never howled back.
 
-Above them hung seven moons. Silent. Dormant. Beautiful but inert.
+Above them hung seven moons. Silent. Dormant. Beautiful but empty.
 
-The dogs did not write their histories. They remembered through story and scent. They did not know they were waiting.
+The packs followed ancient trails worn by countless generations. None could see where those trails truly led.
 
-But they were.
+The world was carrying them toward a destiny of its own.
 
 ---
 
 ### The Arrival
 
-It came from beyond. Not from another land. There were no other lands. Not from the sky. It came from *between*, from the spaces that exist only when you look past the edge of what is real.
+It came from beyond. Not from another land. There were no other lands. Not from the sky. It came from between, from the spaces that exist only when you look past the edge of what is real.
 
 It had traveled for eons, searching for an answer to one question: *Where does magic truly belong?*
 
 Magic had existed on other worlds. Briefly. In flashes. But magic had never found a home. Never found a species that could hold it without being destroyed.
 
-Then it found this world. It looked down and saw dogs. Ordinary dogs, running and playing and hunting, looking at their pack-mates with something deeper than instinct, something that did not yet have a name.
+Then it found The Pawtheon. It looked down and saw dogs. Ordinary dogs, running and playing and hunting, looking at their pack-mates with something deeper than instinct, something that did not yet have a name.
 
-It felt recognition. These creatures, with loyalty that outlasted reason, with love that made no evolutionary sense. These were the vessels magic had been waiting for. Not because they were powerful. Because they were *devoted*.
+It felt recognition. These creatures, with loyalty that outlasted reason, with love that made no evolutionary sense. These were the vessels magic had been waiting for. Not because they were powerful. Because they were devoted.
 
 It descended and took a form for the first time, not because it needed one, but because power must be witnessed to be real.
 
@@ -46,7 +46,7 @@ And howling.
 
 ### The First Howl
 
-The sound was not loud. It was *deep*. It resonated in frequencies no ear could hear. It vibrated through stone and water and bone and soul. It traveled not through air but through *possibility*, through the spaces between atoms where magic lives.
+The sound was not loud. It was deep. It resonated in frequencies no ear could hear. It vibrated through stone and water and bone and soul. It traveled not through air but through possibility, through the spaces between atoms where magic lives.
 
 The howl struck the seven moons. And the moons, silent since the beginning, began to sing.
 
@@ -54,11 +54,11 @@ The howl struck the seven moons. And the moons, silent since the beginning, bega
 
 **Solaris** followed, yellow and truth-bearing, cutting through shadows.
 
-**Deepwell** pulsed blue, massive and patient, pulling with metaphysical force.
+**Deepwell** soaked blue, massive and patient, pulling with metaphysical force.
 
-**Evergreen** sang green, and everything it touched became more itself.
+**Evergreen** sang green, and everything it touched became more alive.
 
-**Umbra** whispered purple: *What connects everything?*
+**Umbra** pulsed purple, revealing the hidden threads that connected stone to star.
 
 **Roseglow** hummed pink, opening the sleeping mind to worlds that exist only behind closed eyes.
 
@@ -70,39 +70,21 @@ The seven moons sang. The silver wolf howled in counterpoint. And together they 
 
 ### The Convergence
 
-It was a *flood*.
+It was a flood.
 
 Magical energy poured from the moons and the wolf into the world below. It did not discriminate. It simply filled every space that would hold it, like water filling a basin, like light filling a dark room.
 
-The dogs felt it first as a tingling in their paws. Then as a warmth in their chests. Then as a *presence*, something alive and aware, looking at them from the inside.
+The dogs felt it first as a tingling in their paws. Then as a warmth in their chests. Then as a presence, something alive and aware, looking at them from the inside.
 
-Magic never forces. It *offers*. And the dogs, being dogs, accepted.
-
-The changes came over generations. Dogs grew larger, enough to stand on two legs, to manipulate tools with more dexterous paws. Their minds expanded. Not replaced. Nothing was lost. The scent-tracking, the pack loyalty, the predatory cunning, all remained. But they gained the ability to *abstract*. To imagine things that did not exist. To plan for futures they would not live to see.
+The changes came over generations. Dogs grew larger, enough to stand on two legs, to manipulate tools with more dexterous paws. Their minds expanded. Not replaced. Nothing was lost. The scent-tracking, the pack loyalty, the predatory cunning, all remained. But they gained the ability to abstract. To imagine things that did not exist. To plan for futures they would not live to see.
 
 Most importantly, they gained the ability to feel the Current. A network of mystical energy formed from the Convergence, running through the world like veins through a body. The dogs learned to sense it. To touch it.
 
 But they could not yet shape it. Not with purpose. Not with discipline. The magic was there, humming beneath their paws. But it had no focus. No form.
 
----
-
-### The Gray Dog
-
-The silver wolf watched the world change from the highest peak. He saw the dogs grow. He saw them gather in territories that responded to their magic. Orange-moon dogs to fire. Green-moon dogs to forest. Blue-moon dogs to depth and darkness. He saw them build stone circles that focused the Current. Meeting places where packs could trade and negotiate and tell stories around fires.
-
-He saw them feel the magic but not command it. He saw them touch the Current but not shape it. He saw love and loyalty and courage, all the things that had drawn him to this world, but he saw them scattered. Unfocused. Like light without a lens.
-
-The wolf knew what had to happen next.
-
-He became smaller. Not diminished. Not less. Just... smaller. The kind of dog that would not be noticed in a crowd. A simple gray dog, common and unremarkable, still wearing his round glasses on a much smaller face. He walked on four legs through the world he had made, the first student of the magic he had created.
-
-For years he walked. Through every breed-realm. Through every village. He sat quietly at the edges of fires. He watched puppies play. He watched elders sleep. He watched the dogs howl at the seven moons and felt the Current humming in their hearts.
-
-And he knew.
-
 They had magic. They had loyalty. They had everything they needed to become great.
 
-But they were missing something. Something that would focus the light. Something that would turn raw potential into purpose. Something that would make them not just magical dogs, but *Wizards*.
+But they were missing something. Something that would focus the light. Something that would turn raw potential into purpose. Something that would make them not just magical dogs, but Wizards.
 
 The gray dog climbed back to the highest peak. He looked out at all seven realms, at the dogs living and loving and dying beneath the moons, and he felt the weight of everything he had seen. Every pack that had fractured. Every pup that had been born with gifts but no teacher. Every moment when magic had sparked in a dog's heart and found nowhere to go.
 
