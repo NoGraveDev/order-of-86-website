@@ -28,7 +28,7 @@ It came from beyond. Not from another land. There were no other lands. Not from 
 
 It had traveled for eons, searching for an answer to one question: *Where does magic truly belong?*
 
-Magic had existed on other worlds. Briefly. In flashes. But magic had never found a home. Never found a species that could hold it without being destroyed.
+Magic had existed on other worlds. Briefly. In flashes. Magic had never found a home. Never found a species that could hold it without being destroyed.
 
 Then it found The Pawtheon. It looked down and saw dogs. Ordinary dogs, running and playing and hunting, looking at their pack-mates with something deeper than instinct, something that did not yet have a name.
 
@@ -40,7 +40,7 @@ The form was a wolf the size of mountains, silver-white, shimmering, impossibly 
 
 Every dog on the planet looked up. They saw a silver wolf larger than the horizon, settling onto the highest peak, tilting his head back.
 
-And howling.
+He howled.
 
 ---
 
@@ -48,7 +48,7 @@ And howling.
 
 The sound was not loud. It was deep. It resonated in frequencies no ear could hear. It vibrated through stone and water and bone and soul. It traveled not through air but through possibility, through the spaces between atoms where magic lives.
 
-The howl struck the seven moons. And the moons, silent since the beginning, began to sing.
+The howl struck the seven moons. The moons, silent since the beginning, began to sing.
 
 **Emberhowl** woke first, orange and blazing, pouring warmth and courage.
 
@@ -62,9 +62,9 @@ The howl struck the seven moons. And the moons, silent since the beginning, bega
 
 **Roseglow** hummed pink, opening the sleeping mind to worlds that exist only behind closed eyes.
 
-And finally, smallest and faintest, **Palehowl** whispered. The moon of possibility. The moon of every dog who would ever live but had not yet been born.
+Finally, smallest and faintest, **Palehowl** whispered. The moon of possibility. The moon of every dog who would ever live but had not yet been born.
 
-The seven moons sang. The silver wolf howled in counterpoint. And together they created the **Lunar Convergence**.
+The seven moons sang. The silver wolf howled in counterpoint. Together they created the **Lunar Convergence**.
 
 ---
 
@@ -76,184 +76,130 @@ Magical energy poured from the moons and the wolf into the world below. It did n
 
 The dogs felt it first as a tingling in their paws. Then as a warmth in their chests. Then as a presence, something alive and aware, looking at them from the inside.
 
-The changes came over generations. Dogs grew larger, enough to stand on two legs, to manipulate tools with more dexterous paws. Their minds expanded. Not replaced. Nothing was lost. The scent-tracking, the pack loyalty, the predatory cunning, all remained. But they gained the ability to abstract. To imagine things that did not exist. To plan for futures they would not live to see.
+The changes came over generations. Dogs grew larger, enough to stand on two legs, to manipulate tools with more dexterous paws. Their minds expanded. Not replaced. Nothing was lost. The scent-tracking, the pack loyalty, the predatory cunning, all remained. They also gained the ability to abstract. To imagine things that did not exist. To plan for futures they would not live to see.
 
 Most importantly, they gained the ability to feel the Current. A network of mystical energy formed from the Convergence, running through the world like veins through a body. The dogs learned to sense it. To touch it.
 
-But they could not yet shape it. Not with purpose. Not with discipline. The magic was there, humming beneath their paws. But it had no focus. No form.
+They could not yet shape it. Not with purpose. Not with discipline. The magic was there, humming beneath their paws. It had no focus. No form.
 
 They had magic. They had loyalty. They had everything they needed to become great.
 
-But they were missing something. Something that would focus the light. Something that would turn raw potential into purpose. Something that would make them not just magical dogs, but Wizards.
+Something was still missing. Something that would focus the light. Something that would turn raw potential into purpose. Something that would make them not just magical dogs, but Wizards.
 
 The gray dog climbed back to the highest peak. He looked out at all seven realms, at the dogs living and loving and dying beneath the moons, and he felt the weight of everything he had seen. Every pack that had fractured. Every pup that had been born with gifts but no teacher. Every moment when magic had sparked in a dog's heart and found nowhere to go.
 
 He tilted his head back. His gray fur caught the light of all seven moons. His round glasses reflected the cosmos.
 
-And he howled, the second howl had begun.
+He howled. The Second Howl had begun.
 
 ---
 
 ## Chapter II: The Second Howl
 
-### The World Grows
+### The Echo
 
-For a time after the First Howl, Pawtheon was simple.
+The howl did not stop when the gray dog ran out of breath.
 
-Dogs lived in their breed-realms, guided by instinct and the faint hum of the Loyalty Network. There was no war because there was nothing to fight over. There was no politics because there were no decisions complex enough to require it. A dog in Frosthollow hunted. A dog in the Sunward Heights basked. A dog in the Deepwood explored. A dog in the Violet Highlands... talked. A great deal.
+The mountain answered first. Stone does not forget sound, and the unnamed peak had been waiting for this vibration since the First Howl created it. The resonance traveled down through bedrock, root, and river, through the invisible lattice of devotion that connected every pack to every other pack. The Loyalty Network sang back.
 
-The moons rose and fell in their cycles. Emberhowl blazed orange for eighteen days, then dimmed. Solaris burned gold for twelve. Deepwell's blue light pulsed for thirteen. Each moon's rhythm matched a number, though no dog yet understood why. The moons were beautiful. The moons were distant. The moons were *watching*.
+In the Ember Wastes, obsidian canyons rang like struck bells and rivers of magma surged white-hot with a courage that did not yet know its own name.
 
-The gray dog walked through all of it. He did not build a home. He did not start a pack. He visited each realm in turn, sitting quietly at the edges of villages, watching puppies play, watching elders sleep, watching the world learn to live.
+In Frosthollow, glaciers cracked along fault lines older than memory and the Frozen Lake of Echoes gave back a truth no living dog had ever heard.
 
-But something was missing.
+In the Sunward Heights, white stone cliffs reflected the howl until the air itself shimmered and truth cut through the eternal brightness.
 
-The dogs had magic, the ambient hum of the Loyalty Network, the instinctive abilities each breed possessed, the faint resonance each dog felt when their moon was full. But they did not have *purpose*. They did not have *mastery*. They had the raw material of power without the discipline to shape it.
+In the Deepwood, the Heartwood tree shivered its leaves in a wind that blew from no direction and ancient bark rearranged its patterns into living shapes that would take centuries to read.
 
-The gray dog saw this. His round glasses caught the light of seven moons on a night when all six Order moons blazed at once, a rare conjunction that bathed Pawtheon in competing colors.
+In the Abyssal Reaches, bioluminescent crystals in the Mirror Caves doubled their reflections, showing the silhouette of a gray dog howling on a mountain none of them had ever seen, and deep water stirred with knowledge no living dog had ever touched.
 
-He understood what needed to happen.
+In the Violet Highlands, every inscription on the Archivum's walls flickered at once, terraced slopes vibrated with hidden patterns at a single frequency, and the mist turned gold, then violet, then gray.
 
----
+In the Shadowmire, the Blot Pools warmed, decay paused in the Zombie Crypts as if even rot wanted to listen, fungi pulsed in rhythm with dreams not yet dreamed, and Palehowl brightened against the perpetual twilight.
 
-### The Choice
+The gray dog stood alone on the unnamed mountain. He felt every pack, every den, every territory. He knew Pawtheon still needed protectors. The magic flooding through the world was wild, raw, hungry. Left unchecked, it would tear holes in reality. It would turn loyal dogs into weapons. It would make the realms war with themselves.
 
-The gray dog climbed to the highest peak in Pawtheon, a mountain that had no name because no dog had thought to name it. It stood on neutral ground, touching no breed-realm's border, claimed by no pack's territory.
+The moons knew it too. Each one began to glow brighter, burning with purpose. Emberhowl blazed with courage and flame. Solaris shone with truth that cut through shadow. Deepwell pulsed with knowledge pulled from darkness. Evergreen sang with life and loyalty. Umbra flickered with hidden patterns and secrets. Roseglow hummed with dreams and visions. Each moon carried its own kind of magic, its own discipline, its own way of focusing the Current into something a dog could hold without being destroyed. Six kinds of magic. Six colors. Six purposes searching for hearts that could bear them.
 
-From here, he could see all seven realms at once.
-
-Frosthollow's glaciers gleaming silver-blue. The Ember Wastes smoking with volcanic breath. The Sunward Heights blazing with reflected gold. The Deepwood's canopy spreading like a green ocean. The Abyssal Reaches shimmering where land met sea. The Violet Highlands' cities dotting the landscape like scattered dice. The Shadowmire's darkness a permanent bruise on the horizon.
-
-And above them all, the seven moons. Waiting.
-
-The gray dog sat. He assumed the posture of an observer, the patience of a companion. But this time, he was not waiting for something to exist. He was waiting for the world to be ready.
-
-It took three days.
-
-On the first day, a Husky from Frosthollow found him. A young dog, barely grown, with gray fur and square glasses that caught the aurora light. She did not speak, Huskies are not naturally talkative, but she sat beside him, watching the moons.
-
-On the second day, a Classic from the Violet Highlands arrived. A political animal by breed, he could not resist asking questions: *Who are you? Why are you here? What authority do you have to sit on this mountain?* The gray dog answered none of them. The Classic, annoyed, sat down anyway. The view was excellent.
-
-On the third day, they came from every realm. A Tiger from the Ember Wastes. A Split from the Abyssal Reaches. A Solid from the Sunward Heights. A Collie from the Deepwood. A Zombie from the Shadowmire. The others edged away, but the gray dog did not. He made room.
-
-Eighty-five dogs. One from each major settlement, drawn by rumors and curiosity and something deeper, the Loyalty Network itself, pulling them toward this moment.
-
-They formed a circle around the gray dog. Eighty-five dogs of every breed, every pattern, every color. The most diverse pack that had ever existed.
-
-The gray dog stood.
+The gray dog felt the moons turn toward Pawtheon. Each one searched for a dog whose heart matched its light. Not the strongest. Not the bravest. Just dogs devoted enough to carry something sacred without breaking. That power could not wander without form. It needed a shape that could walk, a promise that could speak, a vessel that could choose. The sky opened.
 
 ---
 
 ### The Hats Fall
 
-The Second Howl was not like the first.
+Emberhowl was first. Eighteen orange orbs blazed down from the fire-moon, cutting through volcanic smoke, through snow, through eternal brightness, through mist. They did not fall straight. They drifted, wandered, curved across Pawtheon on wind that blew in no single direction. Three Huskies caught them on Frosthollow glaciers and felt sudden courage blaze in their chests. Four Classics caught them on Violet Highlands terraces. Two Tigers caught them in the Ember Wastes and felt fierce heat pulse beneath the ash. Three Solids caught them in the Sunward Heights and felt their shadows burn away. A Zombie caught one in the Shadowmire and felt fire awaken in decay. A Blotted caught one and felt something other than rot stir in its veins. Four Splits caught them in the Abyssal Reaches and felt the deep places answer with flame.
 
-The First Howl had been a scream into the void, desperate, lonely, explosive. The Second Howl was a *whisper*, deliberate, focused, aimed not at emptiness but at the dogs who had gathered.
+Solaris dropped twelve yellow orbs next, bright as small suns. Two Huskies caught them in Frosthollow and saw cold truth in the white expanse. Four Classics caught them in the Violet Highlands and saw the lies behind every inscription. Two Blotted caught them in the Shadowmire and shone with sudden understanding. Three Splits caught them in the Abyssal Reaches and heard truth in the water's whisper. A Shiny caught one and blazed brighter than the Blot Pools.
 
-The gray dog tilted his head back. His gray fur caught the light of all seven moons. His round glasses reflected the cosmos.
+Deepwell released thirteen blue orbs from the depths of its dark water. Seven Classics caught them in the Violet Highlands and began to read the Archivum's walls properly. A Bernard caught one in Frosthollow and understood the frozen lake in a way no other dog could. A Tiger caught one in the Ember Wastes and saw the mathematics of magma. A Blotted caught one in the Shadowmire and saw order in the chaos. A Collie caught one in the Deepwood and saw the forest's secrets. A Split caught one in the Abyssal Reaches and saw what lurked in the depths. A Solid caught one in the Sunward Heights and understood the mathematics of light for the first time.
 
-He howled.
+Evergreen sent eighteen green orbs spiraling down, pulsing with life. Four Classics caught them in the Violet Highlands and felt the loyalty of stone. Two Tigers caught them in the Ember Wastes and felt the living pulse beneath the ash. Two Huskies caught them in Frosthollow and felt the ice itself sing back. Two Solids caught them in the Sunward Heights and felt roots crack white stone. Two Spotted dogs caught them in the Deepwood and felt the Current bind every leaf. A Split caught one in the Abyssal Reaches and felt every living thing in the deep. Three Zombies caught them in the Shadowmire and felt life stirring in rot. Two Blotted caught them and felt something grow where nothing should grow.
 
-The sound was soft, barely audible to the dogs in the circle. But the moons *heard* it. Every moon, from blazing Emberhowl to faint Palehowl, trembled in its orbit.
+Umbra dropped thirteen purple orbs, faint and flickering. Two Tigers caught them in the Ember Wastes and saw patterns in the smoke. Two Collies caught them in the Deepwood and traced the hidden connections between roots. Two Spotted dogs and a Dalmatian caught them in the Deepwood and saw the forest whole. Four Solids caught them in the Sunward Heights and saw hidden patterns in the glare. Two Classics caught them in the Violet Highlands and saw patterns in the mist that others called random.
 
-And from the sky, objects began to fall.
+Roseglow was last. Eleven soft magenta orbs drifted down like falling petals. Two Tigers caught them in the Ember Wastes and saw fires that burned in colors no dog had named. Two Solids caught them in the Sunward Heights and felt daylight unfold behind their eyes. A Collie caught one in the Deepwood and the Heartwood tree whispered something only she would remember. Two Splits caught them in the Abyssal Reaches and saw colors the abyss had never shown. Three Classics caught them in the Violet Highlands and felt towers rising in their minds that did not yet exist. A Zombie caught one in the Shadowmire and woke to a vision while his body stood still.
 
-They drifted down like autumn leaves, like snow, like the last breath of a dying star. Eighty-six objects. Each one a hat, a pointed wizard's hat, the kind that would one day become famous across all of Pawtheon, though no dog had ever seen such a thing before.
+When an orb found a dog whose heart matched its light, it stopped. It hovered. It pulsed. Then it unfolded, moonlight hardening into woven fabric, brim flattening, point sharpening, until a wizard's hat settled onto the dog's head.
 
-The hats were colors.
+Eighty-five hats. Six moons had chosen their voices in the world. The dogs who wore them did not yet know they had become something Pawtheon had never seen.
 
-**Orange**, eighteen of them, burning like captured flame, landing on dogs whose hearts held courage above all else. A Husky caught one. A Tiger. A Classic. A Split. The orange hats ignored breed entirely, choosing instead by something deeper, the quality of the dog's courage, the heat of their conviction.
+---
 
-**Yellow**, twelve, shining like captured sunlight, finding dogs who valued truth and revelation. They settled on heads in perfect golden circles, twelve rays for twelve Wizards who would become the Radiant Order.
+### The Last Hat
 
-**Blue**, thirteen, deep as ocean trenches, choosing dogs who had stared into darkness and not looked away. The Deep Order. The seers. The ones who knew too much.
+One orb remained. It descended straight to the unnamed mountain, cutting through air and cloud with purpose. It was purple, but different. Where the other eighty-five had burned steady, this one flickered, curved, pulsed with a rhythm no other moon shared.
 
-**Green**, eighteen, the color of growing things, finding dogs whose loyalty extended beyond pack to all living creatures. The Wild Order. The largest. The most diverse. The most underestimated.
+The gray dog looked up. He had awakened all seven moons with the First Howl. But Umbra, the purple moon of hidden knowledge and arcane pattern, had resonated deepest.
 
-**Purple**, fourteen, the color of patterns and knowledge, settling on dogs who saw connections others missed. The Arcane. The scholars. The ones who mapped the invisible.
+The orb reached him and unfolded. Where the other hats had flat brims, this hat's brim curved upward at the edges like a crescent moon, like a smile, like a question. It settled on his gray head.
 
-**Pink**, eleven, the rarest after the gray dog's own, finding dogs who walked easily between sleep and waking, who saw truths in dreams that waking minds could not grasp. The Somnambulist. The Dream Order. The smallest. And the most dangerous, because reality is thin where they walk.
+Every Wizard across Pawtheon felt the Loyalty Network shiver. A seventh presence. Not a color they knew, not a discipline they understood. The gray dog touched his hat, felt the curved brim, and knew he would spend his life explaining what it meant.
 
-And one hat, the gray dog's own, descended last. It was purple, like the Arcane, but it pulsed with Palehowl's pale light. It settled on his gray head, and every dog in the circle felt the Loyalty Network shiver as the seventh tone found its voice.
+Eighty-six Wizards. Six colors of magic. One gray dog who belonged to none and all.
 
-Eighty-six Wizards. Six Orders. One gray dog who belonged to none and all.
+---
 
-The dogs looked at him differently now. He was no longer just a strange gray dog with round glasses who sat on mountains. He was something else. Something they did not have words for yet.
+### Palehowl's Gift
 
-Later, when they told the story, they would call him **The Wanderer**. Because he walked between all worlds. Because he belonged nowhere. Because he watched, and waited, and never stayed in one place long enough to be claimed by any single realm.
+The six moons had dropped their hats. Palehowl, smallest and faintest, had watched and waited.
 
-But that name came later. On the mountain, in the moment, he was simply the dog who had called the hats. The dog who had given them purpose. The dog who had shown them that loyalty, focused through discipline, became something greater than either loyalty or discipline alone.
+It did not drop a hat. It created the Starter Lands.
 
-It became Wizardry.
+A pulse of pale light rolled across Pawtheon like a tide across flat sand. It gathered where all seven realms touched, at the center of the world, and carved something new. Soil lifted. Rivers bent. A vast grassland opened in the middle of everything, neither fire nor ice, neither shadow nor light.
+
+The Starter Lands.
+
+A place where all six kinds of magic could be practiced, studied, and learned. A neutral ground where dogs of different colors could meet without their moons warring overhead. Where a dog with an orange hat and a dog with a blue hat could argue without Emberhowl and Deepwell pulling them toward violence. Where apprentices could stumble and fail without reshaping reality.
+
+The Current did not run through it. The raw magical energy that surged through the seven realms was too wild, too potent for dogs without hats to channel. A trainee touching the full Current could tear holes in reality without meaning to, could walk through walls that were not meant to be walked through, could break into other realms simply because the power had nowhere else to go. Palehowl had made a sanctuary for learning, and a sanctuary required walls. The Current stopped at the Starter Lands border.
+
+The gray dog felt the wave pass through him on the unnamed mountain. He was still howling, though he did not remember starting. The wave gave him a connection to every Wizard, to every realm, to the new land that had just been born. He felt the Loyalty Network shiver as the seventh tone found its voice, not in a hat, but in the weave of the world itself.
+
+He wandered down from the unnamed mountain and entered the Starter Lands. The grass bent under his paws without breaking. The air smelled of nothing he could name and everything he remembered. No moon dominated the sky here. No Current hummed beneath the soil. It was quiet in a way no realm had been since before the First Howl. He walked to the center of the grassland and stood there, feeling the absence of dominance, the presence of possibility. The first to set paw in the new realm. The first to see what Palehowl had made.
 
 ---
 
 ### What the Second Howl Left Behind
 
-The eighty-six Wizards did not build towers immediately. They did not form councils or write laws. They did what dogs do when given a gift: they tested it, played with it, argued about it, and eventually figured out how it worked.
+The Wizards tested the gift and figured out how it worked.
 
-The orange-hatted Wizards discovered that their magic burned hottest when they stood together, that courage multiplied by courage became something that could melt stone and forge metal and shape the world itself. They built the Forge Spire in the Ember Wastes, a tower of black iron and orange flame that became the seat of the Flame Order.
+Magic was borrowed. Each moon fed the dogs who wore its color, distributing power among all who shared that hue. Emberhowl fed eighteen Wizards, Solaris twelve, Deepwell thirteen, Evergreen eighteen, Umbra thirteen, Roseglow eleven. The more dogs who wore a color, the longer its moon took to return to fullness. Each moon's cycle reflected the size of its order. Emberhowl burned slow and steady. Solaris turned quick and bright. Deepwell rose and fell on its own rhythm, as did Evergreen, as did Umbra, as did Roseglow.
 
-The yellow-hatted Wizards found that truth was not a single thing but a network of connections, that every lie cast a shadow and every shadow could be traced to its source. They built the Solar Spire on the Sunward Heights, a tower of white stone and golden glass that caught and amplified Solaris's light.
+The moons were fair. However many Wizards wore a color, each received the same share. The moon simply took longer to recharge. Waxing meant power growing, building, pressing against the edges of what a dog could hold. Full moon meant magic surged beyond control, spilled from every paw, turned simple spells into wild declarations that reshaped stone and sky. Waning meant the power withdrew, pulling back like a tide, leaving Wizards to manage with less. New moon meant you reached for magic and found only yourself, your own voice, your own bare paws, the quiet emptiness where devotion was all you had. The cycle was the price. The power was the gift. The waiting taught patience, and patience taught devotion.
 
-The blue-hatted Wizards learned that knowing was not the same as understanding, that the deepest truths lived in the spaces between thoughts, in the silence after questions. They built the Abyssal Spire where the Abyssal Reaches met the Deepwood, a tower that sank as deep into the earth as it rose into the sky.
+A hat was a channel, not a symbol. Without it, you felt the Current but could not shape it. With it, you became a lens, focusing moonlight into fire, truth, prophecy, growth, knowledge, or dreams.
 
-The green-hatted Wizards understood that growth was not always upward, that roots mattered as much as branches, that the strongest magic came from connection to the living world. They built the Heartwood Spire in the center of the Deepwood, a tower that was not built so much as grown, woven from living wood and blooming vine.
+The gray dog's curved hat touched all six frequencies at once, weakly, never fully any single one. He simply reached for what he needed and found it, always enough, never more than enough.
 
-The purple-hatted Wizards saw that knowledge was a pattern, that every spell was an equation, that magic obeyed rules even when it seemed most chaotic. They built the Arcane Spire in the Violet Highlands, a tower of crystal and obsidian that hummed with the sound of a thousand Wizards thinking at once.
+He walked between the dogs of all six colors and the Starter Lands, teaching and learning, becoming the first Archmage. The first to master all six schools, not by strength but by understanding that each was a different face of the same devotion. The first to see that the six colors were six strands of the same rope, and the rope was loyalty itself.
 
-The pink-hatted Wizards learned that the sleeping mind was not empty but vast, that dreams were not noise but a second language spoken by the subconscious. They walked through shared dreams, extracted memories from the dying, planted warnings in the sleeping minds of allies. They built the Dream Spire in the Shadowmire, not because the Shadowmire was dark, but because sleep is darkest where fear already lives, and the Dream Order did not fear darkness. They became the keepers of the spaces between thoughts, the cartographers of the inner world.
+He accepted the role of teacher to every group that thought it had figured everything out.
 
-And the gray dog? The one whose hat pulsed with Palehowl's light?
+The dogs began to build. In every realm, Wizards raised homes and halls to focus their magic, to contain the Current, to give their power shape. But the gray dog saw what the builders did not. Untrained fire in the Ember Wastes scarred stone that would never heal. Young readers in the Violet Highlands glimpsed patterns that showed them too much, secrets that should have stayed hidden. Green magic in the Shadowmire stirred rot that should have stayed still. Blue sight in the Abyssal Reaches pulled dogs toward depths they were not ready to face. Yellow truth in Frosthollow cut bonds that should have held. The Current was not tame. It needed walls that could hold it, structures that could channel and teach and protect. It needed towers tall enough to touch the moons themselves, where Wizards could learn not just how to use what the moons had given them, but how to carry it without breaking themselves or the world.
 
-He built no spire. He claimed no territory. He walked between the six towers, visiting each Order in turn, teaching what he knew, learning what they discovered, and slowly, over years, becoming something that had never existed before.
+He never forgot what he had been. A gray dog. Ordinary. Common. Overlooked.
 
-He became the first Archmage. The first dog to master not one school of magic but all of them. The first to understand that the six Orders were not separate paths but six strands of the same rope, six notes of the same song, six colors of the same light.
+That memory kept him walking when the road was long.
 
-The other dogs began to call him The Wanderer, and the name stuck. Not because he had chosen it. Because they had needed a name for something they did not understand, and "Wanderer" was the closest they could come.
-
-He accepted it. He accepted the hat. He accepted the role of teacher, guide, and occasional nuisance to every Order that thought it had figured everything out.
-
-But he never forgot what he had been before. A gray dog. Ordinary. Common. Overlooked.
-
-That memory kept him humble. That memory kept him kind. That memory kept him walking, even when walking was hard, even when the road was long, even when the moons were dark and the Howling Current ran thin.
-
-Because the First Howl had created magic. The Second Howl had created Wizards.
-
-But it was the walking that created the world.
-
----
-
-### The Promise Renewed
-
-In every tower, in every classroom, in every quiet corner where a young Wizard sits with their first spellbook, the old teachers tell the story:
-
-*In the beginning, there was no magic. Then came the wolf, silver and vast, with round glasses that caught the light of stars. And the wolf howled. And the moons sang. And the world woke up. And the wolf became small, and gray, and ordinary. And the small gray dog walked. And one day, the small gray dog climbed a mountain and howled again. And the hats fell. And we became Wizards. And the small gray dog became The Wanderer. And The Wanderer still walks. And as long as he walks, the magic walks with him.*
-
-The story is not history. It is not mythology. It is something between the two, something that changes with each telling, something that every Wizard hears differently depending on what they need to hear.
-
-But the core remains the same.
-
-A dog. A howl. A choice. A walk.
-
-That is all Wizardry has ever been. That is all it will ever be.
-
-The towers stand. The Orders thrive. The Loyalty Network hums with the accumulated power of eighty-six Wizards and countless generations of apprentices.
-
-And The Wanderer walks on. Still gray. Still ordinary. Still wearing his round glasses and his purple hat that pulses with Palehowl's light. Still belonging to no Order and every Order. Still teaching the same lesson he has taught since the Second Howl:
-
-Magic is not power. Magic is not knowledge. Magic is the choice to stay loyal in a world that makes loyalty difficult. Magic is the howl in the dark. Magic is the hope that someone, somewhere, will howl back.
-
-The silver wolf still howls. The moons still sing. The Howling Current still flows.
-
-And somewhere, in a village too small to have a name, a gray dog with round glasses sits on a porch, watching the sunset, waiting for a young dog to ask the right question.
-
-The question is always the same.
-
-"What makes a Wizard?"
-
-And the answer is always the same.
-
-"The walk."
+The First Howl created magic. The Second Howl created Wizards. Palehowl created the place where they could become something more.
 
 ---
