@@ -337,11 +337,10 @@ starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
 scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.15, sizeAttenuation: true })));
 
 // ── Pawtheon (central planet with 7 realms) ──
-// Use Icosahedron for better sphere distribution, then displace
 const planetDetail = isMobile ? 3 : 4;
 const planetGeo = new THREE.IcosahedronGeometry(2.2, planetDetail);
 
-// Noise functions for terrain
+// Noise functions
 function noise3D(x, y, z) {
     return Math.sin(x * 3.7) * Math.cos(y * 4.3) * Math.sin(z * 5.1) +
            Math.sin(x * 8.2 + y * 2.1) * Math.cos(z * 6.7) * 0.5 +
@@ -357,153 +356,251 @@ function fbm(x, y, z, octaves = 4) {
     return value;
 }
 
-// 7 realm regions mapped to spherical coordinates
-// Each realm has a center (theta, phi), color palette, and terrain height
-const realmRegions = [
-    { name:'Frosthollow',      theta:-0.6, phi: 2.4,  r:0.85,g:0.92,b:1.0,  r2:0.6,g2:0.75,b2:0.95, height: 0.35, roughness: 0.9 },
-    { name:'Abyssal Reaches',  theta: 0.0, phi: 2.8,  r:0.15,g:0.25,b:0.45, r2:0.1,g2:0.2,b2:0.4,   height: 0.1, roughness: 0.3 },
-    { name:'Sunward Heights',  theta: 0.6, phi: 2.4,  r:1.0,g:0.92,b:0.7,   r2:0.95,g2:0.85,b2:0.6, height: 0.25, roughness: 0.6 },
-    { name:'Ember Wastes',     theta: 0.8, phi: 1.2,  r:0.5,g:0.18,b:0.05,  r2:0.3,g2:0.1,b2:0.02,  height: 0.4, roughness: 1.0 },
-    { name:'Deepwood',         theta: 0.4, phi: 0.6,  r:0.1,g:0.35,b:0.08,  r2:0.15,g2:0.45,b2:0.12, height: 0.2, roughness: 0.7 },
-    { name:'Violet Highlands', theta:-0.5, phi: 0.8,  r:0.4,g:0.22,b:0.5,   r2:0.3,g2:0.18,b2:0.4,  height: 0.45, roughness: 0.8 },
-    { name:'Shadowmire',       theta: 0.0, phi: 0.4,  r:0.12,g:0.15,b:0.08, r2:0.08,g2:0.1,b2:0.05,  height: 0.05, roughness: 0.4 },
-    { name:'Starter Lands',    theta: 0.0, phi: 1.57, r:0.35,g:0.5,b:0.3,   r2:0.4,g2:0.55,b2:0.35, height: 0.15, roughness: 0.5 },
+// Realm data: colors, terrain types, surface features
+const realmData = [
+    { name:'Frosthollow',      theta:-0.6, phi: 2.4,
+      base:[0.78,0.88,0.96],    alt:[0.55,0.70,0.88],     accent:[0.90,0.95,1.0],
+      height:0.45,  rough:0.95,
+      terrain:'ice',      features:'spire,crevasse,aurora' },
+    { name:'Ember Wastes',     theta: 0.8, phi: 1.2,
+      base:[0.42,0.14,0.04],    alt:[0.22,0.08,0.02],     accent:[0.85,0.30,0.08],
+      height:0.50,  rough:1.0,
+      terrain:'volcanic', features:'ridge,lava,smoke' },
+    { name:'Sunward Heights',  theta: 0.6, phi: 2.4,
+      base:[0.96,0.88,0.55],    alt:[0.88,0.78,0.42],     accent:[1.0,0.95,0.72],
+      height:0.22,  rough:0.5,
+      terrain:'plain',    features:'pillar,gold,moth' },
+    { name:'Deepwood',         theta: 0.4, phi: 0.6,
+      base:[0.08,0.32,0.08],    alt:[0.12,0.42,0.10],     accent:[0.15,0.55,0.15],
+      height:0.25,  rough:0.8,
+      terrain:'forest',   features:'canopy,moss,stream' },
+    { name:'Abyssal Reaches',  theta: 0.0, phi: 2.8,
+      base:[0.08,0.18,0.38],    alt:[0.05,0.12,0.30],     accent:[0.12,0.28,0.50],
+      height:0.08,  rough:0.35,
+      terrain:'ocean',    features:'cliff,whirlpool,foam' },
+    { name:'Violet Highlands', theta:-0.5, phi: 0.8,
+      base:[0.42,0.32,0.52],    alt:[0.32,0.24,0.42],     accent:[0.52,0.40,0.60],
+      height:0.40,  rough:0.85,
+      terrain:'terrace',  features:'wall,building,cultivate' },
+    { name:'Shadowmire',       theta: 0.0, phi: 0.4,
+      base:[0.08,0.10,0.06],    alt:[0.05,0.06,0.03],     accent:[0.12,0.14,0.08],
+      height:0.04,  rough:0.3,
+      terrain:'swamp',    features:'root,mist,oil' },
+    { name:'Starter Lands',    theta: 0.0, phi: 1.57,
+      base:[0.42,0.58,0.28],    alt:[0.52,0.68,0.35],     accent:[0.65,0.75,0.42],
+      height:0.12,  rough:0.4,
+      terrain:'grass',    features:'oak,flower,stone' },
 ];
 
 const colors = new Float32Array(planetGeo.attributes.position.count * 3);
 const posArr = planetGeo.attributes.position.array;
 const _v = new THREE.Vector3();
 
+// ── PASS 1: Color each vertex based on realm ──
 for (let i = 0; i < planetGeo.attributes.position.count; i++) {
     _v.set(posArr[i*3], posArr[i*3+1], posArr[i*3+2]).normalize();
-    const theta = Math.atan2(_v.x, _v.z); // -PI to PI
-    const phi = Math.acos(_v.y);           // 0 (north) to PI (south)
+    const theta = Math.atan2(_v.x, _v.z);
+    const phi = Math.acos(_v.y);
+    const nx = _v.x, ny = _v.y, nz = _v.z;
 
-    // Find closest realm - sharper boundaries
-    let closestRealm = null;
-    let minDist = Infinity;
-    let secondMinDist = Infinity;
-    
-    for (const realm of realmRegions) {
-        const dTheta = theta - realm.theta;
-        const dPhi = phi - realm.phi;
-        const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
-        if (dist < minDist) {
-            secondMinDist = minDist;
-            minDist = dist;
-            closestRealm = realm;
-        } else if (dist < secondMinDist) {
-            secondMinDist = dist;
-        }
+    // Find closest realm
+    let closest = null, minDist = Infinity, secondMin = Infinity;
+    for (const r of realmData) {
+        const d = Math.sqrt((theta - r.theta)**2 + (phi - r.phi)**2);
+        if (d < minDist) { secondMin = minDist; minDist = d; closest = r; }
+        else if (d < secondMin) secondMin = d;
     }
 
-    // Calculate blend factor - sharper transition between realms
-    const blendWidth = 0.25;
-    const edgeFactor = Math.max(0, Math.min(1, (secondMinDist - minDist) / blendWidth));
-    
-    // Noise for texture variation within realms
-    const noiseVal = fbm(_v.x * 3, _v.y * 3, _v.z * 3, 2);
-    
-    if (closestRealm && minDist < 1.4) {
-        // Mix between primary and secondary color based on noise
-        const t = 0.3 + noiseVal * 0.4; // 0.1 to 0.7 range
-        let r = closestRealm.r * (1-t) + closestRealm.r2 * t;
-        let g = closestRealm.g * (1-t) + closestRealm.g2 * t;
-        let b = closestRealm.b * (1-t) + closestRealm.b2 * t;
-        
-        // Add subtle variation
-        r += noiseVal * 0.08;
-        g += noiseVal * 0.08;
-        b += noiseVal * 0.08;
-        
-        // At realm boundaries, blend to ocean
-        if (edgeFactor < 0.3) {
-            const oceanBlend = 1 - edgeFactor / 0.3;
-            r = r * (1-oceanBlend) + 0.08 * oceanBlend;
-            g = g * (1-oceanBlend) + 0.25 * oceanBlend;
-            b = b * (1-oceanBlend) + 0.55 * oceanBlend;
+    const edge = Math.max(0, Math.min(1, (secondMin - minDist) / 0.25));
+    const n1 = fbm(nx*4, ny*4, nz*4, 3);
+    const n2 = fbm(nx*8 + 10, ny*8 + 5, nz*8, 2);
+    const n3 = fbm(nx*16, ny*16, nz*16, 2);
+
+    let r, g, b;
+
+    if (closest && minDist < 1.4) {
+        const t = 0.3 + n1 * 0.35;
+        r = closest.base[0]*(1-t) + closest.alt[0]*t;
+        g = closest.base[1]*(1-t) + closest.alt[1]*t;
+        b = closest.base[2]*(1-t) + closest.alt[2]*t;
+
+        // Realm-specific surface patterns
+        switch (closest.name) {
+            case 'Frosthollow':
+                // Ice cracks (dark blue lines)
+                const iceCrack = Math.abs(n2 - n3) > 0.35 ? 1 : 0;
+                r += iceCrack * 0.15; g -= iceCrack * 0.1; b += iceCrack * 0.25;
+                // Snow highlights
+                const snow = n1 > 0.55 ? 0.15 : 0;
+                r += snow; g += snow; b += snow;
+                break;
+            case 'Ember Wastes':
+                // Lava cracks (glowing orange)
+                const lava = Math.abs(n2 - n3) > 0.3 ? 1 : 0;
+                r += lava * 0.5; g += lava * 0.15; b -= lava * 0.05;
+                // Scorched darker patches
+                const scorch = n1 < 0.25 ? -0.1 : 0;
+                r += scorch; g += scorch; b += scorch;
+                break;
+            case 'Sunward Heights':
+                // Golden luminous patches
+                const gold = n1 > 0.5 ? 0.12 : 0;
+                r += gold; g += gold * 0.9; b += gold * 0.3;
+                // White stone pillars (light spots)
+                const pillar = n3 > 0.7 ? 0.2 : 0;
+                r += pillar; g += pillar; b += pillar * 0.9;
+                break;
+            case 'Deepwood':
+                // Dark canopy with bioluminescent moss
+                const moss = n2 > 0.6 ? 0.15 : 0;
+                r -= moss * 0.05; g += moss * 0.25; b += moss * 0.05;
+                // Tree shadows (darker patches)
+                const shadow = n3 < 0.3 ? -0.08 : 0;
+                r += shadow; g += shadow; b += shadow;
+                break;
+            case 'Abyssal Reaches':
+                // Deep water with foam
+                const foam = n1 > 0.6 ? 0.15 : 0;
+                r += foam; g += foam; b += foam;
+                // Darker trenches
+                const trench = n2 < 0.2 ? -0.1 : 0;
+                r += trench; g += trench; b += trench;
+                break;
+            case 'Violet Highlands':
+                // Terraced bands
+                const terrace = Math.sin(phi * 12 + n1 * 3) > 0.7 ? 0.1 : 0;
+                r += terrace; g += terrace * 0.9; b += terrace * 1.1;
+                // Building clusters (lighter squares)
+                const building = ((Math.floor(nx*20)+Math.floor(nz*20))%3===0 && n3>0.5) ? 0.15 : 0;
+                r += building; g += building; b += building;
+                break;
+            case 'Shadowmire':
+                // Oily rainbow slicks
+                const oil = Math.sin(nx*25) * Math.cos(nz*20) > 0.6 ? 1 : 0;
+                r += oil * 0.08; g += oil * 0.05; b += oil * 0.12;
+                // Dead dark patches
+                const dead = n1 < 0.3 ? -0.06 : 0;
+                r += dead; g += dead; b += dead;
+                break;
+            case 'Starter Lands':
+                // Wildflower patches (yellow/white spots)
+                const flower = n3 > 0.75 ? 0.12 : 0;
+                r += flower * 1.2; g += flower; b += flower * 0.3;
+                // Stream silver
+                const stream = Math.abs(n2) < 0.1 ? 0.1 : 0;
+                r += stream; g += stream; b += stream * 1.1;
+                break;
         }
-        
-        colors[i*3] = Math.max(0, Math.min(1, r));
-        colors[i*3+1] = Math.max(0, Math.min(1, g));
-        colors[i*3+2] = Math.max(0, Math.min(1, b));
+
+        // Boundary blend to ocean
+        if (edge < 0.3) {
+            const blend = 1 - edge / 0.3;
+            r = r*(1-blend) + 0.06*blend;
+            g = g*(1-blend) + 0.18*blend;
+            b = b*(1-blend) + 0.42*blend;
+        }
     } else {
         // Deep ocean
-        const t = Math.random() * 0.15 + noiseVal * 0.1;
-        colors[i*3] = 0.03 + t * 0.08;
-        colors[i*3+1] = 0.12 + t * 0.15;
-        colors[i*3+2] = 0.35 + t * 0.25;
+        r = 0.04 + n1 * 0.08;
+        g = 0.14 + n1 * 0.12;
+        b = 0.38 + n1 * 0.18;
     }
+
+    colors[i*3]   = Math.max(0, Math.min(1, r));
+    colors[i*3+1] = Math.max(0, Math.min(1, g));
+    colors[i*3+2] = Math.max(0, Math.min(1, b));
 }
 
-// Topography: displace vertices outward based on realm + improved noise
-const topoNormals = [];
+// ── PASS 2: Terrain displacement ──
 for (let i = 0; i < planetGeo.attributes.position.count; i++) {
     const px = posArr[i*3], py = posArr[i*3+1], pz = posArr[i*3+2];
     const n = _v.set(px, py, pz).normalize();
-    topoNormals.push(n.x, n.y, n.z);
-
     const theta = Math.atan2(n.x, n.z);
     const phi = Math.acos(n.y);
+    const nx = n.x, ny = n.y, nz = n.z;
 
-    // Find dominant realm for this vertex
-    let dominantRealm = null;
-    let maxWeight = 0;
-    for (const realm of realmRegions) {
-        const dTheta = theta - realm.theta;
-        const dPhi = phi - realm.phi;
-        const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
-        const w = Math.pow(Math.max(0, 1 - dist / 1.5), 2);
-        if (w > maxWeight) {
-            maxWeight = w;
-            dominantRealm = realm;
-        }
+    // Find dominant realm
+    let dom = null, maxW = 0;
+    for (const r of realmData) {
+        const d = Math.sqrt((theta-r.theta)**2 + (phi-r.phi)**2);
+        const w = Math.pow(Math.max(0, 1 - d/1.5), 2);
+        if (w > maxW) { maxW = w; dom = r; }
     }
 
-    // Base terrain noise using FBM
     let height = fbm(px, py, pz, 4) * 0.5;
 
-    // Apply realm-specific terrain characteristics
-    if (dominantRealm && maxWeight > 0.3) {
-        // Scale height by realm's defined height multiplier
-        height *= dominantRealm.height;
+    if (dom && maxW > 0.3) {
+        height *= dom.height;
 
-        // Realm-specific terrain features
-        if (dominantRealm.name === 'Frosthollow') {
-            // Sharp peaks
-            height = Math.pow(Math.abs(height), 0.7) * Math.sign(height);
-        } else if (dominantRealm.name === 'Ember Wastes') {
-            // Volcanic ridges - add directional noise
-            const ridge = Math.sin(px * 8 + pz * 6) * Math.cos(py * 10);
-            height += ridge * 0.2;
-        } else if (dominantRealm.name === 'Violet Highlands') {
-            // Terraced effect
-            height = Math.round(height * 3) / 3;
-        } else if (dominantRealm.name === 'Shadowmire') {
-            // Very flat with occasional bumps
-            height *= 0.3;
-            height += Math.sin(px * 20) * Math.sin(pz * 20) * 0.05;
-        } else if (dominantRealm.name === 'Abyssal Reaches') {
-            // Underwater trenches (negative height)
-            height -= 0.15;
+        switch (dom.name) {
+            case 'Frosthollow':
+                // Sharp ice spires and glaciers
+                height = Math.pow(Math.abs(height), 0.65) * Math.sign(height);
+                // Deep crevasses
+                const crevasse = Math.abs(fbm(nx*6, ny*6, nz*6, 2) - fbm(nx*6+0.1, ny*6, nz*6, 2));
+                if (crevasse > 0.2) height -= 0.15;
+                break;
+            case 'Ember Wastes':
+                // Volcanic domes and ridges
+                const ridge = Math.sin(px*7 + pz*5) * Math.cos(py*9) * 0.3;
+                height += ridge;
+                // Caldera depressions
+                const caldera = fbm(nx*3, ny*3, nz*3, 2);
+                if (caldera < 0.2) height -= 0.2;
+                break;
+            case 'Sunward Heights':
+                // Gentle rolling hills
+                height = Math.sin(px*3) * Math.cos(pz*3) * 0.15 + height * 0.3;
+                break;
+            case 'Deepwood':
+                // Forest canopy bumps
+                height = Math.sin(px*12) * Math.sin(pz*10) * 0.1 + height * 0.4;
+                // Clear stream valleys
+                const valley = Math.abs(Math.sin(px*4 + pz*3)) < 0.08 ? -0.1 : 0;
+                height += valley;
+                break;
+            case 'Abyssal Reaches':
+                // Underwater - mostly below surface
+                height -= 0.25;
+                // Cliff edges
+                const cliff = Math.sin(px*5) * Math.cos(pz*4) > 0.7 ? 0.15 : 0;
+                height += cliff;
+                break;
+            case 'Violet Highlands':
+                // Terraced hills
+                height = Math.round(height * 4) / 4;
+                // Steeper slopes
+                height *= 1.3;
+                break;
+            case 'Shadowmire':
+                // Very flat, occasional root mounds
+                height *= 0.2;
+                height += Math.sin(px*18) * Math.sin(pz*16) * 0.04;
+                // Sunken pools
+                const pool = fbm(nx*5, ny*5, nz*5, 2) < 0.15 ? -0.06 : 0;
+                height += pool;
+                break;
+            case 'Starter Lands':
+                // Gentle grassland rolls
+                height = Math.sin(px*4 + pz*2) * 0.08 + height * 0.3;
+                break;
         }
     }
 
-    // Ocean areas: flatten and lower
+    // Ocean flattening
     const isOcean = (colors[i*3+2] > 0.35 && colors[i*3] < 0.15);
     if (isOcean) {
-        height = height * 0.1 - 0.08;
+        height = height * 0.08 - 0.1;
     }
 
-    // Apply displacement along normal - AMPLIFIED for visibility
-    const displacement = height * 0.6;
-    posArr[i*3] += n.x * displacement;
-    posArr[i*3+1] += n.y * displacement;
-    posArr[i*3+2] += n.z * displacement;
+    const disp = height * 0.7;
+    posArr[i*3]   += n.x * disp;
+    posArr[i*3+1] += n.y * disp;
+    posArr[i*3+2] += n.z * disp;
 }
+
 planetGeo.attributes.position.needsUpdate = true;
 planetGeo.computeVertexNormals();
-
 planetGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 const planet = new THREE.Mesh(planetGeo, new THREE.MeshStandardMaterial({
     vertexColors: true, roughness: 0.9, metalness: 0.02, flatShading: true
@@ -513,9 +610,9 @@ scene.add(planet);
 // ── Atmosphere Glow ──
 const atmoGeo = new THREE.IcosahedronGeometry(2.6, 3);
 const atmoMat = new THREE.MeshBasicMaterial({
-    color: 0x4a90d9,
+    color: 0x6a7a8a,
     transparent: true,
-    opacity: 0.15,
+    opacity: 0.12,
     side: THREE.BackSide,
     blending: THREE.AdditiveBlending,
     depthWrite: false
