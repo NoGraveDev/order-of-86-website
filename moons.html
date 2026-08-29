@@ -285,19 +285,19 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const MOONS = [
     { name: 'Emberhowl', order: 'Flame', color: '#FF6B00', cycle: 18, wizards: 18, radius: 4.5, inclination: 0.1, size: 0.35,
-      lore: "Tied to the Flame Order. Its 18-day cycle matches its 18 Wizards. When full, Flame magic surges through the Forge Spire and volcanic energy peaks across the Ember Wastes. When new, Flame Wizards rely on raw skill and pack bonds." },
+      lore: "The fire-moon. Its surface is cracked volcanic stone threaded with rivers of molten light. Orange and blazing, it pours warmth and courage across Pawtheon. When full, lava flows visible from orbit surge across its face and Flame magic reaches its peak." },
     { name: 'Solaris', order: 'Radiant', color: '#F1C40F', cycle: 12, wizards: 12, radius: 6.0, inclination: -0.15, size: 0.32,
-      lore: "Tied to the Radiant Order. Its 12-day cycle, the shortest of the Order moons, creates rapid power fluctuations. The Crystal Spires of Sunward Heights blaze brightest under a full Solaris. Radiant Wizards experience the most dramatic power swings." },
+      lore: "A miniature sun suspended in the sky. Golden radiating rays stripe its surface like a crown of light, with darker sunspots marking where truth has burned too deep. Yellow and truth-bearing, it cuts through every shadow. Its 12-day cycle creates the most dramatic power swings of any Order moon." },
     { name: 'Deepwell', order: 'Deep', color: '#3498DB', cycle: 13, wizards: 13, radius: 7.5, inclination: 0.2, size: 0.33,
-      lore: "Tied to the Deep Order. Its 13-day cycle governs prophecy and ocean magic. When full, Tidewatch Tower's waters rise and Deep Wizards see furthest into the future. When new, the Abyssal Reaches fall eerily silent." },
+      lore: "A vast sphere of living water held in the sky. Deep oceanic currents swirl across its surface, abyssal trenches sinking into impossible blue depths. Massive and patient, it pulls with metaphysical force. When full, the tides of magic rise to their highest point." },
     { name: 'Evergreen', order: 'Wild', color: '#2ECC71', cycle: 18, wizards: 18, radius: 9.0, inclination: -0.08, size: 0.34,
-      lore: "Tied to the Wild Order. Its 18-day cycle mirrors Emberhowl's, creating a fire-and-growth resonance. When full, the Heartwood tree grows visibly. When new, the forest conserves energy, drawing inward." },
+      lore: "A moon that grows. Vine networks crawl across its surface in living patterns, forest canopies breathing with each cycle. Green and singing, everything it touches becomes more alive. When full, the Heartwood tree shivers with sympathetic resonance and new growth explodes across every realm." },
     { name: 'Umbra', order: 'Arcane', color: '#9B6EFF', cycle: 14, wizards: 14, radius: 10.5, inclination: 0.25, size: 0.3,
-      lore: "Tied to the Arcane Order. Its 14-day cycle governs theoretical magic and dimensional research. When full, the Violet Citadel's archives glow with autonomous magical energy. When new, Arcane Wizards must rely on studied technique." },
+      lore: "The hidden moon. Geometric runes pulse beneath its purple surface like veins of buried knowledge, arcane grids flickering in and out of visibility. It reveals the secret threads connecting stone to star. When full, patterns emerge that even the Archivum cannot record." },
     { name: 'Roseglow', order: 'Dream', color: '#FF69B4', cycle: 11, wizards: 11, radius: 12.0, inclination: -0.18, size: 0.31,
-      lore: "Tied to the Dream Order. Its 11-day cycle, the fastest Order moon, creates the most frequent power surges. The Dream Spire resonates constantly. Dream Wizards ride emotional waves that never fully calm." },
+      lore: "A moon of soft petals and drifting clouds. Ethereal swirls of magenta drift across its face like falling petals in slow motion, opening the sleeping mind to worlds behind closed eyes. The fastest Order moon, its 11-day cycle means Dream Wizards ride emotional waves that never fully calm." },
     { name: 'Palehowl', order: 'Starter', color: '#dddddd', cycle: 30, wizards: 0, radius: 14.0, inclination: 0.12, size: 0.2,
-      lore: "The smallest, dimmest moon. The seventh tone of the First Howl, carrying not power but possibility. It provides baseline magic to all non-wizard dogs. Weak individually, but it touches EVERYONE. The Wanderer resonates with Palehowl." },
+      lore: "The smallest, faintest moon. A ghostly sphere of pale silver marked by only the subtlest craters, barely more than a whisper against the dark. The moon of possibility, of every dog who would ever live but had not yet been born. The Wanderer resonates with Palehowl alone." },
 ];
 
 const isMobile = window.innerWidth < 768;
@@ -583,21 +583,247 @@ MOONS.forEach(m => {
     scene.add(line);
 });
 
+// ── Procedural Moon Surface Textures ──
+function createMoonTexture(type, colorHex, size = 512) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    const w = size, h = size;
+    
+    // Helper: pseudo-random noise
+    function noise(x, y, scale = 1) {
+        return Math.sin(x * scale * 12.9898 + y * scale * 78.233) * 43758.5453 % 1;
+    }
+    function fbm(x, y, octaves = 4) {
+        let v = 0, a = 0.5, f = 1;
+        for (let i = 0; i < octaves; i++) {
+            v += a * (Math.sin(x * f * 3.7) * Math.cos(y * f * 4.3) + Math.sin(x * f * 8.2 + y * f * 2.1) * 0.5);
+            a *= 0.5; f *= 2;
+        }
+        return v;
+    }
+    
+    const baseColor = new THREE.Color(colorHex);
+    const r = Math.round(baseColor.r * 255);
+    const g = Math.round(baseColor.g * 255);
+    const b = Math.round(baseColor.b * 255);
+    
+    // Fill base
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+    ctx.fillRect(0, 0, w, h);
+    
+    const imgData = ctx.getImageData(0, 0, w, h);
+    const data = imgData.data;
+    
+    for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4;
+            const nx = x / w, ny = y / h;
+            
+            if (type === 'emberhowl') {
+                // Volcanic surface: lava cracks, fire pits, scorched rock
+                const n1 = fbm(nx, ny, 3);
+                const n2 = fbm(nx * 2 + 10, ny * 2 + 5, 2);
+                const crack = Math.abs(n1 - n2) > 0.3 ? 1 : 0;
+                const hotspot = fbm(nx * 3, ny * 3 + 20, 2) > 0.4 ? 1 : 0;
+                
+                data[i] = Math.min(255, r + crack * 80 + hotspot * 60 + n1 * 40);
+                data[i+1] = Math.max(0, Math.min(255, g - crack * 40 + hotspot * 30 + n2 * 20));
+                data[i+2] = Math.max(0, Math.min(255, b - crack * 60 + hotspot * 10));
+                
+            } else if (type === 'solaris') {
+                // Radiant sun: bright rays, sunspots, golden radiance
+                const dist = Math.sqrt((nx - 0.5) ** 2 + (ny - 0.5) ** 2);
+                const ray = Math.atan2(ny - 0.5, nx - 0.5);
+                const rayPattern = Math.sin(ray * 12 + fbm(nx, ny, 2) * 3) * 0.5 + 0.5;
+                const sunspot = fbm(nx * 4, ny * 4, 3) < 0.3 ? 0.7 : 1;
+                const corona = Math.max(0, 1 - dist * 2.5);
+                
+                data[i] = Math.min(255, r + rayPattern * 40 + corona * 60 * sunspot);
+                data[i+1] = Math.min(255, g + rayPattern * 50 + corona * 50 * sunspot);
+                data[i+2] = Math.max(0, Math.min(255, b + rayPattern * 10 + corona * 20));
+                
+            } else if (type === 'deepwell') {
+                // Deep ocean: water ripples, depth layers, abyssal trenches
+                const wave1 = Math.sin(nx * 20 + ny * 8) * 0.5 + 0.5;
+                const wave2 = Math.sin(nx * 15 - ny * 12 + 2) * 0.5 + 0.5;
+                const depth = fbm(nx * 2, ny * 2, 4);
+                const trench = depth < 0.25 ? 0.6 : 1;
+                
+                data[i] = Math.max(0, Math.min(255, r * 0.3 - depth * 30));
+                data[i+1] = Math.max(0, Math.min(255, g * 0.6 + wave1 * 20 + wave2 * 15 - depth * 20));
+                data[i+2] = Math.min(255, b + wave1 * 30 + wave2 * 25 + depth * 40 * trench);
+                
+            } else if (type === 'evergreen') {
+                // Living world: forest canopy, vines, organic growth patterns
+                const vine = Math.sin(nx * 30) * Math.cos(ny * 25) * 0.5 + 0.5;
+                const canopy = fbm(nx * 3, ny * 3, 3);
+                const growth = Math.sin(nx * 8 + ny * 6 + canopy * 4) * 0.5 + 0.5;
+                const leaf = Math.random() > 0.97 ? 1 : 0;
+                
+                data[i] = Math.max(0, Math.min(255, r * 0.4 + canopy * 30 - vine * 20));
+                data[i+1] = Math.min(255, g + canopy * 40 + growth * 30 + leaf * 50);
+                data[i+2] = Math.max(0, Math.min(255, b * 0.5 + canopy * 20 + vine * 15));
+                
+            } else if (type === 'umbra') {
+                // Hidden knowledge: geometric runes, purple veins, arcane patterns
+                const grid = ((Math.floor(nx * 16) + Math.floor(ny * 16)) % 2) * 0.1;
+                const rune = fbm(nx * 5, ny * 5, 2) > 0.55 ? 1 : 0;
+                const vein = Math.abs(fbm(nx * 4, ny * 4, 3) - fbm(nx * 4 + 0.1, ny * 4, 3)) > 0.15 ? 1 : 0;
+                const pulse = Math.sin(nx * 20 + ny * 15) * 0.5 + 0.5;
+                
+                data[i] = Math.min(255, r + grid * 100 + rune * 60 + vein * 40 + pulse * 20);
+                data[i+1] = Math.max(0, Math.min(255, g * 0.4 + grid * 30 + rune * 30 + vein * 20));
+                data[i+2] = Math.min(255, b + grid * 80 + rune * 50 + vein * 60 + pulse * 30);
+                
+            } else if (type === 'roseglow') {
+                // Dreamy pink: soft clouds, petals, ethereal swirls
+                const cloud = fbm(nx * 2 + 50, ny * 2 + 50, 3);
+                const swirl = Math.sin(Math.sqrt((nx - 0.5) ** 2 + (ny - 0.5) ** 2) * 15 - Math.atan2(ny - 0.5, nx - 0.5) * 3) * 0.5 + 0.5;
+                const petal = Math.sin(nx * 12) * Math.sin(ny * 12) * Math.sin((nx + ny) * 8) > 0.6 ? 1 : 0;
+                
+                data[i] = Math.min(255, r + cloud * 40 + swirl * 30 + petal * 50);
+                data[i+1] = Math.max(0, Math.min(255, g * 0.5 + cloud * 20 + swirl * 15));
+                data[i+2] = Math.min(255, b + cloud * 35 + swirl * 25 + petal * 30);
+                
+            } else if (type === 'palehowl') {
+                // Ghostly pale: subtle craters, faint markings, barely visible
+                const crater = fbm(nx * 3, ny * 3, 2);
+                const craterRing = Math.abs(crater - 0.5) < 0.08 ? 0.7 : 1;
+                const faint = fbm(nx * 8, ny * 8, 2) * 0.15;
+                
+                data[i] = Math.min(255, r + faint * 80 + craterRing * 15);
+                data[i+1] = Math.min(255, g + faint * 80 + craterRing * 15);
+                data[i+2] = Math.min(255, b + faint * 80 + craterRing * 15);
+            }
+        }
+    }
+    
+    ctx.putImageData(imgData, 0, 0);
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    return tex;
+}
+
+function createMoonBumpMap(type, size = 512) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(0, 0, size, size);
+    
+    const imgData = ctx.getImageData(0, 0, size, size);
+    const data = imgData.data;
+    
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+            const i = (y * size + x) * 4;
+            const nx = x / size, ny = y / size;
+            let h = 0;
+            
+            if (type === 'emberhowl') {
+                const n1 = Math.sin(nx * 20) * Math.cos(ny * 15);
+                const n2 = Math.sin(nx * 35 + 5) * Math.cos(ny * 25 + 3);
+                h = 128 + (n1 * 30 + n2 * 20);
+                // Cracks go deep
+                if (Math.abs(n1 - n2) > 0.4) h = 60;
+            } else if (type === 'solaris') {
+                const dist = Math.sqrt((nx - 0.5) ** 2 + (ny - 0.5) ** 2);
+                h = 128 + (1 - dist * 2) * 40 * Math.sin(Math.atan2(ny - 0.5, nx - 0.5) * 8);
+            } else if (type === 'deepwell') {
+                h = 128 + Math.sin(nx * 25) * Math.cos(ny * 20) * 25 + Math.sin(nx * 15 - ny * 12) * 15;
+            } else if (type === 'evergreen') {
+                h = 128 + Math.sin(nx * 18 + ny * 12) * 30 + Math.cos(nx * 30) * Math.sin(ny * 25) * 15;
+            } else if (type === 'umbra') {
+                const grid = ((Math.floor(nx * 16) + Math.floor(ny * 16)) % 2);
+                h = grid ? 160 : 100;
+                if (Math.sin(nx * 20) * Math.cos(ny * 20) > 0.7) h = 180;
+            } else if (type === 'roseglow') {
+                h = 128 + Math.sin(Math.sqrt((nx - 0.5) ** 2 + (ny - 0.5) ** 2) * 12) * 25;
+            } else if (type === 'palehowl') {
+                const crater = Math.sin(nx * 8) * Math.cos(ny * 8) + Math.sin(nx * 15 + 2) * Math.cos(ny * 12 + 1);
+                h = 128 + crater * 15;
+            }
+            
+            data[i] = data[i+1] = data[i+2] = Math.max(0, Math.min(255, h));
+            data[i+3] = 255;
+        }
+    }
+    
+    ctx.putImageData(imgData, 0, 0);
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    return tex;
+}
+
 // ── Moon objects ──
-const moonSegs = isMobile ? 16 : 24;
+const moonSegs = isMobile ? 24 : 32;
 const baseSpeed = 0.3;
 const moonGroups = [];
 const moonMeshes = []; // for raycasting
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 
+const MOON_TYPES = ['emberhowl','solaris','deepwell','evergreen','umbra','roseglow','palehowl'];
+
 MOONS.forEach((m, idx) => {
     const group = new THREE.Group();
-
-    // Moon sphere
+    const moonType = MOON_TYPES[idx];
+    const texSize = isMobile ? 256 : 512;
+    
+    // Generate unique surface texture and bump map
+    const surfaceTex = createMoonTexture(moonType, m.color, texSize);
+    const bumpTex = createMoonBumpMap(moonType, texSize);
+    
+    // Moon sphere with detailed material
     const col = new THREE.Color(m.color);
     const moonGeo = new THREE.SphereGeometry(m.size, moonSegs, moonSegs);
-    const moonMat = new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.6, roughness: 0.5, metalness: 0.2 });
+    
+    let moonMat;
+    if (moonType === 'emberhowl') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.08,
+            color: 0xffffff, emissive: col, emissiveIntensity: 0.4, emissiveMap: surfaceTex,
+            roughness: 0.85, metalness: 0.1
+        });
+    } else if (moonType === 'solaris') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.03,
+            color: 0xffffff, emissive: new THREE.Color(0xffdd44), emissiveIntensity: 0.5, emissiveMap: surfaceTex,
+            roughness: 0.3, metalness: 0.3
+        });
+    } else if (moonType === 'deepwell') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.06,
+            color: 0xffffff, emissive: col, emissiveIntensity: 0.3, emissiveMap: surfaceTex,
+            roughness: 0.2, metalness: 0.4
+        });
+    } else if (moonType === 'evergreen') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.1,
+            color: 0xffffff, emissive: col, emissiveIntensity: 0.25, emissiveMap: surfaceTex,
+            roughness: 0.9, metalness: 0.05
+        });
+    } else if (moonType === 'umbra') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.04,
+            color: 0xffffff, emissive: col, emissiveIntensity: 0.35, emissiveMap: surfaceTex,
+            roughness: 0.5, metalness: 0.5
+        });
+    } else if (moonType === 'roseglow') {
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.05,
+            color: 0xffffff, emissive: col, emissiveIntensity: 0.3, emissiveMap: surfaceTex,
+            roughness: 0.6, metalness: 0.2
+        });
+    } else { // palehowl
+        moonMat = new THREE.MeshStandardMaterial({ 
+            map: surfaceTex, bumpMap: bumpTex, bumpScale: 0.02,
+            color: 0xffffff, emissive: new THREE.Color(0xcccccc), emissiveIntensity: 0.15, emissiveMap: surfaceTex,
+            roughness: 0.95, metalness: 0.0
+        });
+    }
+    
     const moonMesh = new THREE.Mesh(moonGeo, moonMat);
     moonMesh.userData = { moonIndex: idx };
     group.add(moonMesh);
@@ -620,10 +846,10 @@ MOONS.forEach((m, idx) => {
     // Glow sprite
     const spriteMat = new THREE.SpriteMaterial({
         map: createGlowTexture(m.color),
-        transparent: true, opacity: 0.5, depthWrite: false, blending: THREE.AdditiveBlending
+        transparent: true, opacity: moonType === 'palehowl' ? 0.2 : 0.5, depthWrite: false, blending: THREE.AdditiveBlending
     });
     const sprite = new THREE.Sprite(spriteMat);
-    sprite.scale.set(m.size * 4, m.size * 4, 1);
+    sprite.scale.set(m.size * (moonType === 'palehowl' ? 2.5 : 4), m.size * (moonType === 'palehowl' ? 2.5 : 4), 1);
     moonMesh.add(sprite);
     m._glowSprite = sprite;
 
@@ -632,6 +858,9 @@ MOONS.forEach((m, idx) => {
     labelSprite.position.set(0, m.size + 0.4, 0);
     labelSprite.scale.set(1.6, 0.4, 1);
     moonMesh.add(labelSprite);
+
+    // Slow rotation for each moon
+    m._rotSpeed = (0.05 + Math.random() * 0.05) * (moonType === 'palehowl' ? 0.3 : 1);
 
     group.userData = { moon: m, speed: baseSpeed / m.cycle, angle: (idx / MOONS.length) * Math.PI * 2 };
     scene.add(group);
@@ -803,6 +1032,9 @@ function animate() {
         const y = Math.sin(m.inclination) * Math.sin(a) * m.radius * 0.15;
         m._mesh.position.set(x, y, z);
 
+        // Slow axial rotation to show surface detail
+        m._mesh.rotation.y += m._rotSpeed * 0.016;
+
         // Phase shadow rotation
         const phase = getPhase(t, m.cycle);
         const shadowAngle = phase * Math.PI * 2;
@@ -814,7 +1046,7 @@ function animate() {
         const cs = m._mesh.scale.x;
         const ns = cs + (targetScale - cs) * 0.1;
         m._mesh.scale.setScalar(ns);
-        m._glowSprite.material.opacity = isHovered ? 0.8 : 0.4;
+        m._glowSprite.material.opacity = isHovered ? 0.8 : (MOON_TYPES[i] === 'palehowl' ? 0.2 : 0.4);
         canvas.style.cursor = isHovered ? 'pointer' : 'default';
     });
 
