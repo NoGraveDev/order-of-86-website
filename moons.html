@@ -427,6 +427,7 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
         // Realm-specific surface patterns
         switch (closest.name) {
             case 'Frosthollow':
+                {
                 // Ice cracks (dark blue lines)
                 const iceCrack = Math.abs(n2 - n3) > 0.35 ? 1 : 0;
                 r += iceCrack * 0.15; g -= iceCrack * 0.1; b += iceCrack * 0.25;
@@ -434,7 +435,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const snow = n1 > 0.55 ? 0.15 : 0;
                 r += snow; g += snow; b += snow;
                 break;
+                }
             case 'Ember Wastes':
+                {
                 // Lava cracks (glowing orange)
                 const lava = Math.abs(n2 - n3) > 0.3 ? 1 : 0;
                 r += lava * 0.5; g += lava * 0.15; b -= lava * 0.05;
@@ -442,7 +445,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const scorch = n1 < 0.25 ? -0.1 : 0;
                 r += scorch; g += scorch; b += scorch;
                 break;
+                }
             case 'Sunward Heights':
+                {
                 // Golden luminous patches
                 const gold = n1 > 0.5 ? 0.12 : 0;
                 r += gold; g += gold * 0.9; b += gold * 0.3;
@@ -450,7 +455,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const pillar = n3 > 0.7 ? 0.2 : 0;
                 r += pillar; g += pillar; b += pillar * 0.9;
                 break;
+                }
             case 'Deepwood':
+                {
                 // Dark canopy with bioluminescent moss
                 const moss = n2 > 0.6 ? 0.15 : 0;
                 r -= moss * 0.05; g += moss * 0.25; b += moss * 0.05;
@@ -458,7 +465,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const shadow = n3 < 0.3 ? -0.08 : 0;
                 r += shadow; g += shadow; b += shadow;
                 break;
+                }
             case 'Abyssal Reaches':
+                {
                 // Deep water with foam
                 const foam = n1 > 0.6 ? 0.15 : 0;
                 r += foam; g += foam; b += foam;
@@ -466,7 +475,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const trench = n2 < 0.2 ? -0.1 : 0;
                 r += trench; g += trench; b += trench;
                 break;
+                }
             case 'Violet Highlands':
+                {
                 // Terraced bands
                 const terrace = Math.sin(phi * 12 + n1 * 3) > 0.7 ? 0.1 : 0;
                 r += terrace; g += terrace * 0.9; b += terrace * 1.1;
@@ -474,7 +485,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const building = ((Math.floor(nx*20)+Math.floor(nz*20))%3===0 && n3>0.5) ? 0.15 : 0;
                 r += building; g += building; b += building;
                 break;
+                }
             case 'Shadowmire':
+                {
                 // Oily rainbow slicks
                 const oil = Math.sin(nx*25) * Math.cos(nz*20) > 0.6 ? 1 : 0;
                 r += oil * 0.08; g += oil * 0.05; b += oil * 0.12;
@@ -482,7 +495,9 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const dead = n1 < 0.3 ? -0.06 : 0;
                 r += dead; g += dead; b += dead;
                 break;
+                }
             case 'Starter Lands':
+                {
                 // Wildflower patches (yellow/white spots)
                 const flower = n3 > 0.75 ? 0.12 : 0;
                 r += flower * 1.2; g += flower; b += flower * 0.3;
@@ -490,6 +505,7 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const stream = Math.abs(n2) < 0.1 ? 0.1 : 0;
                 r += stream; g += stream; b += stream * 1.1;
                 break;
+                }
         }
 
         // Boundary blend to ocean
@@ -534,13 +550,16 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
 
         switch (dom.name) {
             case 'Frosthollow':
+                {
                 // Sharp ice spires and glaciers
                 height = Math.pow(Math.abs(height), 0.65) * Math.sign(height);
                 // Deep crevasses
                 const crevasse = Math.abs(fbm(nx*6, ny*6, nz*6, 2) - fbm(nx*6+0.1, ny*6, nz*6, 2));
                 if (crevasse > 0.2) height -= 0.15;
                 break;
+                }
             case 'Ember Wastes':
+                {
                 // Volcanic domes and ridges
                 const ridge = Math.sin(px*7 + pz*5) * Math.cos(py*9) * 0.3;
                 height += ridge;
@@ -548,31 +567,41 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const caldera = fbm(nx*3, ny*3, nz*3, 2);
                 if (caldera < 0.2) height -= 0.2;
                 break;
+                }
             case 'Sunward Heights':
+                {
                 // Gentle rolling hills
                 height = Math.sin(px*3) * Math.cos(pz*3) * 0.15 + height * 0.3;
                 break;
+                }
             case 'Deepwood':
+                {
                 // Forest canopy bumps
                 height = Math.sin(px*12) * Math.sin(pz*10) * 0.1 + height * 0.4;
                 // Clear stream valleys
                 const valley = Math.abs(Math.sin(px*4 + pz*3)) < 0.08 ? -0.1 : 0;
                 height += valley;
                 break;
+                }
             case 'Abyssal Reaches':
+                {
                 // Underwater - mostly below surface
                 height -= 0.25;
                 // Cliff edges
                 const cliff = Math.sin(px*5) * Math.cos(pz*4) > 0.7 ? 0.15 : 0;
                 height += cliff;
                 break;
+                }
             case 'Violet Highlands':
+                {
                 // Terraced hills
                 height = Math.round(height * 4) / 4;
                 // Steeper slopes
                 height *= 1.3;
                 break;
+                }
             case 'Shadowmire':
+                {
                 // Very flat, occasional root mounds
                 height *= 0.2;
                 height += Math.sin(px*18) * Math.sin(pz*16) * 0.04;
@@ -580,10 +609,13 @@ for (let i = 0; i < planetGeo.attributes.position.count; i++) {
                 const pool = fbm(nx*5, ny*5, nz*5, 2) < 0.15 ? -0.06 : 0;
                 height += pool;
                 break;
+                }
             case 'Starter Lands':
+                {
                 // Gentle grassland rolls
                 height = Math.sin(px*4 + pz*2) * 0.08 + height * 0.3;
                 break;
+                }
         }
     }
 
@@ -632,7 +664,7 @@ for (let i = 0; i < cloudGeo.attributes.position.count; i++) {
     
     // Only show clouds over ocean areas (between realms)
     let minRealmDist = Infinity;
-    for (const realm of realmRegions) {
+    for (const realm of realmData) {
         const dTheta = theta - realm.theta;
         const dPhi = phi - realm.phi;
         const dist = Math.sqrt(dTheta * dTheta + dPhi * dPhi);
