@@ -166,8 +166,15 @@ http.createServer(async (req, res) => {
     // ── Static files ──
     if (url === '/') url = '/index.html';
     
-    // Handle studio directory paths
-    if (url === '/studio' || url === '/studio/') {
+    // Redirect /studio to /studio/ so relative asset paths resolve correctly
+    if (url === '/studio') {
+        res.writeHead(301, { 'Location': '/studio/' });
+        res.end();
+        return;
+    }
+    
+    // Handle studio directory index
+    if (url === '/studio/') {
         url = '/studio/index.html';
     }
     
