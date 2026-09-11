@@ -1,257 +1,70 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2306060a' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="shared.css">
-    <title>The Lore of Pawtheon — Order of 86 Story & World</title>
-    <meta name="description" content="Read the epic lore of the Order of 86. Dive into chapters of wizard dog mythology, ancient battles, and the legendary history of Pawtheon.">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="The Order of 86">
-    <meta name="keywords" content="Order of 86, lore, chapters, wizard dog story, Pawtheon mythology, NFT lore, fantasy story, web3 storytelling">
-    <link rel="canonical" href="https://theorderof86.com/lore">
-    <meta property="og:title" content="Lore & Chapters, Order of 86">
-    <meta property="og:description" content="Read the epic lore of the Order of 86. Dive into chapters of wizard dog mythology and the legendary history of Pawtheon.">
-    <meta property="og:image" content="https://theorderof86.com/og-image.jpg">
-    <meta property="og:url" content="https://theorderof86.com/lore">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="The Order of 86">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Lore & Chapters, Order of 86">
-    <meta name="twitter:description" content="Read the epic lore of the Order of 86. Dive into chapters of wizard dog mythology and the legendary history of Pawtheon.">
-    <meta name="twitter:image" content="https://theorderof86.com/og-image.jpg">
-    <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg: #06060a;
-            --bg-elevated: #0e0e14;
-            --bg-card: #111118;
-            --bg-glass: rgba(14,14,20,0.75);
-            --text: #e8e6e1;
-            --text-dim: #7a7872;
-            --text-faint: #44433e;
-            --gold: #c9a86c;
-            --gold-bright: #e8c97a;
-            --gold-dim: rgba(201,168,108,0.12);
-            --border: rgba(201,168,108,0.08);
-            --border-hover: rgba(201,168,108,0.2);
-            --font-display: 'Cinzel', Georgia, serif;
-            --font-body: 'Cinzel', Georgia, serif;
-            --font-mono: 'Cinzel', Georgia, serif;
-            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-            
-            /* Legacy compatibility */
-            --color-bg: var(--bg);
-            --color-surface: var(--bg-elevated);
-            --color-surface-2: var(--bg-card);
-            --color-surface-3: var(--bg-card);
-            --color-text: var(--text);
-            --color-text-secondary: var(--text-dim);
-            --color-text-tertiary: var(--text-faint);
-            --color-border: var(--border);
-            --color-accent: var(--gold);
-            --color-accent-bright: var(--gold-bright);
-            --font-sans: var(--font-body);
-            --shadow-md: 0 2px 4px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.35);
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --transition-normal: 300ms cubic-bezier(0.25,0.1,0.25,1);
-        }
-        
-        html { font-family: var(--font-body); background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
-        body { min-height: 100vh; background: var(--bg); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#06060a">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%2306060a' width='32' height='32' rx='6'/><text x='16' y='23' font-size='18' font-weight='bold' text-anchor='middle' fill='%23c9a86c'>86</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<title>The Lore of Pawtheon — Order of 86 Codex</title>
+<meta name="description" content="The complete Pawtheon Codex: theology, history, institutions, calendar, prophecy, and language of the Order of 86 wizard dogs.">
+<style>
+:root { --active-color: var(--gold); --active-glow: var(--gold-dim); }
+.hero { min-height: 55vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 24px 60px; position: relative; z-index: 1; }
+.hero-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.25em; color: var(--text-faint); margin-bottom: 1.5rem; }
+.hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 900; color: var(--gold); line-height: 1.1; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.hero-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: var(--text-dim); max-width: 580px; line-height: 1.6; margin-bottom: 2.5rem; }
+.hero-stats { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; }
+.hero-stat { text-align: center; }
+.hero-stat-value { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--gold); }
+.hero-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-faint); margin-top: 4px; }
 
-        /* ── Navigation ───────────────────────────────── */
-        .nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 clamp(16px, 4vw, 48px);
-            background: rgba(6,6,10,0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            transition: border-color 0.4s;
-        }
-        .nav.scrolled { border-color: var(--border-hover); }
-        .nav-logo {
-            font-family: var(--font-display);
-            font-size: 15px;
-            font-weight: 900;
-            color: var(--gold);
-            text-decoration: none;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-        .nav-links { display: flex; gap: 2px; }
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-family: var(--font-body);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 6px 14px;
-            border-radius: 6px;
-            transition: color 0.25s, background 0.25s;
-        }
-        .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-        .nav-links a.active { color: var(--gold); }
-        .nav-hamburger {
-            display: none;
-            background: none; border: none; cursor: pointer;
-            width: 40px; height: 40px;
-            align-items: center; justify-content: center;
-        }
-        .nav-hamburger span {
-            display: block; width: 20px; height: 2px;
-            background: var(--text); border-radius: 1px;
-            transition: all 0.3s var(--ease-out);
-            position: relative;
-        }
-        .nav-hamburger span::before,
-        .nav-hamburger span::after {
-            content: ''; position: absolute; left: 0;
-            width: 100%; height: 2px; background: var(--text);
-            border-radius: 1px; transition: all 0.3s var(--ease-out);
-        }
-        .nav-hamburger span::before { top: -7px; }
-        .nav-hamburger span::after { top: 7px; }
-        .nav-hamburger.open span { background: transparent; }
-        .nav-hamburger.open span::before { top: 0; transform: rotate(45deg); }
-        .nav-hamburger.open span::after { top: 0; transform: rotate(-45deg); }
+.category-section { max-width: 1200px; margin: 0 auto; padding: 60px 24px; position: relative; z-index: 1; }
+.category-header { display: flex; align-items: center; gap: 14px; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.category-icon { font-size: 1.5rem; color: var(--gold); }
+.category-title { font-family: var(--font-display); font-size: clamp(1.3rem, 3vw, 1.8rem); font-weight: 700; color: var(--text); }
+.category-count { margin-left: auto; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); background: var(--bg-elevated); padding: 6px 12px; border-radius: 4px; border: 1px solid var(--border); }
 
-        .mobile-menu {
-            position: fixed; top: 56px; left: 0; right: 0;
-            z-index: 99;
-            background: rgba(6,6,10,0.97);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 8px 0 20px;
-            transform: translateY(-120%);
-            opacity: 0;
-            transition: all 0.4s var(--ease-out);
-            pointer-events: none;
-        }
-        .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
-        .mobile-menu a {
-            display: block; padding: 14px 32px;
-            color: var(--text-dim); text-decoration: none;
-            font-family: var(--font-body); font-size: 15px;
-            font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-            transition: color 0.2s;
-        }
-        .mobile-menu a:hover, .mobile-menu a.active { color: var(--gold); }
+.doc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+.doc-card { display: block; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-decoration: none; color: inherit; transition: all 0.35s var(--ease-out); position: relative; overflow: hidden; }
+.doc-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--gold); opacity: 0; transition: opacity 0.35s; }
+.doc-card:hover { border-color: var(--border-hover); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+.doc-card:hover::before { opacity: 1; }
+.doc-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+.doc-card-icon { font-size: 14px; color: var(--gold); }
+.doc-card-category { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); }
+.doc-card-title { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; line-height: 1.3; }
+.doc-card-summary { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.2rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.doc-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+.doc-card-arrow { color: var(--gold); opacity: 0; transform: translateX(-8px); transition: all 0.3s; }
+.doc-card:hover .doc-card-arrow { opacity: 1; transform: translateX(0); }
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .nav-hamburger { display: flex; }
-        }
+.toc-bar { position: sticky; top: 56px; z-index: 50; background: rgba(6,6,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.toc-bar-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.toc-bar-inner::-webkit-scrollbar { display: none; }
+.toc-bar a { flex-shrink: 0; padding: 14px 18px; color: var(--text-dim); text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; border-bottom: 2px solid transparent; transition: all 0.25s; white-space: nowrap; }
+.toc-bar a:hover { color: var(--text); }
+.toc-bar a.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-        /* Coming Soon Page */
-        .lore-container {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: calc(100vh - 60px); padding: 40px 20px; text-align: center;
-        }
-        .lore-icon {
-            font-size: 80px; margin-bottom: 24px;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        .lore-title {
-            font-size: clamp(32px, 6vw, 56px); font-weight: 800;
-            background: linear-gradient(135deg, var(--color-accent-bright), var(--color-accent), #fff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 16px;
-        }
-        .lore-subtitle {
-            font-size: clamp(16px, 3vw, 22px); color: var(--color-text-secondary);
-            max-width: 600px; line-height: 1.6; margin-bottom: 40px;
-        }
-        .lore-chapters {
-            display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 500px;
-        }
-        .lore-chapter {
-            background: var(--color-surface); border: 1px solid var(--color-border);
-            border-radius: var(--radius-md); padding: 20px 24px;
-            display: flex; align-items: center; gap: 16px;
-            opacity: 0.4; cursor: default; transition: all var(--transition-normal);
-        }
-        .lore-chapter:hover { opacity: 0.55; }
-        .chapter-num {
-            font-size: 24px; font-weight: 800; color: var(--color-accent);
-            min-width: 36px; text-align: center;
-        }
-        .chapter-info { text-align: left; }
-        .chapter-title { font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 2px; }
-        .chapter-status { font-size: 12px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
-        .lore-badge {
-            display: inline-block; margin-top: 32px; padding: 8px 20px;
-            border: 1px solid var(--color-accent); border-radius: 999px;
-            color: var(--color-accent); font-size: 13px; font-weight: 600;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            animation: pulse-border 2s ease-in-out infinite;
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-color: var(--color-accent); box-shadow: 0 0 0 0 rgba(201,168,108,0); }
-            50% { border-color: var(--color-accent-bright); box-shadow: 0 0 20px rgba(255,215,0,0.15); }
-        }
-        .lore-particles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: -1; overflow: hidden;
-        }
-        .particle {
-            position: absolute; width: 2px; height: 2px;
-            background: var(--color-accent); border-radius: 50%; opacity: 0;
-            animation: drift 8s linear infinite;
-        }
-        @keyframes drift {
-            0% { opacity: 0; transform: translateY(100vh) scale(0); }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { opacity: 0; transform: translateY(-10vh) scale(1.5); }
-        }
-        
-        /* ── Footer ────────────────────────────────── */
-        .footer {
-            margin-top: 5rem;
-            padding: 2.5rem clamp(16px, 4vw, 48px) 3rem;
-            background: var(--bg-elevated);
-            border-top: 1px solid var(--border);
-        }
-        .footer-content { text-align: center; }
-        .footer-logo {
-            font-family: var(--font-display);
-            font-size: 18px; font-weight: 900;
-            color: var(--gold); margin-bottom: 8px;
-            letter-spacing: 0.04em; text-transform: uppercase;
-        }
-        .footer-text {
-            font-size: 13px; color: var(--text-dim);
-            font-family: var(--font-body); letter-spacing: 0.08em; text-transform: uppercase;
-        }
-    
-    </style>
+.lore-chapters-note { max-width: 1200px; margin: 0 auto; padding: 40px 24px 0; text-align: center; position: relative; z-index: 1; }
+.lore-chapters-note p { color: var(--text-faint); font-size: 14px; line-height: 1.6; max-width: 600px; margin: 0 auto 1.5rem; }
+.chapter-link { display: inline-block; padding: 10px 24px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; color: var(--text-dim); text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; transition: all 0.3s; }
+.chapter-link:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+@media (max-width: 768px) {
+    .hero { padding: 100px 16px 40px; }
+    .category-section { padding: 40px 16px; }
+    .doc-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 1.5rem; }
+}
+</style>
 </head>
 <body>
-
 <nav class="nav" id="nav">
     <a href="index.html" class="nav-logo">The Order of 86</a>
     <div class="nav-links">
@@ -259,11 +72,9 @@
         <a href="map.html">Map</a>
         <a href="moons.html">Moons</a>
         <a href="lore.html" class="active">Lore</a>
-        <a href="content.html">Content</a>
+        <a href="studio/">Content</a>
     </div>
-    <button class="nav-hamburger" id="navToggle">
-        <span></span>
-    </button>
+    <button class="nav-hamburger" id="navToggle"><span></span></button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
@@ -271,86 +82,234 @@
     <a href="map.html">Map</a>
     <a href="moons.html">Moons</a>
     <a href="lore.html" class="active">Lore</a>
-    <a href="content.html">Content</a>
+    <a href="studio/">Content</a>
 </div>
 
-<div class="lore-particles" id="particles"></div>
-
-<div class="lore-container">
-    <div class="lore-icon">&#128214;</div>
-    <h1 class="lore-title">The Lore of Pawtheon</h1>
-    <p class="lore-subtitle">The full story of the Order of 86, told chapter by chapter. The ancient moons, the six Orders, the rise of the Wizards, and the darkness that threatens them all.</p>
-
-    <div class="lore-chapters">
-        <div class="lore-chapter">
-            <div class="chapter-num">I</div>
-            <div class="chapter-info">
-                <div class="chapter-title">The First Howl</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
-        <div class="lore-chapter">
-            <div class="chapter-num">II</div>
-            <div class="chapter-info">
-                <div class="chapter-title">The Second Howl</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
-        <div class="lore-chapter">
-            <div class="chapter-num">III</div>
-            <div class="chapter-info">
-                <div class="chapter-title">?</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
-        <div class="lore-chapter">
-            <div class="chapter-num">IV</div>
-            <div class="chapter-info">
-                <div class="chapter-title">?</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
-        <div class="lore-chapter">
-            <div class="chapter-num">V</div>
-            <div class="chapter-info">
-                <div class="chapter-title">?</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
-        <div class="lore-chapter">
-            <div class="chapter-num">VI</div>
-            <div class="chapter-info">
-                <div class="chapter-title">?</div>
-                <div class="chapter-status">Coming Soon</div>
-            </div>
-        </div>
+<section class="hero">
+    <div class="hero-label">The Pawtheon Codex</div>
+    <h1 class="hero-title">LORE DIRECTORY</h1>
+    <p class="hero-subtitle">The complete theological, institutional, and historical record of the Order of 86. Eighteen documents. Six categories. One world.</p>
+    <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-value">18</div><div class="hero-stat-label">Documents</div></div>
+        <div class="hero-stat"><div class="hero-stat-value">6</div><div class="hero-stat-label">Categories</div></div>
+        <div class="hero-stat"><div class="hero-stat-value">214K</div><div class="hero-stat-label">Words</div></div>
     </div>
+</section>
 
-    <div class="lore-badge">Chapters Unlocking Soon</div>
+<div class="toc-bar">
+    <div class="toc-bar-inner">
+        <a href="#cat-theology" class="active">Theology</a>
+        <a href="#cat-institutions">Institutions</a>
+        <a href="#cat-history">History</a>
+        <a href="#cat-calendar">Calendar</a>
+        <a href="#cat-prophecy">Prophecy</a>
+        <a href="#cat-language">Language</a>
+    </div>
 </div>
 
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">The Order of 86</div>
-        <div class="footer-text">86 Doginal Wizard Dogs on Dogecoin</div>
+<section class="category-section" id="cat-theology">
+    <div class="category-header">
+        <span class="category-icon">✦</span>
+        <h2 class="category-title">Theology</h2>
+        <span class="category-count">5 documents</span>
     </div>
+    <div class="doc-grid">
+        <a href="lore/the-first-howl-hymn.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Theology</span></div>
+            <h3 class="doc-card-title">The First Howl Hymn</h3>
+            <p class="doc-card-summary">The oldest sacred text of the Pawtheon. Four cantos in Urfic with interlinear translation, framed by Tower Archive editorial notes. The hymn that started everything.</p>
+            <div class="doc-card-meta"><span>1,334 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/the-quiet-heresy.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Theology</span></div>
+            <h3 class="doc-card-title">The Quiet Heresy</h3>
+            <p class="doc-card-summary">The Mute Doctrine. The heresy that says the First Howl was a theft. Founder Ashpaw's testimony, the Hat Objection, and the Chorus rebuttal.</p>
+            <div class="doc-card-meta"><span>1,716 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/pre-howl-spirituality.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Theology</span></div>
+            <h3 class="doc-card-title">The Old Pack Ways</h3>
+            <p class="doc-card-summary">What dogs believed before magic. The Silent Gods, the Long Run, Circle Howls, scent-trails to the dead, and bone niches.</p>
+            <div class="doc-card-meta"><span>1,562 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/theological-debates.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Theology</span></div>
+            <h3 class="doc-card-title">Theological Debates</h3>
+            <p class="doc-card-summary">Four competing interpretations of the Gray Dog's origin: Emergence, Traveler, Natural, and Hollow. Each with textual evidence and objections.</p>
+            <div class="doc-card-meta"><span>2,017 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/death-and-afterlife.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Theology</span></div>
+            <h3 class="doc-card-title">Death and the Afterlife</h3>
+            <p class="doc-card-summary">Where dogs go when they die. Realm-specific traditions, Dream Echoes, the Unfinished Dead, and Zombie theology of the Shadowmire.</p>
+            <div class="doc-card-meta"><span>1,483 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<section class="category-section" id="cat-institutions">
+    <div class="category-header">
+        <span class="category-icon">◈</span>
+        <h2 class="category-title">Institutions</h2>
+        <span class="category-count">3 documents</span>
+    </div>
+    <div class="doc-grid">
+        <a href="lore/order-hierarchies.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◈</span><span class="doc-card-category">Institutions</span></div>
+            <h3 class="doc-card-title">Order Hierarchies</h3>
+            <p class="doc-card-summary">Ranks, initiation, and training in the six Orders. From Novice to Grand Seer. The Sorting Ceremony, Trials by Fire, and the renunciation process.</p>
+            <div class="doc-card-meta"><span>2,171 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/monastic-orders.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◈</span><span class="doc-card-category">Institutions</span></div>
+            <h3 class="doc-card-title">Monastic Orders</h3>
+            <p class="doc-card-summary">The Tower-Keepers, Pilgrim Packs, Scribepack, Listener Order, and Chorus Guard. Seven sacred routes and the oral preservation tradition.</p>
+            <div class="doc-card-meta"><span>1,653 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/heretical-sects.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◈</span><span class="doc-card-category">Institutions</span></div>
+            <h3 class="doc-card-title">Heretical Sects</h3>
+            <p class="doc-card-summary">Schisms, splinters, and forbidden beliefs within the Orders. Seven active sects and three extinct movements across 1,200 years.</p>
+            <div class="doc-card-meta"><span>2,033 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<section class="category-section" id="cat-history">
+    <div class="category-header">
+        <span class="category-icon">◉</span>
+        <h2 class="category-title">History</h2>
+        <span class="category-count">4 documents</span>
+    </div>
+    <div class="doc-grid">
+        <a href="lore/world-timeline.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◉</span><span class="doc-card-category">History</span></div>
+            <h3 class="doc-card-title">World Timeline</h3>
+            <p class="doc-card-summary">The complete history of Pawtheon from Silence to Present. Five eras, dual-layer storytelling (Official Story vs Deeper Record), and the Gray Dog's interventions.</p>
+            <div class="doc-card-meta"><span>2,417 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/pre-howl-history.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◉</span><span class="doc-card-category">History</span></div>
+            <h3 class="doc-card-title">Pre-Howl History</h3>
+            <p class="doc-card-summary">The archaeological layer beneath the magic. Pre-Howl society, the Scent-Web, the Silent Gods, and the First Tower Foundation anomaly.</p>
+            <div class="doc-card-meta"><span>1,775 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/the-great-silence-account.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◉</span><span class="doc-card-category">History</span></div>
+            <h3 class="doc-card-title">The Great Silence</h3>
+            <p class="doc-card-summary">Five primary-source accounts of the 49-hour magic outage. Tidewatch log, Forge Spire journal, Mute oral record, Gray Dog statement, and civilian letters.</p>
+            <div class="doc-card-meta"><span>1,812 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/the-loyalty-wars-chronicle.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◉</span><span class="doc-card-category">History</span></div>
+            <h3 class="doc-card-title">The Loyalty Wars</h3>
+            <p class="doc-card-summary">When the pack turned on itself. Four phases, casualty tables, the Burning of the Archivum, and the Gray Dog's intervention.</p>
+            <div class="doc-card-meta"><span>1,721 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<section class="category-section" id="cat-calendar">
+    <div class="category-header">
+        <span class="category-icon">☽</span>
+        <h2 class="category-title">Calendar</h2>
+        <span class="category-count">2 documents</span>
+    </div>
+    <div class="doc-grid">
+        <a href="lore/holy-days.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">☽</span><span class="doc-card-category">Calendar</span></div>
+            <h3 class="doc-card-title">Holy Days and Festivals</h3>
+            <p class="doc-card-summary">The sacred calendar: 7-day week, 13 months, 6 major festivals. Concordance, Attunement, Silence, Sovereign's Festival, Lunar Convergence, and Hat-Blessing.</p>
+            <div class="doc-card-meta"><span>1,802 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/moon-cycle-rituals.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">☽</span><span class="doc-card-category">Calendar</span></div>
+            <h3 class="doc-card-title">Moon Cycle Rituals</h3>
+            <p class="doc-card-summary">Full moon and new moon rituals for all seven moons. Surge, Blaze, Flood, Bloom, Reveal, Dreamstorm, Alignment, and their opposites.</p>
+            <div class="doc-card-meta"><span>1,688 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<section class="category-section" id="cat-prophecy">
+    <div class="category-header">
+        <span class="category-icon">◐</span>
+        <h2 class="category-title">Prophecy</h2>
+        <span class="category-count">2 documents</span>
+    </div>
+    <div class="doc-grid">
+        <a href="lore/prophecies-and-omens.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◐</span><span class="doc-card-category">Prophecy</span></div>
+            <h3 class="doc-card-title">Prophecies and Omens</h3>
+            <p class="doc-card-summary">Three major prophecies with four interpretations each. The First Howl Prophecy, the Wrong Note, and the Pack-Breaker. Plus natural and human omens.</p>
+            <div class="doc-card-meta"><span>1,889 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/seers-and-oracles.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">◐</span><span class="doc-card-category">Prophecy</span></div>
+            <h3 class="doc-card-title">Seers and Oracles</h3>
+            <p class="doc-card-summary">Seven profiles from Sera the Silent to the Pup-Who-Hums. Methods: water scrying, dream-walking, wind-listening, pattern recognition, blood-divination.</p>
+            <div class="doc-card-meta"><span>1,629 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<section class="category-section" id="cat-language">
+    <div class="category-header">
+        <span class="category-icon">✦</span>
+        <h2 class="category-title">Language</h2>
+        <span class="category-count">2 documents</span>
+    </div>
+    <div class="doc-grid">
+        <a href="lore/sacred-vocabulary.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Language</span></div>
+            <h3 class="doc-card-title">Sacred Vocabulary</h3>
+            <p class="doc-card-summary">Fifty words of the Urfic tongue. The seven sacred vowels, core vocabulary, grammatical notes, and sample texts: Hymn excerpt, Hat Oath, Mute Rejection.</p>
+            <div class="doc-card-meta"><span>1,380 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+        <a href="lore/howl-notation.html" class="doc-card">
+            <div class="doc-card-header"><span class="doc-card-icon">✦</span><span class="doc-card-category">Language</span></div>
+            <h3 class="doc-card-title">Howl Notation</h3>
+            <p class="doc-card-summary">The musical-magical writing system. Pitch, duration, and breath symbols. Sacred vowel notation, harmonic stacks, four notational styles, and the decipherment problem.</p>
+            <div class="doc-card-meta"><span>1,328 words</span><span class="doc-card-arrow">→</span></div>
+        </a>
+    </div>
+</section>
+
+<div class="lore-chapters-note">
+    <p>The narrative chapters of the Order of 86 — The First Howl, The Second Howl, and the epic wizard stories — are preserved separately in the living codex.</p>
+</div>
+
+<footer class="footer" style="margin-top: 4rem; padding: 2.5rem 24px 3rem; background: var(--bg-elevated); border-top: 1px solid var(--border); text-align: center;">
+    <div style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase;">The Order of 86</div>
+    <div style="font-size: 13px; color: var(--text-dim); font-family: var(--font-body); letter-spacing: 0.08em; text-transform: uppercase;">86 Doginal Wizard Dogs on Dogecoin</div>
 </footer>
 
+<div class="atmosphere"></div>
 <script>
-// Floating particles
-const container = document.getElementById('particles');
-for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random() * 100 + '%';
-    p.style.animationDelay = Math.random() * 8 + 's';
-    p.style.animationDuration = (6 + Math.random() * 6) + 's';
-    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
-    container.appendChild(p);
+// Sticky TOC highlight
+const sections = document.querySelectorAll('.category-section');
+const tocLinks = document.querySelectorAll('.toc-bar a');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            tocLinks.forEach(a => a.classList.remove('active'));
+            const id = entry.target.id;
+            const link = document.querySelector(`.toc-bar a[href="#${id}"]`);
+            if (link) link.classList.add('active');
+        }
+    });
+}, { rootMargin: '-20% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Mobile menu toggle
+const toggle = document.getElementById('navToggle');
+const menu = document.getElementById('mobileMenu');
+if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+        toggle.classList.toggle('open');
+        menu.classList.toggle('open');
+    });
 }
 </script>
-
-<script src="nav.js" defer></script>
-<script src="sparkle.js" defer></script>
 </body>
 </html>

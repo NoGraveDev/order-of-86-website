@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#06060a">
+<title>Pawtheon Pixel Studio · The Order of 86</title>
+<meta name="description" content="Original wizard dogs. 35 still scenes and 34 distinct animated scenes from Pawtheon. Create and download pixel-perfect PNGs and GIFs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a class="brand" href="https://theorderof86.com/">THE ORDER <span>OF 86</span></a>
+  <span class="divider"></span>
+  <span class="studio">PAWTHEON / PIXEL STUDIO</span>
+  <a class="world-link" href="https://theorderof86.com/map.html" target="_blank" rel="noopener">Explore the world ↗</a>
+</header>
+<main>
+  <section class="workbench">
+    <div class="section-top">
+      <div>
+        <p class="eyebrow">CONTENT GENERATOR</p>
+        <h1>A little piece of Pawtheon.</h1>
+      </div>
+      <button id="random" class="quiet">↻ Surprise me</button>
+    </div>
+    <div class="preview-wrap">
+      <canvas id="preview" width="1000" height="1000" aria-label="Your wizard in Pawtheon"></canvas>
+      <div id="loading" role="status">Opening Pawtheon…</div>
+    </div>
+    <div class="scene-caption">
+      <div>
+        <span id="realmName" class="eyebrow">FROSTHOLLOW</span>
+        <h2 id="sceneName">The Sled Paths</h2>
+      </div>
+      <button id="play" class="quiet" aria-label="Pause animation">Ⅱ Pause</button>
+    </div>
+    <p id="description" class="description"></p>
+    <div class="export-row">
+      <button class="primary" id="png" disabled>Download PNG <span>↓</span></button>
+      <button id="gif" disabled>Download GIF <span>↓</span></button>
+    </div>
+    <p id="status" class="status" role="status">1000 × 1000 · crisp pixels · original dogs</p>
+  </section>
+  <aside>
+    <div class="tabs" role="tablist" aria-label="Studio controls">
+      <button class="active" data-tab="worlds" role="tab" aria-selected="true">01 Worlds</button>
+      <button data-tab="dogs" role="tab" aria-selected="false">02 Wizards</button>
+      <button data-tab="settings" role="tab" aria-selected="false">03 Adjust</button>
+    </div>
+    <section id="worlds" class="panel">
+      <div class="panel-head">
+        <h2>Choose your realm</h2>
+        <span id="sceneCount">34 animated</span>
+      </div>
+      <div class="mode" aria-label="Background type">
+        <button id="animated" class="active" aria-pressed="true">Animated · 34</button>
+        <button id="still" aria-pressed="false">Still · 35</button>
+      </div>
+      <div id="scenes" class="scene-grid"></div>
+      <button id="clear" class="text-button">Clear background</button>
+    </section>
+    <section id="dogs" class="panel" hidden>
+      <div class="panel-head">
+        <h2>The original dogs</h2>
+        <span id="count">94 dogs</span>
+      </div>
+      <label class="sr-only" for="search">Search wizards</label>
+      <input id="search" placeholder="Search name or dog number…" type="search">
+      <label class="sr-only" for="order">Order</label>
+      <select id="order">
+        <option value="">All orders</option>
+        <option>Flame</option>
+        <option>Wild</option>
+        <option>Arcane</option>
+        <option>Deep</option>
+        <option>Radiant</option>
+        <option>Dream</option>
+        <option>Wanderer</option>
+        <option>Starter</option>
+      </select>
+      <div id="dogGrid" class="dog-grid"></div>
+      <p id="noDogs" hidden>No dogs match this search.</p>
+    </section>
+    <section id="settings" class="panel" hidden>
+      <div class="panel-head">
+        <h2>Make it yours</h2>
+        <button id="reset" class="text-button">Reset</button>
+      </div>
+      <div class="selected-dog">
+        <img id="chosenDog" alt="Selected wizard">
+        <div>
+          <strong id="dogNumber">#8728</strong>
+          <p id="dogName">Frostforge the Scarf Bearer</p>
+        </div>
+      </div>
+      <label class="control" for="scale">Wizard size <output id="scaleValue">100%</output></label>
+      <input id="scale" type="range" min="50" max="150" step="25" value="100">
+      <label class="control" for="x">Horizontal position <output id="xValue">0</output></label>
+      <input id="x" type="range" min="-12" max="12" step="1" value="0">
+      <label class="control" for="y">Vertical position <output id="yValue">0</output></label>
+      <input id="y" type="range" min="-12" max="12" step="1" value="0">
+      <label class="control" for="rotation">Rotation <output id="rotationValue">0°</output></label>
+      <input id="rotation" type="range" min="-180" max="180" step="90" value="0">
+      <p class="hint">Movement snaps to whole pixels. Quarter turns keep the original artwork sharp.</p>
+      <label class="control" for="speed">Animation speed <output id="speedValue">1×</output></label>
+      <input id="speed" type="range" min="0.5" max="2" step="0.5" value="1">
+    </section>
+  </aside>
+</main>
+<footer>
+  <span>THE WORLD OF PAWTHEON</span>
+  <span>86 wizards. Seven moons. One world.</span>
+</footer>
+<script src="wizards.js"></script>
+<script src="gif.js"></script>
+<script src="scenes.js"></script>
+<script src="animation.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
