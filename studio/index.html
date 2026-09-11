@@ -9,16 +9,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-  <a class="brand" href="https://theorderof86.com/">THE ORDER <span>OF 86</span></a>
-  <span class="divider"></span>
-  <span class="studio">PAWTHEON / PIXEL STUDIO</span>
-  <a class="world-link" href="https://theorderof86.com/map.html" target="_blank" rel="noopener">Explore the world ↗</a>
-</header>
-<main>
+<nav class="nav" id="nav">
+  <a href="../index.html" class="nav-logo">The Order of 86</a>
+  <div class="nav-links">
+    <a href="../index.html">Wizards</a>
+    <a href="../map.html">Map</a>
+    <a href="../moons.html">Moons</a>
+    <a href="../lore.html">Lore</a>
+    <a href="studio" class="active">Content</a>
+  </div>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../index.html">Wizards</a>
+  <a href="../map.html">Map</a>
+  <a href="../moons.html">Moons</a>
+  <a href="../lore.html">Lore</a>
+  <a href="studio" class="active">Content</a>
+</div>
+<main style="padding-top:88px">
   <section class="workbench">
     <div class="section-top">
       <div>
@@ -115,6 +128,7 @@
   <span>THE WORLD OF PAWTHEON</span>
   <span>86 wizards. Seven moons. One world.</span>
 </footer>
+<script src="../nav.js" defer></script>
 <script src="wizards.js"></script>
 <script src="gif.js"></script>
 <script src="scenes.js"></script>
