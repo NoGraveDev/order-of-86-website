@@ -193,7 +193,7 @@ http.createServer(async (req, res) => {
     // Cache policy by file type
     function cachePolicy(ext) {
         if (ext === '.html') return 'no-cache';
-        if (['.png','.jpg','.jpeg','.gif','.webp','.svg','.ico'].includes(ext)) return 'public, max-age=604800, immutable'; // 7 days
+        if (['.png','.jpg','.jpeg','.gif','.webp','.svg','.ico'].includes(ext)) return 'public, max-age=3600'; // 1 hour, revalidates
         if (['.js','.css','.json'].includes(ext)) return 'public, max-age=86400'; // 1 day
         if (['.woff2'].includes(ext)) return 'public, max-age=2592000, immutable'; // 30 days
         return 'public, max-age=86400';
