@@ -165,6 +165,12 @@ http.createServer(async (req, res) => {
 
     // ── Static files ──
     if (url === '/') url = '/index.html';
+    
+    // Handle studio directory paths
+    if (url === '/studio' || url === '/studio/') {
+        url = '/studio/index.html';
+    }
+    
     if (!path.extname(url)) url += '.html';
 
     const filePath = path.join(ROOT, url);
