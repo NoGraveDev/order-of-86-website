@@ -113,15 +113,18 @@ function sendResponse(req, res, statusCode, headers, body) {
 async function startServer() {
     const { createPlayHandler } = await import('./play-app/server.mjs');
     const handlePlay = await createPlayHandler();
+    const { createMetricsHandler } = await import('./analytics/http.mjs');
+    const handleMetrics = createMetricsHandler();
 http.createServer(async (req, res) => {
     const pathname = req.url.split('?')[0];
+    if (pathname === '/metrics/event') return handleMetrics(req, res);
     if (pathname === '/play' || pathname.startsWith('/play/')) {
         return handlePlay(req, res);
     }
     // Runtime code and persistent data are never website assets.
     let decodedPath;
     try { decodedPath = decodeURIComponent(pathname); } catch { decodedPath = '/play-app/'; }
-    if (/^\/(?:play-app|\.git|node_modules)(?:\/|$)/.test(decodedPath)) {
+    if (/^\/(?:play-app|analytics|\.git|node_modules)(?:\/|$)/.test(decodedPath)) {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         return res.end('Not Found');
     }
@@ -144,7 +147,7 @@ http.createServer(async (req, res) => {
             res.end('Wizard not found');
             return;
         }
-        const html = renderWizardPage(dog, BASE_URL);
+        const html = renderWizardPage(dog, BASE_URL).replace('</body>', '<script src="/site-metrics.js" defer></script></body>');
         sendResponse(req, res, 200, {
             'Content-Type': 'text/html',
             'Cache-Control': 'public, max-age=3600'
@@ -203,7 +206,7 @@ http.createServer(async (req, res) => {
     }
 
     const topLevel = path.relative(ROOT, resolved).split(path.sep)[0];
-    if (['play-app', '.git', 'node_modules'].includes(topLevel)) {
+    if (['play-app', 'analytics', '.git', 'node_modules'].includes(topLevel)) {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         return res.end('Not Found');
     }
