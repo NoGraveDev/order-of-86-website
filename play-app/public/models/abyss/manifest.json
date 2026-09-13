@@ -1,0 +1,82 @@
+{
+  "tidal-tree": {
+    "leafCount": 576,
+    "family": "tidal-tree",
+    "form": 1
+  },
+  "tidal-tree-distant": {
+    "leafCount": 96,
+    "family": "tidal-tree",
+    "form": 1
+  },
+  "tidal-tree-2": {
+    "leafCount": 576,
+    "family": "tidal-tree",
+    "form": 2
+  },
+  "tidal-tree-2-distant": {
+    "leafCount": 96,
+    "family": "tidal-tree",
+    "form": 2
+  },
+  "tidal-tree-3": {
+    "leafCount": 576,
+    "family": "tidal-tree",
+    "form": 3
+  },
+  "tidal-tree-3-distant": {
+    "leafCount": 96,
+    "family": "tidal-tree",
+    "form": 3
+  },
+  "tidal-tree-4": {
+    "leafCount": 576,
+    "family": "tidal-tree",
+    "form": 4
+  },
+  "tidal-tree-4-distant": {
+    "leafCount": 96,
+    "family": "tidal-tree",
+    "form": 4
+  },
+  "windpine": {
+    "leafCount": 576,
+    "family": "windpine",
+    "form": 1
+  },
+  "windpine-distant": {
+    "leafCount": 96,
+    "family": "windpine",
+    "form": 1
+  },
+  "windpine-2": {
+    "leafCount": 576,
+    "family": "windpine",
+    "form": 2
+  },
+  "windpine-2-distant": {
+    "leafCount": 96,
+    "family": "windpine",
+    "form": 2
+  },
+  "windpine-3": {
+    "leafCount": 576,
+    "family": "windpine",
+    "form": 3
+  },
+  "windpine-3-distant": {
+    "leafCount": 96,
+    "family": "windpine",
+    "form": 3
+  },
+  "windpine-4": {
+    "leafCount": 576,
+    "family": "windpine",
+    "form": 4
+  },
+  "windpine-4-distant": {
+    "leafCount": 96,
+    "family": "windpine",
+    "form": 4
+  }
+}

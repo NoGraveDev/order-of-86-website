@@ -1,0 +1,10 @@
+import {realms} from './world-data.js';
+const angle=realms.find(r=>r.id==='violet').angle;
+export const violetPoint=(u,r)=>({x:Math.cos(angle)*u+Math.sin(angle)*r,z:Math.sin(angle)*u-Math.cos(angle)*r});
+// Habitat labels describe viewing spots, not new settlements or additions to the mythology.
+export const violetLoreSites=[
+ {id:'violet-lavender',name:'Lavender Moth Meadow',...violetPoint(-32,600),lore:'Lavender Moths pollinate only lavender and violet blooms. Their broad wings match the Highland wildflowers, and their caterpillars are prized as scholarly pets.\n\nTheir silk is used for the collars and scarves of Violet Highlands Wizards. It never stains and always smells faintly of flowers.'},
+ {id:'violet-scribes',name:'Scroll Mouse Nests',...violetPoint(32,468),lore:'Scroll Mice build nests from torn parchment and ink-stained scraps. Their paws are permanently black with ink. They can read simple words and steal important documents for nesting material. Grayglasses once found a lost prophecy in a Scroll Mouse nest.\n\nArchive Beetles eat old parchment. Their shells resemble illegible handwriting. They consume rotting paper before mold spreads, but can also devour priceless documents.'},
+ {id:'violet-finch',name:'Quartz Finch Garden',...violetPoint(32,680),lore:'Quartz Finches build heavy nests from quartz fragments and shiny stones, so they nest only in low shrubs. Their pale-blue eggs are cold to the touch.\n\nStudents at the Violet Citadel consider the nests good luck. Finding one before an exam is said to guarantee success.'},
+ {id:'violet-larks',name:'Meadow Lark Glade',...violetPoint(-32,820),lore:'Meadow Larks have pale-violet feathers and nest in tall violet wildflowers. Their songs form complex harmonics: one listener hears a lullaby, another a call to action.\n\nThe Grand Assembly tried to use them for secret votes. The birds sang different results to different dogs, so the plan was abandoned.'}
+].map(p=>({...p,realm:'violet',landmark:p.name,tag:'VIOLET HIGHLANDS · MEADOW & MEMORY',interactionRadius:10,customViolet:true}));

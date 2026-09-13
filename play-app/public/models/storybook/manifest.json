@@ -1,0 +1,606 @@
+{
+  "oak": {
+    "leafCount": 960,
+    "triangles": 4984
+  },
+  "woodland": {
+    "leafCount": 1280,
+    "triangles": 6264
+  },
+  "silver-tree": {
+    "leafCount": 960,
+    "triangles": 4984
+  },
+  "cypress": {
+    "leafCount": 0,
+    "triangles": 1144
+  },
+  "ancient-oak": {
+    "leafCount": 1600,
+    "triangles": 8850
+  },
+  "oak-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "woodland-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "silver-tree-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "rock": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "basalt": {
+    "leafCount": 0,
+    "triangles": 104
+  },
+  "cliff": {
+    "leafCount": 0,
+    "triangles": 104
+  },
+  "mountain": {
+    "leafCount": 0,
+    "triangles": 40
+  },
+  "fern": {
+    "leafCount": 40,
+    "triangles": 160
+  },
+  "grass": {
+    "leafCount": 14,
+    "triangles": 14
+  },
+  "flowers": {
+    "leafCount": 18,
+    "triangles": 288
+  },
+  "mushroom": {
+    "leafCount": 0,
+    "triangles": 56
+  },
+  "crystal": {
+    "leafCount": 0,
+    "triangles": 72
+  },
+  "bench": {
+    "leafCount": 0,
+    "triangles": 84
+  },
+  "arch": {
+    "leafCount": 0,
+    "triangles": 204
+  },
+  "runestone": {
+    "leafCount": 0,
+    "triangles": 88
+  },
+  "owlperch": {
+    "leafCount": 0,
+    "triangles": 24
+  },
+  "well": {
+    "leafCount": 0,
+    "triangles": 130
+  },
+  "lantern": {
+    "leafCount": 0,
+    "triangles": 66
+  },
+  "brazier": {
+    "leafCount": 0,
+    "triangles": 130
+  },
+  "forgehammer": {
+    "leafCount": 0,
+    "triangles": 36
+  },
+  "truthmirror": {
+    "leafCount": 0,
+    "triangles": 216
+  },
+  "heartwoodseed": {
+    "leafCount": 0,
+    "triangles": 180
+  },
+  "condensedstar": {
+    "leafCount": 0,
+    "triangles": 14
+  },
+  "palehowltear": {
+    "leafCount": 0,
+    "triangles": 14
+  },
+  "kingscale": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "stonedog": {
+    "leafCount": 0,
+    "triangles": 128
+  },
+  "hollowstone": {
+    "leafCount": 0,
+    "triangles": 204
+  },
+  "firstember": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "echoegg": {
+    "leafCount": 0,
+    "triangles": 94
+  },
+  "friendshipfern": {
+    "leafCount": 0,
+    "triangles": 128
+  },
+  "dreamthreads": {
+    "leafCount": 0,
+    "triangles": 104
+  },
+  "singingstone": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "ruin": {
+    "leafCount": 0,
+    "triangles": 204
+  },
+  "crypt": {
+    "leafCount": 0,
+    "triangles": 228
+  },
+  "pillar": {
+    "leafCount": 0,
+    "triangles": 48
+  },
+  "bridge": {
+    "leafCount": 0,
+    "triangles": 232
+  },
+  "pool": {
+    "leafCount": 0,
+    "triangles": 57
+  },
+  "shard0": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard1": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard2": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard3": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard4": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard5": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "shard6": {
+    "leafCount": 0,
+    "triangles": 52
+  },
+  "lizard-common": {
+    "leafCount": 0,
+    "triangles": 198
+  },
+  "lizard-moss": {
+    "leafCount": 0,
+    "triangles": 230
+  },
+  "lizard-script": {
+    "leafCount": 0,
+    "triangles": 246
+  },
+  "lizard-frost": {
+    "leafCount": 0,
+    "triangles": 198
+  },
+  "lizard-magma": {
+    "leafCount": 0,
+    "triangles": 198
+  },
+  "lizard-prism": {
+    "leafCount": 0,
+    "triangles": 198
+  },
+  "lizard-ghost": {
+    "leafCount": 0,
+    "triangles": 198
+  },
+  "lizard-purr": {
+    "leafCount": 0,
+    "triangles": 206
+  },
+  "lizard-rot": {
+    "leafCount": 0,
+    "triangles": 210
+  },
+  "owl-common": {
+    "leafCount": 0,
+    "triangles": 282
+  },
+  "owl-horned": {
+    "leafCount": 0,
+    "triangles": 290
+  },
+  "owl-spectacled": {
+    "leafCount": 0,
+    "triangles": 546
+  },
+  "owl-snowy": {
+    "leafCount": 0,
+    "triangles": 282
+  },
+  "owl-ember": {
+    "leafCount": 0,
+    "triangles": 282
+  },
+  "owl-barn": {
+    "leafCount": 0,
+    "triangles": 282
+  },
+  "owl-wing-left": {
+    "leafCount": 12,
+    "triangles": 48
+  },
+  "owl-wing-right": {
+    "leafCount": 12,
+    "triangles": 48
+  },
+  "swamp-cypress": {
+    "leafCount": 0,
+    "triangles": 2404
+  },
+  "swamp-cypress-distant": {
+    "leafCount": 0,
+    "triangles": 298
+  },
+  "swamp-cypress-2": {
+    "leafCount": 0,
+    "triangles": 2224
+  },
+  "swamp-cypress-2-distant": {
+    "leafCount": 0,
+    "triangles": 298
+  },
+  "swamp-cypress-3": {
+    "leafCount": 0,
+    "triangles": 2584
+  },
+  "swamp-cypress-3-distant": {
+    "leafCount": 0,
+    "triangles": 298
+  },
+  "swamp-cypress-4": {
+    "leafCount": 0,
+    "triangles": 2314
+  },
+  "swamp-cypress-4-distant": {
+    "leafCount": 0,
+    "triangles": 298
+  },
+  "reeds": {
+    "leafCount": 0,
+    "triangles": 648
+  },
+  "lily-pads": {
+    "leafCount": 0,
+    "triangles": 77
+  },
+  "fallen-cypress": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "oak-2": {
+    "leafCount": 960,
+    "triangles": 4804
+  },
+  "oak-2-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "oak-3": {
+    "leafCount": 960,
+    "triangles": 5164
+  },
+  "oak-3-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "oak-4": {
+    "leafCount": 960,
+    "triangles": 4894
+  },
+  "oak-4-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "woodland-2": {
+    "leafCount": 1280,
+    "triangles": 6084
+  },
+  "woodland-2-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "woodland-3": {
+    "leafCount": 1280,
+    "triangles": 6444
+  },
+  "woodland-3-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "woodland-4": {
+    "leafCount": 1280,
+    "triangles": 6174
+  },
+  "woodland-4-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "silver-tree-2": {
+    "leafCount": 960,
+    "triangles": 4804
+  },
+  "silver-tree-2-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "silver-tree-3": {
+    "leafCount": 960,
+    "triangles": 5164
+  },
+  "silver-tree-3-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "silver-tree-4": {
+    "leafCount": 960,
+    "triangles": 4894
+  },
+  "silver-tree-4-distant": {
+    "leafCount": 32,
+    "triangles": 202
+  },
+  "cypress-distant": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "cypress-2": {
+    "leafCount": 0,
+    "triangles": 964
+  },
+  "cypress-2-distant": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "cypress-3": {
+    "leafCount": 0,
+    "triangles": 1324
+  },
+  "cypress-3-distant": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "cypress-4": {
+    "leafCount": 0,
+    "triangles": 1054
+  },
+  "cypress-4-distant": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "deepwood-detail-1": {
+    "leafCount": 0,
+    "triangles": 246
+  },
+  "deepwood-detail-2": {
+    "leafCount": 0,
+    "triangles": 274
+  },
+  "deepwood-detail-3": {
+    "leafCount": 0,
+    "triangles": 196
+  },
+  "deepwood-detail-4": {
+    "leafCount": 0,
+    "triangles": 104
+  },
+  "violet-detail-1": {
+    "leafCount": 0,
+    "triangles": 96
+  },
+  "violet-detail-2": {
+    "leafCount": 0,
+    "triangles": 264
+  },
+  "violet-detail-3": {
+    "leafCount": 0,
+    "triangles": 112
+  },
+  "violet-detail-4": {
+    "leafCount": 0,
+    "triangles": 312
+  },
+  "frost-detail-1": {
+    "leafCount": 0,
+    "triangles": 156
+  },
+  "frost-detail-2": {
+    "leafCount": 0,
+    "triangles": 208
+  },
+  "frost-detail-3": {
+    "leafCount": 0,
+    "triangles": 122
+  },
+  "frost-detail-4": {
+    "leafCount": 0,
+    "triangles": 72
+  },
+  "ember-detail-1": {
+    "leafCount": 0,
+    "triangles": 100
+  },
+  "ember-detail-2": {
+    "leafCount": 0,
+    "triangles": 152
+  },
+  "ember-detail-3": {
+    "leafCount": 0,
+    "triangles": 84
+  },
+  "ember-detail-4": {
+    "leafCount": 0,
+    "triangles": 364
+  },
+  "sunward-detail-1": {
+    "leafCount": 0,
+    "triangles": 80
+  },
+  "sunward-detail-2": {
+    "leafCount": 0,
+    "triangles": 336
+  },
+  "sunward-detail-3": {
+    "leafCount": 0,
+    "triangles": 288
+  },
+  "sunward-detail-4": {
+    "leafCount": 0,
+    "triangles": 216
+  },
+  "abyss-detail-1": {
+    "leafCount": 0,
+    "triangles": 156
+  },
+  "abyss-detail-2": {
+    "leafCount": 0,
+    "triangles": 16
+  },
+  "abyss-detail-3": {
+    "leafCount": 0,
+    "triangles": 340
+  },
+  "abyss-detail-4": {
+    "leafCount": 0,
+    "triangles": 80
+  },
+  "shadow-detail-1": {
+    "leafCount": 0,
+    "triangles": 80
+  },
+  "shadow-detail-2": {
+    "leafCount": 0,
+    "triangles": 42
+  },
+  "shadow-detail-3": {
+    "leafCount": 0,
+    "triangles": 74
+  },
+  "shadow-detail-4": {
+    "leafCount": 0,
+    "triangles": 100
+  },
+  "site-deepwood-0": {
+    "leafCount": 0,
+    "triangles": 810
+  },
+  "site-deepwood-1": {
+    "leafCount": 0,
+    "triangles": 570
+  },
+  "site-deepwood-2": {
+    "leafCount": 0,
+    "triangles": 1296
+  },
+  "site-violet-0": {
+    "leafCount": 0,
+    "triangles": 1318
+  },
+  "site-violet-1": {
+    "leafCount": 0,
+    "triangles": 1540
+  },
+  "site-violet-2": {
+    "leafCount": 0,
+    "triangles": 460
+  },
+  "site-frost-0": {
+    "leafCount": 0,
+    "triangles": 1160
+  },
+  "site-frost-1": {
+    "leafCount": 0,
+    "triangles": 826
+  },
+  "site-frost-2": {
+    "leafCount": 0,
+    "triangles": 468
+  },
+  "site-ember-0": {
+    "leafCount": 0,
+    "triangles": 1918
+  },
+  "site-ember-1": {
+    "leafCount": 0,
+    "triangles": 804
+  },
+  "site-ember-2": {
+    "leafCount": 0,
+    "triangles": 1600
+  },
+  "site-sunward-0": {
+    "leafCount": 0,
+    "triangles": 346
+  },
+  "site-sunward-1": {
+    "leafCount": 0,
+    "triangles": 548
+  },
+  "site-sunward-2": {
+    "leafCount": 0,
+    "triangles": 716
+  },
+  "site-abyss-0": {
+    "leafCount": 0,
+    "triangles": 1896
+  },
+  "site-abyss-1": {
+    "leafCount": 0,
+    "triangles": 1788
+  },
+  "site-abyss-2": {
+    "leafCount": 0,
+    "triangles": 168
+  },
+  "site-shadow-0": {
+    "leafCount": 0,
+    "triangles": 416
+  },
+  "site-shadow-1": {
+    "leafCount": 0,
+    "triangles": 3220
+  },
+  "site-shadow-2": {
+    "leafCount": 0,
+    "triangles": 286
+  }
+}

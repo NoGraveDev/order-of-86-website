@@ -1,0 +1,24 @@
+import {recordStorage,account,accountAPI} from './account-state.js';
+import {minigameRecordView} from './minigame-record-view.js';
+import {recordView,cacheChessRecord} from './chess-record-view.js';
+export const owlImages={'Common Owl':'common','Great Horned Owl':'horned','Spectacled Owl':'spectacled','Snowy Owl':'snowy','Ember Owl':'ember','Barn Owl':'barn'};
+export function itemImage(name,alt){const img=document.createElement('img');img.src='/play/inventory-images/'+name+'.png';img.alt=alt;img.loading='lazy';img.width=256;img.height=256;return img;}
+export function initInventory({getDog,getStats,multiplayer}){
+ const $=id=>document.getElementById(id),dialog=$('collection');let active='overview',data=null,refreshing=false;
+ try{data=JSON.parse(recordStorage.getItem('pawtheon-chess-record-cache-v1')||'null');}catch{}
+ function filter(){const query=$('inventorySearch').value.trim().toLowerCase(),state=$('inventoryFilter').value;let shown=0,total=0;for(const card of dialog.querySelectorAll('[data-item]')){if(card.closest('[data-inventory-panel]').dataset.inventoryPanel!==active)continue;total++;const owned=Number(card.dataset.owned)>0;card.hidden=!(card.textContent.toLowerCase().includes(query)&&(!state||(state==='owned'?owned:!owned)));if(!card.hidden)shown++;}$('inventoryEmpty').hidden=!total||shown>0;$('inventoryResults').textContent=total?shown+' / '+total+' entries':'';}
+ function tab(id){active=id;for(const b of dialog.querySelectorAll('[data-inventory-tab]')){const selected=b.dataset.inventoryTab===id;b.setAttribute('aria-selected',String(selected));b.tabIndex=selected?0:-1;}for(const panel of dialog.querySelectorAll('[data-inventory-panel]'))panel.hidden=panel.dataset.inventoryPanel!==id;$('inventoryTools').hidden=['overview','minigames'].includes(id);$('inventorySearch').value='';$('inventoryFilter').value=id==='equipment'?'owned':'';filter();}
+ const tabs=[...dialog.querySelectorAll('[data-inventory-tab]')];for(const button of tabs){button.onclick=()=>tab(button.dataset.inventoryTab);button.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();let index=tabs.indexOf(button);index=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tab(tabs[index].dataset.inventoryTab);tabs[index].focus();};}
+ for(const button of dialog.querySelectorAll('[data-inventory-jump]'))button.onclick=()=>tab(button.dataset.inventoryJump);
+ $('inventorySearch').oninput=filter;$('inventoryFilter').onchange=filter;
+ function refresh(){$('catchCount').textContent=['collectionTotal','shardTotal','wisdomTotal'].reduce((n,id)=>n+(parseInt($(id).textContent)||0),0);const dog=getDog();$('inventoryPortrait').src=dog.portrait||'/play/wizard-portraits/'+dog.id+'.png';$('inventoryPortrait').alt=dog.name;$('inventoryPlayer').textContent=dog.name;$('inventoryOrder').textContent=dog.order+' Order'+(dog.starter?' · Starter appearance':' · #'+dog.id);
+ for(const [id,total] of [['lizards','collectionTotal'],['shards','shardTotal'],['wisdom','wisdomTotal']])$('inventoryCount-'+id).textContent=$(total).textContent;
+ const records=minigameRecordView();$('inventoryCount-minigames').textContent=(data?.record?.games||0)+' chess games · '+records.sled.count+' sled finishes · '+(records.maze9.count+records.maze13.count)+' maze escapes';filter();}
+ function accept(next){data=next;recordView($('inventoryChessRecord'),data);refresh();}
+ globalThis.addEventListener('paw-minigame-record',()=>refresh());
+ globalThis.addEventListener('paw-chess-record',event=>accept(event.detail));
+ async function sync(){if((!multiplayer&&!account.user)||refreshing)return;refreshing=true;$('inventoryRecordStatus').textContent='Updating your record…';try{const next=account.user?await accountAPI('records'):await getStats();cacheChessRecord(next);$('inventoryRecordStatus').textContent=account.user?'Chess results are saved to your account.':'Saved across rooms on this browser.';}catch{$('inventoryRecordStatus').textContent=data?'Showing your last saved record. Join a room to update.':'Join a multiplayer room to start recording results.';}finally{refreshing=false;}}
+ $('inventoryRefresh').hidden=!multiplayer&&!account.user;$('inventoryRefresh').onclick=sync;recordView($('inventoryChessRecord'),data);$('inventoryRecordStatus').textContent=account.user?'Your chess record follows your account across devices.':multiplayer?'Your chess record follows this browser across rooms.':'Last saved chess record. Play multiplayer to update.';
+ const observer=new MutationObserver(()=>{if(dialog.open){refresh();sync();}});observer.observe(dialog,{attributes:true,attributeFilter:['open']});tab('overview');
+ return {refresh,filter};
+}

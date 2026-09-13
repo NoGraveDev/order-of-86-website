@@ -110,7 +110,21 @@ function sendResponse(req, res, statusCode, headers, body) {
     }
 }
 
+async function startServer() {
+    const { createPlayHandler } = await import('./play-app/server.mjs');
+    const handlePlay = await createPlayHandler();
 http.createServer(async (req, res) => {
+    const pathname = req.url.split('?')[0];
+    if (pathname === '/play' || pathname.startsWith('/play/')) {
+        return handlePlay(req, res);
+    }
+    // Runtime code and persistent data are never website assets.
+    let decodedPath;
+    try { decodedPath = decodeURIComponent(pathname); } catch { decodedPath = '/play-app/'; }
+    if (/^\/(?:play-app|\.git|node_modules)(?:\/|$)/.test(decodedPath)) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        return res.end('Not Found');
+    }
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
 
     if (!rateLimit(ip)) {
@@ -188,6 +202,12 @@ http.createServer(async (req, res) => {
         return;
     }
 
+    const topLevel = path.relative(ROOT, resolved).split(path.sep)[0];
+    if (['play-app', '.git', 'node_modules'].includes(topLevel)) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        return res.end('Not Found');
+    }
+
     const ext = path.extname(resolved);
 
     // Cache policy by file type
@@ -237,3 +257,9 @@ http.createServer(async (req, res) => {
         sendResponse(req, res, 200, headers, data);
     });
 }).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
+
+}
+startServer().catch(error => {
+    console.error('Website startup failed:', error.message);
+    process.exit(1);
+});

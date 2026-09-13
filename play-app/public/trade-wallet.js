@@ -1,0 +1,4 @@
+import {LIZARD_IDS} from './gather-core.js';
+export const emptyTradeWallet=()=>({inShards:0,outShards:0,inScales:0,outScales:0,inLeaves:0,outLeaves:0,receivedGearCost:0,sentGearCost:0});
+export function readTradeWallet(raw){const out=raw??emptyTradeWallet();if(!out||Object.keys(out).some(k=>![...Object.keys(emptyTradeWallet()),'inLizards','outLizards'].includes(k))||Object.keys(emptyTradeWallet()).some(k=>!Number.isSafeInteger(out[k])||out[k]<0))throw Error('Invalid trade wallet.');for(const k of ['inLizards','outLizards'])if(out[k]!==undefined&&(!out[k]||Array.isArray(out[k])||Object.keys(out[k]).some(t=>!LIZARD_IDS.includes(t)||!Number.isSafeInteger(out[k][t])||out[k][t]<0)))throw Error('Invalid traded lizards.');return structuredClone(out);}
+export const tradeDelta=(wallet,kind)=>{const w=readTradeWallet(wallet);return w['in'+kind]-w['out'+kind];};

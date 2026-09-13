@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Desktop WebGL solo world renders beneath /play",
+    "Signed-in identity and private room creation use /play",
+    "Second mobile browser joins same private room; both show 2 players",
+    "Mobile viewport fits and Leave returns to /play/"
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "passed": true
+}
