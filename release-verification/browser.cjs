@@ -1,6 +1,6 @@
 const {chromium}=require('/opt/homebrew/lib/node_modules/agent-browser/node_modules/playwright-core');
 const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require('node:crypto');
-const origin='http://127.0.0.1:8065',base=origin+'/play',report={checks:[],errors:[],failedRequests:[]};
+const origin=process.env.PLAY_AUDIT_ORIGIN||'http://127.0.0.1:8065',base=origin+'/play',report={checks:[],errors:[],failedRequests:[]};
 (async()=>{const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-angle=metal','--disable-background-timer-throttling','--disable-renderer-backgrounding']});try{
 const a=await browser.newContext({viewport:{width:1440,height:900}}),b=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
 const signup=await a.request.post(base+'/api/accounts/signup',{headers:{Origin:origin,'X-Pawtheon-Request':'1'},data:{username:'release_'+crypto.randomBytes(5).toString('hex'),password:crypto.randomBytes(24).toString('base64url'),name:'Release Explorer'}});assert.equal(signup.status(),200);
