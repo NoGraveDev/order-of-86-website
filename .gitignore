@@ -5,3 +5,10 @@ node_modules/
 marketplace-data.json
 wizards-inline.js
 tools/
+
+play-app/node_modules/
+play-app/dist/
+play-app/.local/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm

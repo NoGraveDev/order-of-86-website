@@ -1,0 +1,34 @@
+{
+  "source": "blender/sources/crystal-lizard-september-08.blend",
+  "sourceSha256": "93e301fc57eeba77465d35912e2b30def1c32813ae99ca8a954b1a8145316d1c",
+  "sourceMeshCount": 70,
+  "triangles": {
+    "plates": 17974,
+    "seams": 5168,
+    "spikes": 340,
+    "eyes": 4864,
+    "claws": 408
+  },
+  "totalTriangles": 28754,
+  "lengthMeters": 1.5,
+  "parts": [
+    "plates",
+    "seams",
+    "spikes",
+    "eyes",
+    "claws"
+  ],
+  "bones": 13,
+  "animation": "CrystalLizard_Walk",
+  "walkCycleSeconds": 1,
+  "walkDistancePerCycle": 0.2,
+  "footLiftMeters": 0.045,
+  "maxReachErrorMeters": 0.0,
+  "excluded": [
+    "Cube",
+    "Studio floor",
+    "cameras",
+    "lights"
+  ],
+  "optimization": "Tiny bevels omitted; recessed seam cores reduced to 25%; authored plates/crown/tail/eyes preserved."
+}

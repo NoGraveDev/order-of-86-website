@@ -1,0 +1,6 @@
+.git
+node_modules
+play-app/node_modules
+play-app/dist
+**/.local
+**/*.sqlite*
