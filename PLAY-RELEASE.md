@@ -39,3 +39,10 @@ Dependency audit: root and pared-down game dependencies show zero vulnerabilitie
 ## Updates and rollback
 
 Future v2 changes require an explicit release into this snapshot; source v2 continues separately. Never copy live production SQLite into Git. Before future migrations, back up production volume. Code rollback uses the prior website commit; retain the game volume and do not delete production data. Initial production deployment succeeded as fd075bf. Public homepage/map/content/moons and game entry/module bytes matched the verified release. Production save creation succeeded. A follow-up documentation/verification deployment will validate persistence across container replacement.
+
+
+## Public multiplayer release — September 13, 2026
+
+Added one-click public matchmaking, filling lobbies up to 8 players and automatically opening additional lobbies. Private invitations remain available and isolated. Reservation is transactional; disconnected boat racers retain their reconnect-grace seats. New idempotent public-room metadata migration preserves existing accounts and saves.
+
+Verification: build and `/play` subpath/account persistence tests pass, including 17 concurrent HTTP joins partitioning 8/8/1. Worker/SQLite suite passes 65 concurrent joins (eight full lobbies plus one), private isolation, full-room rejection, refill, stale leases, boat reconnect reservation, restart and expiry. Source v2 desktop/mobile browser checks passed locally and on its public preview before this production release.

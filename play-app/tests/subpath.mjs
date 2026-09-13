@@ -29,9 +29,13 @@ try{
  const saveResponse=await api('save',{accountId:user.id,revision:0,save:savedProgress},cookie);assert.equal(saveResponse.status,200);const saved=await saveResponse.json();assert.equal(saved.revision,1);assert.deepEqual(saved.save,savedProgress);
  assert.equal((await api('login',{username:'release_test',password},'','https://unrelated.example')).status,403);
  const rooms=await fetch(base+'/play/api/multiplayer/create',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:'{}'});assert.equal(rooms.status,200);assert((await rooms.json()).room);
+ const guests=await Promise.all(Array.from({length:17},async(_,i)=>{const response=await fetch(base+'/play/api/multiplayer/public-join',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify({name:'Public guest '+i,state:{dog:5035,x:0,y:0,z:15,yaw:0}})});assert.equal(response.status,200);return response.json();}));
+ const occupancy=new Map();for(const guest of guests){assert.equal(guest.public,true);occupancy.set(guest.room,(occupancy.get(guest.room)||0)+1);}assert.deepEqual([...occupancy.values()].sort((a,b)=>b-a),[8,8,1]);
+ for(const guest of guests){const response=await fetch(base+'/play/api/multiplayer/leave',{method:'POST',headers:{Origin:base,'Content-Type':'application/json',Authorization:'Bearer '+guest.token},body:JSON.stringify({room:guest.room})});assert.equal(response.status,200);}
+ assert((await (await fetch(base+'/play/multiplayer')).text()).includes('id="publicJoin"'));
  await new Promise(r=>server.close(r));server=null;app.close();app=await initializePlay({databasePath:join(dir,'test.sqlite')});
  server=createServer(async(req,res)=>app.handle(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const session=await fetch('http://127.0.0.1:'+server.address().port+'/play/api/accounts/session',{headers:{Cookie:cookie}});const restored=await session.json();assert.equal(restored.user.id,user.id);assert.equal(restored.revision,1);assert.deepEqual(restored.save,savedProgress);
  const mode=await readFile(new URL('../public/session-mode.js',import.meta.url),'utf8');assert(mode.includes('^\\/play\\/multiplayer'));
- console.log('PASS /play routes, runtime assets, MIME/cache, isolated account cookie, CSRF, room creation, payload/traversal guards and account-save/revision restart persistence');
+ console.log('PASS /play routes, runtime assets, MIME/cache, isolated account cookie, CSRF, room creation, 17 concurrent public joins → 8/8/1 via /play API, payload/traversal guards and account-save/revision restart persistence');
 }finally{if(server)await new Promise(r=>server.close(r));app?.close();await rm(dir,{recursive:true,force:true});}
