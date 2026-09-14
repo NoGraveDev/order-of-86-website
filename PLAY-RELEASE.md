@@ -52,3 +52,9 @@ Verification: build and `/play` subpath/account persistence tests pass, includin
 Ported v2 commit `0d21980` into the independent `/play` snapshot. Order surveys now require eight distinct stops covering all seven Order realms and Starter Lands, with cross-map ordering, and award 50 Order XP per complete circuit. Legacy survey rewards normalize to the corrected rate and old partial three-stop progress resets. Build/Workshop buttons, keyboard shortcut and builder runtime are removed; source/markup are preserved under `play-app/docs/retired-workshop/` for a future restoration. Existing multiplayer compatibility interfaces remain intact. No database schema migration.
 
 Release build and local world-survey, Order mastery, authoritative server, and `/play` subpath/account-save/restart/public-lobby regression tests passed. Existing website content, analytics, API routing and scoped account cookies are unchanged.
+
+## Account-required entry — September 14, 2026
+
+Ported source `b67bdcd`. The independent `/play` snapshot now starts with a lightweight account gate followed by an explicit Single Player / Multiplayer choice. World/Three.js/model loading is deferred until authenticated mode selection; direct multiplayer links use the same gate. Expired/switched sessions lock the running world. Multiplayer APIs require a valid account and account-bound membership tokens; prior guest tokens cannot be adopted. Existing scoped account cookies, saves, recovery and older-save import are retained. No database schema migration.
+
+Release build and isolated `/play` API/account-save/restart tests pass, including anonymous rejection of every multiplayer action, 17 authenticated simultaneous joins split 8/8/1, account ownership and 65-player public lobby regressions. Public account session remains an anonymous health endpoint.
