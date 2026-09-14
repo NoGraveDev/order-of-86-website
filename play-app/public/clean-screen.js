@@ -1,6 +1,6 @@
 // Presentation only: never change gameplay, room state, or individual HUD preferences.
 const button = document.getElementById('menusToggle');
-const menuKeys = new Set(['KeyM', 'KeyB', 'KeyP', 'KeyC']);
+const menuKeys = new Set(['KeyM', 'KeyP', 'KeyC']);
 function setCleanScreen(hidden) {
   document.body.classList.toggle('clean-screen', hidden);
   button.textContent = hidden ? 'Show menus' : 'Hide menus';

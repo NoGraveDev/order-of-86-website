@@ -46,3 +46,9 @@ Future v2 changes require an explicit release into this snapshot; source v2 cont
 Added one-click public matchmaking, filling lobbies up to 8 players and automatically opening additional lobbies. Private invitations remain available and isolated. Reservation is transactional; disconnected boat racers retain their reconnect-grace seats. New idempotent public-room metadata migration preserves existing accounts and saves.
 
 Verification: build and `/play` subpath/account persistence tests pass, including 17 concurrent HTTP joins partitioning 8/8/1. Worker/SQLite suite passes 65 concurrent joins (eight full lobbies plus one), private isolation, full-room rejection, refill, stale leases, boat reconnect reservation, restart and expiry. Source v2 desktop/mobile browser checks passed locally and on its public preview before this production release.
+
+## Spellbook survey rebalance and Workshop retirement — September 14, 2026
+
+Ported v2 commit `0d21980` into the independent `/play` snapshot. Order surveys now require eight distinct stops covering all seven Order realms and Starter Lands, with cross-map ordering, and award 50 Order XP per complete circuit. Legacy survey rewards normalize to the corrected rate and old partial three-stop progress resets. Build/Workshop buttons, keyboard shortcut and builder runtime are removed; source/markup are preserved under `play-app/docs/retired-workshop/` for a future restoration. Existing multiplayer compatibility interfaces remain intact. No database schema migration.
+
+Release build and local world-survey, Order mastery, authoritative server, and `/play` subpath/account-save/restart/public-lobby regression tests passed. Existing website content, analytics, API routing and scoped account cookies are unchanged.
