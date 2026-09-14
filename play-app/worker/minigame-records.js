@@ -21,7 +21,7 @@ export async function captureLavaResults(db,room,round){
 const parsed=v=>{try{return JSON.parse(v||'{}');}catch{return {};}};
 const validTime=v=>typeof v==='number'&&Number.isFinite(v)&&v>0&&v<864000?v:null;
 const fastest=(...values)=>{const valid=values.map(validTime).filter(v=>v!==null);return valid.length?Math.min(...valid):null;};
-export function savedTimes(row){const records=parsed(row.records);return {sled:fastest(records.sled?.bestTime,parsed(row.sled)),boatSolo:fastest(records.boat?.bestTime,parsed(row.boat)),maze9:validTime(records.maze9?.bestTime),maze13:validTime(records.maze13?.bestTime)};}
+export function savedTimes(row){const records=parsed(row.records);return {sled:fastest(records.sled?.bestTime,parsed(row.sled)),boatSolo:fastest(records.boat?.bestTime,parsed(row.boat)),maze9:validTime(records.maze9?.bestTime),maze13:validTime(records.maze13?.bestTime),maze86:validTime(records.maze86?.bestTime),crossword:validTime(records.crossword?.bestTime)};}
 export async function minigameRecords(db,profile){
  const result={chess:await chessRecords(db,profile),verified:{},leaders:{},savedLeaders:{},coverage:'Boat and Floor Is Lava finish histories start with this update. Earlier results were not retained. Existing personal bests remain available.'};
  for(const [game,course]of [['boat',BOAT_COURSE_VERSION],['lava',LAVA_COURSE]]){
@@ -33,6 +33,6 @@ export async function minigameRecords(db,profile){
  }
  // Existing solo result fields are player-reported, not verified simulations. No rewards are granted here.
  const rows=(await db.prepare(`SELECT id,name,json_extract(save,'$."pawtheon-minigame-records-v1"') AS records,json_extract(save,'$."pawtheon-sled-best-v3"') AS sled,json_extract(save,'$."pawtheon-tide-run-best-river-v3"') AS boat FROM player_accounts`).all()).results;
- for(const game of ['sled','boatSolo','maze9','maze13'])result.savedLeaders[game]=rows.map(row=>({name:row.name,time:savedTimes(row)[game],self:'account:'+row.id===profile})).filter(r=>r.time!==null).sort((a,b)=>a.time-b.time||a.name.localeCompare(b.name)).slice(0,20);
+ for(const game of ['sled','boatSolo','maze9','maze13','maze86','crossword'])result.savedLeaders[game]=rows.map(row=>({name:row.name,time:savedTimes(row)[game],self:'account:'+row.id===profile})).filter(r=>r.time!==null).sort((a,b)=>a.time-b.time||a.name.localeCompare(b.name)).slice(0,20);
  return result;
 }

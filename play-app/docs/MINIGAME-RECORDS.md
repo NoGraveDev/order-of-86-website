@@ -1,6 +1,6 @@
 # Mini-game records and leaderboards
 
-Inventory → Mini games now covers Chess, Howl Run sled races, Golden Labyrinth 9×9 and 13×13, solo Tide Run boat races, multiplayer Boat Race, and Floor Is Lava. It includes personal bests/counts/recent history and seven selectable leaderboard categories. Refresh updates all server records and rankings together.
+Inventory → Mini games now covers Chess, Howl Run sled races, Golden Labyrinth 9×9, 13×13 and 86×86, Violet Crossword, solo Tide Run boat races, multiplayer Boat Race, and Floor Is Lava. It includes personal bests/counts/recent history and nine selectable leaderboard categories. Refresh updates all server records and rankings together.
 
 Chess retains its existing authoritative history (including historical profiles). Multiplayer Boat and Lava outcomes now enter an additive persistent SQLite ledger from server-owned simulated results, never a posted score. A game/run/account key prevents duplicate counts; race finisher identities remain available after they leave the room so wins can settle later. Tied winners count as draws; unfinished/quitting runs are not finishes. Room expiry and restart do not erase records. Boat rankings separate the current course version. No new score/XP submission endpoint or rewards are introduced.
 
