@@ -58,3 +58,9 @@ Release build and local world-survey, Order mastery, authoritative server, and `
 Ported source `b67bdcd`. The independent `/play` snapshot now starts with a lightweight account gate followed by an explicit Single Player / Multiplayer choice. World/Three.js/model loading is deferred until authenticated mode selection; direct multiplayer links use the same gate. Expired/switched sessions lock the running world. Multiplayer APIs require a valid account and account-bound membership tokens; prior guest tokens cannot be adopted. Existing scoped account cookies, saves, recovery and older-save import are retained. No database schema migration.
 
 Release build and isolated `/play` API/account-save/restart tests pass, including anonymous rejection of every multiplayer action, 17 authenticated simultaneous joins split 8/8/1, account ownership and 65-player public lobby regressions. Public account session remains an anonymous health endpoint.
+
+## Returning-player cache compatibility — September 14, 2026
+
+Ported source `91f66b1`. Cloudflare publicly applies a four-hour JavaScript browser cache lifetime despite the origin's revalidation header. A cached pre-Workshop-removal game module can consequently run against current HTML and fail after loading stage 6. Each generated game page now pins the complete 137-module import graph, bare Three.js import, entry script and CSS to one deterministic content hash. Relative/dynamic imports resolve through the generated import map. Both solo and multiplayer use the same build version; the website's separate analytics script remains unchanged. Saved accounts, local drafts and discoveries are not cleared or migrated.
+
+Build/static versioning and release subpath/account-save/restart/guest-denial tests passed. Versioned query URLs were independently confirmed to get distinct fresh Cloudflare cache entries.

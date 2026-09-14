@@ -32,6 +32,6 @@ paint();
 try{await import('./game.js')}catch(error){
  dispose();
  // Preserve a specific WebGL/download error supplied by the game itself.
- if(document.getElementById('loadingError')){status.textContent='The world could not finish loading';document.getElementById('loadingError').hidden=false;document.getElementById('loadingError').textContent='Check your connection, then try again.';document.getElementById('loadingRetry').hidden=false;}
+ if(document.getElementById('loadingError')){status.textContent='The world could not finish loading';document.getElementById('loadingError').hidden=false;document.getElementById('loadingError').textContent='The game could not start. Reload to fetch the latest game files. Your saved account progress will be kept.';document.getElementById('loadingRetry').hidden=false;}
  console.error(error);
 }
