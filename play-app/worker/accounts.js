@@ -1,3 +1,4 @@
+import {minigameRecords} from './minigame-records.js';
 import {wizardLeaderboard} from './wizard-leaderboard.js';
 import {orderJourney} from '../public/order-progression.js';
 import {applyShopAction,preserveAccountShop,shopView} from '../public/moon-shop-core.js';
@@ -18,6 +19,7 @@ function view(a){const save=JSON.parse(a.save);return {user:{id:a.id,username:a.
 async function limit(db,key,now,max){const window=Math.floor(now/900000);const r=await db.prepare('INSERT INTO account_rate_limits(key,window,count) VALUES (?,?,1) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN window=excluded.window THEN count+1 ELSE 1 END,window=excluded.window RETURNING count').bind(key,window).first();return r.count<=max;}
 export async function accountRequest(request,db){const url=new URL(request.url),action=url.pathname.split('/').at(-1),now=Date.now();if(!db)return json({error:'Accounts are temporarily unavailable.'},503);
  if(request.method==='GET'&&action==='leaderboard'){try{return json(await wizardLeaderboard(db,url));}catch{return json({error:'Leaderboard unavailable. Please try again.'},503);}}
+ if(request.method==='GET'&&action==='minigame-records'){const a=await currentAccount(request,db,now);return a?json(await minigameRecords(db,'account:'+a.id)):json({error:'Sign in to see mini-game records.'},401);}
  if(request.method==='GET'&&action==='records'){const a=await currentAccount(request,db,now);return a?json(await chessRecords(db,'account:'+a.id)):json({error:'Sign in to see your records.'},401);}
  if(request.method==='GET'&&action==='session'){const a=await currentAccount(request,db,now);return json(a?view(a):{user:null});}
  if(request.method!=='POST')return json({error:'Use POST.'},405);

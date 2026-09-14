@@ -1,3 +1,4 @@
+import {captureLavaResults} from './minigame-records.js';
 import {newArena,arenaPlayer,advanceArena,validArenaInput,gate} from '../public/lava-arena-core.js';
 const fail=(error,status=400)=>({error,status});
 async function updateLava(db,room,token,body,now){
@@ -5,6 +6,7 @@ async function updateLava(db,room,token,body,now){
  const action=body.action||'state',self=token.slice(0,16);if(!['state','join','start','input','leave','new'].includes(action))return fail('Unknown arena action.');if(action==='input'&&!validArenaInput(body))return fail('Invalid arena input.');
  await db.prepare('INSERT OR IGNORE INTO multiplayer_lava_arenas(room,state,revision) VALUES (?,?,0)').bind(room,JSON.stringify(newArena(crypto.randomUUID(),now))).run();
  const row=await db.prepare('SELECT state,revision FROM multiplayer_lava_arenas WHERE room=?').bind(room).first();let s=JSON.parse(row.state);
+ await captureLavaResults(db,room,s);
  const present=(await db.prepare('SELECT token FROM multiplayer_players WHERE room=? AND updated>?').bind(room,now-20000).all()).results.map(p=>p.token.slice(0,16));for(const p of s.players)if(!present.includes(p.id))p.status='left';
  advanceArena(s,now);let p=s.players.find(p=>p.id===self);
  if(!['state','join'].includes(action)&&body.round!==s.id)return fail('The round changed. Reopen the arena.',409);
@@ -17,6 +19,7 @@ async function updateLava(db,room,token,body,now){
  }else if(action==='input'){if(!p)return fail('Join the next round to play.');if(['countdown','playing'].includes(s.phase)&&['ready','alive'].includes(p.status)&&body.seq>p.seq){p.seq=body.seq;p.input={x:body.input.x,z:body.input.z,aim:body.input.aim,shoot:body.input.shoot,jump:body.input.jump,sprint:body.input.sprint===true};p.inputAt=now;}}
  if(p)p.lastSeen=now;
  const r=await db.prepare('UPDATE multiplayer_lava_arenas SET state=?,revision=revision+1 WHERE room=? AND revision=?').bind(JSON.stringify(s),room,row.revision).run();if(!r.meta.changes)return fail('Arena sync changed. Try the next update.',409);
+ await captureLavaResults(db,room,s);
  return {self,serverNow:now,revision:row.revision+1,round:s};
 }
 

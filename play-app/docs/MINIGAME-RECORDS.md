@@ -1,0 +1,9 @@
+# Mini-game records and leaderboards
+
+Inventory → Mini games now covers Chess, Howl Run sled races, Golden Labyrinth 9×9 and 13×13, solo Tide Run boat races, multiplayer Boat Race, and Floor Is Lava. It includes personal bests/counts/recent history and seven selectable leaderboard categories. Refresh updates all server records and rankings together.
+
+Chess retains its existing authoritative history (including historical profiles). Multiplayer Boat and Lava outcomes now enter an additive persistent SQLite ledger from server-owned simulated results, never a posted score. A game/run/account key prevents duplicate counts; race finisher identities remain available after they leave the room so wins can settle later. Tied winners count as draws; unfinished/quitting runs are not finishes. Room expiry and restart do not erase records. Boat rankings separate the current course version. No new score/XP submission endpoint or rewards are introduced.
+
+Sled, maze and solo boat boards are explicitly **Saved times · player-reported**, drawn from existing account saves; they are not anti-cheat-verified competitive results. Rankings give no XP or prizes. Existing sled/boat best times and existing sled/maze records are preserved. Solo boat finish counts/history begin with this update; old best times do not manufacture finish counts. Old multiplayer Boat/Lava results were not permanently stored and cannot be fully reconstructed; new history begins now.
+
+Migration: `drizzle/0009_minigame_results.sql`, applied idempotently by preview-database. Back up production database before deployment. No save clearing or account rewrites. API: authenticated GET `/api/accounts/minigame-records` (production prefix `/play`). Tests: minigame-ledger, minigame-records; browser-minigame-records uses a local-only disposable account/database and must not run against production.

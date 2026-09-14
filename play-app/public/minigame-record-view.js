@@ -1,3 +1,4 @@
+import {renderMinigamePanels} from './minigame-leaderboard.js';
 import {account} from './account-state.js';
 import {readMinigameRecords} from './minigame-records.js';
 const time=v=>v===null?'—':v.toFixed(2)+'s';
@@ -7,6 +8,7 @@ export function minigameRecordView(){
  const {records,saved}=readMinigameRecords(),sled=document.getElementById('inventorySledRecord'),maze=document.getElementById('inventoryMazeRecord');sled.replaceChildren();maze.replaceChildren();
  stats(sled,[[records.sled.count,'Finishes'],[time(records.sled.bestTime),'Best total time'],[records.sled.bestGates===null?'—':records.sled.bestGates+'/9','Most clean gates'],[records.sled.count?time(records.sled.totalTime/records.sled.count):'—','Average total time']]);history(sled,records.sled,false);
  for(const [key,title]of [['maze9','Wanderer · 9 × 9'],['maze13','Pathfinder · 13 × 13']]){const section=document.createElement('section'),h=document.createElement('h4');h.textContent=title;section.append(h);const r=records[key];stats(section,[[r.count,'Escapes'],[time(r.bestTime),'Fastest escape'],[r.bestSteps??'—','Fewest steps'],[r.totalSteps,'Total steps']]);history(section,r,true);maze.append(section);}
- document.getElementById('inventoryMinigameStatus').textContent=account.user?'Completed games earn Order XP: sled 150, boat 250, maze 100/150, chess 100 (+50 for a win), lava 100 (+100 for a win). Quitting gives no XP. Records and XP follow your account.':saved?'Sled and maze records are saved on this browser, across solo and room visits. Finish counts and histories start with this update; any existing Howl Run best time is kept. Maze records are grouped by difficulty; layouts vary.':'Saving is unavailable. New sled and maze results are kept for this session only.';
+ document.getElementById('inventoryMinigameStatus').textContent=account.user?'Completed games earn Order XP: sled 150, boat 250, maze 100/150, chess 100 (+50 for a win), lava 100 (+100 for a win). Quitting gives no XP. Records and XP follow your account. Mini-game leaderboards are below; solo saved times are player-reported.':saved?'Sled and maze records are saved on this browser, across solo and room visits. Finish counts and histories start with this update; any existing Howl Run best time is kept. Maze records are grouped by difficulty; layouts vary.':'Saving is unavailable. New sled and maze results are kept for this session only.';
+ renderMinigamePanels(records);
  return records;
 }

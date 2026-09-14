@@ -7,7 +7,8 @@ export function createWizardProgressUI({source,openDialog,saveNote,getJourney,ge
   const mobile=document.body.classList.contains('mobile-hud');
   const room=roomBar?.getBoundingClientRect();
   const visible=roomBar&&!roomBar.hidden&&roomBar.getClientRects().length&&!roomBar.closest('dialog');
-  const top=!mobile&&visible?Math.max(80,room.bottom+12):80;
+  const noticeBox=notice.getBoundingClientRect(),overlaps=visible&&room.left<noticeBox.right&&room.right>noticeBox.left;
+  const top=!mobile&&overlaps?Math.max(80,room.bottom+12):80;
   notice.style.setProperty('--xp-notice-top',top+'px');
   notice.style.visibility=!mobile&&visible&&top+notice.offsetHeight>innerHeight-12?'hidden':'';
  }

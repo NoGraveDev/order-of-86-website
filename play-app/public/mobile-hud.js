@@ -12,7 +12,10 @@ export function createMobileHUD({pause}){
  toggle.onclick=()=>{pause();dialog.showModal();};dialog.querySelector('.close').onclick=()=>dialog.close();
  dialog.addEventListener('click',e=>{if(buttons.includes(e.target.closest('button'))||e.target.closest('#wizardQuestBtn, #xpQuestBtn, #shopBtn, #leaderboardBtn'))dialog.close();},true);
  dialog.addEventListener('close',()=>{pause();if(!chat?.open&&!document.querySelector('dialog[open]'))$('world').focus({preventScroll:true});});
+ const leftRail=document.createElement('section');leftRail.id='leftHudRail';leftRail.setAttribute('aria-label','Lobby and navigation');document.body.append(leftRail);const mini=$('miniMap'),miniHome=document.createComment('minimap-home');mini.before(miniHome);
+ const dockMedia=matchMedia('(min-width:768px)');
  const media=matchMedia('(max-width:750px), (pointer:coarse) and (max-width:1100px)');
- function adapt(){const small=media.matches;$('settingsBtn').textContent=small?'Settings':'⚙';$('helpBtn').textContent=small?'Help & controls':'?';document.body.classList.toggle('mobile-hud',small);if(!small&&dialog.open)dialog.close();for(const element of buttons){if(small)grid.insertBefore(element,map);else homes.get(element).after(element);}if(small){$('hudQuestSlot').append(quest);if(room)$('hudRoomSlot').append(room);}else{homes.get(quest).after(quest);if(room)homes.get(room).after(room);}}
- media.addEventListener('change',adapt);adapt();
+ function adapt(){const small=media.matches,docked=dockMedia.matches;map.hidden=docked;document.body.classList.toggle('hud-map-docked',docked);$('settingsBtn').textContent=small?'Settings':'⚙';$('helpBtn').textContent=small?'Help & controls':'?';document.body.classList.toggle('mobile-hud',small);if(!small&&dialog.open)dialog.close();for(const element of buttons){if(small)grid.insertBefore(element,map);else homes.get(element).after(element);}if(small){$('hudQuestSlot').append(quest);if(room&&!docked)$('hudRoomSlot').append(room);}else{homes.get(quest).after(quest);if(room&&!docked)homes.get(room).after(room);}}
+ const oldAdapt=adapt;function placeNavigation(){oldAdapt();if(dockMedia.matches){if(room)leftRail.append(room);leftRail.append(mini);}else{miniHome.after(mini);if(room){if(media.matches)$('hudRoomSlot').append(room);else homes.get(room).after(room);}}}
+ media.addEventListener('change',placeNavigation);dockMedia.addEventListener('change',placeNavigation);placeNavigation();
 }
