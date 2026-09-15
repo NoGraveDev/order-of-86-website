@@ -3,7 +3,7 @@ export const artPalettes={
     "fur": "#9b9b9b",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Husky",
     "source": "https://theorderof86.com/wizard-images/8728.png",
@@ -15,7 +15,7 @@ export const artPalettes={
     "fur": "#3a3a3a",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Husky",
     "source": "https://theorderof86.com/wizard-images/5035.png",
@@ -27,7 +27,7 @@ export const artPalettes={
     "fur": "#e9be83",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#0fa8df",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/9758.png",
@@ -38,7 +38,7 @@ export const artPalettes={
     "fur": "#ffffff",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/3030.png",
@@ -50,19 +50,19 @@ export const artPalettes={
     "fur": "#666666",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#666666",
     "visualBreed": "Split",
     "source": "https://theorderof86.com/wizard-images/986.png",
     "split": "#3a3a3a",
-    "glasses": "#a96d81",
+    "glasses": "#a965a9",
     "iris": "#763a4e"
   },
   "165": {
     "fur": "#3a3a3a",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Husky",
     "source": "https://theorderof86.com/wizard-images/165.png",
@@ -73,7 +73,7 @@ export const artPalettes={
     "fur": "#8d6a49",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#2d2d2d",
     "visualBreed": "Split",
     "source": "https://theorderof86.com/wizard-images/5275.png",
@@ -85,7 +85,7 @@ export const artPalettes={
     "fur": "#ed9749",
     "muzzle": "#ed9749",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ed9749",
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/8667.png",
@@ -96,7 +96,7 @@ export const artPalettes={
     "fur": "#666666",
     "muzzle": "#3a3a3a",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#666666",
     "visualBreed": "Tiger",
     "source": "https://theorderof86.com/wizard-images/7770.png",
@@ -108,7 +108,7 @@ export const artPalettes={
     "fur": "#ffd83d",
     "muzzle": "#ffd83d",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffd83d",
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/7710.png",
@@ -119,7 +119,7 @@ export const artPalettes={
     "fur": "#feae33",
     "muzzle": "#976924",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#feae33",
     "visualBreed": "Tiger",
     "source": "https://theorderof86.com/wizard-images/1848.png",
@@ -131,7 +131,7 @@ export const artPalettes={
     "fur": "#ffffff",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Blotted",
     "source": "https://theorderof86.com/wizard-images/4540.png",
@@ -142,19 +142,19 @@ export const artPalettes={
     "fur": "#666666",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#666666",
     "visualBreed": "Split",
     "source": "https://theorderof86.com/wizard-images/8095.png",
     "split": "#3a3a3a",
     "glasses": "#666666",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "5518": {
     "fur": "#3a3a3a",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ffffff",
     "visualBreed": "Split",
     "source": "https://theorderof86.com/wizard-images/5518.png",
@@ -166,18 +166,18 @@ export const artPalettes={
     "fur": "#8d6a49",
     "muzzle": "#e9be83",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#8d6a49",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/1714.png",
     "glasses": "#8d6a49",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "246": {
     "fur": "#ed9749",
     "muzzle": "#ed9749",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#ed9749",
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/246.png",
@@ -188,18 +188,18 @@ export const artPalettes={
     "fur": "#9b9b9b",
     "muzzle": "#ffffff",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#9b9b9b",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/4042.png",
     "glasses": "#9b9b9b",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "1053": {
     "fur": "#3a3a3a",
     "muzzle": "#666666",
     "hat": "#da7643",
-    "hatBand": "#e07980",
+    "hatBand": "#e079e0",
     "clothing": "#3a3a3a",
     "visualBreed": "Zombie",
     "source": "https://theorderof86.com/wizard-images/1053.png",
@@ -215,7 +215,7 @@ export const artPalettes={
     "visualBreed": "Tiger",
     "source": "https://theorderof86.com/wizard-images/3449.png",
     "glasses": "#976924",
-    "iris": "#ff7bc9",
+    "iris": "#ff7bff",
     "pattern": "#463721"
   },
   "8272": {
@@ -320,7 +320,7 @@ export const artPalettes={
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/6873.png",
     "glasses": "#ffd83d",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "2807": {
     "fur": "#5a834d",
@@ -352,7 +352,7 @@ export const artPalettes={
     "clothing": "#212121",
     "visualBreed": "Tiger",
     "source": "https://theorderof86.com/wizard-images/8284.png",
-    "glasses": "#874a5f",
+    "glasses": "#874a87",
     "iris": "#763a4e",
     "pattern": "#3a3a3a"
   },
@@ -432,7 +432,7 @@ export const artPalettes={
     "muzzle": "#ffd83d",
     "hat": "#7b54c9",
     "hatBand": "#818dcf",
-    "clothing": "#ec739c",
+    "clothing": "#ec73ec",
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/3406.png",
     "glasses": "#ffd83d",
@@ -459,7 +459,7 @@ export const artPalettes={
     "visualBreed": "Tiger",
     "source": "https://theorderof86.com/wizard-images/8311.png",
     "glasses": "#ff66de",
-    "iris": "#ff00bf",
+    "iris": "#ff00ff",
     "pattern": "#976924"
   },
   "9301": {
@@ -471,7 +471,7 @@ export const artPalettes={
     "visualBreed": "Solid",
     "source": "https://theorderof86.com/wizard-images/9301.png",
     "glasses": "#ffd83d",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "5056": {
     "fur": "#976924",
@@ -540,7 +540,7 @@ export const artPalettes={
     "visualBreed": "Dalmatian",
     "source": "https://theorderof86.com/wizard-images/6095.png",
     "pattern": "#9948f3",
-    "glasses": "#f5b9cd",
+    "glasses": "#f593f5",
     "iris": "#763a4e"
   },
   "9898": {
@@ -574,14 +574,14 @@ export const artPalettes={
     "visualBreed": "Collie",
     "source": "https://theorderof86.com/wizard-images/4165.png",
     "glasses": "#3a3a3a",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "9530": {
     "fur": "#c67c44",
     "muzzle": "#ffffff",
     "hat": "#408cc7",
     "hatBand": "#6cc4cc",
-    "clothing": "#ec739c",
+    "clothing": "#ec73ec",
     "visualBreed": "Bernard",
     "source": "https://theorderof86.com/wizard-images/9530.png",
     "glasses": "#3a3a3a",
@@ -776,14 +776,14 @@ export const artPalettes={
     "iris": "#000000"
   },
   "5381": {
-    "fur": "#fa48a5",
+    "fur": "#fa48fa",
     "muzzle": "#a0ff91",
     "hat": "#f6e736",
     "hatBand": "#fcd5a4",
     "clothing": "#3b8330",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/5381.png",
-    "glasses": "#fa48a5",
+    "glasses": "#fa48fa",
     "iris": "#000000"
   },
   "7731": {
@@ -830,7 +830,7 @@ export const artPalettes={
     "source": "https://theorderof86.com/wizard-images/9183.png",
     "split": "#3a3a3a",
     "glasses": "#ffffff",
-    "iris": "#ff7bc9"
+    "iris": "#ff7bff"
   },
   "4458": {
     "fur": "#ffffff",
@@ -841,7 +841,7 @@ export const artPalettes={
     "visualBreed": "Split",
     "source": "https://theorderof86.com/wizard-images/4458.png",
     "split": "#3a3a3a",
-    "glasses": "#f5b9cd",
+    "glasses": "#f593f5",
     "iris": "#763a4e"
   },
   "3186": {
@@ -882,16 +882,16 @@ export const artPalettes={
     "iris": "#000000"
   },
   "3735": {
-    "fur": "#fa48a5",
+    "fur": "#fa48fa",
     "muzzle": "#a0ff91",
     "hat": "#c55bb7",
     "hatBand": "#b589c6",
-    "clothing": "#fa48a5",
+    "clothing": "#fa48fa",
     "visualBreed": "Classic",
     "source": "https://theorderof86.com/wizard-images/3735.png",
     "neckwear": "#70b366",
     "hideNeckwear": true,
-    "glasses": "#fa48a5",
+    "glasses": "#fa48fa",
     "iris": "#000000"
   },
   "6502": {

@@ -328,10 +328,10 @@ const SCENES = [
     "id": "a-petal-sanctuary",
     "realm": "The Deepwood",
     "name": "Petal Sanctuary",
-    "detail": "Pink petals turn on the breeze above the mossy stones.",
+    "detail": "Magenta petals turn on the breeze above the mossy stones.",
     "type": "animated",
     "effect": "petals",
-    "color": "#ffbace",
+    "color": "#ff80ff",
     "frames": 48
   },
   {
@@ -538,8 +538,8 @@ const SCENES = [
     "realm": "Neutral Towers",
     "name": "The Heartstring Tower",
     "effect": "heart",
-    "color": "#ffabd2",
-    "detail": "Pink light pulses from the curved tower across its valley.",
+    "color": "#ff00ff",
+    "detail": "Magenta light pulses from the curved tower across its valley.",
     "type": "animated"
   },
   {

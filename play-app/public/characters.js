@@ -32,7 +32,7 @@ export function createWizard(d,{orb,mesh,beam,torus,mat,cube}){
  for(const side of [-1,1]){
  if(['Husky','Tiger','Zombie'].includes(d.breed)){const ear=mesh(new T.ConeGeometry(.21,.57,4),f,side*.43,2.48,0,1,1,.7,root);ear.rotation.z=side*-.2;mesh(new T.ConeGeometry(.12,.34,4),'#bca5a0',side*.43,2.48,.1,1,1,.4,root)}else orb(d.breed==='Bernard'?'#776251':f,side*.48,2.1,-.02,.2,.48,.17,root);
  orb('#f0e9d3',side*.24,2.16,.375,.18,d.eyes==='Sleepy Eyes'?.09:.19,.05,root);
- const ec=a.iris&&a.iris!=='#ffffff'?a.iris:d.eyes.includes('Mixed')?(side===1?'#a9c894':'#d6b65e'):({'Red Eyes':'#d16e6d','Pink Eyes':'#eba8c3','Yellow Eyes':'#d9b44c','Green Eyes':'#7abb8c','Blue Eyes':'#79b6db'}[d.eyes]||dark);
+ const ec=a.iris&&a.iris!=='#ffffff'?a.iris:d.eyes.includes('Mixed')?(side===1?'#a9c894':'#d6b65e'):({'Red Eyes':'#d16e6d','Magenta Eyes':'#eb8deb','Yellow Eyes':'#d9b44c','Green Eyes':'#7abb8c','Blue Eyes':'#79b6db'}[d.eyes]||dark);
  orb(ec,side*.24,2.15,.43,.065,d.eyes==='Sleepy Eyes'?.045:.09,.04,root);
  if(starterPalettes[d.id]){const lid=mesh(cube,f,side*.24,2.215,.435,.37,.11,.08,root);lid.name='Starter_Sleepy_Eyelid';}
  if(d.eyes==='Round Glasses')torus(a.glasses||'#b58b69',side*.24,2.16,.46,.205,.025,root);
@@ -72,7 +72,7 @@ export function createWizard(d,{orb,mesh,beam,torus,mat,cube}){
   for(const x of [-.10,.10])mesh(cube,a.buckle,x,2.65,.50,.045,.22,.04,root).name='Starter_Buckle_Side';
   for(const y of [2.55,2.75])mesh(cube,a.buckle,0,y,.50,.24,.04,.04,root).name='Starter_Buckle_Edge';
  }else mesh(cube,'#ffe654',0,2.65,.48,.18,.19,.035,root);
- if(a.mouth==='tongue'){orb('#241414',0,1.74,.69,.22,.12,.08,root);orb('#df7580',.07,1.66,.82,.12,.045,.22,root)}
+ if(a.mouth==='tongue'){orb('#241414',0,1.74,.69,.22,.12,.08,root);orb('#df75df',.07,1.66,.82,.12,.045,.22,root)}
  if(a.mouth==='bone'){beam([-.2,1.76,.83],[.68,1.76,.83],.065,a.mouthColor,root);for(const x of [-.2,.68])for(const y of [1.71,1.81])orb(a.mouthColor,x,y,.83,.105,.075,.08,root)}
  if(a.mouth==='pipe'){beam([.1,1.77,.8],[.72,1.69,.84],.045,'#cfc4a8',root);mesh(new T.CylinderGeometry(.12,.09,.27,16),'#946344',.74,1.74,.84,1,1,1,root)}
  if(a.mouth==='ball')orb(a.mouthColor||'#ffe32f',.08,1.72,.82,.16,.16,.16,root).name='Mouth_Ball';

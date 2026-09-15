@@ -9,7 +9,7 @@ let library;const footprints=new Map(), geometryCache=new Map(),forestBatches=[]
 export function assetFootprint(name){if(!footprints.has(name)){const box=new T.Box3().setFromObject(library.getObjectByName(name)),distant=library.getObjectByName(name+'-distant');if(distant)box.union(new T.Box3().setFromObject(distant));footprints.set(name,Math.hypot(Math.max(Math.abs(box.min.x),Math.abs(box.max.x)),Math.max(Math.abs(box.min.z),Math.abs(box.max.z))))}return footprints.get(name)}
 
 export async function loadStorybook(onProgress){
- library=(await new GLTFLoader().loadAsync('models/runtime/environment-kit.glb',onProgress)).scene;
+ library=(await new GLTFLoader().loadAsync('models/runtime/environment-kit.glb?v=magenta-20260915',onProgress)).scene;
  const coastal=(await new GLTFLoader().loadAsync('models/abyss/coastal-trees.glb')).scene;library.add(coastal);
  library.updateMatrixWorld(true);
  library.traverse(o=>{if(o.isMesh){o.material=paintedMaterial(o.material,o.name);

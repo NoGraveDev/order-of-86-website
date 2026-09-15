@@ -7,7 +7,7 @@ export const lizardTypes=[
 {id:'magma',name:'Magma',realm:4,color:'#efa365',note:'Molten orange scales. Completely fireproof.'},
 {id:'prism',name:'Prism',realm:5,color:'#f0e7c9',note:'A white body refracting a rainbow of light.'},
 {id:'ghost',name:'Ghost',realm:6,color:'#96ccd9',note:'Translucent blue scales with a water affinity.'},
-{id:'purr',name:'Purr',realm:7,color:'#edb2ce',note:'Soft pink, heart-patterned scales. The only lizard that makes a sound.'},
+{id:'purr',name:'Purr',realm:7,color:'#ed8eed',note:'Soft magenta, heart-patterned scales. The only lizard that makes a sound.'},
 {id:'rot',name:'Rot',realm:7,color:'#819c67',note:'Dark scales with green veins. Feeds on decay magic.'}
 ];
 export function spawnLocations(realms,obstacles=[],occupied=[]){const positions=new Map();for(const r of realms){const types=lizardTypes.filter(t=>realms[t.realm].id===r.id),points=spreadRealm(r,types.length*4,realms.indexOf(r)+324,obstacles,occupied);types.forEach((t,j)=>positions.set(t.id,points.filter((p,i)=>i%types.length===j)))}return lizardTypes.flatMap((type,t)=>positions.get(type.id).map((p,i)=>({id:type.id+'-'+i,type:type.id,...p,phase:t*.7+i*1.4})))}

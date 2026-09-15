@@ -2,7 +2,7 @@
 // Runtime geometry uses the same articulated character rig as V2's existing dogs.
 const hats=[
  [1,'Yellow','Radiant','#faee3d','#ffd49d','#ffff75'],
- [2,'Orange','Flame','#d9783e','#df7d88','#ffe655'],
+ [2,'Orange','Flame','#d9783e','#df7ddf','#ffe655'],
  [3,'Blue','Deep','#408dc5','#68c3cb','#ffe85b'],
  [5,'Green','Wild','#9fc53e','#cec77e','#ffe85b'],
  [6,'Magenta','Dream','#bf59b7','#b58bc5','#ffe85b'],

@@ -296,7 +296,7 @@ const MOONS = [
       lore: "A moon that grows. Vine networks crawl across its surface in living patterns, forest canopies breathing with each cycle. Green and singing, everything it touches becomes more alive. When full, the Heartwood tree shivers with sympathetic resonance and new growth explodes across every realm." },
     { name: 'Umbra', order: 'Arcane', color: '#9B6EFF', cycle: 14, wizards: 14, radius: 10.5, inclination: 0.25, size: 0.3,
       lore: "The hidden moon. Geometric runes pulse beneath its purple surface like veins of buried knowledge, arcane grids flickering in and out of visibility. It reveals the secret threads connecting stone to star. When full, patterns emerge that even the Archivum cannot record." },
-    { name: 'Roseglow', order: 'Dream', color: '#FF69B4', cycle: 11, wizards: 11, radius: 12.0, inclination: -0.18, size: 0.31,
+    { name: 'Roseglow', order: 'Dream', color: '#FF00FF', cycle: 11, wizards: 11, radius: 12.0, inclination: -0.18, size: 0.31,
       lore: "A moon of soft petals and drifting clouds. Ethereal swirls of magenta drift across its face like falling petals in slow motion, opening the sleeping mind to worlds behind closed eyes. The fastest Order moon, its 11-day cycle means Dream Wizards ride emotional waves that never fully calm." },
     { name: 'Palehowl', order: 'Starter', color: '#dddddd', cycle: 30, wizards: 0, radius: 14.0, inclination: 0.12, size: 0.2,
       lore: "The smallest, faintest moon. A ghostly sphere of pale silver marked by only the subtlest craters, barely more than a whisper against the dark. The moon of possibility, of every dog who would ever live but had not yet been born. The Wanderer resonates with Palehowl alone." },
@@ -808,7 +808,7 @@ function createMoonTexture(type, colorHex, size = 512) {
                 data[i+2] = Math.min(255, b + grid * 80 + rune * 50 + vein * 60 + pulse * 30);
                 
             } else if (type === 'roseglow') {
-                // Dreamy pink: soft clouds, petals, ethereal swirls
+                // Dreamy magenta: soft clouds, petals, ethereal swirls
                 const cloud = fbm(nx * 2 + 50, ny * 2 + 50, 3);
                 const swirl = Math.sin(Math.sqrt((nx - 0.5) ** 2 + (ny - 0.5) ** 2) * 15 - Math.atan2(ny - 0.5, nx - 0.5) * 3) * 0.5 + 0.5;
                 const petal = Math.sin(nx * 12) * Math.sin(ny * 12) * Math.sin((nx + ny) * 8) > 0.6 ? 1 : 0;

@@ -35,7 +35,7 @@ export const owlWisdom={
  'Barn Owl':[
   ['Gentleness is a way of approaching what fear would drive away.','Dream Spire stands in Shadowmire: a tall ivory castle with midnight-blue roofs, silver moon crests and dream-threads extending from its highest tower.'],
   ['When the path changes beneath you, stay close to those you do not wish to lose.','The Shifting Grounds of Shadowmire rearrange themselves. Buildings sink and rise among bioluminescent fungi.'],
-  ['You need not be loud to make another traveler feel less alone.','Barn Owls are gentle guides of the Dream Spire, with heart-shaped faces and plumage that shifts from white to pink.'],
+  ['You need not be loud to make another traveler feel less alone.','Barn Owls are gentle guides of the Dream Spire, with heart-shaped faces and plumage that shifts from white to magenta.'],
   ['Do not mistake a wounded place for a place beyond caring.','The Great Rot resists magic itself. Deathforge of the Flame Order and Blotbark of the Wild Order are among its primary defenders.']
  ]
 };

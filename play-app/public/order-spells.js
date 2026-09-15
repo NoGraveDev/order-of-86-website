@@ -1,6 +1,6 @@
 export const ORDER_IDS=['Flame','Wild','Arcane','Deep','Radiant','Dream'];
 export const ORDER_REALMS={Flame:'ember',Wild:'deepwood',Arcane:'violet',Deep:'abyss',Radiant:'sunward',Dream:'shadow'};
-export const ORDER_COLORS={Flame:'#efa165',Wild:'#96cf83',Arcane:'#bb9ce5',Deep:'#9bd9ec',Radiant:'#f5dd85',Dream:'#eeb9d4',Wanderer:'#e0e6dc'};
+export const ORDER_COLORS={Flame:'#efa165',Wild:'#96cf83',Arcane:'#bb9ce5',Deep:'#9bd9ec',Radiant:'#f5dd85',Dream:'#ee8fee',Wanderer:'#e0e6dc'};
 const rows=[
  ['Flame','measured-flame','Measured Flame',1,'flame','Send a fire orb that collects Crystal Lizards, Moon Shards and scales in its path and lights braziers. Tier 1: 24m. Tier 2: 36m. Tier 3: 50m, splitting into three directions mid-flight. Equipment can extend range.',[12,18,25],4],
  ['Flame','hearthlight','Hearthlight',20,'lantern-scales','Carry warm light and reveal nearby loose scales.',[65,100,150],15],

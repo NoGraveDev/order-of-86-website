@@ -122,12 +122,12 @@ export const officialWizards={
   "8095": {
     "fur": "Gray",
     "pattern": "Split",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "None",
     "realm": "Abyssal Reaches",
     "hatColor": "Orange",
-    "suggestedName": "Rosestrike the Pink Eyed",
-    "suggestedStory": "*Gray Split | Pink Eyes | None | Abyssal Reaches \u2192 Forge Spire*\n\nFrom the tidal politics of the Abyssal Reaches, where every decision requires balancing two perspectives, Rosestrike brought the rare gift of pink eyes, eyes that see oneiroic energy as clearly as physical matter. In their homeland's Twin Council system, they served as the oneiroic interpreter, helping negotiators understand not just what was said but what was felt. The orange hat manifested during a particularly heated debate when they stood up and declared, \\\"Stop arguing about positions. Fight for principles.\\\"\n\nTheir pink eyes let them see the oneiroic fuel behind magical energy, making them uniquely suited to combat magic that draws on passion rather than technique. Rosestrike's flames burn brightest when fighting for something rather than against something, making them the Flame's specialist in defensive combat and protection magic. They can literally see love, honor, loyalty, and courage as flames that can be amplified and weaponized. When Rosestrike fights, they're not just wielding fire, they're wielding the oneiroic energy that makes fire worth using.\n\n---"
+    "suggestedName": "Rosestrike the Magenta Eyed",
+    "suggestedStory": "*Gray Split | Magenta Eyes | None | Abyssal Reaches \u2192 Forge Spire*\n\nFrom the tidal politics of the Abyssal Reaches, where every decision requires balancing two perspectives, Rosestrike brought the rare gift of magenta eyes, eyes that see oneiroic energy as clearly as physical matter. In their homeland's Twin Council system, they served as the oneiroic interpreter, helping negotiators understand not just what was said but what was felt. The orange hat manifested during a particularly heated debate when they stood up and declared, \\\"Stop arguing about positions. Fight for principles.\\\"\n\nTheir magenta eyes let them see the oneiroic fuel behind magical energy, making them uniquely suited to combat magic that draws on passion rather than technique. Rosestrike's flames burn brightest when fighting for something rather than against something, making them the Flame's specialist in defensive combat and protection magic. They can literally see love, honor, loyalty, and courage as flames that can be amplified and weaponized. When Rosestrike fights, they're not just wielding fire, they're wielding the oneiroic energy that makes fire worth using.\n\n---"
   },
   "5518": {
     "fur": "Black",
@@ -142,12 +142,12 @@ export const officialWizards={
   "1714": {
     "fur": "Brown",
     "pattern": "Classic",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "None",
     "realm": "Violet Highlands",
     "hatColor": "Orange",
     "suggestedName": "Roseheart the Gentle Flame",
-    "suggestedStory": "*Brown Classic | Pink Eyes | None | Violet Highlands \u2192 Forge Spire*\n\nThe most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality. Roseheart's pink eyes and gentle demeanor make them seem more suited to the Dream Order than the Flame, but their orange hat chose them precisely because they understand that the hottest flame is controlled flame. They found their calling during post-Loyalty Wars reconstruction, using precisely controlled fire to clear debris without damaging anything salvageable.\n\nTheir Brown Classic fur marks them as steady and reliable, while their pink eyes let them see the oneiroic damage that combat leaves behind. Roseheart's flames never cause unnecessary harm, they burn away what needs burning and preserve what needs preserving. They serve as the Flame's humanitarian specialist, using fire magic for rescue operations, medical cauterization, and controlled demolition. When other Flame Wizards are too dangerous for civilian work, Roseheart provides fire with a conscience.\n\n---"
+    "suggestedStory": "*Brown Classic | Magenta Eyes | None | Violet Highlands \u2192 Forge Spire*\n\nThe most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality. Roseheart's magenta eyes and gentle demeanor make them seem more suited to the Dream Order than the Flame, but their orange hat chose them precisely because they understand that the hottest flame is controlled flame. They found their calling during post-Loyalty Wars reconstruction, using precisely controlled fire to clear debris without damaging anything salvageable.\n\nTheir Brown Classic fur marks them as steady and reliable, while their magenta eyes let them see the oneiroic damage that combat leaves behind. Roseheart's flames never cause unnecessary harm, they burn away what needs burning and preserve what needs preserving. They serve as the Flame's humanitarian specialist, using fire magic for rescue operations, medical cauterization, and controlled demolition. When other Flame Wizards are too dangerous for civilian work, Roseheart provides fire with a conscience.\n\n---"
   },
   "246": {
     "fur": "Orange",
@@ -162,12 +162,12 @@ export const officialWizards={
   "4042": {
     "fur": "Gray",
     "pattern": "Classic",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "None",
     "realm": "Violet Highlands",
     "hatColor": "Orange",
-    "suggestedName": "Roseflame the Pink Eyed",
-    "suggestedStory": "*Gray Classic | Pink Eyes | None | Violet Highlands \u2192 Forge Spire*\n\nThe third pink-eyed Flame Wizard, proving that oneiroic sight is more common in the Order than initially recognized. Roseflame's gray Classic appearance makes them blend into any crowd in the Violet Highlands, but their pink eyes reveal the oneiroic currents flowing beneath political discourse. They earned their orange hat during a Grand Assembly session when they stood up and used flame magic to literally illuminate the oneiroic dishonesty in several speakers' arguments.\n\nTheir power lies in Emotional Flame, fire that burns lies, cowardice, and dishonor while leaving truth, courage, and integrity untouched. In the politically complex Violet Highlands, this makes them both invaluable and dangerous. Roseflame serves as the Flame's truth-detector, using controlled fire to reveal when someone is lying to themselves as much as to others. Their gray fur and pink eyes create the perfect combination for seeing clearly through political smoke.\n\n---"
+    "suggestedName": "Roseflame the Magenta Eyed",
+    "suggestedStory": "*Gray Classic | Magenta Eyes | None | Violet Highlands \u2192 Forge Spire*\n\nThe third magenta-eyed Flame Wizard, proving that oneiroic sight is more common in the Order than initially recognized. Roseflame's gray Classic appearance makes them blend into any crowd in the Violet Highlands, but their magenta eyes reveal the oneiroic currents flowing beneath political discourse. They earned their orange hat during a Grand Assembly session when they stood up and used flame magic to literally illuminate the oneiroic dishonesty in several speakers' arguments.\n\nTheir power lies in Emotional Flame, fire that burns lies, cowardice, and dishonor while leaving truth, courage, and integrity untouched. In the politically complex Violet Highlands, this makes them both invaluable and dangerous. Roseflame serves as the Flame's truth-detector, using controlled fire to reveal when someone is lying to themselves as much as to others. Their gray fur and magenta eyes create the perfect combination for seeing clearly through political smoke.\n\n---"
   },
   "1053": {
     "fur": "Black",
@@ -182,12 +182,12 @@ export const officialWizards={
   "3449": {
     "fur": "Brown",
     "pattern": "Tiger",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "Poncho",
     "realm": "Ember Wastes",
     "hatColor": "Green",
     "suggestedName": "Stripeheart the Bridge Walker",
-    "suggestedStory": "*Brown Tiger | Pink Eyes | Poncho | Ember Wastes \u2192 Heartwood Spire*\n\nThe rarest Wild Wizard and the greatest contradiction in the Order. A solitary Tiger from the volcanic Ember Wastes, where independence is survival, who found their green hat by doing the most un-Tiger thing possible: they established a permanent beast sanctuary. Stripeheart's pink eyes, the gift of oneiroic sight, let them see the terror in animals fleeing volcanic eruptions. Instead of hunting prey weakened by disaster, they guided them to safety. The green hat manifested as they stood between a pack of terrified creatures and a lava flow, using their own body as a bridge to guide them across cooling stone.\n\nTheir poncho, woven from plant fibers that grow only in volcanic soil, marks them as a traveler between realms. Stripeheart carries seeds from the Heartwood throughout the Ember Wastes, creating networks of green growth in the most unlikely places. They are the Wild's ambassador to the Tiger realm, proving that solitary creatures can serve collective good without losing their essential nature. When natural disasters threaten to separate mothers from cubs, Stripeheart creates magical migration routes that keep families together. Their pink eyes weep for every creature they cannot save, and their tears grow into memorial gardens.\n\n---"
+    "suggestedStory": "*Brown Tiger | Magenta Eyes | Poncho | Ember Wastes \u2192 Heartwood Spire*\n\nThe rarest Wild Wizard and the greatest contradiction in the Order. A solitary Tiger from the volcanic Ember Wastes, where independence is survival, who found their green hat by doing the most un-Tiger thing possible: they established a permanent beast sanctuary. Stripeheart's magenta eyes, the gift of oneiroic sight, let them see the terror in animals fleeing volcanic eruptions. Instead of hunting prey weakened by disaster, they guided them to safety. The green hat manifested as they stood between a pack of terrified creatures and a lava flow, using their own body as a bridge to guide them across cooling stone.\n\nTheir poncho, woven from plant fibers that grow only in volcanic soil, marks them as a traveler between realms. Stripeheart carries seeds from the Heartwood throughout the Ember Wastes, creating networks of green growth in the most unlikely places. They are the Wild's ambassador to the Tiger realm, proving that solitary creatures can serve collective good without losing their essential nature. When natural disasters threaten to separate mothers from cubs, Stripeheart creates magical migration routes that keep families together. Their magenta eyes weep for every creature they cannot save, and their tears grow into memorial gardens.\n\n---"
   },
   "8272": {
     "fur": "White",
@@ -376,7 +376,7 @@ export const officialWizards={
     "clothes": "Shirt",
     "realm": "Sunward Heights",
     "hatColor": "Purple",
-    "suggestedName": "Pinkmantle the Dimensional Scholar",
+    "suggestedName": "Magentamantle the Dimensional Scholar",
     "suggestedStory": "*Yellow Solid | Blue Eyes | Shirt | Sunward Heights \u2192 Violet Citadel*\n\nFrom the bright, simple Sunward Heights, where everything is one pure color and one pure truth, Blueshirt brings clarity to the complex theories of dimensional magic. Their yellow Solid fur creates perfect color purity, while their blue eyes provide a secondary focus for magical sight that doesn't interfere with their primary yellow resonance. The shirt they wear is woven from dimensional fabric, appearing solid from one angle, translucent from another, demonstrating their specialty in multi-dimensional perception.\n\nTheir magic focuses on Dimensional Mapping, charting the layers of reality that exist parallel to Pawtheon's normal dimension. Blueshirt's Solid nature provides the mental stability needed to explore alternate dimensions without losing track of which reality is home. They serve as the Arcane's specialist in dimensional travel and extra-dimensional storage, maintaining the Citadel's libraries that exist in folded space, containing far more knowledge than their physical size suggests.\n\n---"
   },
   "9234": {
@@ -402,12 +402,12 @@ export const officialWizards={
   "9301": {
     "fur": "Yellow",
     "pattern": "Solid",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "None",
     "realm": "Sunward Heights",
     "hatColor": "Magenta",
-    "suggestedName": "Rosegold the Pink Eyed Theorist",
-    "suggestedStory": "*Yellow Solid | Pink Eyes | None | Sunward Heights \u2192 Violet Citadel*\n\nThe second yellow Solid in the Arcane Order, but where Blueshirt focuses on dimensional magic, Rosegold specializes in the intersection between magical theory and oneiroic reality. Their pink eyes see the oneiroic components of magical energy, while their yellow Solid fur provides the clarity needed to analyze complex oneiroic patterns without being overwhelmed by them. They developed the theoretical framework for understanding how oneiroic energy affects magical efficiency.\n\nTheir specialty is Emotional Arcane, understanding how feelings influence magical outcomes, predicting which subconscious currents will enhance or interfere with specific spells, and developing techniques for oneiroic regulation during complex magical work. Rosegold's research explains why some magical partnerships work perfectly while others fail catastrophically. They serve as the Arcane's specialist in group magic theory, developing the protocols that allow multiple Arcane Wizards to work together without their individual magical styles interfering with each other.\n\n---"
+    "suggestedName": "Rosegold the Magenta Eyed Theorist",
+    "suggestedStory": "*Yellow Solid | Magenta Eyes | None | Sunward Heights \u2192 Violet Citadel*\n\nThe second yellow Solid in the Arcane Order, but where Blueshirt focuses on dimensional magic, Rosegold specializes in the intersection between magical theory and oneiroic reality. Their magenta eyes see the oneiroic components of magical energy, while their yellow Solid fur provides the clarity needed to analyze complex oneiroic patterns without being overwhelmed by them. They developed the theoretical framework for understanding how oneiroic energy affects magical efficiency.\n\nTheir specialty is Emotional Arcane, understanding how feelings influence magical outcomes, predicting which subconscious currents will enhance or interfere with specific spells, and developing techniques for oneiroic regulation during complex magical work. Rosegold's research explains why some magical partnerships work perfectly while others fail catastrophically. They serve as the Arcane's specialist in group magic theory, developing the protocols that allow multiple Arcane Wizards to work together without their individual magical styles interfering with each other.\n\n---"
   },
   "5056": {
     "fur": "Brown",
@@ -492,12 +492,12 @@ export const officialWizards={
   "4165": {
     "fur": "White",
     "pattern": "Collie",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "Poncho",
     "realm": "Deepwood",
     "hatColor": "Blue",
     "suggestedName": "Pearlgaze the Emotional Seer",
-    "suggestedStory": "*White Collie | Pink Eyes | Poncho | Deepwood \u2192 Tidewatch*\n\nThe rarest Deep Wizard, whose Collie herding instincts evolved into something far more sophisticated: herding probable futures into manageable patterns. Pinkgaze's white fur reflects all magical energies without absorption, while their pink eyes see oneiroic currents flowing through time as clearly as water flowing through streams. The poncho they wear is woven from water-resistant fibers that repel both liquid water and liquid time, protecting them from temporal splash-back during deep scrying sessions.\n\nTheir specialty is Emotional Prophecy, predicting future events by tracking the oneiroic currents that drive decision-making. Pinkgaze sees that wars begin not with political tensions but with the accumulation of small angers, that great loves start with moments of unexpected kindness, that major discoveries emerge from curiosity about trivial details. They serve as the Deep's specialist in personal prophecy, helping individuals understand how their oneiroic choices will shape their futures. Their Collie instincts make them naturally protective of those they guide, ensuring that their prophecies serve to prevent suffering rather than merely predict it.\n\n---"
+    "suggestedStory": "*White Collie | Magenta Eyes | Poncho | Deepwood \u2192 Tidewatch*\n\nThe rarest Deep Wizard, whose Collie herding instincts evolved into something far more sophisticated: herding probable futures into manageable patterns. Magentagaze's white fur reflects all magical energies without absorption, while their magenta eyes see oneiroic currents flowing through time as clearly as water flowing through streams. The poncho they wear is woven from water-resistant fibers that repel both liquid water and liquid time, protecting them from temporal splash-back during deep scrying sessions.\n\nTheir specialty is Emotional Prophecy, predicting future events by tracking the oneiroic currents that drive decision-making. Magentagaze sees that wars begin not with political tensions but with the accumulation of small angers, that great loves start with moments of unexpected kindness, that major discoveries emerge from curiosity about trivial details. They serve as the Deep's specialist in personal prophecy, helping individuals understand how their oneiroic choices will shape their futures. Their Collie instincts make them naturally protective of those they guide, ensuring that their prophecies serve to prevent suffering rather than merely predict it.\n\n---"
   },
   "9530": {
     "fur": "White",
@@ -670,14 +670,14 @@ export const officialWizards={
     "suggestedStory": "*Tan Husky | Black Eyes | Collar | Frosthollow \u2192 Solar Spire*\n\nA Husky from ice-realm Frosthollow practicing sun magic, another example of the productive tension between breed instinct and Order discipline. Tancollar's tan fur provides earth-tone grounding for solar energy, while their collar is woven from sun-crystal fibers that store daylight for use during Frosthollow's long winter nights. They earned their yellow hat by successfully establishing the first permanent light-beacon in the deepest arctic regions.\n\nTheir magic is Cold Light, solar energy that provides illumination and warmth without the heat that would melt delicate ice formations. Tancollar's Husky endurance makes them ideal for maintaining light-sources in the harshest conditions, while their diplomatic training (suggested by the collar) makes them effective at negotiating agreements between sun-magic and ice-realm cultures. They serve as the Radiant's arctic specialist, bringing light to places where normal solar magic would be either impossible or destructive.\n\n---"
   },
   "5381": {
-    "fur": "Pink",
+    "fur": "Magenta",
     "pattern": "Classic",
     "eyes": "Black Eyes",
     "clothes": "Tracksuit",
     "realm": "Violet Highlands",
     "hatColor": "Yellow",
-    "suggestedName": "Roseclassic the Pink Diplomat",
-    "suggestedStory": "*Pink Classic | Black Eyes | Tracksuit | Violet Highlands \u2192 Solar Spire*\n\nAn unusual color for any Order, pink Classic fur creating visual connection to Dream magic while practicing Radiant discipline. Roseclassic's tracksuit marks them as athletic and active, suggesting dynamic rather than contemplative light magic. They earned recognition by developing techniques for Emotional Purification, using light magic to cleanse negative subconscious currents rather than just revealing truth.\n\nTheir magic is Gentle Radiance, purification that heals rather than burns, light that reveals truth gradually rather than blindingly, and illumination that comforts rather than exposes. Roseclassic's pink coloring reflects their specialty in compassionate revelation, showing people their flaws in ways that encourage growth rather than causing shame. They serve as the Radiant's specialist in therapeutic truth-magic, proving that revelation can be kind without being weak.\n\n---"
+    "suggestedName": "Roseclassic the Magenta Diplomat",
+    "suggestedStory": "*Magenta Classic | Black Eyes | Tracksuit | Violet Highlands \u2192 Solar Spire*\n\nAn unusual color for any Order, magenta Classic fur creating visual connection to Dream magic while practicing Radiant discipline. Roseclassic's tracksuit marks them as athletic and active, suggesting dynamic rather than contemplative light magic. They earned recognition by developing techniques for Emotional Purification, using light magic to cleanse negative subconscious currents rather than just revealing truth.\n\nTheir magic is Gentle Radiance, purification that heals rather than burns, light that reveals truth gradually rather than blindingly, and illumination that comforts rather than exposes. Roseclassic's magenta coloring reflects their specialty in compassionate revelation, showing people their flaws in ways that encourage growth rather than causing shame. They serve as the Radiant's specialist in therapeutic truth-magic, proving that revelation can be kind without being weak.\n\n---"
   },
   "7731": {
     "fur": "Beige",
@@ -712,12 +712,12 @@ export const officialWizards={
   "9183": {
     "fur": "White",
     "pattern": "Split",
-    "eyes": "Pink Eyes",
+    "eyes": "Magenta Eyes",
     "clothes": "None",
     "realm": "Abyssal Reaches",
     "hatColor": "Yellow",
-    "suggestedName": "Whiteheart the Pink Eyed Illuminator",
-    "suggestedStory": "*White Split | Pink Eyes | None | Abyssal Reaches \u2192 Solar Spire*\n\nA Split from the diplomatic Abyssal Reaches whose white fur and pink eyes create perfect harmony for compassionate revelation magic. Whiteheart's white base color reflects all forms of light without absorption, while their pink eyes see the oneiroic impact of revealed truth. They specialize in Truth with Mercy, showing people difficult truths in ways that encourage growth rather than despair.\n\nTheir magic is Compassionate Radiance, light that reveals truth gradually, purification that heals rather than burns, and illumination that shows both problems and solutions simultaneously. Whiteheart's Split nature helps them balance truth-telling with kindness, while their pink eyes ensure that their revelations serve healing rather than judgment. They serve as the Radiant's specialist in therapeutic truth-magic for individuals dealing with personal crises.\n\n---"
+    "suggestedName": "Whiteheart the Magenta Eyed Illuminator",
+    "suggestedStory": "*White Split | Magenta Eyes | None | Abyssal Reaches \u2192 Solar Spire*\n\nA Split from the diplomatic Abyssal Reaches whose white fur and magenta eyes create perfect harmony for compassionate revelation magic. Whiteheart's white base color reflects all forms of light without absorption, while their magenta eyes see the oneiroic impact of revealed truth. They specialize in Truth with Mercy, showing people difficult truths in ways that encourage growth rather than despair.\n\nTheir magic is Compassionate Radiance, light that reveals truth gradually, purification that heals rather than burns, and illumination that shows both problems and solutions simultaneously. Whiteheart's Split nature helps them balance truth-telling with kindness, while their magenta eyes ensure that their revelations serve healing rather than judgment. They serve as the Radiant's specialist in therapeutic truth-magic for individuals dealing with personal crises.\n\n---"
   },
   "4458": {
     "fur": "White",
@@ -760,7 +760,7 @@ export const officialWizards={
     "suggestedStory": "*Gray Classic | Square Glasses | Collar | Violet Highlands \u2192 Dream Spire*\n\nFrom the academic Violet Highlands, Glassesheart brings scholarly analysis to the intuitive magic of dream-threads. Their square glasses focus not just vision but oneiroic perception, allowing them to study the mathematical principles underlying dream magic. The collar they wear is woven from subconscious sight-silk that responds to oneiroic changes in their environment, serving as both magical focus and oneiroic barometer.\n\nTheir magic is Analytical Empathy, understanding exactly why dream-threads form, predicting which dream-threads will strengthen or weaken over time, and optimizing pack configurations for maximum magical efficiency. Glassesheart's Classic stability provides the mental framework needed to study subconscious currents without being overwhelmed by them, while their scholarly training brings scientific rigor to a discipline that usually relies on intuition. They serve as the Dream's theorist, developing the principles that guide practical dream magic.\n\n---"
   },
   "3735": {
-    "fur": "Pink",
+    "fur": "Magenta",
     "pattern": "Classic",
     "eyes": "Black Eyes",
     "clothes": "None",

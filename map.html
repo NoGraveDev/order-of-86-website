@@ -61,7 +61,7 @@
             --color-arcane: #9B6EFF;
             --color-deep: #3498DB;
             --color-radiant: #F1C40F;
-            --color-dream: #FF69B4;
+            --color-dream: #FF00FF;
             --color-wanderer: #9966ff;
         }
         
@@ -297,7 +297,7 @@ setTimeout(function(){
     }
 }, 12000);
 </script>
-<script src="wizard-dogs-map.js"></script>
+<script src="wizard-dogs-map.js?v=magenta-1"></script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -305,7 +305,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // ── Dog Data loaded from wizard-dogs-map.js (as global) ──
 
-const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep:'#3498DB', Radiant:'#F1C40F', Dream:'#FF69B4', Wanderer:'#9966ff' };
+const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep:'#3498DB', Radiant:'#F1C40F', Dream:'#FF00FF', Wanderer:'#9966ff' };
 
 // ── Realm Data ──
 const realms = {
@@ -791,7 +791,7 @@ const towerData = [
     { name:'Tidewatch', order:'Deep', color:0x3498DB, x:-50, z:-380, desc:'Blue sentinel partially submerged where waves meet stone.' },
     { name:'Heartwood Spire', order:'Wild', color:0x2ECC71, x:250, z:350, desc:'Living tower grown from the roots of the great Heartwood.' },
     { name:'Violet Citadel', order:'Arcane', color:0x9B6EFF, x:-50, z:340, desc:'Ancient purple fortress housing arcane archives.' },
-    { name:'Dream Spire', order:'Dream', color:0xFF69B4, x:0, z:200, desc:'Pink crystalline tower resonating with dream-threads.' }
+    { name:'Dream Spire', order:'Dream', color:0xFF00FF, x:0, z:200, desc:'Magenta crystalline tower resonating with dream-threads.' }
 ];
 
 for (const td of towerData) {
@@ -845,7 +845,7 @@ const moonData = [
     { name:'Deepwell',   color:0x3498DB, order:'Deep',    cycle:13, wizards:13 },
     { name:'Evergreen',  color:0x2ECC71, order:'Wild',    cycle:18, wizards:18 },
     { name:'Umbra',      color:0x9B6EFF, order:'Arcane',  cycle:14, wizards:14 },
-    { name:'Roseglow',   color:0xFF69B4, order:'Dream',   cycle:11, wizards:11 },
+    { name:'Roseglow',   color:0xFF00FF, order:'Dream',   cycle:11, wizards:11 },
     { name:'Palehowl',   color:0xdddddd, order:'Starter', cycle:30, wizards:0  }
 ];
 const moonGroup = new THREE.Group();
@@ -935,7 +935,7 @@ const towerPositions = towers.map(t => t.position.clone().add(new THREE.Vector3(
 // Each tower connects to its corresponding moon (same index: 0=Flame/Emberhowl, 1=Radiant/Solaris, etc.)
 const loyaltyPaths = [];
 const loyaltyLines = [];
-const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF69B4];
+const towerMoonColors = [0xFF6B00, 0xF1C40F, 0x3498DB, 0x2ECC71, 0x9B6EFF, 0xFF00FF];
 for (let i = 0; i < 6; i++) {
     const towerPos = towerPositions[i];
     const moonPos = moons[i].position.clone();
@@ -1835,7 +1835,7 @@ function showDogPanel(dog) {
 
 
     // Lazy-load story from external JSON
-    fetch('wizard-stories.json').then(r=>r.json()).then(stories => {
+    fetch('wizard-stories.json?v=magenta-1').then(r=>r.json()).then(stories => {
         const el = document.getElementById('storyText');
         if (el && stories[dog.id]) {
             el.innerHTML = stories[dog.id].replace(/\\n/g, '<br><br>');

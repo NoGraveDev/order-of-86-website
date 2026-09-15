@@ -60,7 +60,7 @@ The howl struck the seven moons. The moons, silent since the beginning, began to
 
 **Umbra** pulsed purple, revealing the hidden threads that connected stone to star.
 
-**Roseglow** hummed pink, opening the sleeping mind to worlds that exist only behind closed eyes.
+**Roseglow** hummed magenta, opening the sleeping mind to worlds that exist only behind closed eyes.
 
 Finally, smallest and faintest, **Palehowl** whispered. The moon of possibility. The moon of every dog who would ever live but had not yet been born.
 

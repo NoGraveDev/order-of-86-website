@@ -26,15 +26,15 @@ export function animateLizard(root,travelDistance,phase=0){
 }
 // Master Bible §V: retain each species' colors, not merely the realm's scenery tint.
 export const lizardPalettes={
- common:{plates:['#c3d5dc','#e9e2ef','#eff2dd','#d5eadd','#f7f3f0'],seams:'#a7b4bc',spikes:['#8fcdd0','#b4a4d8','#e8c5df','#e1dfa3'],claws:'#fff6ed'},
+ common:{plates:['#c3d5dc','#e9e2ef','#eff2dd','#d5eadd','#f7f3f0'],seams:'#a7b4bc',spikes:['#8fcdd0','#b4a4d8','#e88be8','#e1dfa3'],claws:'#fff6ed'},
  moss:{plates:['#407c3c','#66a254','#8fbd6c','#528b42','#add485'],seams:'#315133',spikes:['#285b35','#408641','#70a944','#9cc963'],claws:'#c4dc9f'},
  script:{plates:['#653093','#8743b4','#aa68cd','#783aa6','#c08ce0'],seams:'#40205e',spikes:['#593192','#8750c4','#b389e8','#d8b8fa'],claws:'#e1c8ff'},
  // Frost uses the authored September palette without recoloring.
  frost:{original:true},
  magma:{plates:['#bf4518','#e86620','#fa983c','#d85016','#ffc16b'],seams:'#81301b',spikes:['#b53612','#e64d16','#ff8b24','#ffcc5f'],claws:'#ffd991'},
- prism:{plates:['#dfE6ee','#f5f4fa','#ffffff','#e9edf5','#ffffff'],seams:'#bfc9dd',rainbow:['#ef707c','#ffb74f','#f6e96a','#69cc98','#60bfea','#aa8be7','#e694d2'],claws:'#ffffff'},
+ prism:{plates:['#dfE6ee','#f5f4fa','#ffffff','#e9edf5','#ffffff'],seams:'#bfc9dd',rainbow:['#ef70ef','#ffb74f','#f6e96a','#69cc98','#60bfea','#aa8be7','#e694d2'],claws:'#ffffff'},
  ghost:{plates:['#489fb9','#6fc2d8','#a2dfeb','#54b2ce','#c2f0f4'],seams:'#4b9dbd',spikes:['#318fae','#45bfd6','#7fe3ed','#c3ffff'],claws:'#d9ffff',opacity:.72},
- purr:{plates:['#d882aa','#e9a0c1','#f3bfd7','#df91b5','#ffdaE8'],seams:'#a86491',spikes:['#c575a9','#e390bd','#f5b7d7','#ffdfed'],claws:'#ffedf4'},
+ purr:{plates:['#d882d8','#e98ce9','#f392f3','#df86df','#ff99ff'],seams:'#a864a8',spikes:['#c575c5','#e388e3','#f593f5','#ff99ff'],claws:'#ffedf4'},
  rot:{plates:['#24342e','#354b3b','#496044','#2c4034','#607653'],seams:'#a1c94c',spikes:['#334329','#5c722e','#96aa39','#becb58'],claws:'#aab96a'}
 };
 const ice=[[.38,.71,.88],[.55,.82,.95],[.69,.90,1],[.43,.75,.94],[.76,.92,1]];

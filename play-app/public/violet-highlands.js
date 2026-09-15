@@ -7,7 +7,7 @@ import {violetPoint,violetLoreSites} from './violet-layout.js';
 export function addVioletHighlands(world,colliders,{mobile=false}={}){
  const root=new T.Group();root.name='Violet_Highlands_Gardens';world.add(root);
  const shapes={orb:new T.SphereGeometry(1,8,6),box:new T.BoxGeometry(1,1,1),stem:new T.CylinderGeometry(.75,1,1,5),crystal:new T.OctahedronGeometry(1),cone:new T.ConeGeometry(1,1,5)};
- const colors={leaf:'#657b60',stem:'#617450',violet:'#8353b4',lavender:'#b78cda',pale:'#e2ccec',ink:'#332c43',paper:'#d9c79d',pink:'#daa5b6',brown:'#856553',cream:'#f2e3c7',quartz:'#cddfea',egg:'#a9c9de'};
+ const colors={leaf:'#657b60',stem:'#617450',violet:'#8353b4',lavender:'#b78cda',pale:'#e2ccec',ink:'#332c43',paper:'#d9c79d',magenta:'#da83da',brown:'#856553',cream:'#f2e3c7',quartz:'#cddfea',egg:'#a9c9de'};
  const mats=Object.fromEntries(Object.entries(colors).map(([k,color])=>[k,new T.MeshStandardMaterial({color,roughness:.9})]));
  const batches=new Map(),fauna=[],beds=[];let seed=860926;
  const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
@@ -42,9 +42,9 @@ export function addVioletHighlands(world,colliders,{mobile=false}={}){
    for(const s of [-1,1]){const pivot=new T.Group();g.add(pivot);part(pivot,'orb','lavender',s*.39,0,-.03,.4,.045,.4);part(pivot,'orb','violet',s*.24,-.01,.25,.25,.04,.25);part(pivot,'orb','cream',s*.46,.044,-.12,.075,.015,.09);wings.push(pivot);part(g,'stem','ink',s*.09,.16,-.26,.016,.35,.016,s*-.4);part(g,'orb','cream',s*.07,.02,-.29,.034,.034,.03);}
   }else if(type==='Scroll_Mouse'){
    part(g,'orb','paper',0,.25,0,.27,.26,.43);part(g,'orb','paper',0,.39,-.36,.22,.21,.23);
-   for(const s of [-1,1]){part(g,'orb','pink',s*.18,.61,-.29,.12,.16,.055);part(g,'orb','ink',s*.13,.43,-.52,.025,.028,.025);for(const z of [-.2,.2])part(g,'orb','ink',s*.19,.055,z,.075,.05,.12);}
-   part(g,'orb','pink',0,.32,-.59,.045,.035,.035);part(g,'box','paper',0,.17,-.6,.28,.025,.22);for(let j=0;j<3;j++)part(g,'box','ink',0,.19,-.65+j*.045,.18,.008,.013);
-   for(let j=0;j<6;j++)part(g,'orb','pink',Math.sin(j*.5)*.16,.09,.38+j*.09,.04,.04,.095);
+   for(const s of [-1,1]){part(g,'orb','magenta',s*.18,.61,-.29,.12,.16,.055);part(g,'orb','ink',s*.13,.43,-.52,.025,.028,.025);for(const z of [-.2,.2])part(g,'orb','ink',s*.19,.055,z,.075,.05,.12);}
+   part(g,'orb','magenta',0,.32,-.59,.045,.035,.035);part(g,'box','paper',0,.17,-.6,.28,.025,.22);for(let j=0;j<3;j++)part(g,'box','ink',0,.19,-.65+j*.045,.18,.008,.013);
+   for(let j=0;j<6;j++)part(g,'orb','magenta',Math.sin(j*.5)*.16,.09,.38+j*.09,.04,.04,.095);
   }else if(type==='Archive_Beetle'){
    part(g,'orb','paper',0,.23,0,.27,.22,.38);part(g,'orb','brown',0,.16,-.35,.17,.14,.15);
    for(let j=0;j<7;j++)part(g,'box','ink',Math.sin(j*2)*.1,.39+(j%2)*.015,-.22+j*.07,.14,.012,.018,(j%3-1)*.4);
