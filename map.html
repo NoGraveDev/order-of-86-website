@@ -297,7 +297,7 @@ setTimeout(function(){
     }
 }, 12000);
 </script>
-<script src="wizard-dogs-map.js?v=magenta-1"></script>
+<script src="wizard-dogs-map.js?v=canon-20261006"></script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -310,13 +310,13 @@ const orderColorsHex = { Flame:'#FF6B00', Wild:'#2ECC71', Arcane:'#9B6EFF', Deep
 // ── Realm Data ──
 const realms = {
     'Frosthollow': { x:-350, z:-300, color:new THREE.Color(0.85,0.92,1.0), color2:new THREE.Color(0.6,0.75,0.95), hex:'#d9ebff', motto:'"In stillness, strength."', desc:'The frozen northwest, where jagged peaks pierce eternal winter skies. Glaciers carve through ice-blue valleys and a vast frozen lake mirrors the aurora. Only the hardiest dogs survive here, and only the wisest thrive.', landmarks:['Frozen Lake of Mirrors','The Glacial Stairway','Aurora Peak'], breeds:['Husky','Collie','Split'], knownFor:'Ice magic, endurance, patience', elevation:80 },
-    'Abyssal Reaches': { x:0, z:-350, color:new THREE.Color(0.25,0.3,0.4), color2:new THREE.Color(0.15,0.2,0.35), hex:'#3d4d66', motto:'"The deep remembers what the surface forgets."', desc:'Coastal cliffs plunge into dark waters where ancient things stir. The boundary between land and ocean, where prophecy magic runs strongest. Tidewatch tower stands sentinel where waves crash against basalt.', landmarks:['Tidewatch Tower','The Drowned Steps','Basalt Cliffs'], breeds:['Tiger','Spotted','Classic'], knownFor:'Prophecy, ocean magic, deep memory', elevation:20 },
-    'Sunward Heights': { x:350, z:-300, color:new THREE.Color(1.0,0.92,0.7), color2:new THREE.Color(0.95,0.85,0.6), hex:'#ffe6a3', motto:'"Truth shines brightest at the peak."', desc:'High plateaus bathed in perpetual golden light. Crystal formations catch and refract sunbeams into prismatic cascades. The air is thin and clear, perfect for seeing far, both physically and metaphysically.', landmarks:['Crystal Spires','The Solar Plateau','Prismatic Falls'], breeds:['Solid','Blotted','Classic'], knownFor:'Light magic, revelation, truth-seeing', elevation:65 },
+    'Abyssal Reaches': { x:0, z:-350, color:new THREE.Color(0.25,0.3,0.4), color2:new THREE.Color(0.15,0.2,0.35), hex:'#3d4d66', motto:'"The deep remembers what the surface forgets."', desc:'Coastal cliffs plunge into dark waters where ancient things stir. The boundary between land and ocean, where prophecy magic runs strongest. Tidewatch tower stands sentinel where waves crash against basalt.', landmarks:['Tidewatch Tower','The Drowned Steps','Basalt Cliffs'], breeds:['Split (native)'], knownFor:'Prophecy, ocean magic, deep memory', elevation:20 },
+    'Sunward Heights': { x:350, z:-300, color:new THREE.Color(1.0,0.92,0.7), color2:new THREE.Color(0.95,0.85,0.6), hex:'#ffe6a3', motto:'"Truth shines brightest at the peak."', desc:'Rolling yellow-gold plains bathed in shadowless light from every direction. Crystal formations catch and refract sunbeams into prismatic cascades. The air is thin and clear, perfect for seeing far, both physically and metaphysically.', landmarks:['Crystal Spires','The Solar Plateau','Prismatic Falls'], breeds:['Solid','Blotted','Classic'], knownFor:'Light magic, revelation, truth-seeing', elevation:65 },
     'Ember Wastes': { x:400, z:100, color:new THREE.Color(0.25,0.18,0.12), color2:new THREE.Color(0.5,0.2,0.05), hex:'#804020', motto:'"From destruction, creation."', desc:'Volcanic badlands where the ground itself burns. Lava rivers cut through obsidian plains, calderas glow with hellfire, and ash perpetually drifts skyward. The Forge Spire harnesses this raw elemental fury.', landmarks:['The Great Caldera','Lava Rivers','Obsidian Fields'], breeds:['Tiger','Split','Solid'], knownFor:'Fire magic, forge craft, destruction and renewal', elevation:45 },
-    'Deepwood': { x:250, z:350, color:new THREE.Color(0.15,0.35,0.12), color2:new THREE.Color(0.2,0.45,0.15), hex:'#2d6b1f', motto:'"All roots connect."', desc:'An ancient forest of impossible density. The Heartwood, a tree so massive it can be seen from any realm, stands at its center. Fireflies dance between moss-covered trunks and the air hums with growth magic.', landmarks:['The Heartwood','Firefly Glades','Root Cathedral'], breeds:['Classic','Zombie','Spotted'], knownFor:'Nature magic, growth, the living network', elevation:15 },
-    'Violet Highlands': { x:-300, z:300, color:new THREE.Color(0.4,0.28,0.5), color2:new THREE.Color(0.35,0.22,0.45), hex:'#6b3d80', motto:'"Knowledge is the highest ground."', desc:'Terraced mountain ridges in shades of purple and gray. Step-like terrain carved by ancient magic. Home to the most Wizards of any realm, 25, making it the political heart of Pawtheon.', landmarks:['The Violet Citadel','Terraced Archives','The Debate Amphitheater'], breeds:['All patterns represented'], knownFor:'Arcane theory, politics, magical scholarship', elevation:55 },
+    'Deepwood': { x:250, z:350, color:new THREE.Color(0.15,0.35,0.12), color2:new THREE.Color(0.2,0.45,0.15), hex:'#2d6b1f', motto:'"All roots connect."', desc:'An ancient forest of impossible density. The Heartwood, a tree so massive it can be seen from any realm, stands at its center. Fireflies dance between moss-covered trunks and the air hums with growth magic.', landmarks:['The Heartwood','Firefly Glades','Root Cathedral'], breeds:['Collie (native)'], knownFor:'Nature magic, growth, the living network', elevation:15 },
+    'Violet Highlands': { x:-300, z:300, color:new THREE.Color(0.4,0.28,0.5), color2:new THREE.Color(0.35,0.22,0.45), hex:'#6b3d80', motto:'"Knowledge is the highest ground."', desc:'Rolling violet meadows and silver-barked trees. Unbuilt meadows surround established settlements, including the Archivum fortress-city. The Grand Assembly anchors a culture of scholarship and written networks.', landmarks:['The Violet Citadel','Terraced Archives','The Debate Amphitheater'], breeds:['Classic (native)'], knownFor:'Arcane theory, politics, magical scholarship', elevation:55 },
     'Shadowmire': { x:0, z:400, color:new THREE.Color(0.12,0.15,0.08), color2:new THREE.Color(0.18,0.2,0.1), hex:'#2d3318', motto:'"In darkness, we see what light conceals."', desc:'Low, flat swamplands shrouded in perpetual mist. Dark pools reflect nothing. The air is thick, the ground treacherous. But Shadowmire hides beauty in its danger, bioluminescent fungi, rare herbs, ancient secrets.', landmarks:['Mistpools','The Fungal Groves','The Sinking Stones'], breeds:['Zombie','Blotted','Split'], knownFor:'Shadow magic, alchemy, hidden knowledge', elevation:-5 },
-    'Starter Lands': { x:0, z:0, color:new THREE.Color(0.45,0.55,0.35), color2:new THREE.Color(0.5,0.6,0.4), hex:'#7a9959', motto:'"Every journey begins with a single howl."', desc:'Gentle rolling plains at Pawtheon\'s heart. Where all loyalty lines converge, where new Wizards first feel the pull of magic. Open sky, soft grass, and the distant glow of six towers on the horizon.', landmarks:['The Convergence Stone','First Howl Meadow','Loyalty Crossroads'], breeds:['All breeds welcome'], knownFor:'Beginning magic, loyalty bonds, unity', elevation:10 },
+    'Starter Lands': { x:0, z:0, color:new THREE.Color(0.45,0.55,0.35), color2:new THREE.Color(0.5,0.6,0.4), hex:'#7a9959', motto:'"Every journey begins with a single howl."', desc:'Gentle rolling plains at Pawtheon\'s heart. Neutral training ground without the ground Current; hat-focused direct lunar channels still function here. Open sky, soft grass, and the distant glow of six towers on the horizon.', landmarks:['The Convergence Stone','First Howl Meadow','Loyalty Crossroads'], breeds:['All breeds welcome'], knownFor:'Beginning magic, loyalty bonds, unity', elevation:10 },
     'Heartwood': { x:250, z:350, color:new THREE.Color(0.15,0.35,0.12), color2:new THREE.Color(0.2,0.45,0.15), hex:'#2d6b1f', motto:'', desc:'The living heart of Deepwood, centered on the great tree.', landmarks:['The Heartwood Tree'], breeds:['Various'], knownFor:'Nature magic', elevation:15 },
     'Solara Fields': { x:350, z:-300, color:new THREE.Color(1.0,0.92,0.7), color2:new THREE.Color(0.95,0.85,0.6), hex:'#ffe6a3', motto:'', desc:'Sun-drenched meadows near Sunward Heights.', landmarks:['Golden Meadows'], breeds:['Various'], knownFor:'Light and radiant magic', elevation:60 }
 };
@@ -844,7 +844,7 @@ const moonData = [
     { name:'Solaris',    color:0xF1C40F, order:'Radiant', cycle:12, wizards:12 },
     { name:'Deepwell',   color:0x3498DB, order:'Deep',    cycle:13, wizards:13 },
     { name:'Evergreen',  color:0x2ECC71, order:'Wild',    cycle:18, wizards:18 },
-    { name:'Umbra',      color:0x9B6EFF, order:'Arcane',  cycle:14, wizards:14 },
+    { name:'Umbra',      color:0x9B6EFF, order:'Arcane',  cycle:14, wizards:13 },
     { name:'Roseglow',   color:0xFF00FF, order:'Dream',   cycle:11, wizards:11 },
     { name:'Palehowl',   color:0xdddddd, order:'Starter', cycle:30, wizards:0  }
 ];
@@ -1835,10 +1835,10 @@ function showDogPanel(dog) {
 
 
     // Lazy-load story from external JSON
-    fetch('wizard-stories.json?v=magenta-1').then(r=>r.json()).then(stories => {
+    fetch('wizard-stories.json?v=canon-20261006').then(r=>r.json()).then(stories => {
         const el = document.getElementById('storyText');
         if (el && stories[dog.id]) {
-            el.innerHTML = stories[dog.id].replace(/\\n/g, '<br><br>');
+            el.innerHTML = stories[dog.id].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g, '<br>');
         } else if (el) {
             el.textContent = 'No story available.';
         }

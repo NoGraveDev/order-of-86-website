@@ -1,0 +1,86 @@
+[
+  {
+    "published": "lore/institutions-monastic-orders.md",
+    "sha256": "d0e2783b0f6927fc32dd40e80c5506d119edde9674ae78608b35d1ff0ed89b73"
+  },
+  {
+    "published": "lore/institutions-order-hierarchies.md",
+    "sha256": "fff677f91d518cdf9bf6055874cb3eb6087c4683fe4f639c6f3cf13c8c32ee49"
+  },
+  {
+    "published": "lore/institutions-heretical-sects.md",
+    "sha256": "f5627056f0a3ce0c444179044d1cff84f0fe83b08813e8da0a4becab04f5b32c"
+  },
+  {
+    "published": "lore/calendar-holy-days.md",
+    "sha256": "317932ad45e26a9332ef1054b3653440f938732ee57ea96e4b7148b36577a9fa"
+  },
+  {
+    "published": "lore/calendar-moon-cycle-rituals.md",
+    "sha256": "9039d02c9a6c522685b5a93e8815036321d4fb39807cc9168106a98f72f34425"
+  },
+  {
+    "published": "lore/theology-death-and-afterlife.md",
+    "sha256": "106c51e25b7d12715d2d9e2bcdaa17503f89dec5a7b3c4e53955548b71683031"
+  },
+  {
+    "published": "lore/theology-the-first-howl-hymn.md",
+    "sha256": "403036ba7e4069ad4cb09c03c5cacb98c0be76c3e90fe3da87c51449fe517feb"
+  },
+  {
+    "published": "lore/theology-pre-howl-spirituality.md",
+    "sha256": "8d86e738aa1273d0a6529390209ecff30231227de56ede0d6e9c1f992a6ee4b5"
+  },
+  {
+    "published": "lore/theology-the-quiet-heresy.md",
+    "sha256": "ebf3e87356e571f16c98963fdf710e83293d5f4e1a7ba624f363c0610989fe09"
+  },
+  {
+    "published": "lore/theology-theological-debates.md",
+    "sha256": "10396820ac571091d26209f88c23dee4e205a61fde34f616c6a773b7fc598985"
+  },
+  {
+    "published": "lore/language-sacred-vocabulary.md",
+    "sha256": "e759c95e6966ce46c87b94cdb143d04f6444a44d57609ec2f0e6ebadbf7c675d"
+  },
+  {
+    "published": "lore/language-howl-notation.md",
+    "sha256": "166532e2ca1fe384df3a540cd686694938f0da704ca6b8abdefced8acc97de1f"
+  },
+  {
+    "published": "lore/history-the-loyalty-wars-chronicle.md",
+    "sha256": "77055415c197fe8424ccf89ebc457930b0603ec9486a948198cec292dc273818"
+  },
+  {
+    "published": "lore/history-pre-howl-history.md",
+    "sha256": "749b4f7eee1d2939a6dec12aca2da058a25170738eba0c91c6d108e94707c630"
+  },
+  {
+    "published": "lore/history-world-timeline.md",
+    "sha256": "117f350b37e4287123e0e8aacd9733c03c39d2c44203fd638b2f81d0261c1376"
+  },
+  {
+    "published": "lore/history-the-great-silence-account.md",
+    "sha256": "c88f3a388bfd3813d1f5f4a4024c4fd5353a50c44c287c7e199e288bd2466d73"
+  },
+  {
+    "published": "lore/prophecy-seers-and-oracles.md",
+    "sha256": "c4efd74cb777012e6bdc4e2eda075e5d27fa46f8946431843cfdb27e4ae566cd"
+  },
+  {
+    "published": "lore/prophecy-prophecies-and-omens.md",
+    "sha256": "10bd915bb8a4632c7649730a5d9e1b5fe3093ba3ac4d8a72625fd1e014b8af72"
+  },
+  {
+    "published": "lore/canon.md",
+    "sha256": "df4318afdbe8f04ffcb27fa8e46858c0c55367bf384c69210ed01590df2967fd"
+  },
+  {
+    "published": "lore/chapter-i.md",
+    "sha256": "5f34ab04c4077e188b1658f8e2e66ee47b6b5404cab1ee111a35c052fe1d9e8f"
+  },
+  {
+    "published": "lore/chapter-ii.txt",
+    "sha256": "fd57086c7cae54c12c09d4e69a3120d29d33e0bdb0140393ba09d3406f8c45f9"
+  }
+]

@@ -289,17 +289,17 @@ const MOONS = [
     { name: 'Emberhowl', order: 'Flame', color: '#FF6B00', cycle: 18, wizards: 18, radius: 4.5, inclination: 0.1, size: 0.35,
       lore: "The fire-moon. Its surface is cracked volcanic stone threaded with rivers of molten light. Orange and blazing, it pours warmth and courage across Pawtheon. When full, lava flows visible from orbit surge across its face and Flame magic reaches its peak." },
     { name: 'Solaris', order: 'Radiant', color: '#F1C40F', cycle: 12, wizards: 12, radius: 6.0, inclination: -0.15, size: 0.32,
-      lore: "A miniature sun suspended in the sky. Golden radiating rays stripe its surface like a crown of light, with darker sunspots marking where truth has burned too deep. Yellow and truth-bearing, it cuts through every shadow. Its 12-day cycle creates the most dramatic power swings of any Order moon." },
+      lore: "A miniature sun suspended in the sky. Golden radiating rays stripe its surface like a crown of light, with darker sunspots marking where truth has burned too deep. Yellow and truth-bearing, it cuts through every shadow. Its 12-day cycle governs the Radiant channel." },
     { name: 'Deepwell', order: 'Deep', color: '#3498DB', cycle: 13, wizards: 13, radius: 7.5, inclination: 0.2, size: 0.33,
       lore: "A vast sphere of living water held in the sky. Deep oceanic currents swirl across its surface, abyssal trenches sinking into impossible blue depths. Massive and patient, it pulls with metaphysical force. When full, the tides of magic rise to their highest point." },
     { name: 'Evergreen', order: 'Wild', color: '#2ECC71', cycle: 18, wizards: 18, radius: 9.0, inclination: -0.08, size: 0.34,
       lore: "A moon that grows. Vine networks crawl across its surface in living patterns, forest canopies breathing with each cycle. Green and singing, everything it touches becomes more alive. When full, the Heartwood tree shivers with sympathetic resonance and new growth explodes across every realm." },
-    { name: 'Umbra', order: 'Arcane', color: '#9B6EFF', cycle: 14, wizards: 14, radius: 10.5, inclination: 0.25, size: 0.3,
-      lore: "The hidden moon. Geometric runes pulse beneath its purple surface like veins of buried knowledge, arcane grids flickering in and out of visibility. It reveals the secret threads connecting stone to star. When full, patterns emerge that even the Archivum cannot record." },
+    { name: 'Umbra', order: 'Arcane', color: '#9B6EFF', cycle: 14, wizards: 13, radius: 10.5, inclination: 0.25, size: 0.3,
+      lore: "The hidden moon. Geometric runes pulse beneath its purple surface like veins of buried knowledge, arcane grids flickering in and out of visibility. It reveals the secret threads connecting stone to star. When full, patterns emerge that even the Archivum cannot record. Its fourteen-day cycle serves thirteen Arcane seats; cycle length is not a headcount law." },
     { name: 'Roseglow', order: 'Dream', color: '#FF00FF', cycle: 11, wizards: 11, radius: 12.0, inclination: -0.18, size: 0.31,
-      lore: "A moon of soft petals and drifting clouds. Ethereal swirls of magenta drift across its face like falling petals in slow motion, opening the sleeping mind to worlds behind closed eyes. The fastest Order moon, its 11-day cycle means Dream Wizards ride emotional waves that never fully calm." },
+      lore: "A moon of soft petals and drifting clouds. Ethereal swirls of pink drift across its face like falling petals in slow motion, opening the sleeping mind to worlds behind closed eyes. The fastest Order moon, its 11-day cycle means Dream Wizards ride emotional waves that never fully calm." },
     { name: 'Palehowl', order: 'Starter', color: '#dddddd', cycle: 30, wizards: 0, radius: 14.0, inclination: 0.12, size: 0.2,
-      lore: "The smallest, faintest moon. A ghostly sphere of pale silver marked by only the subtlest craters, barely more than a whisper against the dark. The moon of possibility, of every dog who would ever live but had not yet been born. The Wanderer resonates with Palehowl alone." },
+      lore: "The smallest, faintest moon. A ghostly sphere of pale silver marked by only the subtlest craters, barely more than a whisper against the dark. The moon of possibility, of every dog who would ever live but had not yet been born. The Wanderer resonates with all six Order moons and Palehowl, outside the six Orders." },
 ];
 
 const isMobile = window.innerWidth < 768;
@@ -1274,7 +1274,7 @@ function showMoonInfo(m, time) {
         </div>
         <div class="info-row"><span class="info-label">Magic Power</span><span class="info-value" style="color:${m.color}">${power}</span></div>
         <div class="info-row"><span class="info-label">Cycle Length</span><span class="info-value">${m.cycle} days</span></div>
-        <div class="info-row"><span class="info-label">Wizards</span><span class="info-value">${m.wizards}</span></div>
+        <div class="info-row"><span class="info-label">Wizards</span><span class="info-value">${m.wizards || 'No Order seats; the Wanderer is unaffiliated'}</span></div>
         <div class="lore-text">"${m.lore}"</div>
     `;
     openPanel();
