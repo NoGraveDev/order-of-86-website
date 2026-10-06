@@ -1013,7 +1013,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
                 <div class="panel-info">
                     <div class="panel-name">${dog.suggestedName}</div>
                     <div class="panel-id">#${dog.id} · Rank ${dog.rank.toLocaleString()}</div>
-                    <div class="panel-order-badge" style="background:${col}">${dog.order} Order</div>
+                    <div class="panel-order-badge" style="background:${col}">${dog.order === 'Wanderer' ? 'unaffiliated Wanderer' : dog.order + ' Order'}</div>
                 </div>
             </div>
             <div class="panel-traits">

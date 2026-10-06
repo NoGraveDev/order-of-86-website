@@ -1814,7 +1814,7 @@ function showDogPanel(dog) {
             <img src="${dog.image}" style="width:120px;height:120px;border-radius:16px;object-fit:cover;border:2px solid ${orderColor};" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><rect fill=%22%231a1a2e%22 width=%22120%22 height=%22120%22 rx=%2216%22/><text x=%2260%22 y=%2265%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>86</text></svg>';">
         </div>
         <div class="info-realm-name" style="color:${orderColor}">${dog.suggestedName || '#' + dog.id}</div>
-        <div class="info-motto">#${dog.id} • ${dog.order} Order</div>
+        <div class="info-motto">#${dog.id} • ${dog.order === 'Wanderer' ? 'Unaffiliated Wanderer' : dog.order + ' Order'}</div>
         <div class="info-section"><h3>Details</h3>
             <div class="info-tags">
                 <span class="info-tag">Rank: ${dog.rank}</span>
@@ -2004,7 +2004,7 @@ function showRealmPanel(name) {
                 <div class="dog-card">
                     <img src="${d.image}" alt="${d.suggestedName}" loading="lazy" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22><rect fill=%22%231a1a2e%22 width=%2280%22 height=%2280%22 rx=%2212%22/><text x=%2240%22 y=%2245%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2212%22>86</text></svg>';">
                     <div class="dog-name" style="color:${orderColorsHex[d.order]}">${d.suggestedName?.split(' ')[0] || '#'+d.id}</div>
-                    <div class="dog-order">${d.order} Order</div>
+                    <div class="dog-order">${d.order === 'Wanderer' ? 'Unaffiliated Wanderer' : d.order + ' Order'}</div>
                 </div>
             `).join('')}</div>
         </div>
@@ -2051,8 +2051,8 @@ function showMoonPanel(data) {
 
     const isPalehowl = data.index === 6;
     const desc = isPalehowl
-        ? 'The smallest, dimmest moon. The seventh tone of the First Howl, carrying not power but possibility. It provides baseline magic to all non-wizard dogs. Weak individually, but it touches EVERYONE. The Wanderer resonates with Palehowl.'
-        : `Tied to the ${md.order} Order. Its ${md.cycle}-day cycle matches its ${md.wizards} Wizards. When full, ${md.order} magic surges. When new, ${md.order} Wizards rely on raw skill and pack bonds.`;
+        ? 'The smallest, dimmest moon. The seventh tone of the First Howl, carrying not power but possibility. Its gifts bring possibility, but controlled spell shaping requires a hat. The Wanderer resonates with all six Order moons and Palehowl, outside the Orders.'
+        : `Tied to the ${md.order} Order. Its physical cycle is ${md.cycle} days; its Order has ${md.wizards} continuing lunar seats. Cycle length is not a headcount law. When full, ${md.order} magic surges. When new, ${md.order} Wizards rely on raw skill and pack bonds.`;
 
     content.innerHTML = `
         <div class="info-realm-name" style="color:${hex}">${md.name}</div>

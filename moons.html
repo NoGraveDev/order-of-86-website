@@ -1264,7 +1264,7 @@ function showMoonInfo(m, time) {
             <div class="moon-icon" style="background:${m.color};box-shadow:0 0 20px ${m.color}88;"></div>
             <div>
                 <div class="moon-title" style="color:${m.color}">${m.name}</div>
-                <div class="moon-order">${m.order} Order</div>
+                <div class="moon-order">${m.name === 'Palehowl' ? 'The moon of possibility · no Order' : m.order + ' Order'}</div>
             </div>
         </div>
         <div class="info-row"><span class="info-label">Phase</span><span class="info-value">${phaseName}</span></div>
