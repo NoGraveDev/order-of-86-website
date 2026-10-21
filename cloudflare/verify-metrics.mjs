@@ -1,0 +1,4 @@
+import assert from 'node:assert/strict';
+const origin=process.argv[2];const event={session:crypto.randomUUID(),visitor:crypto.randomUUID(),path:'/play/',seq:0,active:0};
+async function post(body,originHeader=origin){return fetch(origin+'/metrics/event',{method:'POST',headers:{Origin:originHeader,'Content-Type':'application/json'},body:JSON.stringify(body)})}
+assert.equal((await post(event)).status,204);assert.equal((await post({...event,seq:1,active:1000})).status,204);assert.equal((await post(event)).status,204);assert.equal((await post({...event,visitor:crypto.randomUUID(),seq:2})).status,400);assert.equal((await post(event,'https://evil.example')).status,403);assert.equal((await post({...event,path:'/private?secret=bad'})).status,400);assert.equal((await post({bad:'x'.repeat(2000)})).status,413);console.log('PASS metrics initial/repeated/out-of-order events, identity binding, CSRF, path validation and size limit');
