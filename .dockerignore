@@ -4,3 +4,12 @@ play-app/node_modules
 play-app/dist
 **/.local
 **/*.sqlite*
+
+# Never ship local secrets or review artifacts
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+.claude
+release-verification
+reports
