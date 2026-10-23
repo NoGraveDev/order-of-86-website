@@ -5,6 +5,16 @@
     const hamburger = document.getElementById('hamburger') || document.getElementById('navToggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
+    // Include the editor in older shared menus without rewriting chapter content.
+    document.querySelectorAll('.nav-links, .mobile-menu').forEach(function(menu) {
+        if (!menu.querySelector('a[href="/banner-editor"]')) {
+            const link = document.createElement('a');
+            link.href = '/banner-editor';
+            link.textContent = 'Banner Editor';
+            menu.appendChild(link);
+        }
+    });
+
     // Scroll effect
     if (nav) {
         let ticking = false;
