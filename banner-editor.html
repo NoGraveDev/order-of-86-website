@@ -6,75 +6,82 @@
 <title>Banner Editor | The Order of 86</title>
 <meta name="description" content="Create a custom wizard banner with pixel hats, colors and your name. Download a 1500 by 500 PNG.">
 <link rel="canonical" href="https://theorderof86.com/banner-editor">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared.css">
+<meta name="theme-color" content="#06060a">
 <style>
-  :root{--bg:#f6f7f9;--card:#fff;--ink:#16181c;--muted:#667085;--line:#e4e7ec;--accent:#111}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-  header{padding:18px 20px 6px;max-width:1200px;margin:0 auto}
-  header h1{font-size:20px;margin:0 0 4px}
-  header p{margin:0;color:var(--muted);font-size:14px}
-  main{max-width:1200px;margin:0 auto;padding:12px 20px 20px;display:grid;gap:18px;grid-template-columns:1fr}
-  .preview{position:sticky;top:0;z-index:2;background:var(--bg);padding:6px 0 10px}
-  .stage{background:repeating-conic-gradient(#e9ecf1 0 25%,#f6f7f9 0 50%) 0 0/20px 20px;border:1px solid var(--line);border-radius:12px;padding:10px}
-  canvas#c{display:block;width:100%;height:auto;aspect-ratio:3/1;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
-  .size-note{font-size:12px;color:var(--muted);margin-top:6px;text-align:right}
-  .panel{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-  .card h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px}
-  label{font-size:14px;display:block}
-  .row{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
-  .row > span.lbl{min-width:84px;font-size:14px}
-  input[type=text]{width:100%;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}
-  input[type=range]{flex:1;min-width:120px;accent-color:#111}
-  output{font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);min-width:44px;text-align:right}
-  .swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-  .sw{border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;font:inherit;text-align:center}
-  .sw i{display:block;height:38px;border-radius:8px;border:1px solid rgba(0,0,0,.12)}
-  .sw b{display:block;font-weight:500;font-size:12px;margin-top:3px}
-  .sw small{display:block;font-size:10px;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
-  .sw[aria-pressed=true]{border-color:#111}
-  .sw.custom i{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)}
-  .sw.custom input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
-  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-  .seg button{border:0;background:#fff;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px}
-  .seg button+button{border-left:1px solid var(--line)}
-  .seg button[aria-pressed=true]{background:#111;color:#fff}
-  .seg svg{width:16px;height:16px}
-  .toggle{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer}
-  .toggle input{width:18px;height:18px;accent-color:#111}
-  .actions{display:flex;gap:10px;flex-wrap:wrap}
-  .btn{border:1px solid #111;background:#111;color:#fff;font:inherit;font-weight:600;padding:12px 18px;border-radius:10px;cursor:pointer;font-size:15px}
-  .btn.secondary{background:#fff;color:#111}
-  .btn.small{padding:6px 10px;font-size:13px;font-weight:500}
-  .hats{display:grid;grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:6px;margin:2px 0 8px}
-  .hatsw{border:2px solid transparent;border-radius:10px;padding:4px 2px 3px;background:#f6f7f9;cursor:pointer;font:inherit;text-align:center;color:inherit}
-  .hatsw canvas{display:block;margin:0 auto;width:45px;height:30px;image-rendering:pixelated;image-rendering:crisp-edges}
-  .hatsw b{display:block;font-weight:500;font-size:12px;margin-top:2px}
-  .hatsw small{display:block;font-size:10px;color:var(--muted)}
-  .hatsw[aria-pressed=true]{border-color:#111;background:#fff}
-  .hint{font-size:12px;color:var(--muted);margin:4px 0 0}
-  footer{max-width:1200px;margin:0 auto;padding:8px 20px 28px;color:var(--muted);font-size:12px}
-  @media (min-width:900px){ .preview{position:static} }
-  .site-menu{background:#08080d;color:#eee;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .site-menu a{color:#ddd;text-decoration:none;font-size:14px;padding:8px;display:inline-block}
-  .site-menu .brand{font-weight:700;color:#d9b875;font-size:17px}
-  .site-menu .links{display:flex;gap:2px;flex-wrap:wrap}
-  .site-menu a[aria-current]{color:#d9b875}
-  .site-menu a:hover,.site-menu a:focus-visible{color:#fff;text-decoration:underline}
-  @media(max-width:360px){main{padding-left:12px;padding-right:12px}.panel{grid-template-columns:minmax(0,1fr)}}
+:root{color-scheme:dark;--muted:#a09b90;--line:rgba(201,168,108,.18)}
+body{background:var(--bg);color:var(--text)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(201,168,108,.07),transparent 55%),radial-gradient(ellipse at 90% 70%,rgba(123,84,201,.06),transparent 50%);z-index:-1}
+.editor-header{max-width:1280px;margin:auto;padding:104px 32px 32px;border-bottom:1px solid var(--border)}
+.editor-header h1{font-size:clamp(30px,4vw,52px);font-weight:400;letter-spacing:.02em;line-height:1.2;margin-bottom:14px}
+.editor-header h1 em{color:var(--gold);font-style:normal}
+.editor-header p{color:var(--muted);font-size:13px;line-height:1.8;max-width:650px}
+main{max-width:1280px;margin:auto;padding:32px;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(340px,1fr);align-items:start;gap:28px}
+.preview{position:sticky;top:84px;min-width:0}
+.preview-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:12px;color:var(--gold);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.preview-heading span:last-child{color:var(--muted);letter-spacing:.04em;font-family:system-ui,sans-serif}
+.stage{background:var(--bg-elevated);border:1px solid var(--line);border-radius:12px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+canvas#c{display:block;width:100%;height:auto;aspect-ratio:3/1;border-radius:5px}
+.size-note{font-family:system-ui,sans-serif;font-size:12px;color:var(--muted);margin-top:12px;text-align:right}
+.panel{display:grid;gap:16px;min-width:0}
+.card{background:rgba(17,17,24,.9);border:1px solid var(--line);border-radius:12px;padding:22px;min-width:0}
+.card h2{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 18px;font-weight:600}
+.card label,.row,.hint,output,.sw,.hatsw,.seg,input,.btn{font-family:system-ui,-apple-system,sans-serif}
+label{font-size:14px;display:block}
+.row{display:flex;align-items:center;gap:10px;margin:14px 0;flex-wrap:wrap}
+.row>.lbl{min-width:80px;font-size:13px;color:#c7c2b9}
+input[type=text]{width:100%;font-size:16px;padding:12px;border:1px solid var(--line);border-radius:7px;background:#09090f;color:var(--text)}
+input::placeholder{color:#858078}
+input[type=range]{flex:1;min-width:100px;accent-color:var(--gold)}
+output{font-variant-numeric:tabular-nums;font-size:12px;color:var(--muted);min-width:38px;text-align:right}
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sw{border:1px solid transparent;border-radius:7px;padding:3px;background:none;cursor:pointer;text-align:center;color:var(--text);min-width:0}
+.sw i{display:block;height:32px;border-radius:4px;border:1px solid rgba(255,255,255,.12)}
+.sw b{display:block;font-weight:400;font-size:11px;margin-top:6px}
+.sw small{display:none}
+.sw[aria-pressed=true]{border-color:var(--gold);background:var(--gold-dim)}
+.sw.custom i{display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red)}
+.sw.custom input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{border:0;background:#09090f;color:var(--text);padding:9px 12px;font:inherit;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;min-height:40px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--gold-dim);color:var(--gold-bright)}
+.seg svg{width:16px;height:16px}
+.toggle{display:flex;align-items:center;gap:9px;font-size:13px;cursor:pointer;color:#c7c2b9}
+.toggle input{width:18px;height:18px;accent-color:var(--gold)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--gold);background:var(--gold);color:#100f0c;font-weight:600;padding:12px 18px;border-radius:7px;cursor:pointer;font-size:14px;min-height:44px}
+.btn:hover{background:var(--gold-bright)}
+.btn.secondary{background:transparent;color:var(--text);border-color:var(--line)}
+.btn.secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn.small{padding:8px 12px;font-size:12px;font-weight:500}
+.hats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:16px 0}
+.hatsw{border:1px solid var(--line);border-radius:7px;padding:10px 2px;background:#09090f;cursor:pointer;text-align:center;color:inherit}
+.hatsw canvas{display:block;margin:0 auto 8px;width:45px;height:30px;image-rendering:pixelated}
+.hatsw b{display:block;font-weight:500;font-size:11px}
+.hatsw small{display:block;font-size:10px;color:var(--muted);margin-top:2px}
+.hatsw[aria-pressed=true]{border-color:var(--gold);background:var(--gold-dim)}
+.hint{font-size:12px;color:var(--muted);margin:12px 0 0;line-height:1.6}
+footer{max-width:1216px;margin:12px auto 0;padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted);font-family:system-ui,sans-serif;font-size:11px;line-height:1.8}
+button,input,a{touch-action:manipulation}
+button:focus-visible,input:focus-visible,a:focus-visible,.sw:focus-within{outline:2px solid var(--gold-bright);outline-offset:3px}
+@media(max-width:1100px){.nav-links{display:none}.nav-hamburger{display:flex}}
+@media(max-width:800px){.editor-header{padding:88px 20px 24px}main{grid-template-columns:minmax(0,1fr);padding:20px;gap:20px}.preview{top:56px;z-index:5;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--border)}.preview-heading{margin-bottom:8px}.size-note{margin-top:6px;font-size:10px}.stage{padding:7px}.card{padding:20px}footer{margin:0 20px}.editor-header p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav,.mobile-menu{transition:none}}
 </style>
 </head>
 <body>
-<nav class="site-menu" aria-label="Main navigation">
-<a class="brand" href="/">The Order of 86</a>
-<div class="links"><a href="/play/">Play</a><a href="/">Wizards</a><a href="/map">Map</a><a href="/moons">Moons</a><a href="/lore">Lore</a><a href="/studio/">Content</a><a href="/banner-editor" aria-current="page">Banner Editor</a></div>
-</nav>
-<header>
-  <h1>Banner Editor</h1>
-  <p>Make a 1500&times;500 X/Twitter header with a pixel wizard hat and a check badge. Everything runs in your browser, offline.</p>
+<nav class="nav" id="nav" aria-label="Main navigation"><a class="nav-logo" href="/">The Order of 86</a><div class="nav-links"><a href="/play/">Play</a><a href="/">Wizards</a><a href="/map">Map</a><a href="/moons">Moons</a><a href="/lore">Lore</a><a href="/studio/">Content</a><a href="/banner-editor" class="active" aria-current="page">Banner Editor</a></div><button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-controls="mobileMenu" aria-expanded="false"><span></span></button></nav><div class="mobile-menu" id="mobileMenu"><a href="/play/">Play</a><a href="/">Wizards</a><a href="/map">Map</a><a href="/moons">Moons</a><a href="/lore">Lore</a><a href="/studio/">Content</a><a href="/banner-editor" class="active" aria-current="page">Banner Editor</a></div>
+<header class="editor-header">
+  <h1>Banner <em>Editor</em></h1>
+  <p>Make a 1500&times;500 X/Twitter header with a pixel wizard hat and a check badge. Choose your colors, wear your Order, and make it yours.</p>
 </header>
 <main>
   <section class="preview" aria-label="Preview">
+    <div class="preview-heading"><span>Your banner</span><span>X / Twitter header</span></div>
     <div class="stage"><canvas id="c" width="1500" height="500" aria-label="Banner preview"></canvas></div>
     <div class="size-note">Exports at 1500 &times; 500 px PNG</div>
   </section>
@@ -470,5 +477,7 @@ async function init(){
 }
 window.bannerEditor.ready = init();
 </script>
+<script src="/nav.js?v=banner-editor-1" defer></script>
+<script>document.getElementById("hamburger").addEventListener("click",function(){this.setAttribute("aria-expanded",this.classList.contains("open")?"false":"true")});</script>
 </body>
 </html>
