@@ -6,4 +6,5 @@
   <url><loc>https://theorderof86.com/moons</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://theorderof86.com/game</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://theorderof86.com/content</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://theorderof86.com/banner-editor</loc></url>
 </urlset>

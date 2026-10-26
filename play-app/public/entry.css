@@ -1,0 +1,16 @@
+body.entry-locked{overflow:auto;min-height:100dvh;background:#10171a;}
+body.entry-locked>:not(#entryGate):not(#accountDialog):not(script):not(style){display:none!important;}
+#entryGate[hidden]{display:none!important;}
+#entryGate{position:fixed;inset:0;z-index:10000;overflow:auto;display:grid;place-items:center;padding:28px 18px;box-sizing:border-box;background:radial-gradient(ellipse at 50% 0%,#2b3c3d 0,transparent 65%),#10171a;color:#ece6d6;}
+.entry-card{width:min(600px,100%);padding:32px;box-sizing:border-box;border:1px solid #6d6852;border-radius:20px;background:#172024;box-shadow:0 20px 80px #0005;}
+.entry-eyebrow{letter-spacing:.2em;color:#d8c393;font-size:12px;}
+#entryHeading{font-size:clamp(38px,9vw,66px);line-height:1.05;margin:16px 0;}
+#entryMessage{line-height:1.6;color:#d1d7d2;}#entryGate h2{font-size:22px;margin:24px 0 16px;}
+#entryGate button{min-height:48px;white-space:normal;text-align:center;margin:6px 0;padding:12px 16px;font:inherit;cursor:pointer;color:#efe8d9;background:#283335;border:1px solid #77705b;border-radius:10px;}
+#entryGate button:focus-visible{outline:3px solid #e6c473;outline-offset:3px;}#entryGate button:disabled{opacity:.5;cursor:wait;}
+#entryAuth>button{width:100%;}#entryAuth .primary{background:#dec68e;color:#172024;}
+.entry-modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}#entryGate .entry-modes button{padding:24px 16px;min-height:130px;}
+.entry-modes strong,.entry-modes span{display:block;}.entry-modes strong{font-size:21px;margin-bottom:12px;}.entry-modes span{font-size:14px;color:#c6cfc9;line-height:1.5;}
+#entryAccount,#entryLogout{font-size:14px!important;margin-right:8px!important;}#entryError{color:#ffb8aa;line-height:1.5;}
+body.entry-locked #accountDialog{max-width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 32px);box-sizing:border-box;overflow:auto;}body.entry-locked #accountDialog::backdrop{background:#080e11dd;}
+@media(max-width:480px){.entry-card{padding:24px 18px;}.entry-modes{grid-template-columns:1fr;gap:4px;}#entryGate .entry-modes button{min-height:110px;}}

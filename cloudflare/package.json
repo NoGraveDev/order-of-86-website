@@ -1,0 +1,1 @@
+{"name":"order86-cloudflare-runtime","private":true,"type":"module","scripts":{"build":"node build.mjs","deploy":"wrangler deploy --config wrangler.json"},"dependencies":{"@noble/hashes":"2.0.1"},"devDependencies":{"wrangler":"4.151.3"}}

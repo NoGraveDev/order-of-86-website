@@ -2,7 +2,7 @@
 function animatePixels(source,scene,frame){
  const out=new Uint8ClampedArray(source),t=((frame%24)+24)%24,e=scene.effect;
  const hex=s=>[parseInt(s.slice(1,3),16),parseInt(s.slice(3,5),16),parseInt(s.slice(5,7),16)];
- const accent=hex(scene.color||'#d9fa87'),warm=[[255,176,76],[239,101,43],[255,223,125]],cool=[[129,229,231],[90,169,199],[206,243,250]],pink=[[255,171,210],[206,105,176],[255,214,230]],green=[[103,238,197],[68,174,158],[190,247,205]],violet=[[199,161,240],[149,107,204],[231,211,250]];
+ const accent=hex(scene.color||'#d9fa87'),warm=[[255,176,76],[239,101,43],[255,223,125]],cool=[[129,229,231],[90,169,199],[206,243,250]],magenta=[[255,0,255],[206,0,206],[255,120,255]],green=[[103,238,197],[68,174,158],[190,247,205]],violet=[[199,161,240],[149,107,204],[231,211,250]];
  const dot=(x,y,color=accent,w=1,h=1)=>{for(let dy=0;dy<h;dy++)for(let dx=0;dx<w;dx++){const px=Math.round(x)+dx,py=Math.round(y)+dy;if(px<0||py<0||px>24||py>24)continue;const j=(py*25+px)*4;out[j]=color[0];out[j+1]=color[1];out[j+2]=color[2];out[j+3]=255}};
  const colored=(x,y)=>{const i=(y*25+x)*4,r=source[i],g=source[i+1],b=source[i+2];return {r,g,b,i}};
  if(['fire','lava','aurora','roots','fungi','runes','heart','shimmer','beacon','pulse'].includes(e)){
@@ -12,7 +12,7 @@ function animatePixels(source,scene,frame){
    if(e==='roots'){on=y>9&&g>r*1.15&&g>b*.95;palette=green}
    if(e==='fungi'){on=y>8&&((g>r*1.12&&g>110)||(b>r*1.2&&b>110));palette=green}
    if(e==='runes'){on=b>g*1.2&&r>g*1.08&&b>145;palette=violet}
-   if(e==='heart'){on=r>g*1.22&&b>g*1.07&&r>135;palette=pink}
+   if(e==='heart'){on=r>g*1.22&&b>g*1.07&&r>135;palette=magenta}
    if(e==='shimmer'){on=b>r*1.1&&g>r*1.08&&g>145;palette=cool}
    if(e==='beacon'){on=g>140&&b>125&&g>r*1.05;palette=cool}
    if(e==='pulse'){on=r>155&&g>130&&b<g*.9&&x>7&&x<18&&y<14;palette=warm}
@@ -28,7 +28,7 @@ function animatePixels(source,scene,frame){
  if(e==='books'){for(let i=0;i<5;i++){const x=i%2?20:2,y=4+i*4+Math.round(Math.sin(2*Math.PI*t/24+i));dot(x,y,violet[i%3],3,1);dot(x+1,y+1,[231,211,250],2,1)}}
  if(e==='mist'){for(let i=0;i<4;i++){const x=(i*7+t)%24;dot(x,17+i*2,[95,133,131],3,1)}}
  if(e==='lanterns'){for(let i=0;i<5;i++){const x=2+i*5+Math.round(Math.sin(2*Math.PI*t/24+i)),y=3+i%3;dot(x,y,[120,147,141]);dot(x,y+1,warm[(Math.floor(t/4)+i)%3],1,2)}}
- if(e==='sparkles'){const colors=['#ed8b48','#f9d367','#679bdc','#76c984','#a383d6','#e59dce'].map(hex);for(let i=0;i<6;i++){if((t+i*3)%12<4)dot(2+i*4,12+(i%2)*3,colors[i])}}
+ if(e==='sparkles'){const colors=['#ed8b48','#f9d367','#679bdc','#76c984','#a383d6','#e580e5'].map(hex);for(let i=0;i<6;i++){if((t+i*3)%12<4)dot(2+i*4,12+(i%2)*3,colors[i])}}
  for(let i=0;i<8;i++){
   let x=(i*7+3)%24,y=(i*11+2)%24;
   if(e==='snow')dot(x,(y+t)%24);
@@ -75,14 +75,14 @@ function animatePixels(source,scene,frame){
   for(let i=0;i<6;i++){const q=(phase+i/6)%1,x=2+i*4+Math.sin(turn+i)*.7,y=14-q*15,a=Math.sin(q*Math.PI);glow(x,y,warm[0],a*.95);blend(x,y+1,warm[2],a*.9)}
  }
  if(e==='petals'){
-  for(let i=0;i<10;i++){const q=(phase+i/10)%1,x=(i*7+q*6)%25,y=q*24,a=Math.sin(q*Math.PI);blend(x+Math.sin(turn+i),y,pink[i%3],a*.95);if((t+i)%8<3)blend(x+1+Math.sin(turn+i),y,pink[2],a*.6)}
+  for(let i=0;i<10;i++){const q=(phase+i/10)%1,x=(i*7+q*6)%25,y=q*24,a=Math.sin(q*Math.PI);blend(x+Math.sin(turn+i),y,magenta[i%3],a*.95);if((t+i)%8<3)blend(x+1+Math.sin(turn+i),y,magenta[2],a*.6)}
  }
  if(scene.frames===48){
   // Fixed palette across the loop keeps GIFs lossless and the original dog colors intact.
   const palette=[],seen=new Set();
   const add=c=>{const key=c.join(',');if(!seen.has(key)){seen.add(key);palette.push(c)}};
   for(let i=0;i<source.length;i+=4){const c=Array.from(source.slice(i,i+3));add(c);for(const a of [.3,.6])add(c.map((v,k)=>Math.round(v*(1-a)+accent[k]*a)))}
-  [...warm,...cool,...pink,...green,...violet,accent,[239,246,154]].forEach(add);
+  [...warm,...cool,...magenta,...green,...violet,accent,[239,246,154]].forEach(add);
   const cache=new Map();for(let j=0;j<out.length;j+=4){const key=(out[j]<<16)|(out[j+1]<<8)|out[j+2];let c=cache.get(key);if(!c){let best=Infinity;for(const p of palette){const d=(p[0]-out[j])**2+(p[1]-out[j+1])**2+(p[2]-out[j+2])**2;if(d<best){best=d;c=p}}cache.set(key,c)}out.set(c,j)}
  }
  return out;

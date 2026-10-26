@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS multiplayer_lava_arenas (room TEXT PRIMARY KEY,state TEXT NOT NULL,revision INTEGER NOT NULL DEFAULT 0);

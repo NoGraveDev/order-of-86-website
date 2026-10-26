@@ -1,0 +1,27 @@
+{
+  "name": "order86-migration-staging",
+  "main": "worker.mjs",
+  "account_id": "99c0d1111c8f056c9c0699872b05f0c3",
+  "compatibility_date": "2026-10-21",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "order86-migration-staging",
+      "database_id": "f33ffcbe-0ae8-4278-86c2-4b109b48b54b"
+    }
+  ],
+  "limits": {
+    "cpu_ms": 30000
+  }
+}

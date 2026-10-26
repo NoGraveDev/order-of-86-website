@@ -784,20 +784,24 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
 <nav class="nav" id="nav">
     <a href="index.html" class="nav-logo">The Order of 86</a>
     <div class="nav-links">
+        <a href="/play">Play</a>
         <a href="index.html" class="active">Wizards</a>
         <a href="map.html">Map</a>
         <a href="moons.html">Moons</a>
         <a href="lore.html">Lore</a>
         <a href="studio">Content</a>
+        <a href="/banner-editor">Banner Editor</a>
     </div>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
+        <a href="/play">Play</a>
     <a href="index.html" class="active">Wizards</a>
     <a href="map.html">Map</a>
     <a href="moons.html">Moons</a>
     <a href="lore.html">Lore</a>
     <a href="studio">Content</a>
+        <a href="/banner-editor">Banner Editor</a>
 </div>
 
 <div class="main">
@@ -870,7 +874,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     <p>© 2026 The Order of 86 · <a href="https://doginaldogs.com" target="_blank">Doginal Dogs</a> · <a href="https://x.com/hBUDS_" target="_blank">X / Twitter</a></p>
 </footer>
 
-<script src="wizard-dogs-data.js?v=3"></script>
+<script src="wizard-dogs-data.js?v=canon-20261006"></script>
 <script>
 (function() {
     'use strict';
@@ -1011,7 +1015,7 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
                 <div class="panel-info">
                     <div class="panel-name">${dog.suggestedName}</div>
                     <div class="panel-id">#${dog.id} · Rank ${dog.rank.toLocaleString()}</div>
-                    <div class="panel-order-badge" style="background:${col}">${dog.order} Order</div>
+                    <div class="panel-order-badge" style="background:${col}">${dog.order === 'Wanderer' ? 'unaffiliated Wanderer' : dog.order + ' Order'}</div>
                 </div>
             </div>
             <div class="panel-traits">
@@ -1041,7 +1045,8 @@ details.faq p { padding: 0 20px 16px; margin: 0; font-size: 0.9rem; }
     render();
 })();
 </script>
-<script src="nav.js" defer></script>
+<script src="nav.js?v=banner-editor-1" defer></script>
 <script src="sparkle.js" defer></script>
+<script src="/site-metrics.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,41 @@
+{
+  "name": "order86-private-file-guard",
+  "main": "worker.mjs",
+  "account_id": "99c0d1111c8f056c9c0699872b05f0c3",
+  "compatibility_date": "2026-10-21",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "order86-production",
+      "database_id": "e8cd66f4-c869-4bd9-a2c3-a1c4c2e5b419"
+    }
+  ],
+  "limits": {
+    "cpu_ms": 30000
+  },
+  "routes": [
+    {
+      "pattern": "theorderof86.com/*",
+      "zone_name": "theorderof86.com"
+    },
+    {
+      "pattern": "www.theorderof86.com/*",
+      "zone_name": "theorderof86.com"
+    }
+  ],
+  "vars": {
+    "MAINTENANCE": "false",
+    "LORE_OFFLINE": "true"
+  }
+}

@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS multiplayer_chess (
+ room TEXT PRIMARY KEY NOT NULL,
+ state TEXT NOT NULL,
+ revision INTEGER NOT NULL DEFAULT 0
+);

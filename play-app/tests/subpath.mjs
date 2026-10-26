@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import {mkdtemp,rm,readFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createServer} from 'node:http';
+import {initializePlay} from '../server.mjs';
+const dir=await mkdtemp(join(tmpdir(),'play-release-'));
+let app,server;
+try{
+ app=await initializePlay({databasePath:join(dir,'test.sqlite')});
+ server=createServer(async(req,res)=>{if(!await app.handle(req,res)){res.writeHead(404);res.end('Website fallback');}});await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ const base='http://127.0.0.1:'+server.address().port;
+ assert.equal((await fetch(base+'/play',{redirect:'manual'})).headers.get('location'),'/play/');
+ const solo=await fetch(base+'/play/');assert.equal(solo.status,200);assert((await solo.text()).includes('<base href="/play/">'));
+ const room=await fetch(base+'/play/multiplayer');assert.equal(room.status,200);assert((await room.text()).includes('id="roomLobby"'));
+ for(const path of ['game.js','three.module.js','style.css','inventory-images/chess-board.png','equipment/pipe.svg','models/moon-market/shop.glb'])assert.equal((await fetch(base+'/play/'+path)).status,200,path);
+ const asset=await fetch(base+'/play/game.js');assert(asset.headers.get('content-type').includes('javascript'));assert.equal((await fetch(base+'/play/game.js',{headers:{'If-None-Match':asset.headers.get('etag')}})).status,304);
+ assert.equal((await fetch(base+'/play/not-real.js')).status,404);
+ assert.equal((await fetch(base+'/play/%2e%2e%2fserver.mjs')).status,403);
+ assert.equal((await fetch(base+'/play/%2e%2e%2f%2e%2e%2fpackage.json')).status,403);
+ assert.equal(await (await fetch(base+'/play-app/server.mjs')).text(),'Website fallback');
+ assert.equal((await fetch(base+'/play/api/accounts/save',{method:'POST',body:'x'.repeat(65537)})).status,413);
+ assert.equal((await fetch(base+'/play/api/multiplayer/create',{method:'POST',body:'x'.repeat(4097)})).status,413);
+ assert.equal((await fetch(base+'/play/api/accounts/session')).status,200);
+ assert.deepEqual(await (await fetch(base+'/play/api/accounts/session')).json(),{user:null});
+ const api=async(action,body,cookie='',origin=base)=>fetch(base+'/play/api/accounts/'+action,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json','X-Pawtheon-Request':'1',Cookie:cookie},body:JSON.stringify(body)});
+ const password='release-test-password-'+crypto.randomUUID();let signup=await api('signup',{username:'release_test',name:'Release test',password});assert.equal(signup.status,200);const cookie=signup.headers.get('set-cookie').split(';')[0];assert(signup.headers.get('set-cookie').includes('Path=/play/'));assert(cookie.startsWith('paw_play_session='));const user=(await signup.json()).user;
+ const savedProgress={'pawtheon-lizards-v1':JSON.stringify(['common-0']),'pawtheon-dog':'5035'};
+ const saveResponse=await api('save',{accountId:user.id,revision:0,save:savedProgress},cookie);assert.equal(saveResponse.status,200);const saved=await saveResponse.json();assert.equal(saved.revision,1);assert.deepEqual(saved.save,savedProgress);
+ assert.equal((await api('login',{username:'release_test',password},'','https://unrelated.example')).status,403);
+ for(const action of ['create','join','public-join','sync','message','chess','boat','lava','trade','chess-records','leave'])assert.equal((await fetch(base+'/play/api/multiplayer/'+action,{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:'{}'})).status,401,action);
+ const rooms=await fetch(base+'/play/api/multiplayer/create',{method:'POST',headers:{Origin:base,'Content-Type':'application/json',Cookie:cookie},body:'{}'});assert.equal(rooms.status,200);assert((await rooms.json()).room);
+ const guests=await Promise.all(Array.from({length:17},async(_,i)=>{const response=await fetch(base+'/play/api/multiplayer/public-join',{method:'POST',headers:{Origin:base,'Content-Type':'application/json',Cookie:cookie},body:JSON.stringify({name:'Public guest '+i,state:{dog:5035,x:0,y:0,z:15,yaw:0}})});assert.equal(response.status,200);return response.json();}));
+ const occupancy=new Map();for(const guest of guests){assert.equal(guest.public,true);occupancy.set(guest.room,(occupancy.get(guest.room)||0)+1);}assert.deepEqual([...occupancy.values()].sort((a,b)=>b-a),[8,8,1]);
+ for(const guest of guests){const response=await fetch(base+'/play/api/multiplayer/leave',{method:'POST',headers:{Origin:base,'Content-Type':'application/json',Cookie:cookie,Authorization:'Bearer '+guest.token},body:JSON.stringify({room:guest.room})});assert.equal(response.status,200);}
+ const entry=await (await fetch(base+'/play/multiplayer')).text();assert(entry.includes('id="publicJoin"'));assert(entry.includes('src="entry.js?v='));assert(!entry.includes('src="loading-screen.js'));assert(entry.includes('entry-locked multiplayer-session'));const soloEntry=await(await fetch(base+'/play/')).text();assert(soloEntry.includes('src="entry.js?v='));assert(soloEntry.includes('/site-metrics.js'));assert.equal((await fetch(base+'/play/entry.css')).status,200);
+ await new Promise(r=>server.close(r));server=null;app.close();app=await initializePlay({databasePath:join(dir,'test.sqlite')});
+ server=createServer(async(req,res)=>app.handle(req,res));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ const session=await fetch('http://127.0.0.1:'+server.address().port+'/play/api/accounts/session',{headers:{Cookie:cookie}});const restored=await session.json();assert.equal(restored.user.id,user.id);assert.equal(restored.revision,1);assert.deepEqual(restored.save,savedProgress);
+ const mode=await readFile(new URL('../public/session-mode.js',import.meta.url),'utf8');assert(mode.includes('^\\/play\\/multiplayer'));
+ console.log('PASS /play routes, runtime assets, MIME/cache, isolated account cookie, CSRF, guest denial, authenticated room creation, 17 concurrent account-bound public joins → 8/8/1 via /play API, payload/traversal guards and account-save/revision restart persistence');
+}finally{if(server)await new Promise(r=>server.close(r));app?.close();await rm(dir,{recursive:true,force:true});}

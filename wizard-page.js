@@ -13,7 +13,7 @@ function renderWizardPage(dog, baseUrl) {
     const name = esc(dog.suggestedName) || `Wizard #${esc(dog.id)}`;
     const desc = dog.suggestedStory
         ? dog.suggestedStory.replace(/\*[^*]*\*/g, '').trim().substring(0, 200) + '…'
-        : `${name} — a ${dog.fur} ${dog.pattern} of the ${dog.order} Order from ${dog.realm}.`;
+        : `${name} — a ${dog.fur} ${dog.pattern} of the ${dog.order === 'Wanderer' ? 'unaffiliated Wanderer' : dog.order + ' Order'} from ${dog.realm}.`;
     const ogImage = `${baseUrl}/wizard/${dog.id}/og.png`;
     const canonicalUrl = `${baseUrl}/wizard/${dog.id}`;
     const storyHtml = esc(dog.suggestedStory || '').replace(/\n/g, '<br>').replace(/\*([^*]+)\*/g, '<em>$1</em>');
@@ -92,7 +92,7 @@ function renderWizardPage(dog, baseUrl) {
             <div class="info">
                 <div class="name">${name}</div>
                 <div class="id-rank">#${dog.id} · Rank ${dog.rank.toLocaleString()}</div>
-                <div class="order-badge">${dog.order} Order</div>
+                <div class="order-badge">${dog.order === 'Wanderer' ? 'unaffiliated Wanderer' : dog.order + ' Order'}</div>
                 <div class="traits">
                     <div class="trait"><div class="trait-label">Fur</div><div class="trait-value">${esc(dog.fur)}</div></div>
                     <div class="trait"><div class="trait-label">Pattern</div><div class="trait-value">${esc(dog.pattern)}</div></div>
@@ -113,7 +113,7 @@ function renderWizardPage(dog, baseUrl) {
         <div class="share-section">
             <div class="share-title">Share this wizard</div>
             <div class="share-btns">
-                <a class="share-btn" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Meet ${name} — ${dog.order} Order wizard from ${dog.realm}\n\n`)}&url=${encodeURIComponent(canonicalUrl)}" target="_blank">𝕏 Share on X</a>
+                <a class="share-btn" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(`Meet ${name} — ${dog.order === 'Wanderer' ? 'unaffiliated Wanderer' : dog.order + ' Order'} wizard from ${dog.realm}\n\n`)}&url=${encodeURIComponent(canonicalUrl)}" target="_blank">𝕏 Share on X</a>
                 <button class="share-btn" onclick="navigator.clipboard.writeText('${canonicalUrl}');this.textContent='✓ Copied!'">Copy Link</button>
             </div>
         </div>

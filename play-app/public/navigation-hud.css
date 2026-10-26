@@ -1,0 +1,25 @@
+/* A functional compass lives with the north-up map, never over header buttons. */
+body #miniMap #compass{display:flex;position:static;transform:none;align-items:center;justify-content:center;gap:12px;font-size:12px;letter-spacing:.06em;line-height:22px;padding:2px 0 6px;pointer-events:none;}
+body #miniMap #compass span{color:#f5d899;}.compass-north{display:inline-block;font-size:23px;line-height:24px;transform-origin:center;}.compass-reading{font-variant-numeric:tabular-nums;}
+#leftHudRail{display:none;}
+@media(min-width:768px){
+ body.hud-map-docked #leftHudRail{position:fixed;display:flex;flex-direction:column;gap:6px;left:24px;bottom:132px;width:190px;max-height:calc(100dvh - 250px);z-index:18;pointer-events:none;}
+ body.hud-map-docked #leftHudRail>#miniMap{position:static!important;display:block!important;inset:auto!important;width:100%;min-height:90px;max-height:290px;overflow:auto;flex:0 1 auto;pointer-events:auto;}
+ body.hud-map-docked #leftHudRail>#roomBar{position:static;inset:auto;transform:none;width:100%;max-width:none;min-height:64px;max-height:calc(100dvh - 350px);overflow:auto;flex:0 1 auto;padding:6px 9px;font-size:11px;border-radius:8px;pointer-events:auto;}
+ body.hud-map-docked #leftHudRail>#roomBar[hidden]{display:none;}
+ body.hud-map-docked #roomStatus{display:block;font-size:11px;font-weight:600;line-height:16px;}
+ body.hud-map-docked #roomBar details{margin-top:2px;}
+ body.hud-map-docked #roomBar summary{font-size:12px;line-height:18px;min-height:28px;padding:4px 0;cursor:pointer;}
+ body.hud-map-docked #roomBar details[open] summary{position:sticky;top:-6px;background:#173c35;z-index:1;}
+ body.hud-map-docked #roomBar button{padding:7px 9px;font-size:12px;min-height:36px;max-width:100%;}
+ body.hud-map-docked #roomBar h3{font-size:13px;}body.hud-map-docked #roomBar p{font-size:11px;}
+ body.hud-map-docked.mobile-hud #leftHudRail{left:12px;bottom:180px;width:190px;max-height:calc(100dvh - 290px);}
+ body.hud-map-docked.mobile-hud #actionDock{left:218px;width:calc(100% - 390px);bottom:180px;}
+ body.hud-map-docked.mobile-hud #packChat{left:218px;top:auto;bottom:180px;width:calc(100% - 390px);max-height:calc(100dvh - 300px);}
+ body.hud-map-docked.mobile-hud #roomBar summary{min-height:44px;display:list-item;padding:12px 0;}
+ body.hud-map-docked.mobile-hud #roomBar{min-height:78px!important;}
+ body.hud-map-docked.mobile-hud #roomBar button{min-height:44px;}
+ body.clean-screen #leftHudRail,body.lava-playing #leftHudRail,body.sled-racing #leftHudRail,body.boat-racing #leftHudRail{display:none!important;}
+}
+@media(min-width:768px) and (any-pointer:coarse){body.hud-map-docked:not(.mobile-hud) #leftHudRail{bottom:250px;max-height:calc(100dvh - 360px);}body.hud-map-docked:not(.mobile-hud) #roomBar summary{min-height:44px;padding:12px 0;}}
+@media(min-width:768px) and (max-height:600px){body.hud-map-docked:not(.mobile-hud) #leftHudRail{max-height:calc(100dvh - 330px);}}

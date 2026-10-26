@@ -1,0 +1,1 @@
+export const roomEmotes={wave:{icon:'👋',label:'Wave'},heart:{icon:'❤️',label:'Love'},laugh:{icon:'😂',label:'Laugh'},cheer:{icon:'🎉',label:'Celebrate'},paw:{icon:'🐾',label:'Paw high-five'},howl:{icon:'🐺',label:'Howl'}};

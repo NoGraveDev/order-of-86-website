@@ -110,7 +110,41 @@ function sendResponse(req, res, statusCode, headers, body) {
     }
 }
 
+function denyPrivateRequest(rawPath) {
+  let value;
+  try { value = decodeURIComponent(rawPath.split('?')[0]); } catch { return true; }
+  if (/[\x00-\x1f\x7f\\]/.test(value) || /%[0-9a-f]{2}/i.test(value)) return true;
+  if (value.split('/').some(part => part === '..' || (part.startsWith('.') && part !== '.well-known'))) return true;
+  value = path.posix.normalize('/' + value.replace(/^\/+/, ''));
+  if (/\.(?:php\d*|phtml|phar)(?:[/.;]|$)/i.test(value)) return true;
+  if (/^\/(?:play-app|analytics|node_modules|scripts|tools|reports|release-verification|blender)(?:\/|$)/i.test(value)) return true;
+  if (/(?:^|\/)(?:server\.(?:js|mjs|cjs)|og-card\.js|wizard-page\.js|package(?:-lock)?\.json|(?:pnpm-lock|yarn)\.(?:yaml|lock)|AGENTS\.md|Dockerfile|railway\.json|request-guard\.cjs)$/i.test(value)) return true;
+  if (/\.(?:sqlite(?:3)?(?:-wal|-shm)?|db|sql|bak|backup|env|log|pem|key)(?:$|\/)/i.test(value)) return true;
+  return false;
+}
+
+async function startServer() {
+    const { createPlayHandler } = await import('./play-app/server.mjs');
+    const handlePlay = await createPlayHandler();
+    const { createMetricsHandler } = await import('./analytics/http.mjs');
+    const handleMetrics = createMetricsHandler();
 http.createServer(async (req, res) => {
+    const pathname = req.url.split('?')[0];
+    if (denyPrivateRequest(pathname)) {
+        res.writeHead(404, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
+        return res.end('Not Found');
+    }
+    if (pathname === '/metrics/event') return handleMetrics(req, res);
+    if (pathname === '/play' || pathname.startsWith('/play/')) {
+        return handlePlay(req, res);
+    }
+    // Runtime code and persistent data are never website assets.
+    let decodedPath;
+    try { decodedPath = decodeURIComponent(pathname); } catch { decodedPath = '/play-app/'; }
+    if (/^\/(?:play-app|analytics|\.git|node_modules)(?:\/|$)/.test(decodedPath)) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        return res.end('Not Found');
+    }
     const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress;
 
     if (!rateLimit(ip)) {
@@ -130,7 +164,7 @@ http.createServer(async (req, res) => {
             res.end('Wizard not found');
             return;
         }
-        const html = renderWizardPage(dog, BASE_URL);
+        const html = renderWizardPage(dog, BASE_URL).replace('</body>', '<script src="/site-metrics.js" defer></script></body>');
         sendResponse(req, res, 200, {
             'Content-Type': 'text/html',
             'Cache-Control': 'public, max-age=3600'
@@ -188,6 +222,12 @@ http.createServer(async (req, res) => {
         return;
     }
 
+    const topLevel = path.relative(ROOT, resolved).split(path.sep)[0];
+    if (['play-app', 'analytics', '.git', 'node_modules'].includes(topLevel)) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        return res.end('Not Found');
+    }
+
     const ext = path.extname(resolved);
 
     // Cache policy by file type
@@ -237,3 +277,9 @@ http.createServer(async (req, res) => {
         sendResponse(req, res, 200, headers, data);
     });
 }).listen(PORT, () => console.log(`Order of 86 on port ${PORT} — ${Object.keys(wizardDogs).length} wizards loaded`));
+
+}
+startServer().catch(error => {
+    console.error('Website startup failed:', error.message);
+    process.exit(1);
+});

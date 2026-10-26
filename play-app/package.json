@@ -1,0 +1,14 @@
+{
+  "name": "pawtheon",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.9"
+  },
+  "dependencies": {
+    "chess.js": "^1.4.0"
+  }
+}

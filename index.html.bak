@@ -497,9 +497,9 @@
                 image: "images/4540.png"
             },
             "8095": {
-                id: "8095", rank: 4524, fur: "Gray", pattern: "Split", eyes: "Pink Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
-                suggestedName: "Rosestrike the Pink-Eyed",
-                suggestedStory: "From the tidal politics of the Abyssal Reaches, where every decision requires balancing two perspectives, Rosestrike brought the rare gift of pink eyes — eyes that see emotional energy as clearly as physical matter. In their homeland's Twin Council system, they served as the emotional interpreter, helping negotiators understand not just what was said but what was felt. The orange hat manifested during a particularly heated debate when they stood up and declared, 'Stop arguing about positions. Fight for principles.'\n\nTheir pink eyes let them see the emotional fuel behind magical energy, making them uniquely suited to combat magic that draws on passion rather than technique. Rosestrike's flames burn brightest when fighting for something rather than against something.",
+                id: "8095", rank: 4524, fur: "Gray", pattern: "Split", eyes: "Magenta Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Flame", hatColor: "Orange",
+                suggestedName: "Rosestrike the Magenta-Eyed",
+                suggestedStory: "From the tidal politics of the Abyssal Reaches, where every decision requires balancing two perspectives, Rosestrike brought the rare gift of magenta eyes — eyes that see emotional energy as clearly as physical matter. In their homeland's Twin Council system, they served as the emotional interpreter, helping negotiators understand not just what was said but what was felt. The orange hat manifested during a particularly heated debate when they stood up and declared, 'Stop arguing about positions. Fight for principles.'\n\nTheir magenta eyes let them see the emotional fuel behind magical energy, making them uniquely suited to combat magic that draws on passion rather than technique. Rosestrike's flames burn brightest when fighting for something rather than against something.",
                 image: "images/8095.png"
             },
             "5518": {
@@ -509,9 +509,9 @@
                 image: "images/5518.png"
             },
             "1714": {
-                id: "1714", rank: 5584, fur: "Brown", pattern: "Classic", eyes: "Pink Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                id: "1714", rank: 5584, fur: "Brown", pattern: "Classic", eyes: "Magenta Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
                 suggestedName: "Roseheart the Gentle Flame",
-                suggestedStory: "The most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality. Roseheart's pink eyes and gentle demeanor make them seem more suited to the Heart Order than the Flame, but their orange hat chose them precisely because they understand that the hottest flame is controlled flame. They found their calling during post-Loyalty Wars reconstruction, using precisely controlled fire to clear debris without damaging anything salvageable.\n\nTheir Brown Classic fur marks them as steady and reliable, while their pink eyes let them see the emotional damage that combat leaves behind. Roseheart's flames never cause unnecessary harm — they burn away what needs burning and preserve what needs preserving.",
+                suggestedStory: "The most diplomatic Flame Wizard, proving that fire magic doesn't require an aggressive personality. Roseheart's magenta eyes and gentle demeanor make them seem more suited to the Heart Order than the Flame, but their orange hat chose them precisely because they understand that the hottest flame is controlled flame. They found their calling during post-Loyalty Wars reconstruction, using precisely controlled fire to clear debris without damaging anything salvageable.\n\nTheir Brown Classic fur marks them as steady and reliable, while their magenta eyes let them see the emotional damage that combat leaves behind. Roseheart's flames never cause unnecessary harm — they burn away what needs burning and preserve what needs preserving.",
                 image: "images/1714.png"
             },
             "246": {
@@ -521,9 +521,9 @@
                 image: "images/246.png"
             },
             "4042": {
-                id: "4042", rank: 6804, fur: "Gray", pattern: "Classic", eyes: "Pink Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
-                suggestedName: "Roseflame the Pink-Eyed",
-                suggestedStory: "The third pink-eyed Flame Wizard, proving that emotional sight is more common in the Order than initially recognized. Roseflame's gray Classic appearance makes them blend into any crowd in the Violet Highlands, but their pink eyes reveal the emotional currents flowing beneath political discourse. They earned their orange hat during a Grand Assembly session when they stood up and used flame magic to literally illuminate the emotional dishonesty in several speakers' arguments.\n\nTheir power lies in Emotional Flame — fire that burns lies, cowardice, and dishonor while leaving truth, courage, and integrity untouched. In the politically complex Violet Highlands, this makes them both invaluable and dangerous.",
+                id: "4042", rank: 6804, fur: "Gray", pattern: "Classic", eyes: "Magenta Eyes", clothes: "None", realm: "Violet Highlands", order: "Flame", hatColor: "Orange",
+                suggestedName: "Roseflame the Magenta-Eyed",
+                suggestedStory: "The third magenta-eyed Flame Wizard, proving that emotional sight is more common in the Order than initially recognized. Roseflame's gray Classic appearance makes them blend into any crowd in the Violet Highlands, but their magenta eyes reveal the emotional currents flowing beneath political discourse. They earned their orange hat during a Grand Assembly session when they stood up and used flame magic to literally illuminate the emotional dishonesty in several speakers' arguments.\n\nTheir power lies in Emotional Flame — fire that burns lies, cowardice, and dishonor while leaving truth, courage, and integrity untouched. In the politically complex Violet Highlands, this makes them both invaluable and dangerous.",
                 image: "images/4042.png"
             },
             "1053": {
@@ -535,9 +535,9 @@
 
             // 🟢 WILD ORDER - 18 Wizards
             "3449": {
-                id: "3449", rank: 627, fur: "Brown", pattern: "Tiger", eyes: "Pink Eyes", clothes: "Poncho", realm: "Ember Wastes", order: "Wild", hatColor: "Green",
+                id: "3449", rank: 627, fur: "Brown", pattern: "Tiger", eyes: "Magenta Eyes", clothes: "Poncho", realm: "Ember Wastes", order: "Wild", hatColor: "Green",
                 suggestedName: "Stripeheart the Bridge-Walker",
-                suggestedStory: "The rarest Wild Wizard and the greatest contradiction in the Order. A solitary Tiger from the volcanic Ember Wastes, where independence is survival, who found their green hat by doing the most un-Tiger thing possible: they established a permanent beast sanctuary. Stripeheart's pink eyes — the gift of emotional sight — let them see the terror in animals fleeing volcanic eruptions. Instead of hunting prey weakened by disaster, they guided them to safety. The green hat manifested as they stood between a pack of terrified creatures and a lava flow, using their own body as a bridge to guide them across cooling stone.\n\nTheir poncho, woven from plant fibers that grow only in volcanic soil, marks them as a traveler between realms. Stripeheart carries seeds from the Heartwood throughout the Ember Wastes, creating networks of green growth in the most unlikely places.",
+                suggestedStory: "The rarest Wild Wizard and the greatest contradiction in the Order. A solitary Tiger from the volcanic Ember Wastes, where independence is survival, who found their green hat by doing the most un-Tiger thing possible: they established a permanent beast sanctuary. Stripeheart's magenta eyes — the gift of emotional sight — let them see the terror in animals fleeing volcanic eruptions. Instead of hunting prey weakened by disaster, they guided them to safety. The green hat manifested as they stood between a pack of terrified creatures and a lava flow, using their own body as a bridge to guide them across cooling stone.\n\nTheir poncho, woven from plant fibers that grow only in volcanic soil, marks them as a traveler between realms. Stripeheart carries seeds from the Heartwood throughout the Ember Wastes, creating networks of green growth in the most unlikely places.",
                 image: "images/3449.png"
             },
             "8272": {
@@ -669,9 +669,9 @@
                 image: "images/8311.png"
             },
             "9301": {
-                id: "9301", rank: 3938, fur: "Yellow", pattern: "Solid", eyes: "Pink Eyes", clothes: "None", realm: "Sunward Heights", order: "Arcane", hatColor: "Purple",
-                suggestedName: "Rosegold the Pink-Eyed Theorist",
-                suggestedStory: "The second yellow Solid in the Arcane Order, but where Blueshirt focuses on dimensional magic, Rosegold specializes in the intersection between magical theory and emotional reality. Their pink eyes see the emotional components of magical energy, while their yellow Solid fur provides the clarity needed to analyze complex emotional patterns without being overwhelmed by them. They developed the theoretical framework for understanding how emotional energy affects magical efficiency.\n\nTheir specialty is Emotional Arcane — understanding how feelings influence magical outcomes, predicting which emotions will enhance or interfere with specific spells.",
+                id: "9301", rank: 3938, fur: "Yellow", pattern: "Solid", eyes: "Magenta Eyes", clothes: "None", realm: "Sunward Heights", order: "Arcane", hatColor: "Purple",
+                suggestedName: "Rosegold the Magenta-Eyed Theorist",
+                suggestedStory: "The second yellow Solid in the Arcane Order, but where Blueshirt focuses on dimensional magic, Rosegold specializes in the intersection between magical theory and emotional reality. Their magenta eyes see the emotional components of magical energy, while their yellow Solid fur provides the clarity needed to analyze complex emotional patterns without being overwhelmed by them. They developed the theoretical framework for understanding how emotional energy affects magical efficiency.\n\nTheir specialty is Emotional Arcane — understanding how feelings influence magical outcomes, predicting which emotions will enhance or interfere with specific spells.",
                 image: "images/9301.png"
             },
             "5056": {
@@ -725,9 +725,9 @@
 
             // 🔵 DEEP ORDER - 13 Wizards
             "4165": {
-                id: "4165", rank: 854, fur: "White", pattern: "Collie", eyes: "Pink Eyes", clothes: "Poncho", realm: "Deepwood", order: "Deep", hatColor: "Blue",
-                suggestedName: "Pinkgaze the Emotional Seer",
-                suggestedStory: "The rarest Deep Wizard, whose Collie herding instincts evolved into something far more sophisticated: herding probable futures into manageable patterns. Pinkgaze's white fur reflects all magical energies without absorption, while their pink eyes see emotional currents flowing through time as clearly as water flowing through streams. The poncho they wear is woven from water-resistant fibers that repel both liquid water and liquid time, protecting them from temporal splash-back during deep scrying sessions.\n\nTheir specialty is Emotional Prophecy — predicting future events by tracking the emotional currents that drive decision-making.",
+                id: "4165", rank: 854, fur: "White", pattern: "Collie", eyes: "Magenta Eyes", clothes: "Poncho", realm: "Deepwood", order: "Deep", hatColor: "Blue",
+                suggestedName: "Magentagaze the Emotional Seer",
+                suggestedStory: "The rarest Deep Wizard, whose Collie herding instincts evolved into something far more sophisticated: herding probable futures into manageable patterns. Magentagaze's white fur reflects all magical energies without absorption, while their magenta eyes see emotional currents flowing through time as clearly as water flowing through streams. The poncho they wear is woven from water-resistant fibers that repel both liquid water and liquid time, protecting them from temporal splash-back during deep scrying sessions.\n\nTheir specialty is Emotional Prophecy — predicting future events by tracking the emotional currents that drive decision-making.",
                 image: "images/4165.png"
             },
             "9530": {
@@ -835,9 +835,9 @@
                 image: "images/9396.png"
             },
             "5381": {
-                id: "5381", rank: 2521, fur: "Pink", pattern: "Classic", eyes: "Black Eyes", clothes: "Tracksuit", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
-                suggestedName: "Roseclassic the Pink Diplomat",
-                suggestedStory: "An unusual color for any Order — pink Classic fur creating visual connection to Heart magic while practicing Radiant discipline. Roseclassic's tracksuit marks them as athletic and active, suggesting dynamic rather than contemplative light magic. They earned recognition by developing techniques for Emotional Purification — using light magic to cleanse negative emotions rather than just revealing truth.\n\nTheir magic is Gentle Radiance — purification that heals rather than burns, light that reveals truth gradually rather than blindingly.",
+                id: "5381", rank: 2521, fur: "Magenta", pattern: "Classic", eyes: "Black Eyes", clothes: "Tracksuit", realm: "Violet Highlands", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Roseclassic the Magenta Diplomat",
+                suggestedStory: "An unusual color for any Order — magenta Classic fur creating visual connection to Heart magic while practicing Radiant discipline. Roseclassic's tracksuit marks them as athletic and active, suggesting dynamic rather than contemplative light magic. They earned recognition by developing techniques for Emotional Purification — using light magic to cleanse negative emotions rather than just revealing truth.\n\nTheir magic is Gentle Radiance — purification that heals rather than burns, light that reveals truth gradually rather than blindingly.",
                 image: "images/5381.png"
             },
             "7731": {
@@ -859,9 +859,9 @@
                 image: "images/6203.png"
             },
             "9183": {
-                id: "9183", rank: 5726, fur: "White", pattern: "Split", eyes: "Pink Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Radiant", hatColor: "Yellow",
-                suggestedName: "Whiteheart the Pink-Eyed Illuminator",
-                suggestedStory: "A Split from the diplomatic Abyssal Reaches whose white fur and pink eyes create perfect harmony for compassionate revelation magic. Whiteheart's white base color reflects all forms of light without absorption, while their pink eyes see the emotional impact of revealed truth. They specialize in Truth with Mercy — showing people difficult truths in ways that encourage growth rather than despair.\n\nTheir magic is Compassionate Radiance — light that reveals truth gradually, purification that heals rather than burns.",
+                id: "9183", rank: 5726, fur: "White", pattern: "Split", eyes: "Magenta Eyes", clothes: "None", realm: "Abyssal Reaches", order: "Radiant", hatColor: "Yellow",
+                suggestedName: "Whiteheart the Magenta-Eyed Illuminator",
+                suggestedStory: "A Split from the diplomatic Abyssal Reaches whose white fur and magenta eyes create perfect harmony for compassionate revelation magic. Whiteheart's white base color reflects all forms of light without absorption, while their magenta eyes see the emotional impact of revealed truth. They specialize in Truth with Mercy — showing people difficult truths in ways that encourage growth rather than despair.\n\nTheir magic is Compassionate Radiance — light that reveals truth gradually, purification that heals rather than burns.",
                 image: "images/9183.png"
             },
             "4458": {
@@ -879,67 +879,67 @@
 
             // 🩷 HEART ORDER - 11 Wizards (Confirmed via pixel analysis)
             "9089": {
-                id: "9089", rank: 46, fur: "Black", pattern: "Split", eyes: "Red Eyes", clothes: "Tracksuit", realm: "Abyssal Reaches", order: "Heart", hatColor: "Pink",
+                id: "9089", rank: 46, fur: "Black", pattern: "Split", eyes: "Red Eyes", clothes: "Tracksuit", realm: "Abyssal Reaches", order: "Heart", hatColor: "Magenta",
                 suggestedName: "The Warlock",
                 suggestedStory: "The rarest Wizard in the Order of 86. The rarest Wizard in the entire Doginal Dogs collection. And they're Heart. A Black Split from the Abyssal Reaches — the realm of duality and impossible perspectives — wearing a Tracksuit (one of the very few clothed Wizards) and carrying a Ball (unique among all 86). Red eyes in a black face, the rarest eye color combined with the starkest fur contrast.\n\nThe Warlock's incredible rarity translates to raw magical potential that terrifies even experienced Wizards. When they join a pack cast, the multiplicative effect of Heart magic reaches levels that could reshape reality itself. Their Red eyes — the rarest eye color among the Wizards — see emotional bonds as physical threads, visible and tangible as rope or wire. The most powerful entity in the Caninosphere carries a ball and wears a tracksuit. That's not a contradiction — that's the point.",
                 image: "images/9089.png"
             },
             "2498": {
-                id: "2498", rank: 888, fur: "Gray", pattern: "Classic", eyes: "Square Glasses", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "2498", rank: 888, fur: "Gray", pattern: "Classic", eyes: "Square Glasses", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Glassesheart the Scholarly Amplifier",
                 suggestedStory: "From the academic Violet Highlands, Glassesheart brings scholarly analysis to the intuitive magic of emotional bonds. Their square glasses focus not just vision but emotional perception, allowing them to study the mathematical principles underlying bond magic. The collar they wear is woven from empathy-silk that responds to emotional changes in their environment, serving as both magical focus and emotional barometer.\n\nTheir magic is Analytical Empathy — understanding exactly why emotional bonds form, predicting which relationships will strengthen or weaken over time, and optimizing pack configurations for maximum magical efficiency.",
                 image: "images/2498.png"
             },
             "5097": {
-                id: "5097", rank: 2327, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "5097", rank: 2327, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "Collar", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Tancollar the Steady Bond",
                 suggestedStory: "The second Classic in the Heart Order, but where Glassesheart focuses on theory, Tancollar specializes in long-term relationship maintenance. Their tan fur provides earth-tone stability for sustained emotional magic, while their collar contains memory-threads that preserve important emotional moments between bonded individuals.\n\nTheir magic is Relationship Maintenance — strengthening bonds that have weakened over time, helping partners rediscover what they originally loved about each other, and preventing small emotional problems from becoming major conflicts.",
                 image: "images/5097.png"
             },
             "6093": {
-                id: "6093", rank: 3344, fur: "Tan", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "6093", rank: 3344, fur: "Tan", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Sleepyheart the Dream Bonder",
                 suggestedStory: "The third Classic in the Heart Order, specializing in emotional bonds that form during sleep and unconscious states. Their tan fur provides neutrality for dream-work, while their permanently sleepy appearance reflects their specialty in unconscious bonding magic. They earned recognition by successfully maintaining pack bonds between Wizards who were too traumatized by the Loyalty Wars to work together while awake.\n\nTheir magic is Dream Bonding — creating emotional connections through shared dreams, healing relationship trauma while subjects sleep.",
                 image: "images/6093.png"
             },
             "5698": {
-                id: "5698", rank: 4055, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "5698", rank: 4055, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Brownheart the Stable Amplifier",
                 suggestedStory: "The fourth Classic in the Heart Order, demonstrating that steady, reliable breeds are naturally suited to bond magic that requires long-term commitment. Brownheart's brown fur provides earth-tone grounding for emotional magic, while their black eyes maintain focus on individual relationships rather than getting overwhelmed by group dynamics.\n\nTheir magic is Steady Amplification — providing consistent emotional support that doesn't fluctuate with circumstances, maintaining stable magical amplification even during crisis periods.",
                 image: "images/5698.png"
             },
             "7482": {
-                id: "7482", rank: 4477, fur: "Tan", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Pink",
+                id: "7482", rank: 4477, fur: "Tan", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Sleepyhusky the Gentle Endurer",
-                suggestedStory: "A Husky from the harsh arctic realm practicing the magic of gentle emotional connection. Sleepyhusky's tan fur provides warmth-tones that contrast with their ice-realm heritage, while their sleepy eyes mask the intense emotional endurance that Husky breeds bring to pack work. They earned their pink hat by maintaining pack bonds during the longest winter in Frosthollow's recorded history, when isolation and darkness threatened to break every social connection in the realm.\n\nTheir magic is Endurance Bonding — emotional connections that survive any hardship, pack magic that grows stronger under pressure.",
+                suggestedStory: "A Husky from the harsh arctic realm practicing the magic of gentle emotional connection. Sleepyhusky's tan fur provides warmth-tones that contrast with their ice-realm heritage, while their sleepy eyes mask the intense emotional endurance that Husky breeds bring to pack work. They earned their magenta hat by maintaining pack bonds during the longest winter in Frosthollow's recorded history, when isolation and darkness threatened to break every social connection in the realm.\n\nTheir magic is Endurance Bonding — emotional connections that survive any hardship, pack magic that grows stronger under pressure.",
                 image: "images/7482.png"
             },
             "5937": {
-                id: "5937", rank: 4940, fur: "Black", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Pink",
+                id: "5937", rank: 4940, fur: "Black", pattern: "Husky", eyes: "Sleepy Eyes", clothes: "None", realm: "Frosthollow", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Blackhusky the Shadow Amplifier",
                 suggestedStory: "The second Husky in the Heart Order, but where Sleepyhusky focuses on endurance, Blackhusky specializes in amplifying the hidden emotional strengths that people don't know they possess. Their black fur absorbs and concentrates emotional energy, while their sleepy eyes see the dormant potential in damaged or discouraged individuals.\n\nTheir magic is Hidden Strength Amplification — finding the emotional resources that people have forgotten they possess, amplifying courage in those who think they're cowards.",
                 image: "images/5937.png"
             },
             "9547": {
-                id: "9547", rank: 6186, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "9547", rank: 6186, fur: "Brown", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Brownsteady the Reliable Heart",
                 suggestedStory: "The fifth Classic in the Heart Order, demonstrating the natural affinity between steady breeds and consistent emotional magic. Brownsteady's brown fur provides perfect grounding for long-term relationship work, while their black eyes maintain clear focus on individual emotional needs without being distracted by complex group dynamics.\n\nTheir magic is Reliable Love — emotional support that never wavers, amplification magic that works the same way every time, and the steady affection that makes long-term pack bonds possible.",
                 image: "images/9547.png"
             },
             "3809": {
-                id: "3809", rank: 6597, fur: "Gray", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "3809", rank: 6597, fur: "Gray", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Grayheart the Neutral Amplifier",
                 suggestedStory: "The sixth Classic in the Heart Order, specializing in neutral amplification that doesn't favor any particular emotional approach. Grayheart's gray fur provides perfect emotional neutrality, while their black eyes maintain focus without introducing personal bias into their amplification magic. They serve as the ideal amplifier for mixed groups where different personalities need different types of emotional support.\n\nTheir magic is Universal Amplification — enhancing whatever emotional strengths each individual brings to the pack, providing amplification that adapts to different personality types.",
                 image: "images/3809.png"
             },
             "2044": {
-                id: "2044", rank: 7046, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "2044", rank: 7046, fur: "Tan", pattern: "Classic", eyes: "Black Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Tansteady the Patient Amplifier",
                 suggestedStory: "The seventh Classic in the Heart Order, demonstrating that the breed most suited to emotional magic is also the most common breed in Pawtheon. Tansteady's tan fur provides earth-tone stability, while their patient nature makes them ideal for emotional work that requires years rather than moments to complete.\n\nTheir magic is Patient Love — emotional support that works on long timescales, amplification that builds gradually rather than flaring dramatically.",
                 image: "images/2044.png"
             },
             "8044": {
-                id: "8044", rank: 7577, fur: "Gray", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Pink",
+                id: "8044", rank: 7577, fur: "Gray", pattern: "Classic", eyes: "Sleepy Eyes", clothes: "None", realm: "Violet Highlands", order: "Heart", hatColor: "Magenta",
                 suggestedName: "Sleepysteady the Gentle Dreamer",
                 suggestedStory: "The eighth and final Classic in the Heart Order, specializing in gentle emotional work that occurs during rest and sleep. Their gray fur provides neutrality for unconscious emotional work, while their permanently sleepy appearance reflects their specialty in dream-state bonding and healing.\n\nTheir magic is Gentle Dream Healing — emotional recovery that happens while sleeping, bond magic that works through shared dreams, and the kind of subtle emotional support that heals without the subject realizing they're being healed.",
                 image: "images/8044.png"
