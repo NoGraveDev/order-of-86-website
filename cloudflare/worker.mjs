@@ -7,6 +7,9 @@ export default {
  async fetch(request,env){
   const url=new URL(request.url),p=url.pathname;
   if(denyPrivateRequest(p))return basic('Not found');
+  // Reversible public takedown; preserve all lore source and chapter files.
+  const lorePath=decodeURIComponent(p).replace(/\/+/g,'/');
+  if(env.LORE_OFFLINE==='true'&&/^\/lore(?:\.html)?(?:\/|$)/i.test(lorePath))return basic('Lore is temporarily unavailable. Please check back later.',503,{'Retry-After':'3600','X-Robots-Tag':'noindex'});
   if(env.MAINTENANCE==='true'&&(p.startsWith('/play/api/')||p==='/metrics/event'))return basic('Brief maintenance: please try again shortly.',503,{'Retry-After':'60'});
   try{
    if(p==='/metrics/event')return await metrics(request,env.DB);

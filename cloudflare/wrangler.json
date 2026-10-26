@@ -35,6 +35,7 @@
     }
   ],
   "vars": {
-    "MAINTENANCE": "false"
+    "MAINTENANCE": "false",
+    "LORE_OFFLINE": "true"
   }
 }
