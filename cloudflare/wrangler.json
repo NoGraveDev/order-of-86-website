@@ -35,6 +35,7 @@
     }
   ],
   "vars": {
+    "SITE_OFFLINE": "true",
     "MAINTENANCE": "false",
     "LORE_OFFLINE": "true"
   }

@@ -5,6 +5,8 @@ import {metrics} from './metrics.mjs';
 const basic=(body,status=404,extra={})=>new Response(body,{status,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff',...extra}});
 export default {
  async fetch(request,env){
+  // Temporary site-wide pause; leave all original assets and data intact.
+  if(env.SITE_OFFLINE==='true')return basic(request.method==='HEAD'?null:'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>the end</title><style>html,body{margin:0;min-height:100%;background:#000;color:#fff}body{min-height:100vh;min-height:100dvh;display:grid;place-items:center;font:24px Georgia,serif}h1{font:inherit;margin:0}</style></head><body><h1>the end</h1></body></html>',503,{'Content-Type':'text/html; charset=utf-8','Retry-After':'3600','X-Robots-Tag':'noindex','X-Order86-Hosting':'cloudflare'});
   const url=new URL(request.url),p=url.pathname;
   if(denyPrivateRequest(p))return basic('Not found');
   // Reversible public takedown; preserve all lore source and chapter files.
